@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = 'Opendata'
+copyright = '2021, Megalis Bretagne'
+author = 'Megalis Bretagne'
 
 release = '0.1'
 version = '0.1.0'
