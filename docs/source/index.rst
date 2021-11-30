@@ -1,4 +1,4 @@
-Welcome to Lumache's documentation!
+Documentation des briques opendata de Megalis Bretagne
 ===================================
 
 **Lumache** (/lu'make/) is a Python library for cooks and food lovers
