@@ -21,3 +21,4 @@ Contents
    usage
    api
    installation.md
+   test.md
