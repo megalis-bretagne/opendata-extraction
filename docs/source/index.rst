@@ -1,24 +1,19 @@
 Documentation des briques opendata de Megalis Bretagne
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
-
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
 
 .. note::
+   Le projet est en production sur la plateforme de services de Mégalis Bretagne
 
-   This project is under active development.
-
-Contents
+Sommaire
 --------
 
 .. toctree::
+   presentation.md
+   installation-dev.md
+   installation-prod.md
+   exploitation.md
+   usage.md
 
-   usage
-   api
-   installation.md
-   test.md
+
+
