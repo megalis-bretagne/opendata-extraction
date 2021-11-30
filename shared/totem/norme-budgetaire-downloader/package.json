@@ -1,0 +1,54 @@
+{
+  "name": "normae-budgetaire-downloader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build:live",
+    "build": "tsc -p .",
+    "run": "ts-node src/index.ts",
+    "run:prod": "node --max-old-space-size=6192 lib/src/index.js",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'"
+  },
+  "author": "adrien@homiwoo.com",
+  "license": "MIT",
+  "dependencies": {
+    "@turf/helpers": "^6.1.4",
+    "@turf/simplify": "^5.1.5",
+    "@types/detect-character-encoding": "^0.7.0",
+    "@types/geojson": "^7946.0.7",
+    "@types/jsdom": "^12.2.4",
+    "@types/xml2js": "^0.4.5",
+    "csv-parser": "^2.3.1",
+    "detect-character-encoding": "^0.8.0",
+    "download": "^7.1.0",
+    "elasticsearch": "^16.4.0",
+    "fs-extra": "^8.1.0",
+    "geojson": "^0.5.0",
+    "get-stream": "^5.1.0",
+    "gunzip-stream": "latest",
+    "iconv": "^2.3.5",
+    "jsdom": "^16.0.1",
+    "ramda": "^0.26.1",
+    "shapefile": "^0.6.6",
+    "unzip": "^0.1.11",
+    "xml2js": "^0.4.23"
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "devDependencies": {
+    "@types/download": "^6.2.4",
+    "@types/elasticsearch": "^5.0.35",
+    "@types/fs-extra": "^8.0.0",
+    "@types/get-stream": "^3.0.2",
+    "@types/node": "^12.7.12",
+    "@types/ramda": "^0.26.29",
+    "nodemon": "^1.19.3",
+    "ts-node": "^8.4.1",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.4",
+    "webpack": "^4.41.1"
+  }
+}

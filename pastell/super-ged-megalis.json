@@ -1,0 +1,155 @@
+{
+    "id_type_dossier": "super-ged-megalis",
+    "pastell-version": "3.0.12",
+    "raw_data": {
+        "description": "",
+        "etape": [
+            {
+                "automatique": "on",
+                "etape_with_same_type_exists": false,
+                "num_etape": 0,
+                "num_etape_same_type": 0,
+                "requis": "on",
+                "specific_type_info": [],
+                "type": "depot"
+            }
+        ],
+        "formulaireElement": [
+            {
+                "champs_affiches": "",
+                "champs_recherche_avancee": "",
+                "commentaire": "",
+                "element_id": "publication_open_data",
+                "name": "publication opendata",
+                "preg_match": "",
+                "preg_match_error": "",
+                "requis": "",
+                "select_value": "0:Ne sais pas\r\n1:oui\r\n2:non",
+                "titre": "",
+                "type": "select"
+            },
+            {
+                "champs_affiches": "",
+                "champs_recherche_avancee": "",
+                "commentaire": "",
+                "element_id": "acte_nature",
+                "name": "Nature de l'acte",
+                "preg_match": "",
+                "preg_match_error": "",
+                "requis": "on",
+                "select_value": "1: Délibérations",
+                "titre": "",
+                "type": "select"
+            },
+            {
+                "champs_affiches": "on",
+                "champs_recherche_avancee": "",
+                "commentaire": "Le texte doit faire entre 2 et 15 caractères et ne peut contenir que des chiffres, lettres en majuscule et le caractère underscore (_)",
+                "element_id": "numero_de_lacte",
+                "name": "Numéro d'acte",
+                "preg_match": "/^[0-9A-Z_]{2,15}$/",
+                "preg_match_error": "Le texte doit faire entre 2 et 15 caractères et ne peut contenir que des chiffres, lettres en majuscule et le caractère underscore (_)",
+                "requis": "on",
+                "select_value": "",
+                "titre": "",
+                "type": "text"
+            },
+            {
+                "champs_affiches": "",
+                "champs_recherche_avancee": "",
+                "commentaire": "256 caractères maxi. Caractères interdits : &oelig;, &euro;.",
+                "element_id": "objet",
+                "name": "Objet",
+                "preg_match": "#^.{1,256}$#us",
+                "preg_match_error": "L'objet doit faire entre 1 et 256 charactères sans retour chariot",
+                "requis": "on",
+                "select_value": "",
+                "titre": "on",
+                "type": "text"
+            },
+            {
+                "champs_affiches": "",
+                "champs_recherche_avancee": "",
+                "commentaire": "Attention !! Afin d'éviter les erreurs d'archivages, merci de ne pas télétransmettre 2 fois le même document, que ce soit le document principal ou/et les documents rattachés !",
+                "element_id": "comment",
+                "name": "_",
+                "preg_match": "",
+                "preg_match_error": "",
+                "requis": "",
+                "select_value": "",
+                "titre": "",
+                "type": "text"
+            },
+            {
+                "champs_affiches": "",
+                "champs_recherche_avancee": "",
+                "commentaire": "format PDF, DOC, DOCX ou ODT",
+                "element_id": "arrete",
+                "name": "Acte",
+                "preg_match": "",
+                "preg_match_error": "",
+                "requis": "on",
+                "select_value": "",
+                "titre": "",
+                "type": "file"
+            },
+            {
+                "champs_affiches": "",
+                "champs_recherche_avancee": "",
+                "commentaire": "format PDF, PNG ou JPEG. <br/>Attention ! La taille totale des documents acte + annexes ne peut pas dépasser 150 Mo.",
+                "element_id": "autre_document_attache",
+                "name": "Annexes",
+                "preg_match": "",
+                "preg_match_error": "",
+                "requis": "",
+                "select_value": "",
+                "titre": "",
+                "type": "multi_file"
+            },
+            {
+                "champs_affiches": "",
+                "champs_recherche_avancee": "",
+                "commentaire": "",
+                "element_id": "classification",
+                "name": "Classification Actes",
+                "preg_match": "",
+                "preg_match_error": "",
+                "requis": "",
+                "select_value": "",
+                "titre": "",
+                "type": "text"
+            },
+            {
+                "champs_affiches": "",
+                "champs_recherche_avancee": "",
+                "commentaire": "",
+                "element_id": "type_piece",
+                "name": "Typologie des pièces",
+                "preg_match": "",
+                "preg_match_error": "",
+                "requis": "",
+                "select_value": "",
+                "titre": "",
+                "type": "text"
+            },
+            {
+                "champs_affiches": "",
+                "champs_recherche_avancee": "",
+                "commentaire": "Date de la décision",
+                "element_id": "date_de_lacte",
+                "name": "date_de_lacte",
+                "preg_match": "",
+                "preg_match_error": "",
+                "requis": "on",
+                "select_value": "",
+                "titre": "",
+                "type": "date"
+            }
+        ],
+        "id_type_dossier": "super-ged-megalis",
+        "nom": "Opendata/GED",
+        "nom_onglet": "Préparer",
+        "type": ""
+    },
+    "timestamp": 1611909621
+}

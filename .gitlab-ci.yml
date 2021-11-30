@@ -1,0 +1,33 @@
+include:
+  - 'https://gitlab.sib.fr/megalis/extraction-data-stack/raw/master/.docker-template.yml'
+
+before_script:
+  - wget https://gitlab.sib.fr/megalis/extraction-data-stack/raw/master/init.sh
+  - source ./init.sh
+  - export http_proxy=http://pro01.sib.fr:3128
+  - export https_proxy=http://pro01.sib.fr:3128
+  - export no_proxy=sib.fr
+  - apk update && apk add sshpass openssh-client bash
+
+build:
+  extends: .build
+
+deploy dev:
+  extends: .deployInteg
+  variables:
+    STACK_NAME: "extraction-data"
+
+deploy pre-prod:
+  extends: .deployPreProd
+  variables:
+    STACK_NAME: "extraction-data"
+
+deploy pre-prod master:
+  extends: .deployPreprodManual
+  variables:
+    STACK_NAME: "extraction-data"
+
+deploy prod:
+  extends: .deployProd
+  variables:
+    STACK_NAME: "extraction-data"

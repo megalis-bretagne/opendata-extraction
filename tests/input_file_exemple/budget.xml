@@ -1,0 +1,3607 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<DocumentBudgetaire xmlns="http://www.minefi.gouv.fr/cp/demat/docbudgetaire">
+   <VersionSchema V="86"/>
+   <BlocEditeur xmlns:bl="http://www.berger-levrault.fr/demat/outils">
+      <CodeEditeur V="Berger-Levrault"/>
+      <bl:ProduitGF V="e.gf évolution - 15.10.00.01"/>
+      <bl:EchangeXML V="2020.07"/>
+   </BlocEditeur>
+   <VersionOutil outil="DSC_COMMON" version="27"/>
+   <VersionOutil outil="REMAT" version="5"/>
+   <Scellement md5="D8B101C3604D73B9FC76F3E122D8245B" sha1="C62DCCB00DA31820CBFA472834CE63AA42DEC334" date="2020-06-29T10:50:09.292+02:00"/>
+   <EnTeteDocBudgetaire>
+      <DteStr V="2020-06-29"/>
+      <LibellePoste V="PAIERIE DEPARTEMENTALE DE LA GIRONDE"/>
+      <IdPost V="033090"/>
+      <LibelleColl V="Syndicat Mixte Gironde Numérique"/>
+      <IdColl V="20001004900076"/>
+      <NatCEPL V="Syndicat mixte"/>
+      <Departement V="33"/>
+   </EnTeteDocBudgetaire>
+   <Budget>
+      <EnTeteBudget>
+         <LibelleEtab V="Syndicat Mixte Gironde Numérique"/>
+         <IdEtab V="20001004900076"/>
+         <SpecifBudget V="1"/>
+         <CodColl V="009"/>
+         <CodInseeColl V="33063"/>
+         <CodBud V="00"/>
+         <Nomenclature V="M14-M14_COM_SUP3500"/>
+      </EnTeteBudget>
+      <BlocBudget>
+         <NatDec V="09"/>
+         <Exer V="2019"/>
+         <ProjetBudget V="false"/>
+         <NatVote V="FcIc"/>
+         <OpeEquip V="false"/>
+         <VoteFormelChap V="false"/>
+         <TypProv V="1"/>
+         <BudgPrec V="2"/>
+         <ReprRes V="2"/>
+         <NatFonc V="3"/>
+         <CodTypBud V="P"/>
+      </BlocBudget>
+      <InformationsGenerales>
+         <Information Code="PopTot" V="1 583 384"/>
+         <Information Code="NbResSec" V="73 206"/>
+         <Information Code="PotFisc3T" V="0,00"/>
+         <Information Code="ValHab3T" V="0,00"/>
+         <Information Code="PotFiscTaxPro" V="0,00"/>
+         <Information Code="ValHabTaxPro" V="0,00"/>
+         <Information Code="MoyNatFiscTaxPro" V="0,00"/>
+         <Information Code="PotFisc4T" V="0,00"/>
+         <Information Code="PotFin4T" V="0,00"/>
+         <Information Code="ValHab4T" V="0,00"/>
+         <Information Code="MoyNatFin4T" V="0,00"/>
+         <Information Code="ValDepRFonc" V="1,00"/>
+         <Information Code="MoyNatDepRFonc" V="0,00"/>
+         <Information Code="ValProdImpo" V="0,00"/>
+         <Information Code="MoyNatProdImpo" V="0,00"/>
+         <Information Code="ValRecRFonc" V="1,19"/>
+         <Information Code="MoyNatRecRFonc" V="0,00"/>
+         <Information Code="ValDepEq" V="0,05"/>
+         <Information Code="MoyNatDepEq" V="0,00"/>
+         <Information Code="ValEncDettePop" V="0,00"/>
+         <Information Code="MoyNatEncDettePop" V="0,00"/>
+         <Information Code="ValDGFPop" V="0,00"/>
+         <Information Code="MoyNatDGFPop" V="0,00"/>
+         <Information Code="ValDepPers" V="83,93 %"/>
+         <Information Code="MoyNatDepPers" V="0,00 %"/>
+         <Information Code="ValCoefMobPotFisc" V="0,00 %"/>
+         <Information Code="MoyNatCoefMobPotFisc" V="0,00 %"/>
+         <Information Code="ValCoefMobFiscEl" V="0,00 %"/>
+         <Information Code="MoyNatCoefMobFiscEl" V="0,00 %"/>
+         <Information Code="ValDepFoncRemDette" V="84,52 %"/>
+         <Information Code="MoyNatDepFoncRemDette" V="0,00 %"/>
+         <Information Code="ValDepEqB" V="4,01 %"/>
+         <Information Code="MoyNatDepEqB" V="0,00 %"/>
+         <Information Code="ValEncDetteRecFonc" V="0,00 %"/>
+         <Information Code="MoyNatEncDetteRecFonc" V="0,00 %"/>
+         <Information Code="PotFisc" V="0,00"/>
+         <Information Code="PotFin" V="0,00"/>
+         <Information Code="ValHab" V="0,00"/>
+         <Information Code="MoyNatFisc" V="0,00"/>
+         <Information Code="MoyNatFin" V="0,00"/>
+         <Information Code="DepExplSurDRF" V="100,00 %"/>
+         <Information Code="MoyNatDepExplSurDRF" V="0,00 %"/>
+         <Information Code="ProdExplSurRRF" V="31,07 %"/>
+         <Information Code="MoyNatProdExplSurRRF" V="0,00 %"/>
+         <Information Code="TransfSurRRF" V="67,88 %"/>
+         <Information Code="MoyNatTransfSurRRF" V="0,00 %"/>
+         <Information Code="EmpSurDepEq" V="0,00 %"/>
+         <Information Code="MoyNatEmpSurDepEq" V="0,00 %"/>
+         <Information Code="EncDette" V="0,00"/>
+         <Information Code="MoyNatEncDette" V="0"/>
+         <Information V="300.00" Code="MtAmort1An"/>
+         <Information V="03-03-2009" Code="DtDelibAmort1An"/>
+      </InformationsGenerales>
+      <LigneBudget>
+         <Nature V="6811"/>
+         <Fonction V="020"/>
+         <ContNat V="042"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="21485.00"/>
+         <MtPrev V="21485.00"/>
+         <CredOuv V="21485.00"/>
+         <MtReal V="21122.87"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6261"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="350.00"/>
+         <MtPrev V="350.00"/>
+         <CredOuv V="350.00"/>
+         <MtReal V="82.49"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="2051"/>
+         <Fonction V="020"/>
+         <ContNat V="20"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="1000.00"/>
+         <MtPrev V="1000.00"/>
+         <CredOuv V="1000.00"/>
+         <MtReal V="21740.48"/>
+         <MtRAR3112 V="30632.21"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="60632"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="2300.00"/>
+         <MtPrev V="2300.00"/>
+         <CredOuv V="2300.00"/>
+         <MtReal V="1939.19"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6231"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="500.00"/>
+         <MtPrev V="500.00"/>
+         <CredOuv V="500.00"/>
+         <MtReal V="10020.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="7473"/>
+         <Fonction V="020"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="272975.00"/>
+         <MtPrev V="272975.00"/>
+         <CredOuv V="272975.00"/>
+         <MtReal V="392975.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="28181"/>
+         <Fonction V="020"/>
+         <ContNat V="040"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="5835.00"/>
+         <MtPrev V="5835.00"/>
+         <CredOuv V="5835.00"/>
+         <MtReal V="5547.57"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6064"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="356.00"/>
+         <OpBudg V="0"/>
+         <MtSup V="356.00" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="74758"/>
+         <Fonction V="020"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="262295.00"/>
+         <MtPrev V="262295.00"/>
+         <CredOuv V="262295.00"/>
+         <MtReal V="737999.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6455"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="15000.00"/>
+         <MtPrev V="15000.00"/>
+         <CredOuv V="15000.00"/>
+         <MtReal V="9977.05"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="614"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="2479.12"/>
+         <OpBudg V="0"/>
+         <MtSup V="2479.12" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6251"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="20000.00"/>
+         <MtPrev V="20000.00"/>
+         <CredOuv V="20000.00"/>
+         <MtReal V="13412.85"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="2051"/>
+         <Fonction V="96"/>
+         <ContNat V="20"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtRARPrec V="12038.84"/>
+         <MtPropNouv V="70000.00"/>
+         <MtPrev V="70000.00"/>
+         <CredOuv V="82038.84"/>
+         <MtReal V="1740.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6135"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <OpBudg V="0"/>
+         <MtSup V="193.31" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6251"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="10000.00"/>
+         <MtPrev V="10000.00"/>
+         <CredOuv V="10000.00"/>
+         <MtReal V="13516.36"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="13913"/>
+         <Fonction V="96"/>
+         <ContNat V="040"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="30000.00"/>
+         <MtPrev V="30000.00"/>
+         <CredOuv V="30000.00"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6262"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="11200.00"/>
+         <MtPrev V="11200.00"/>
+         <CredOuv V="11200.00"/>
+         <MtReal V="11093.30"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="28051"/>
+         <Fonction V="96"/>
+         <ContNat V="040"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="25180.00"/>
+         <MtPrev V="25180.00"/>
+         <CredOuv V="25180.00"/>
+         <MtReal V="24945.90"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="775"/>
+         <Fonction V="020"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="585.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6156"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="14700.00"/>
+         <MtPrev V="14700.00"/>
+         <CredOuv V="14700.00"/>
+         <MtReal V="9131.81"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6132"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="22010.00"/>
+         <MtPrev V="22010.00"/>
+         <CredOuv V="22010.00"/>
+         <MtReal V="15003.01"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="62878"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="4000.00"/>
+         <MtPrev V="4000.00"/>
+         <CredOuv V="4000.00"/>
+         <MtReal V="3022.20"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="62878"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="-1400.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6761"/>
+         <Fonction V="020"/>
+         <ContNat V="042"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="565.00"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6218"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="165000.00"/>
+         <MtPrev V="165000.00"/>
+         <CredOuv V="165000.00"/>
+         <MtReal V="101180.61"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="275"/>
+         <Fonction V="020"/>
+         <ContNat V="27"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="500.00"/>
+         <MtPrev V="500.00"/>
+         <CredOuv V="500.00"/>
+         <MtReal V="795.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="70841"/>
+         <Fonction V="020"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="645000.00"/>
+         <MtPrev V="645000.00"/>
+         <CredOuv V="645000.00"/>
+         <MtReal V="495944.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6184"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="-800.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6811"/>
+         <Fonction V="96"/>
+         <ContNat V="042"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="92055.00"/>
+         <MtPrev V="92055.00"/>
+         <CredOuv V="92055.00"/>
+         <MtReal V="91860.93"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="28183"/>
+         <Fonction V="020"/>
+         <ContNat V="040"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="6780.00"/>
+         <MtPrev V="6780.00"/>
+         <CredOuv V="6780.00"/>
+         <MtReal V="6706.74"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6532"/>
+         <Fonction V="020"/>
+         <ContNat V="65"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="3000.00"/>
+         <MtPrev V="3000.00"/>
+         <CredOuv V="3000.00"/>
+         <MtReal V="652.80"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="7588"/>
+         <Fonction V="020"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="1.43"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6281"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="7100.00"/>
+         <MtPrev V="7100.00"/>
+         <CredOuv V="7100.00"/>
+         <MtReal V="10000.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6156"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="34929.00"/>
+         <MtPrev V="34929.00"/>
+         <CredOuv V="34929.00"/>
+         <MtReal V="27525.05"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6255"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="2234.90"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6228"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="2074.80"/>
+         <OpBudg V="0"/>
+         <MtSup V="2074.80" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="61558"/>
+         <Fonction V="20"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="412.56"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="60632"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="-360.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="64118"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="15000.00"/>
+         <MtPrev V="15000.00"/>
+         <CredOuv V="15000.00"/>
+         <MtReal V="51531.49"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="64131"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="258600.00"/>
+         <MtPrev V="258600.00"/>
+         <CredOuv V="258600.00"/>
+         <MtReal V="204356.50"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6475"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="650.00"/>
+         <MtPrev V="650.00"/>
+         <CredOuv V="650.00"/>
+         <MtReal V="930.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6488"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="2650.00"/>
+         <MtPrev V="2650.00"/>
+         <CredOuv V="2650.00"/>
+         <MtReal V="3923.46"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6226"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="14500.00"/>
+         <MtPrev V="14500.00"/>
+         <CredOuv V="14500.00"/>
+         <MtReal V="5537.60"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="2183"/>
+         <Fonction V="96"/>
+         <ContNat V="21"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtRARPrec V="12830.42"/>
+         <MtPropNouv V="110000.00"/>
+         <MtPrev V="110000.00"/>
+         <CredOuv V="122830.42"/>
+         <MtReal V="29736.12"/>
+         <MtRAR3112 V="46986.45"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6533"/>
+         <Fonction V="020"/>
+         <ContNat V="65"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="550.00"/>
+         <MtPrev V="550.00"/>
+         <CredOuv V="550.00"/>
+         <MtReal V="466.08"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6225"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="110.00"/>
+         <MtPrev V="110.00"/>
+         <CredOuv V="110.00"/>
+         <MtReal V="110.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6488"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="5150.00"/>
+         <MtPrev V="5150.00"/>
+         <CredOuv V="5150.00"/>
+         <MtReal V="4215.46"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6718"/>
+         <Fonction V="020"/>
+         <ContNat V="67"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="500.00"/>
+         <MtPrev V="500.00"/>
+         <CredOuv V="500.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="617"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="461000.00"/>
+         <MtPrev V="461000.00"/>
+         <CredOuv V="461000.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6185"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="3000.00"/>
+         <MtPrev V="3000.00"/>
+         <CredOuv V="3000.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="74718"/>
+         <Fonction V="020"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="6000.00"/>
+         <MtPrev V="6000.00"/>
+         <CredOuv V="6000.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="64111"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="250000.00"/>
+         <MtPrev V="250000.00"/>
+         <CredOuv V="250000.00"/>
+         <MtReal V="90884.68"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="64111"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="175000.00"/>
+         <MtPrev V="175000.00"/>
+         <CredOuv V="175000.00"/>
+         <MtReal V="129016.45"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6135"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="400.00"/>
+         <MtPrev V="400.00"/>
+         <CredOuv V="400.00"/>
+         <MtReal V="483.25"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="74758"/>
+         <Fonction V="96"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="634500.00"/>
+         <MtPrev V="634500.00"/>
+         <CredOuv V="634500.00"/>
+         <MtReal V="103425.33"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="28184"/>
+         <Fonction V="96"/>
+         <ContNat V="040"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="100.00"/>
+         <MtPrev V="100.00"/>
+         <CredOuv V="100.00"/>
+         <MtReal V="69.70"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6451"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="65000.00"/>
+         <MtPrev V="65000.00"/>
+         <CredOuv V="65000.00"/>
+         <MtReal V="75143.53"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6338"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="1000.00"/>
+         <MtPrev V="1000.00"/>
+         <CredOuv V="1000.00"/>
+         <MtReal V="921.43"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6257"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="500.00"/>
+         <MtPrev V="500.00"/>
+         <CredOuv V="500.00"/>
+         <MtReal V="46.25"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="60632"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="2121.38"/>
+         <MtPrev V="2121.38"/>
+         <CredOuv V="2121.38"/>
+         <MtReal V="1220.17"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="28183"/>
+         <Fonction V="96"/>
+         <ContNat V="040"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="66775.00"/>
+         <MtPrev V="66775.00"/>
+         <CredOuv V="66775.00"/>
+         <MtReal V="66992.33"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="28184"/>
+         <Fonction V="020"/>
+         <ContNat V="040"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="8870.00"/>
+         <MtPrev V="8870.00"/>
+         <CredOuv V="8870.00"/>
+         <MtReal V="8721.56"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6453"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="40000.00"/>
+         <MtPrev V="40000.00"/>
+         <CredOuv V="40000.00"/>
+         <MtReal V="49647.76"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6336"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="5000.00"/>
+         <MtPrev V="5000.00"/>
+         <CredOuv V="5000.00"/>
+         <MtReal V="6105.11"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6478"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="1027.54"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6331"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="6000.00"/>
+         <MtPrev V="6000.00"/>
+         <CredOuv V="6000.00"/>
+         <MtReal V="6142.53"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6451"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="95000.00"/>
+         <MtPrev V="95000.00"/>
+         <CredOuv V="95000.00"/>
+         <MtReal V="95156.33"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6338"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="1000.00"/>
+         <MtPrev V="1000.00"/>
+         <CredOuv V="1000.00"/>
+         <MtReal V="1155.36"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6231"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="500.00"/>
+         <MtPrev V="500.00"/>
+         <CredOuv V="500.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6236"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="-1003.48"/>
+         <OpBudg V="0"/>
+         <MtSup V="200.00" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6228"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="8000.00"/>
+         <MtPrev V="8000.00"/>
+         <CredOuv V="8000.00"/>
+         <MtReal V="3131.99"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6454"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="12000.00"/>
+         <MtPrev V="12000.00"/>
+         <CredOuv V="12000.00"/>
+         <MtReal V="8761.44"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6262"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="7.58"/>
+         <OpBudg V="0"/>
+         <MtSup V="216.00" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="2183"/>
+         <Fonction V="020"/>
+         <ContNat V="21"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="10000.00"/>
+         <MtPrev V="10000.00"/>
+         <CredOuv V="10000.00"/>
+         <MtReal V="21922.44"/>
+         <MtRAR3112 V="6867.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="64118"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="65000.00"/>
+         <MtPrev V="65000.00"/>
+         <CredOuv V="65000.00"/>
+         <MtReal V="63047.04"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="64131"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="348600.00"/>
+         <MtPrev V="348600.00"/>
+         <CredOuv V="348600.00"/>
+         <MtReal V="252713.85"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="7473"/>
+         <Fonction V="96"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="150000.00"/>
+         <MtPrev V="150000.00"/>
+         <CredOuv V="150000.00"/>
+         <MtReal V="30000.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="614"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="4960.00"/>
+         <MtPrev V="4960.00"/>
+         <CredOuv V="4960.00"/>
+         <MtReal V="3718.68"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6454"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="18000.00"/>
+         <MtPrev V="18000.00"/>
+         <CredOuv V="18000.00"/>
+         <MtReal V="10675.40"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="2184"/>
+         <Fonction V="20"/>
+         <ContNat V="21"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="294.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6161"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="4100.00"/>
+         <MtPrev V="4100.00"/>
+         <CredOuv V="4100.00"/>
+         <MtReal V="4112.44"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6531"/>
+         <Fonction V="020"/>
+         <ContNat V="65"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="6500.00"/>
+         <MtPrev V="6500.00"/>
+         <CredOuv V="6500.00"/>
+         <MtReal V="6506.91"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6419"/>
+         <Fonction V="96"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="13041.15"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6226"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="25680.00"/>
+         <OpBudg V="0"/>
+         <MtSup V="25680.00" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6156"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="1076.40"/>
+         <OpBudg V="0"/>
+         <MtSup V="2850.00" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6132"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="7650.09"/>
+         <OpBudg V="0"/>
+         <MtSup V="7650.09" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="2031"/>
+         <Fonction V="020"/>
+         <ContNat V="041"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="11000.00"/>
+         <MtPrev V="11000.00"/>
+         <CredOuv V="11000.00"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="1"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6064"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="500.00"/>
+         <MtPrev V="500.00"/>
+         <CredOuv V="500.00"/>
+         <MtReal V="478.91"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6226"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="4000.00"/>
+         <MtPrev V="4000.00"/>
+         <CredOuv V="4000.00"/>
+         <MtReal V="538.20"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6218"/>
+         <Fonction V="01"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="61000.00"/>
+         <OpBudg V="0"/>
+         <MtSup V="79500.00" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6132"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="22960.00"/>
+         <MtPrev V="22960.00"/>
+         <CredOuv V="22960.00"/>
+         <MtReal V="21396.90"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6236"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="1018.80"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="192"/>
+         <Fonction V="020"/>
+         <ContNat V="040"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="565.00"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6135"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="400.00"/>
+         <MtPrev V="400.00"/>
+         <CredOuv V="400.00"/>
+         <MtReal V="612.19"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="2181"/>
+         <Fonction V="020"/>
+         <ContNat V="041"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="11000.00"/>
+         <MtPrev V="11000.00"/>
+         <CredOuv V="11000.00"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="1"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6251"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="2301.56"/>
+         <OpBudg V="0"/>
+         <MtSup V="3400.00" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="021"/>
+         <Fonction V="96"/>
+         <ContNat V="021"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="100000.00"/>
+         <MtPrev V="100000.00"/>
+         <CredOuv V="100000.00"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6455"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="15000.00"/>
+         <MtPrev V="15000.00"/>
+         <CredOuv V="15000.00"/>
+         <MtReal V="9977.04"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6331"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="6000.00"/>
+         <MtPrev V="6000.00"/>
+         <CredOuv V="6000.00"/>
+         <MtReal V="7693.80"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="777"/>
+         <Fonction V="96"/>
+         <ContNat V="042"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="30000.00"/>
+         <MtPrev V="30000.00"/>
+         <CredOuv V="30000.00"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6227"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="5000.00"/>
+         <MtPrev V="5000.00"/>
+         <CredOuv V="5000.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6257"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="2500.00"/>
+         <MtPrev V="2500.00"/>
+         <CredOuv V="2500.00"/>
+         <MtReal V="3463.96"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="611"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="10000.00"/>
+         <MtPrev V="10000.00"/>
+         <CredOuv V="10000.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="617"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="50000.00"/>
+         <MtPrev V="50000.00"/>
+         <CredOuv V="50000.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="2184"/>
+         <Fonction V="020"/>
+         <ContNat V="040"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="784.06"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6262"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="11200.00"/>
+         <MtPrev V="11200.00"/>
+         <CredOuv V="11200.00"/>
+         <MtReal V="11117.29"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6419"/>
+         <Fonction V="020"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="6087.72"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6332"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="300.00"/>
+         <MtPrev V="300.00"/>
+         <CredOuv V="300.00"/>
+         <MtReal V="381.20"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="614"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="4960.00"/>
+         <MtPrev V="4960.00"/>
+         <CredOuv V="4960.00"/>
+         <MtReal V="3718.68"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6488"/>
+         <Fonction V="01"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="-140.40"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6336"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="4000.00"/>
+         <MtPrev V="4000.00"/>
+         <CredOuv V="4000.00"/>
+         <MtReal V="7679.58"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6718"/>
+         <Fonction V="96"/>
+         <ContNat V="67"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="500.00"/>
+         <MtPrev V="500.00"/>
+         <CredOuv V="500.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6475"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="650.00"/>
+         <MtPrev V="650.00"/>
+         <CredOuv V="650.00"/>
+         <MtReal V="955.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="62878"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="4000.00"/>
+         <MtPrev V="4000.00"/>
+         <CredOuv V="4000.00"/>
+         <MtReal V="3022.20"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="10222"/>
+         <Fonction V="96"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="20000.00"/>
+         <MtPrev V="20000.00"/>
+         <CredOuv V="20000.00"/>
+         <MtReal V="25799.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6184"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="30000.00"/>
+         <MtPrev V="30000.00"/>
+         <CredOuv V="30000.00"/>
+         <MtReal V="7340.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6237"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="5000.00"/>
+         <MtPrev V="5000.00"/>
+         <CredOuv V="5000.00"/>
+         <MtReal V="2436.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6228"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="120.00"/>
+         <MtPrev V="120.00"/>
+         <CredOuv V="120.00"/>
+         <MtReal V="113.30"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="74758"/>
+         <Fonction V="01"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="12968.00"/>
+         <OpBudg V="0"/>
+         <MtSup V="13218.00" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="002"/>
+         <Fonction V="01"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="561820.38"/>
+         <MtPrev V="561820.38"/>
+         <CredOuv V="561820.38"/>
+         <MtReal V="561820.38"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="64112"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="7979.73"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="001"/>
+         <Fonction V="01"/>
+         <ContNat V="001"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="10879.39"/>
+         <MtPrev V="10879.39"/>
+         <CredOuv V="10879.39"/>
+         <MtReal V="10879.39"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="2184"/>
+         <Fonction V="020"/>
+         <ContNat V="21"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="2000.00"/>
+         <MtPrev V="2000.00"/>
+         <CredOuv V="2000.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6184"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="4000.00"/>
+         <MtPrev V="4000.00"/>
+         <CredOuv V="4000.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6064"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="500.00"/>
+         <MtPrev V="500.00"/>
+         <CredOuv V="500.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="60636"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="406.80"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6257"/>
+         <Fonction V="01"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="-1304.41"/>
+         <OpBudg V="0"/>
+         <MtSup V="50.00" Code="ProdChaRat"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6281"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="14500.00"/>
+         <MtPrev V="14500.00"/>
+         <CredOuv V="14500.00"/>
+         <MtReal V="15831.90"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6156"/>
+         <Fonction V="022"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="631.20"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6255"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="2587.70"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6332"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="300.00"/>
+         <MtPrev V="300.00"/>
+         <CredOuv V="300.00"/>
+         <MtReal V="262.15"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6453"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="50000.00"/>
+         <MtPrev V="50000.00"/>
+         <CredOuv V="50000.00"/>
+         <MtReal V="45434.39"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="61558"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="148.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="61558"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="1500.00"/>
+         <MtPrev V="1500.00"/>
+         <CredOuv V="1500.00"/>
+         <MtReal V="49.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6182"/>
+         <Fonction V="020"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="500.00"/>
+         <MtPrev V="500.00"/>
+         <CredOuv V="500.00"/>
+         <MtReal V="495.04"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6478"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="192.05"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="64112"/>
+         <Fonction V="95"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="268.65"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="6458"/>
+         <Fonction V="020"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="858.59"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="13913"/>
+         <Fonction V="020"/>
+         <ContNat V="040"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="30000.00"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="675"/>
+         <Fonction V="020"/>
+         <ContNat V="042"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="784.06"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="1068"/>
+         <Fonction V="020"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="35748.65"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="70841"/>
+         <Fonction V="96"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="90000.00"/>
+         <MtPrev V="90000.00"/>
+         <CredOuv V="90000.00"/>
+         <MtReal V="88817.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="611"/>
+         <Fonction V="96"/>
+         <ContNat V="011"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="10180.00"/>
+         <MtPrev V="10180.00"/>
+         <CredOuv V="10180.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="1068"/>
+         <Fonction V="01"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPropNouv V="35748.65"/>
+         <MtPrev V="35748.65"/>
+         <CredOuv V="35748.65"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="64112"/>
+         <Fonction V="96"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="8594.48"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="777"/>
+         <Fonction V="020"/>
+         <ContNat V="042"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="30000.00"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="023"/>
+         <Fonction V="96"/>
+         <ContNat V="023"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="100000.00"/>
+         <MtPrev V="100000.00"/>
+         <CredOuv V="100000.00"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="7761"/>
+         <Fonction V="020"/>
+         <ContNat V="042"/>
+         <ArtSpe V="false"/>
+         <CodRD V="R"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="764.06"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="64131"/>
+         <Fonction V="20"/>
+         <ContNat V="012"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="17271.85"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="192"/>
+         <Fonction V="020"/>
+         <ContNat V="040"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="764.06"/>
+         <OpBudg V="1"/>
+         <TypOpBudg V="2"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="2181"/>
+         <Fonction V="020"/>
+         <ContNat V="21"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="9540.00"/>
+         <MtPrev V="9540.00"/>
+         <CredOuv V="9540.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="275"/>
+         <Fonction V="96"/>
+         <ContNat V="27"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPropNouv V="500.00"/>
+         <MtPrev V="500.00"/>
+         <CredOuv V="500.00"/>
+         <OpBudg V="0"/>
+         <CaracSup V="I" Code="Section"/>
+      </LigneBudget>
+      <LigneBudget>
+         <Nature V="65888"/>
+         <Fonction V="020"/>
+         <ContNat V="65"/>
+         <ArtSpe V="false"/>
+         <CodRD V="D"/>
+         <MtPrev V="0.00"/>
+         <MtReal V="1.92"/>
+         <OpBudg V="0"/>
+         <CaracSup V="F" Code="Section"/>
+      </LigneBudget>
+      <Annexes>
+         <DATA_EMPRUNT>
+            <EMPRUNT>
+               <CodTypEmpr V="10"/>
+               <RReelFon V="1881843.63"/>
+            </EMPRUNT>
+         </DATA_EMPRUNT>
+         <DATA_FORMATION>
+            <FORMATION>
+               <NomElu V=""/>
+               <ActionFinanc V=""/>
+            </FORMATION>
+         </DATA_FORMATION>
+         <DATA_CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="01"/>
+               <CodBudAnnex V="01"/>
+               <LibBudAnnex V="Syndicat Mixte Gironde Numérique"/>
+               <CodInvFonc V="F"/>
+               <CodRD V="R"/>
+               <MtCredOuv V="2652590.38"/>
+               <MtRealMandatTitre V="2474428.07"/>
+               <RAR V="0.00"/>
+               <SiretBudAnnexe V="20001004900076"/>
+            </CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="01"/>
+               <CodBudAnnex V="01"/>
+               <LibBudAnnex V="Syndicat Mixte Gironde Numérique"/>
+               <CodInvFonc V="I"/>
+               <CodRD V="D"/>
+               <MtCredOuv V="280288.65"/>
+               <MtRealMandatTitre V="117871.49"/>
+               <RAR V="84485.66"/>
+               <SiretBudAnnexe V="20001004900076"/>
+            </CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="01"/>
+               <CodBudAnnex V="01"/>
+               <LibBudAnnex V="Syndicat Mixte Gironde Numérique"/>
+               <CodInvFonc V="I"/>
+               <CodRD V="R"/>
+               <MtCredOuv V="280288.65"/>
+               <MtRealMandatTitre V="175880.51"/>
+               <RAR V="0.00"/>
+               <SiretBudAnnexe V="20001004900076"/>
+            </CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="01"/>
+               <CodBudAnnex V="01"/>
+               <LibBudAnnex V="Syndicat Mixte Gironde Numérique"/>
+               <CodInvFonc V="F"/>
+               <CodRD V="D"/>
+               <MtCredOuv V="2652590.38"/>
+               <MtRealMandatTitre V="1704799.53"/>
+               <RAR V="0.00"/>
+               <SiretBudAnnexe V="20001004900076"/>
+            </CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="02"/>
+               <CodBudAnnex V="02"/>
+               <LibBudAnnex V="Aménagement numérique du territoire"/>
+               <CodInvFonc V="F"/>
+               <CodRD V="R"/>
+               <MtCredOuv V="9770102.63"/>
+               <MtRealMandatTitre V="9740015.61"/>
+               <RAR V="0.00"/>
+               <SiretBudAnnexe V="20001004900035"/>
+            </CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="02"/>
+               <CodBudAnnex V="02"/>
+               <LibBudAnnex V="Aménagement numérique du territoire"/>
+               <CodInvFonc V="F"/>
+               <CodRD V="D"/>
+               <MtCredOuv V="9770102.63"/>
+               <MtRealMandatTitre V="1017193.14"/>
+               <RAR V="0.00"/>
+               <SiretBudAnnexe V="20001004900035"/>
+            </CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="02"/>
+               <CodBudAnnex V="02"/>
+               <LibBudAnnex V="Aménagement numérique du territoire"/>
+               <CodInvFonc V="I"/>
+               <CodRD V="R"/>
+               <MtCredOuv V="81100577.00"/>
+               <MtRealMandatTitre V="8382922.50"/>
+               <RAR V="18007415.18"/>
+               <SiretBudAnnexe V="20001004900035"/>
+            </CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="02"/>
+               <CodBudAnnex V="02"/>
+               <LibBudAnnex V="Aménagement numérique du territoire"/>
+               <CodInvFonc V="I"/>
+               <CodRD V="D"/>
+               <MtCredOuv V="81100577.00"/>
+               <MtRealMandatTitre V="30039352.05"/>
+               <RAR V="71180.35"/>
+               <SiretBudAnnexe V="20001004900035"/>
+            </CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="02"/>
+               <CodBudAnnex V="00"/>
+               <LibBudAnnex V="Prestation de services numériques "/>
+               <CodInvFonc V="F"/>
+               <CodRD V="R"/>
+               <MtCredOuv V="145350.00"/>
+               <MtRealMandatTitre V="208828.94"/>
+               <RAR V="0.00"/>
+               <SiretBudAnnexe V="20001004900068"/>
+            </CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="02"/>
+               <CodBudAnnex V="00"/>
+               <LibBudAnnex V="Prestation de services numériques "/>
+               <CodInvFonc V="I"/>
+               <CodRD V="D"/>
+               <MtCredOuv V="976392.77"/>
+               <MtRealMandatTitre V="364117.32"/>
+               <RAR V="131109.28"/>
+               <SiretBudAnnexe V="20001004900068"/>
+            </CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="02"/>
+               <CodBudAnnex V="00"/>
+               <LibBudAnnex V="Prestation de services numériques "/>
+               <CodInvFonc V="I"/>
+               <CodRD V="R"/>
+               <MtCredOuv V="976392.77"/>
+               <MtRealMandatTitre V="133251.29"/>
+               <RAR V="331129.44"/>
+               <SiretBudAnnexe V="20001004900068"/>
+            </CONSOLIDATION>
+            <CONSOLIDATION>
+               <CodTypBudAgreg V="02"/>
+               <CodBudAnnex V="00"/>
+               <LibBudAnnex V="Prestation de services numériques "/>
+               <CodInvFonc V="F"/>
+               <CodRD V="D"/>
+               <MtCredOuv V="145350.00"/>
+               <MtRealMandatTitre V="113450.00"/>
+               <RAR V="0.00"/>
+               <SiretBudAnnexe V="20001004900068"/>
+            </CONSOLIDATION>
+         </DATA_CONSOLIDATION>
+         <DATA_PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="MS4 - NAS SERVEURS"/>
+               <MtValAcquiBien V="9364.22"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="5"/>
+               <DtAcquiBien V="2019-01-28"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="SERVEUR - RACKSTATION RS1619XS "/>
+               <MtValAcquiBien V="3447.51"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="5"/>
+               <DtAcquiBien V="2019-03-15"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="OPEN DEMAND - Mairie de Marcheprime - Mise en place"/>
+               <MtValAcquiBien V="3350.40"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-05-12"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="PC Portables LENOVO"/>
+               <MtValAcquiBien V="3762.65"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-05-13"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="1801.12"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-01-07"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="555.90"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="3"/>
+               <DtAcquiBien V="2019-01-07"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="3072.49"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-02-19"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="948.30"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="3"/>
+               <DtAcquiBien V="2019-02-19"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="1165.43"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-04-24"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="359.70"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="3"/>
+               <DtAcquiBien V="2019-04-24"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="1059.48"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-04-24"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="327.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="3"/>
+               <DtAcquiBien V="2019-04-24"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="953.53"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-04-24"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="294.30"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="3"/>
+               <DtAcquiBien V="2019-04-24"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="1589.22"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-07-10"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="490.50"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="3"/>
+               <DtAcquiBien V="2019-07-10"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="523.20"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="3"/>
+               <DtAcquiBien V="2019-07-10"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="1695.17"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-07-10"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="228.90"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="3"/>
+               <DtAcquiBien V="2019-08-08"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CERTIFICATS ELECTRONIQUES 2019"/>
+               <MtValAcquiBien V="741.64"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-08-08"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="OPEN POLICE - COMMUNE DE VENDAYS-MONTALIVET - MISE EN PLACE"/>
+               <MtValAcquiBien V="1740.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-10-29"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="ORDINATEUR INFORMATICIEN MUTUALISE"/>
+               <MtValAcquiBien V="889.49"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-11-08"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="ORDINATEUR INGENIEUR CHAINE DE DEMATERIALISATION"/>
+               <MtValAcquiBien V="2142.94"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-11-08"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="SIEGE DE BUREAU"/>
+               <MtValAcquiBien V="294.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="10"/>
+               <DtAcquiBien V="2019-11-21"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="1 CERTIFICAT CACHET PODOC"/>
+               <MtValAcquiBien V="523.20"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-11-20"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="28 SERVEURS NAS "/>
+               <MtValAcquiBien V="18734.18"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="5"/>
+               <DtAcquiBien V="2019-12-03"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="OPEN DEMANDES - Mairie de Izon - Mise en place"/>
+               <MtValAcquiBien V="3350.40"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-12-09"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="28 SERVEURS NAS "/>
+               <MtValAcquiBien V="4404.46"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="5"/>
+               <DtAcquiBien V="2019-12-03"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="28 SERVEURS NAS "/>
+               <MtValAcquiBien V="5067.77"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="5"/>
+               <DtAcquiBien V="2019-12-17"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="CAUTION 3 TELEPHONES "/>
+               <MtValAcquiBien V="795.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+               <DtAcquiBien V="2019-08-21"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="1 CERTIFICAT RGS"/>
+               <MtValAcquiBien V="117.54"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="1"/>
+               <DtAcquiBien V="2019-10-15"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="01"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="01"/>
+               <CodModalSorti V="99"/>
+               <LibBien V="OPEN DEMAND - Mairie de Mios - Mise en place"/>
+               <MtValAcquiBien V="2438.40"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="2"/>
+               <DtAcquiBien V="2019-04-11"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="02"/>
+               <CodModalSorti V="99"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="04"/>
+               <CodModalSorti V="99"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="03"/>
+               <CodModalSorti V="99"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="05"/>
+               <CodModalSorti V="99"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="E"/>
+               <CodModalAcqui V="99"/>
+               <CodModalSorti V="99"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="S"/>
+               <CodModalAcqui V="99"/>
+               <CodModalSorti V="01"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="S"/>
+               <CodModalAcqui V="99"/>
+               <CodModalSorti V="02"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="S"/>
+               <CodModalAcqui V="99"/>
+               <CodModalSorti V="04"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="S"/>
+               <CodModalAcqui V="99"/>
+               <CodModalSorti V="03"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="S"/>
+               <CodModalAcqui V="99"/>
+               <CodModalSorti V="05"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="S"/>
+               <CodModalAcqui V="99"/>
+               <CodModalSorti V="06"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+            <PATRIMOINE>
+               <CodVariPatrim V="02"/>
+               <CodEntreeSorti V="S"/>
+               <CodModalAcqui V="99"/>
+               <CodModalSorti V="99"/>
+               <LibBien V=""/>
+               <MtValAcquiBien V="0.00"/>
+               <MtCumulAmortBien V="0.00"/>
+               <DureeAmortBien V="0"/>
+            </PATRIMOINE>
+         </DATA_PATRIMOINE>
+         <DATA_PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Directeur territorial"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="1"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Rédacteur "/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="2"/>
+               <EffectifPourvu V="1"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="technicien"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="7"/>
+               <EffectifPourvu V="2"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Attaché principal "/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="1"/>
+               <EffectifPourvu V="1"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Ingénieur "/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="4"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Adjoint technique principal 2° classe"/>
+               <CodCatAgent V="C"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="1"/>
+               <EffectifPourvu V="1"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Adjoint administratif principal de 2° classe"/>
+               <CodCatAgent V="C"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="1"/>
+               <EffectifPourvu V="1"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Ingénieur principal"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="1"/>
+               <EffectifPourvu V="1"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Ingénieur principal"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="1"/>
+               <EffectifPourvu V="1"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Attaché"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="2"/>
+               <EffectifPourvu V="1"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Technicien principal de 2° classe"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="1"/>
+               <EffectifPourvu V="1"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="technicien"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="0"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="1"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Ingénieur"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Technicien"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Technicien"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Rédacteur principal 1er classe"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Attaché principal"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Technicien"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Adjoint administratif 2° classe"/>
+               <CodCatAgent V="C"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Ingénieur"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Rédacteur chef"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Adjoint administratif 2° classe"/>
+               <CodCatAgent V="C"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Attaché principal"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Technicien"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Ingénieur"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Technicien principal de 2° classe"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Attaché"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Technicien"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Technicien"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Technicien"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Ingénieur"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Ingénieur"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Technicien principal de 2° classe"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Rédacteur"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Adjoint technique de 2° classe"/>
+               <CodCatAgent V="C"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Rédacteur principal de 1° classe"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="I"/>
+               <EmploiGradeAgent V="Technicien"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Responsable administratif juridique et financier"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <NatureContrat V="CDI"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 2°"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Architecte réseaux"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <NatureContrat V="CDI"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 2°"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Technicien en télécommunications"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <NatureContrat V="CDI"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 1°"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Technicienne TIC"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <NatureContrat V="CDI"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 1°"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Ingénieur systèmes"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <NatureContrat V="CDD"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 2°"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Informaticien mutualisé"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <NatureContrat V="CDD"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 1°"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Animatrice numérique territoriale"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <NatureContrat V="CDD"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 1°"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Ingénieur en télécommunications"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <NatureContrat V="CDD"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 2°"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Informaticien mutualisé"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="0"/>
+               <NatureContrat V="CDD"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 1°"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Ingénieur en télécommunications"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <NatureContrat V="CDD"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 2"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Manager de contrat"/>
+               <CodCatAgent V="B"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <NatureContrat V="CDD"/>
+               <CodSectAgentTitulaire V="ADM"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 1°"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+            <PERSONNEL>
+               <CodTypAgent V="N"/>
+               <EmploiGradeAgent V="Juriste"/>
+               <CodCatAgent V="A"/>
+               <TempsComplet V="1"/>
+               <Permanent V="1"/>
+               <NatureContrat V="CDD"/>
+               <CodSectAgentTitulaire V="TECH"/>
+               <RemunAgent V="0"/>
+               <CodMotifContrAgent V="A"/>
+               <LibMotifContrAgent V="Article 3-3, 2"/>
+               <EffectifBud V="0"/>
+               <EffectifPourvu V="0"/>
+            </PERSONNEL>
+         </DATA_PERSONNEL>
+         <DATA_AMORTISSEMENT_METHODE>
+            <AMORTISSEMENT_METHODE>
+               <LibBienAmort V="2031 Frais d'études"/>
+               <DureeBienAmort V="5"/>
+               <DtDelib V="2009-03-03"/>
+               <ProcAmort V="L"/>
+            </AMORTISSEMENT_METHODE>
+            <AMORTISSEMENT_METHODE>
+               <LibBienAmort V="205 Concessions et droits similaires, brevets, licences, marques"/>
+               <DureeBienAmort V="2"/>
+               <DtDelib V="2009-03-03"/>
+               <ProcAmort V="L"/>
+            </AMORTISSEMENT_METHODE>
+            <AMORTISSEMENT_METHODE>
+               <LibBienAmort V="2183 Matériel de bureau et matériel informatique"/>
+               <DureeBienAmort V="3"/>
+               <DtDelib V="2009-03-03"/>
+               <ProcAmort V="L"/>
+            </AMORTISSEMENT_METHODE>
+            <AMORTISSEMENT_METHODE>
+               <LibBienAmort V="2184 Mobilier"/>
+               <DureeBienAmort V="10"/>
+               <DtDelib V="2009-03-03"/>
+               <ProcAmort V="L"/>
+            </AMORTISSEMENT_METHODE>
+         </DATA_AMORTISSEMENT_METHODE>
+         <DATA_SIGNATURE>
+            <SIGNATURE>
+               <NbrMembExer V="35"/>
+               <NbrMembPresent V="18"/>
+               <NbrSuffExprime V="17"/>
+               <NbrVotePour V="17"/>
+               <NbrVoteContre V="0"/>
+               <NbrVoteAbstention V="0"/>
+               <DtConvoc V="2020-06-05"/>
+               <LibPresentPar V="Le Le Président"/>
+               <LibPresentLieu V="Bordeaux"/>
+               <DtPresent V="2020-06-23"/>
+               <LibDelibPar V="le Comité syndical"/>
+               <LibReuniSession V="ordinaire"/>
+               <LibDelibLieu V="Bordeaux"/>
+               <DtDelib V="2020-06-23"/>
+            </SIGNATURE>
+         </DATA_SIGNATURE>
+         <DATA_SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Alain RENARD"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Pierre DUCOUT"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Matthieu ROUVEYRE"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Madame Pascale MOLBERT"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Patrice PAULETTO"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Mathieu TRUFFART"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Laurent GARBUIO"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Michael FUSEAU"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Bernard LAURET"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Didier MAU"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Patrick BAUDIN"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Philippe BALAYE"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Jean-Louis SAUMON"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Madame Carole DELADERRIERE"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Anacleto ALFONSO"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Madame Anne-Laure FABRE NADLER"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Monsieur Dominique FEDIEU"/>
+            </SIGNATAIRE>
+            <SIGNATAIRE>
+               <Signataire V="Madame Michelle LACOSTE"/>
+            </SIGNATAIRE>
+         </DATA_SIGNATAIRE>
+         <DATA_ETAB_SERVICE>
+            <ETAB_SERVICE>
+               <CodNatEtab V="02"/>
+               <LibEtab V="Aménagement numérique du territoire"/>
+               <SiretEtab V="20001004900035"/>
+               <DtCreatEtab V="2009-06-09"/>
+               <NumDelibEtab V="09/06/2009"/>
+               <LibNatActivEtab V="SPIC"/>
+               <IndicTVAEtab V="true"/>
+            </ETAB_SERVICE>
+            <ETAB_SERVICE>
+               <CodNatEtab V="02"/>
+               <LibEtab V="Prestation de services numériques hors mutualisation"/>
+               <SiretEtab V="20001004900068"/>
+               <DtCreatEtab V="2011-06-16"/>
+               <NumDelibEtab V="16/06/2011"/>
+               <LibNatActivEtab V="SPIC"/>
+               <IndicTVAEtab V="true"/>
+            </ETAB_SERVICE>
+         </DATA_ETAB_SERVICE>
+         <DATA_SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="ARS"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="I-A"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="I-B"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="II-A1"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="II-A2"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="II-A3"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="II-B1"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="II-B2"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="III-A1"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="III-A2"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="III-B1"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="III-B2"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="III-B3"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A1"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A1.1"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A1.2"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A10.1"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A10.2"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A10.3"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A10.4"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A10.5"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A11"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A12"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A2.1"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A2.2"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A2.3"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A2.4"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A2.5"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A2.6"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A2.7"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A2.8"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A2.9"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A3"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A4"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A5"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A6.1"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A6.2"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A7.2.1"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A7.2.2"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A7.3.1"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A7.3.2"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A8"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-A9"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-B1.1"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-B1.2"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-B1.3"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-B1.4"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-B1.5"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-B1.6"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-B1.7"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-B2.1"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-B2.2"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-B3"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-C1.1"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-C1.2"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-C2"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-C3.1"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-C3.2"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-C3.3"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-C3.4"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-C3.5"/>
+               <Present V="true"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-C3.6"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+            <SOMMAIRE>
+               <CodeAnnexe V="IV-D1"/>
+               <Present V="false"/>
+            </SOMMAIRE>
+         </DATA_SOMMAIRE>
+      </Annexes>
+   </Budget>
+</DocumentBudgetaire>
