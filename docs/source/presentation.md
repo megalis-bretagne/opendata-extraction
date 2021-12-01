@@ -3,7 +3,7 @@
 ## Résumé
 Le projet à pour but d'automatiser la publication et la gestion de différents jeux de données en open data depuis la plateforme de services de Mégalis Bretagne.
 
-Actuellement, il permet la génération et la publication des jeux de donées suivants:
+Actuellement, il permet la génération et la publication des jeux de données suivants:
 * les délibérations ([fichier annuel au format SCDL délibération](https://scdl.opendatafrance.net/docs/schemas/deliberations.html)  et fichier PDF sur marque blanche)
 * les budgets ([fichier annuel au format SCDL budget](https://scdl.opendatafrance.net/docs/schemas/budget.html) et fichier PDF sur marque blanche)
 * les marchés publiques ([fichier annuel format-commande-publique](https://github.com/139bercy/format-commande-publique))
