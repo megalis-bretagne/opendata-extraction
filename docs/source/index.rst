@@ -18,11 +18,11 @@ Documentation des briques opendata de Megalis Bretagne
    :hidden:
    :caption: Installation
 
-   guide/installation-prerequis.md
-   guide/parametrage-keycloak.md
-   guide/parametrage-pastell.md
-   guide/installation-extraction.md
-   guide/installation-front.md
+   guide/installationPrerequis.md
+   guide/parametrageKeycloak.md
+   guide/parametragePastell.md
+   guide/installationExtraction.md
+   guide/installationFront.md
 
 
 
