@@ -3,11 +3,16 @@ Paramétrage Keycloak
 
 .. warning:: Le projet nécessite de disposer d'un serveur d'authentification keycloak
 
+Creation des clients
+Creation des clients (application) dans l'IHM d'administration keycloak.
+
+Client pour le projet opendata-extraction: **bearer only**
+
+.. image:: img/keycloak-back.png
 
 
+Client pour le projet opendata-front: **public**
 
-Enabling
-~~~~~~~~
+.. image:: img/keycloak-front.png
 
-You can toggle the "Single Version" option on or off for your project in the Project Admin page.
-Check your :term:`dashboard` for a list of your projects.
+Pas de client pour le projet opendata-marqueblanche car pas de besoin d'authentification
