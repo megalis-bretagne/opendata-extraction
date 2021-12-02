@@ -14,7 +14,7 @@ Enfin, une réutilisation de [la marque blanche de gironde numérique](https://g
 
 
 ##Schéma d'architecture
-![architecture](img/img.png)
+![architecture](img/archi.png)
 
 ## Les projets
 
