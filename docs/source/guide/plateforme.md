@@ -1,4 +1,6 @@
-# Description de la plateforme
+# La plateforme
+
+## Desciption
 
 Dans la partie installation nous allons décrire comment déployer l'ensemble des briques opendata sur une plateforme type:
 - 4 VM de 4VCPU / 8Go RAM / 20go (centos7)
@@ -12,6 +14,7 @@ Dans la partie installation nous allons décrire comment déployer l'ensemble de
 **TODO ajouter un schema ICI pour illuster notre configuration type**
 
 
+## Prérequis
 
 **Mise à jour du système:**
 
