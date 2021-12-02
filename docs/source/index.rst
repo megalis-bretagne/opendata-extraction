@@ -15,11 +15,9 @@ Documentation des briques opendata de Megalis Bretagne
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: Installation
+   :caption: installation
 
    guide/installation-prerequis.md
-   guide/parametrage-keycloak.md
-   guide/parametrage-pastell.md
    
 
 .. toctree::
