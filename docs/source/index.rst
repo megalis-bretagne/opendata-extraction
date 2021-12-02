@@ -19,7 +19,7 @@ Documentation des briques opendata de Megalis Bretagne
 
    guide/plateforme.md
    guide/configuration.md
-   guide/parametrageKeycloak.md
+   guide/parametrageKeycloak
    guide/parametragePastell.md
    guide/deploiement.md
 
