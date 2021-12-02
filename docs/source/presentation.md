@@ -21,7 +21,7 @@ Enfin, une réutilisation de [la marque blanche de gironde numérique](https://g
 ### Projet : opendata-extraction
 Repo : https://github.com/megalis-bretagne/opendata-extraction.git
 
-#### Les Technologies utilisées
+**Les Technologies utilisées**
 * Python 3.9
 * Flask
 * Celery
@@ -32,22 +32,17 @@ Repo : https://github.com/megalis-bretagne/opendata-extraction.git
 ### Projet : opendata-frontapp
 Repo : https://github.com/megalis-bretagne/opendata-frontapp.git
 
-#### Les Technologies utilisées
+**Les Technologies utilisées**
 * Angular 11
 * Angular Material
 * NGRX
 
 ### Projet : marque blanche
 Repo : https://github.com/megalis-bretagne/opendata-marque-blanche.git
-#### Les Technologies utilisées
+**Les Technologies utilisées**
 * PHP > 7.2
 * Extension Apache Solr
 * Apache Solr
 
 
-### Flux studio Pastell
-
-##Les Fonctionnalités
-
-**TODO**
 

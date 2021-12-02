@@ -10,8 +10,29 @@ Documentation des briques opendata de Megalis Bretagne
    :caption: presentation
 
    presentation.md
-   guide/installation-prod.md
-   guide/exploitation.md
+
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Installation
+
+   guide/installation-prerequis.md
+   guide/parametrage-keycloak.md
+   guide/parametrage-pastell.md
+   guide/installation-extraction.md
+   guide/installation-front.md
+
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Développeur
+
+   dev/installation.md
+   dev/build.md
+   dev/contribuer.md
+
 
 
 .. toctree::
@@ -19,7 +40,6 @@ Documentation des briques opendata de Megalis Bretagne
    :hidden:
    :caption: Infos
 
-   contribuer.md
    changelog.md
    version.md
 

@@ -1,16 +1,14 @@
-# Installation
+# Installation poste de dev
 
-##  Mise en place d'un environnement de dev
-
-###Prérequis
+**Prérequis**
 Installer `docker`, `git`, `virtualenv` et `npm`
 
-### docker-compose
+**docker-compose**
 docker pour déployer localement mysql, apache solr, redis, flower
 **TODO** fournir un docker-compose
 
 
-### Projet : opendata-extraction
+**Projet : opendata-extraction**
 
 Utilisation de pycharm est conseillée
 
@@ -27,7 +25,7 @@ Utilisation de pycharm est conseillée
     pip install -r requirements.txt
 
 
-## Front Opendata
+**Front Opendata**
 
 
-## Marqueblanche
+**Marqueblanche**
