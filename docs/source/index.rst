@@ -12,6 +12,7 @@ Documentation des briques opendata de Megalis Bretagne
    presentation.md
 
 
+
 .. toctree::
    :maxdepth: 2
    :hidden:
@@ -22,6 +23,7 @@ Documentation des briques opendata de Megalis Bretagne
    guide/parametrage-pastell.md
    guide/installation-extraction.md
    guide/installation-front.md
+
 
 
 .. toctree::
