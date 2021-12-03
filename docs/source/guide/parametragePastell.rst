@@ -110,8 +110,8 @@ Creation Flux Studio ged-opendata
 
 | Se connecter en admin dans pastell et aller dans l'administration avancée
 | selectionner **Type de dossier -> Type de dossier (Studio)**
-| Puis importer linkMergeRequest_
-.. _linkMergeRequest: https://github.com/megalis-bretagne/opendata-extraction/blob/master/pastell/super-ged-megalis.json
+| Puis importer `ce fichier json`_
+.. _ce fichier json: https://github.com/megalis-bretagne/opendata-extraction/blob/master/pastell/super-ged-megalis.json
 
 
 Mise en place de l'étape opendata
@@ -122,3 +122,18 @@ Dans un flux studio existant, ajout d'une étape GED PASTELL qui appelera le flu
 Creation et association
 ---------------------------
 
+
+.. tip::   sdfsdfsdfsfdsdf
+
+.. note:: sdfsdfsdfsdf
+
+.. warning:: dsfsfd
+
+.. danger:: sfdsdfsdfsdfdsf
+
+
+
+
+
+
+    
