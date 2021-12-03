@@ -19,55 +19,48 @@ Une merge request du patch est disponible sur le gitlab de libriciel https://git
 .. tabs::
 
    .. tab:: DonneesFormulaire
+
       .. code:: php
 
         /** @var  DocumentIndexor */
         private $documentIndexor;
-
         //==>DEBUT Patch
         private $siren;
         private $ide;
         //==>END Patch
-
         /**
          * DonneesFormulaire constructor.
          * @param $filePath string emplacement vers un fichier YML
          *                  contenant les données du document sous la forme de ligne clé:valeur
          * @param DocumentType $documentType
-
-
             foreach ($this->getFormulaire()->getAllFields() as $field) {
                 $this->setFieldData($field->getName());
             }
         }
+        ...
+        ...
+        ...
 
         //==>DEBUT Patch
-
         public function setIdE($ide)
         {
             $this->ide = $ide;
         }
-
         public function getIdE()
         {
             return $this->ide;
         }
-
         public function setSiren($siren)
         {
             $this->siren = $siren;
         }
-
         public function getSiren()
         {
             return $this->siren;
         }
         //==>END Patch
-
         private function setFieldData($fieldName, $ongletNum = -1)
         {
-
-
 
    .. tab:: GEDEnvoyer
 
