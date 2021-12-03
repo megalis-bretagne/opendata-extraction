@@ -18,7 +18,7 @@ Une merge request du patch est disponible sur le gitlab de libriciel https://git
 
 .. tabs::
 
-   .. tab:: DonneesFormulaire.class.php
+   .. tab:: DonneesFormulaire
 
       .. code:: php
         /** @var  DocumentIndexor */
@@ -27,38 +27,31 @@ Une merge request du patch est disponible sur le gitlab de libriciel https://git
         private $siren;
         private $ide;
         //==>FIN Patch 1
-
         /**
          * DonneesFormulaire constructor.
          * @param $filePath string emplacement vers un fichier YML
-         *                  contenant les données du document sous la forme de ligne clé:valeur
-
+         *                 contenant les données du document sous la forme de ligne clé:valeur
         ...
         ...
         ...
         ...
-
         foreach ($this->getFormulaire()->getAllFields() as $field) {
             $this->setFieldData($field->getName());
         }
         }
-
         //==>DEBUT Patch 2
         public function setIdE($ide)
         {
             $this->ide = $ide;
         }
-
         public function getIdE()
         {
             return $this->ide;
         }
-
         public function setSiren($siren)
         {
             $this->siren = $siren;
         }
-
         public function getSiren()
         {
             return $this->siren;
@@ -68,7 +61,7 @@ Une merge request du patch est disponible sur le gitlab de libriciel https://git
         private function setFieldData($fieldName, $ongletNum = -1)
         {
 
-   .. tab:: GEDEnvoyer.class.php
+   .. tab:: GEDEnvoyer
 
       .. code:: php
 
@@ -89,7 +82,7 @@ Une merge request du patch est disponible sur le gitlab de libriciel https://git
                /** @var GEDConnecteur $ged */
                $ged = $this->getConnecteur("GED");
 
-   .. tab:: DepotConnecteur.class.php
+   .. tab:: DepotConnecteur
 
       .. code:: php
 
