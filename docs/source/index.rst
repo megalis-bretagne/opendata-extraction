@@ -1,7 +1,7 @@
 Documentation des briques opendata de Megalis Bretagne
 ===================================
 .. note::
-   Le projet est en production sur la plateforme de services de Mégalis Bretagne
+  Le projet est en production sur la plateforme de services de Mégalis Bretagne
 
 
 .. toctree::
