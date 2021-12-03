@@ -19,47 +19,55 @@ Une merge request du patch est disponible sur le gitlab de libriciel https://git
 .. tabs::
 
    .. tab:: DonneesFormulaire
-
       .. code:: php
+
         /** @var  DocumentIndexor */
         private $documentIndexor;
-         //==>DEBUT Patch 1
+
+        //==>DEBUT Patch
         private $siren;
         private $ide;
-        //==>FIN Patch 1
+        //==>END Patch
+
         /**
          * DonneesFormulaire constructor.
          * @param $filePath string emplacement vers un fichier YML
-         *                 contenant les données du document sous la forme de ligne clé:valeur
-        ...
-        ...
-        ...
-        ...
-        foreach ($this->getFormulaire()->getAllFields() as $field) {
-            $this->setFieldData($field->getName());
+         *                  contenant les données du document sous la forme de ligne clé:valeur
+         * @param DocumentType $documentType
+
+
+            foreach ($this->getFormulaire()->getAllFields() as $field) {
+                $this->setFieldData($field->getName());
+            }
         }
-        }
-        //==>DEBUT Patch 2
+
+        //==>DEBUT Patch
+
         public function setIdE($ide)
         {
             $this->ide = $ide;
         }
+
         public function getIdE()
         {
             return $this->ide;
         }
+
         public function setSiren($siren)
         {
             $this->siren = $siren;
         }
+
         public function getSiren()
         {
             return $this->siren;
         }
-        //==>FIN Patch 2
+        //==>END Patch
 
         private function setFieldData($fieldName, $ongletNum = -1)
         {
+
+
 
    .. tab:: GEDEnvoyer
 
@@ -103,3 +111,16 @@ Une merge request du patch est disponible sur le gitlab de libriciel https://git
             $data = Spyc::YAMLDump($raw_data);
             $extension_filename = '.txt';
         }
+
+Creation Flux Studio ged-opendata
+----------------------------------
+
+Se connecter en admin dans pastell et aller dans l'administration avancée,\
+selectionner **Type de dossier -> Type de dossier (Studio)**\
+Puis importer `ce fichier https://github.com/megalis-bretagne/opendata-extraction/blob/master/pastell/super-ged-megalis.json`_
+
+
+Mise en place de l'étape opendata
+----------------------------------
+Dans un flux studio existant, ajout d'une étape GED PASTELL qui appelera le flux studio précédemment créé
+
