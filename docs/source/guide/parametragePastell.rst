@@ -117,33 +117,34 @@ Création Flux Studio ged-opendata
 Creation et association
 ---------------------------
 
-**Creation GED SFTP**
-|Pour un organisme :
-|Aller dans **Administration -> Connecteurs **
-|Cliquer sur le bouton ajouter
-|Sélectionner Dépôt FTP (GED)
-|Paramétrer le connecteur
+| **Creation GED SFTP**
+| Pour un organisme :
+| Aller dans **Administration -> Connecteurs **
+| Cliquer sur le bouton ajouter
+| Sélectionner Dépôt FTP (GED)
+| Paramétrer le connecteur
 
-**Association GED SFTP**
-|Pour un organisme :
-|Aller dans **Administration -> Type de dossier (association) **
-|Associer le connecteur GED SFTP précédemment paramétré au nouveau flux studio ged-opendata
+| **Association GED SFTP**
+| Pour un organisme :
+| Aller dans **Administration -> Type de dossier (association) **
+| Associer le connecteur GED SFTP précédemment paramétré au nouveau flux studio ged-opendata
 
 
 
 Dans un flux studio existant, ou vous souhaitez mettre en place la publication opendata, ajouter une étape GED PASTELL qui appellera le flux studio précédemment créé.
 
-**GED PASTELL**
+| **GED PASTELL**
 
 Pour un organisme :
-|aller dans **Administration -> Connecteurs **
-|Cliquer sur le bouton ajouter
-|Selectionner Dépôt Pastell (GED)
-|Paramétrer le connecteur (cf screen ci-dessous)
+| aller dans **Administration -> Connecteurs **
+| Cliquer sur le bouton ajouter
+| Selectionner Dépôt Pastell (GED)
+| Paramétrer le connecteur (cf screen ci-dessous)
+
 .. image:: img/parametrage-connecteur-opendata.JPG
 
 
-**association PASTELL**
+| **Association PASTELL**
 |Pour un organisme :
 |Aller dans **Administration -> Type de dossier (association) **
 |Associer le connecteur GED PASTELL précédemment paramétré avec le flux studio ou vous souhaitez ajouter l'étape de publication opendata
