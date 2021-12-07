@@ -118,6 +118,7 @@ Creation et association
 ---------------------------
 
 | **Creation GED SFTP**
+
 | Pour un organisme :
 | Aller dans **Administration -> Connecteurs **
 | Cliquer sur le bouton ajouter
@@ -125,16 +126,18 @@ Creation et association
 | Paramétrer le connecteur
 
 | **Association GED SFTP**
+
 | Pour un organisme :
 | Aller dans **Administration -> Type de dossier (association) **
 | Associer le connecteur GED SFTP précédemment paramétré au nouveau flux studio ged-opendata
 
 
-
-Dans un flux studio existant, ou vous souhaitez mettre en place la publication opendata, ajouter une étape GED PASTELL qui appellera le flux studio précédemment créé.
-
 | **GED PASTELL**
 
+.. note::
+  Dans un flux studio existant, ou vous souhaitez mettre en place la publication opendata, ajouter une étape GED PASTELL qui appellera le flux studio précédemment créé.
+
+| **Creation GED PASTELL**
 Pour un organisme :
 | aller dans **Administration -> Connecteurs **
 | Cliquer sur le bouton ajouter
@@ -145,14 +148,15 @@ Pour un organisme :
 
 
 | **Association PASTELL**
-|Pour un organisme :
-|Aller dans **Administration -> Type de dossier (association) **
-|Associer le connecteur GED PASTELL précédemment paramétré avec le flux studio ou vous souhaitez ajouter l'étape de publication opendata
+| Pour un organisme :
+| Aller dans **Administration -> Type de dossier (association) **
+| Associer le connecteur GED PASTELL précédemment paramétré avec le flux studio ou vous souhaitez ajouter l'étape de publication opendata
 
 
 Creation et association en masse (automatique)
 ---------------------------
 
-Le projet opendata-extraction dispose d'un service permetant la creation et l'association en masse.
+.. note::
+  Le projet opendata-extraction dispose d'un service permetant la creation et l'association en masse.
 
 .. image:: img/api-masse.JPG
