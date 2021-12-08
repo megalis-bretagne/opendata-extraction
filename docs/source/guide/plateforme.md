@@ -2,13 +2,12 @@
 
 ## Description
 
-Dans la partie installation nous allons décrire comment déployer l'ensemble des briques opendata sur une plateforme type dont voici un configuration possible:
+Dans la partie installation nous allons décrire comment déployer l'ensemble des briques opendata sur une plateforme type dont voici une configuration possible:
 - 4 VM de 4VCPU / 8Go RAM / 20go (centos7)
 - Un disque 100go volume à monter sur le VM BDD
 - Cluster docker swarm composé de 3 noeuds (3 VM)
-- 1 VM pour héberger la base de donneés et un volume ssh
+- 1 VM pour héberger la base de données et un volume ssh
 - 1 volume sshfs (https://github.com/vieux/docker-volume-sshfs)
-
 
 
 **TODO ajouter un schema ICI pour illuster notre configuration type**

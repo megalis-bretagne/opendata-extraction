@@ -20,7 +20,7 @@ _Arborescence du projet template openda-stack_
 * _env1/keycloak.json_ fichier de configuration keycloak pour l'environnement env1 
 
 **Le dossier outils** contient des dossiers (solr, traefik ...)  contenant les dockerfile que nous avons customisé pour le
-besoin du projet. Par exemple, nous avons ajouté dans apache solr notre schéma ainsi que les outils nécessaire pour faire de l'océrisation de fichiers PDF.
+besoin du projet. Par exemple, nous avons ajouté dans apache solr notre schéma ainsi que les outils nécessaires pour faire de l'océrisation de fichiers PDF.
 
 **Le dossier stack** contient les fichiers docker-compose pour déployer dans docker swarm
 

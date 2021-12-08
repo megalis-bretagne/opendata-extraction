@@ -1,7 +1,7 @@
 Paramétrage Keycloak
 ===========================
 
-.. warning:: Le projet nécessite de disposer d'un serveur d'authentification keycloak
+.. warning:: Le projet à besoin d'un serveur d'authentification keycloak.
 
 Creation des clients Keycloak
 --------------------
