@@ -1,13 +1,17 @@
-# Builder les applications
+# Builder
 
 **Prérequis**
 Installer `docker`
 
-**opendata-extraction**
+Le build des trois applications est réalisé avec docker.
 
-    docker
+Exemple pour le projet opendata-extraction:
 
+    # Clone the code repository into ~/dev/opendata-extraction
+    mkdir -p ~/dev
+    cd ~/dev
+    git clone https://github.com/megalis-bretagne/opendata-extraction.git opendata-extraction
 
-**opendata-frontapp**
+    cd ~/dev/opendata-extraction
 
-**opendata-marqueblanche**
+    docker build -f Dockerfile -t opendata-extraction .

@@ -49,8 +49,10 @@ Repo : https://github.com/megalis-bretagne/opendata-frontapp.git
 
 ### Projet : marque blanche
 Moteur de recherche des données publiques pour collectivités. Disponible sous forme d'Iframe à ajouter sur le site de la collectivité.
+| Fork du projet : https://gitlab.adullact.net/gironde-numerique/data-search-engine
 
 Repo : https://github.com/megalis-bretagne/opendata-marque-blanche.git
+
 **Les Technologies utilisées**
 * PHP > 7.2
 * Extension Apache Solr

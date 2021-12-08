@@ -31,8 +31,6 @@ Documentation des briques opendata de Megalis Bretagne
 
    dev/installation.md
    dev/build.md
-   dev/contribuer.md
-
 
 .. toctree::
    :maxdepth: 2
