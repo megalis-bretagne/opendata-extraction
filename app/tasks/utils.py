@@ -81,10 +81,6 @@ def remove_file_sur_serveur(pathFile):
 #    scp.put(path, remote_path=remote_path+'/'+nouveau_nom)
 #    scp.close()
 
-
-def api_url_udata(path):
-    return current_app.config['API_UDATA_URL']+path
-
 def clear_wordir():
     WORKDIR = get_or_create_workdir()
     filelist = [ f for f in os.listdir(WORKDIR) ]
@@ -109,7 +105,7 @@ def move_file(path,new_path,filename):
     try:
         os.makedirs(new_path, exist_ok=True)
         logging.info("Directory '%s' created successfully" % new_path)
-    except OSError as error:
+    except OSError:
         logging.info("Directory '%s' can not be created" % new_path)
     shutil.move(path, new_path + filename)
 
@@ -118,7 +114,7 @@ def copy_file(path,new_path,filename):
     try:
         os.makedirs(new_path, exist_ok=True)
         logging.info("Directory '%s' created successfully" % new_path)
-    except OSError as error:
+    except OSError:
         logging.info("Directory '%s' can not be created" % new_path)
     shutil.copyfile(path, new_path + filename)
 
@@ -128,7 +124,7 @@ def symlink_file(path,new_path,filename):
     try:
         os.makedirs(new_path, exist_ok=True)
         logging.info("Directory '%s' created successfully" % new_path)
-    except OSError as error:
+    except OSError:
         logging.info("Directory '%s' can not be created" % new_path)
     try:
         os.symlink(path, new_path + filename)

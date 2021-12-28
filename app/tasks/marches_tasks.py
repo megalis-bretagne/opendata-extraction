@@ -53,7 +53,7 @@ def recuperer_decp(annee, siren):
             'date_notif_min': '01-01-' + str(ANNEE),
             'date_notif_max': '31-12-' + str(ANNEE)
         })
-    except Exception as e:
+    except Exception:
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><marches></marches>"
 
     return reponse_export_pivot
@@ -64,8 +64,8 @@ def generation_and_publication_decp_pour_annee(annee):
 
     ANNEE = str(annee)
     url_jeton_sdm = current_app.config['URL_JETON_SDM']
-    API_KEY = current_app.config['API_KEY_UDATA']
-    DATASET = current_app.config['DATASET_MARCHE_UDATA']
+    API_KEY = current_app.config['API_KEY_DATAGOUV']
+    DATASET = current_app.config['DATASET_MARCHE_DATAGOUV']
     HEADERS = {
         'X-API-KEY': API_KEY,
     }
@@ -174,5 +174,5 @@ def generation_and_publication_decp_pour_annee(annee):
     return {'status': 'OK', 'message': 'publication decp sur data.gouv', 'annee': str(ANNEE)}
 
 def api_url(path):
-    API = current_app.config['API_UDATA']
+    API = current_app.config['API_DATAGOUV']
     return API + path

@@ -24,7 +24,7 @@ class AdminCtrl(Resource):
     @isAdmin
     def get(self):
         from app.tasks.utils import solr_clear_all
-        solr = solr_clear_all()
+        solr_clear_all()
         return jsonify({"statut": 'ok'})
 
 @api.route('/solr/delete/<int:idPublication>')
@@ -50,10 +50,10 @@ class AdminPulicationDelibSCDL(Resource):
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     @isAdmin
     def post(self):
-        from app.tasks.udata_tasks import generation_and_publication_SCDL
+        from app.tasks.datagouv_tasks import generation_and_publication_scdl
         args = arguments_annee_controller.parse_args()
         annee = args['annee']
-        generation_and_publication_SCDL.delay('1', annee)
+        generation_and_publication_scdl.delay('1', annee)
         return jsonify({
                            "statut": 'demande de generation et publication du SCDL deliberation sur data gouv effectuée (taches asynchrone)'})
 
@@ -65,10 +65,10 @@ class AdminPulicationBudgetSCDL(Resource):
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     @isAdmin
     def post(self):
-        from app.tasks.udata_tasks import generation_and_publication_SCDL
+        from app.tasks.datagouv_tasks import generation_and_publication_scdl
         args = arguments_annee_controller.parse_args()
         annee = args['annee']
-        generation_and_publication_SCDL.delay('5', annee)
+        generation_and_publication_scdl.delay('5', annee)
         return jsonify({
                            "statut": 'demande de generation et publication du SCDL budget sur data gouv effectuée (taches asynchrone)'})
 
@@ -130,7 +130,7 @@ class AdminPastellDeclencherCtrl(Resource):
         from app.tasks.pastell_tasks import delecher_pastell_task
         args = arguments_pastell_controller.parse_args()
         id_e = args['id_e']
-        task = delecher_pastell_task.delay(id_e)
+        delecher_pastell_task.delay(id_e)
         return jsonify(
             {"statut": 'demande de déclenchement pastell realisée (taches asynchrone)'})
 
@@ -141,7 +141,7 @@ class AdminPastellDeclencherAGCtrl(Resource):
     @isAdmin
     def post(self):
         from app.tasks.pastell_tasks import delecher_pastell_all_AG_task
-        task = delecher_pastell_all_AG_task.delay()
+        delecher_pastell_all_AG_task.delay()
         return jsonify(
             {"statut": 'demande de déclenchement des actes generique dans pastell realisée (taches asynchrone)'})
 
@@ -158,9 +158,9 @@ class AdminPastellGedPastellCtrl(Resource):
         from app.tasks.pastell_tasks import creation_et_association_connecteur_ged_pastell_AG_task
         args = arguments_pastell_controller.parse_args()
         id_e = args['id_e']
-        task = creation_et_association_connecteur_ged_pastell_AG_task.delay(id_e)
-        task = creation_et_association_connecteur_ged_pastell_budget_task.delay(id_e)
-        task = creation_et_association_connecteur_ged_pastell_delib_task.delay(id_e)
+        creation_et_association_connecteur_ged_pastell_AG_task.delay(id_e)
+        creation_et_association_connecteur_ged_pastell_budget_task.delay(id_e)
+        creation_et_association_connecteur_ged_pastell_delib_task.delay(id_e)
         return jsonify(
             {"statut": 'demande de creation et association du connecteur ged_pastell réalisée (taches asynchrone)'})
 
@@ -182,7 +182,7 @@ class PublicationRepublierCtrl(Resource):
                 # 1 => publie, 0:non, 2:en-cours,3:en-erreur
                 publication.etat = 2
                 db_sess.commit()
-                task = publier_acte_task.delay(publication.id)
+                publier_acte_task.delay(publication.id)
             return "ok"
         except NoResultFound as e:
             print(e)
@@ -199,7 +199,7 @@ class AdminPastellGedSdtpCtrl(Resource):
         from app.tasks.pastell_tasks import creation_et_association_connecteur_ged_sftp_task
         args = arguments_pastell_controller.parse_args()
         id_e = args['id_e']
-        task = creation_et_association_connecteur_ged_sftp_task.delay(id_e)
+        creation_et_association_connecteur_ged_sftp_task.delay(id_e)
         return jsonify(
             {"statut": 'demande de creation et association du connecteur ged_pastell réalisée ( taches asynchrone)'})
 
