@@ -67,7 +67,7 @@ class DatasetService(metaclass=Singleton):
         ]
         return self.__create_dataset(organization['id'], description, title, 'deliberation', array_tags)
 
-    def create_dataset_decpself(self, organization: dict):
+    def create_dataset_decp(self, organization: dict):
         description = "Données essentielles - " + organization['name']
         title = "Données essentielles - " + organization['name']
         array_tags = [

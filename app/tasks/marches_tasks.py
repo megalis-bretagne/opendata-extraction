@@ -35,13 +35,13 @@ def generation_marche_histo():
         annee_a_generer += 1
     print("END " + str(annee_a_generer))
 
-def recuperer_decp(annee, siren):
-
+def generation_decp(annee, siren):
+    clear_wordir()
     # generation annee
     ANNEE = annee
     url_jeton_sdm = current_app.config['URL_JETON_SDM']
     try:
-        response = requests.get(url_jeton_sdm);
+        response = requests.get(url_jeton_sdm)
         doc = minidom.parseString(response.text)
         jeton = doc.getElementsByTagName("ticket")[0].firstChild.data
 
@@ -52,11 +52,21 @@ def recuperer_decp(annee, siren):
             'siren': str(siren),
             'date_notif_min': '01-01-' + str(ANNEE),
             'date_notif_max': '31-12-' + str(ANNEE)
-        })
+        }).text
     except Exception:
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><marches></marches>"
+        reponse_export_pivot = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><marches></marches>"
 
-    return reponse_export_pivot
+    filename = f"decp-{siren}{annee}.xml"
+    try:
+        text_file = open(get_or_create_workdir() + filename, "w")
+        text_file.write(reponse_export_pivot)
+        text_file.close()
+
+    except FileNotFoundError:
+        return None
+
+    return filename
+
 
 
 def generation_and_publication_decp_pour_annee(annee):
