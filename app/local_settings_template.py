@@ -68,6 +68,11 @@ DATASET_DELIB_DATAGOUV = '60645c94e2bfd21cdc16c0be'
 # https://www.data.gouv.fr/fr/datasets/budgets-des-collectivites-adherentes-de-megalis-bretagne/
 DATASET_BUDGET_DATAGOUV = '60645b816cccca6dab67f532'
 
+# Catalogue Megalis
+API_UDATA_MEGALIS='https://mon.udata.fr/api/1'
+API_KEY_UDATA_MEGALIS='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+
+
 #Salle des marches Atexo
 URL_JETON_SDM = 'https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 URL_API_DECP='https://xxxxxxxxxxxxxx/app.php/api/v1/donnees-essentielles/contrat/format-pivot'
