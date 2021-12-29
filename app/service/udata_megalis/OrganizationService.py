@@ -1,5 +1,6 @@
 import array
 import json
+import re
 
 import requests
 from flask import current_app
@@ -26,6 +27,20 @@ class OrganizationService(metaclass=Singleton):
             if result['total'] == 1:
                 return result['data'][0]
         return None
+
+    def get_all_sirens(self) -> array:
+        page_size = 50
+        next_page = self.API + self.ORGANIZATION_ENDPOINT + "?q=siren+%3A&page_size={}&page={}".format(page_size, "1")
+        sirens = []
+        while next_page is not None:
+            response = requests.get(next_page, headers=self.HEADERS)
+            result = json.loads(response.content.decode("utf-8"))
+            next_page = result['next_page']
+            for organization in result['data']:
+                siren = re.search(r"siren : ([0-9]*)", organization['description']).group(1)
+                sirens.append(siren)
+
+        return sirens
 
     def get_datasets(self, id_organization) -> array or None:
 

@@ -58,3 +58,13 @@ def publication_udata_megalis_decp(siren, annee):
                 'annee': str(annee)}
     return {'status': 'OK', 'message': 'generation et publication decp', 'siren': str(siren),
             'annee': str(annee)}
+
+
+@celery.task(name='publication_udata_megalis')
+def publication_udata_megalis(annee):
+    organization_service = OrganizationService()
+    sirens = organization_service.get_all_sirens()
+    for siren in sirens:
+        publication_udata_megalis_deliberation.delay(siren, annee)
+        publication_udata_megalis_budget.delay(siren,annee)
+        publication_udata_megalis_decp.delay(siren, annee)
