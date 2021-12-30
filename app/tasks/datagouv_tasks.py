@@ -22,16 +22,16 @@ def generation_and_publication_scdl(type, param_annee):
         annee = param_annee
 
     if type == '1':
-        filename = generation_deliberation("*", annee)
+        filename = generation_deliberation("*", annee, 'opendata_active')
         publication_datagouv_scdl(annee, get_or_create_workdir() + filename, type)
     elif type == '5':
-        filename = generation_budget("*", annee)
+        filename = generation_budget("*", annee, 'opendata_active')
         publication_datagouv_scdl(annee, get_or_create_workdir() + filename, type)
 
     return {'status': 'OK', 'message': 'generation et publication scdl', 'annee': str(annee), 'type': str(type)}
 
 
-def generation_budget(siren, annee):
+def generation_budget(siren, annee, flag_active=None):
     clear_wordir()
     ANNEE = str(annee)
     SIREN = str(siren)
@@ -42,14 +42,18 @@ def generation_budget(siren, annee):
 
     start = 0
     rows = 100
+
+    # construction de la requete solr
+    query = 'typology: 99_BU AND est_publie: True AND documenttype:' + str(TYPE) + ' AND date_budget:' + str(ANNEE)
     if str(siren) == '*':
         filename = 'BUDGET-' + ANNEE + '.csv'
-        query = 'opendata_active: True AND typology: 99_BU AND est_publie: True AND documenttype:' + str(
-            TYPE) + ' AND date_budget:' + str(ANNEE) + ' '
     else:
         filename = 'BUDGET-' + SIREN + '-' + ANNEE + '.csv'
-        query = 'typology: 99_BU AND est_publie: True AND siren:' + str(siren) + ' AND documenttype:' + str(
-            TYPE) + ' AND date_budget:' + str(ANNEE) + ' '
+        query = query + ' AND siren:' + str(siren)
+
+    if flag_active is not None:
+        query = query + ' AND ' + flag_active + ': True '
+
     # generation de l'url du fichier scdl
     csv_file_path = get_or_create_workdir() + filename
 
@@ -93,7 +97,7 @@ def generation_budget(siren, annee):
     return filename
 
 
-def generation_deliberation(siren, annee):
+def generation_deliberation(siren, annee, flag_active=None):
     # on clear le workdir
     clear_wordir()
     ANNEE = str(annee)
@@ -106,14 +110,17 @@ def generation_deliberation(siren, annee):
     start = 0
     rows = 100
 
-    # creation du nom du fichier scdl
-    # filename = 'DELIBERATION-' + ANNEE +'.csv'
+    # construction de la requete solr
+    query = 'typology: 99_DE AND documenttype:' + str(TYPE)
     if str(siren) == '*':
         filename = 'DELIBERATION-' + ANNEE + '.csv'
-        query = 'opendata_active: True AND typology: 99_DE AND documenttype:' + str(TYPE) + ' '
     else:
         filename = 'DELIBERATION-' + SIREN + '-' + ANNEE + '.csv'
-        query = 'siren:' + SIREN + ' AND typology: 99_DE AND documenttype:' + str(TYPE) + ' '
+        query = query + ' AND siren: ' + SIREN
+
+    if flag_active is not None:
+        query = query + ' AND ' + flag_active + ': True '
+
     # generation de l'url du fichier scdl
     csv_file_path = get_or_create_workdir() + filename
 
