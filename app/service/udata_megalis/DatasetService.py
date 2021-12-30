@@ -128,3 +128,12 @@ class DatasetService(metaclass=Singleton):
 
     def add_resource_decp(self, dataset: dict, filename: str):
         return self.__add_resource(dataset, filename, {'name': '139bercy/format-commande-publique'})
+
+    def delete_resource(self, dataset: dict, filename: str):
+        if dataset is None:
+            return
+        for resource in dataset['resources']:
+            if resource['title'] == filename:
+                requests.delete(
+                    self.API + self.DATASETS_ENDPOINT + dataset['id'] + "/resources/" + resource['id'] + "/",
+                    headers=self.HEADERS)
