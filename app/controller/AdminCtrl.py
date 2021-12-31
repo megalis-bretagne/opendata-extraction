@@ -173,6 +173,18 @@ class AdminUdataMegalisDeliberationCtrl(Resource):
         return jsonify(
             {"statut": 'demande de déclenchement udata megalis budget (taches asynchrone)'})
 
+@api.route('/publier/udata-megalis/all')
+class AdminUdataMegalisAllCtrl(Resource):
+    @api.expect(arguments_annee_controller)
+    @api.response(200, 'Success')
+    def post(self):
+        from app.tasks.udata_megalis_tasks import publication_udata_megalis
+        args = arguments_annee_controller.parse_args()
+        annee = args['annee']
+        publication_udata_megalis.delay(annee)
+        return jsonify(
+            {"statut": 'demande de déclenchement udata megalis budget (taches asynchrone)'})
+
 @api.route('/pastell/declencherAG')
 class AdminPastellDeclencherAGCtrl(Resource):
     @api.response(200, 'Success')

@@ -1,3 +1,5 @@
+import time
+
 from app import celeryapp
 from app.service.udata_megalis.DatasetService import DatasetService
 from app.service.udata_megalis.OrganizationService import OrganizationService
@@ -70,7 +72,11 @@ def publication_udata_megalis_decp(siren, annee):
 
 
 @celery.task(name='publication_udata_megalis')
-def publication_udata_megalis(annee):
+def publication_udata_megalis(annee=None):
+    if annee is None:
+        t = time.localtime()
+        annee = time.strftime('%Y', t)
+
     organization_service = OrganizationService()
     sirens = organization_service.get_all_sirens()
     for siren in sirens:
@@ -85,6 +91,7 @@ def is_scdl_empty(filename):
             if count > 0:
                 return False
         return True
+
 
 def is_decp_empty(filename):
     with open(filename, 'r') as fp:

@@ -42,7 +42,14 @@ class DatasetService(metaclass=Singleton):
             return json.loads(response.content.decode("utf-8"))
 
     def create_dataset_budget(self, organization: dict):
-        description = "Budgets - " + organization['name']
+        description = "Ce jeu de données permet de répondre aux obligations réglementaires concernant la publication " \
+                      "des données budgets des organismes adhérents de Mégalis Bretagne. Il permet également, " \
+                      "en toute transparence d'informer les citoyens sur les décisions prises. Les données seront, " \
+                      "à termes, récupérées automatiquement des flux transitant par le service de télétransmission " \
+                      "des actes (par où passent les budgets des collectivités) de la plateforme de services Mégalis. " \
+                      "Les données sont structurées au format SCDL et respecte donc le schéma national (" \
+                      "https://schema.data.gouv.fr/scdl/budget/). Les données de l'année en cours sont mises à jour " \
+                      "quotidiennement de façon automatique."
         title = "Budgets - " + organization['name']
         array_tags = [
             "budget",
@@ -55,7 +62,19 @@ class DatasetService(metaclass=Singleton):
         return self.__create_dataset(organization['id'], description, title, 'budget', array_tags)
 
     def create_dataset_deliberation(self, organization: dict):
-        description = "Délibérations - " + organization['name']
+        description = "Ce jeu de données permet de répondre aux obligations réglementaires concernant la publication " \
+                      "des données délibérations des organismes adhérents de Mégalis Bretagne. Il permet également, " \
+                      "en toute transparence d'informer les citoyens sur les décisions prises. La dimension " \
+                      "conformité au RGPD a également été prise en compte : les organismes peuvent choisir de publier " \
+                      "la délibération (URL présente dans le schéma) ou de ne pas publier la délibération en tant que " \
+                      "telle (tous les champs renseignés sauf l'URL de téléchargement de la délibération). Le fait de " \
+                      "publier ou non les informations reste du ressort et de la responsabilité de chaque organisme. " \
+                      "Techniquement, les données sont récupérées automatiquement des flux transitant par le service " \
+                      "de télétransmission des actes (par où passent les délibérations des collectivités) de la " \
+                      "plateforme de services Mégalis. Les données sont structurées au format SCDL (" \
+                      "https://schema.data.gouv.fr/scdl/deliberations/). Les données de l'année en cours sont" \
+                      "mises à jour quotidiennement de façon automatique. "
+
         title = "Délibérations - " + organization['name']
         array_tags = [
             "acte",
@@ -68,7 +87,15 @@ class DatasetService(metaclass=Singleton):
         return self.__create_dataset(organization['id'], description, title, 'deliberation', array_tags)
 
     def create_dataset_decp(self, organization: dict):
-        description = "Données essentielles - " + organization['name']
+        description = "Ce jeu de données permet de répondre aux obligations réglementaires concernant la publication " \
+                      "des données essentielles des marchés publics notifiés par Mégalis Bretagne (en cours " \
+                      "d'exécution ou terminés). Il est issu d'une API de la salle des Marchés de Mégalis sur la base " \
+                      "du format pivot. Il respecte le schéma national des données (" \
+                      "https://github.com/139bercy/format-commande-publique). Il comprend toutes les données " \
+                      "essentielles des organismes adhérents au service de la salle des marchés publics et ayant " \
+                      "renseigné l'étape \"décision\" (attribution du marché) sur la salle des marchés publics de " \
+                      "Mégalis Bretagne. Les données de l'année en cours sont mises à jour quotidiennement de façon " \
+                      "automatique. "
         title = "Données essentielles - " + organization['name']
         array_tags = [
             "decp",
