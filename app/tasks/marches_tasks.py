@@ -137,25 +137,9 @@ def generation_and_publication_decp_pour_annee(annee):
 
                 print('update resource id :' + RESOURCE_UID)
 
-                # on supprime la resource
-                url = api_url('/datasets/{}/resources/{}'.format(DATASET, RESOURCE_UID))
-                response = requests.delete(url, headers=HEADERS);
-
-                # ajout de la  nouvelle version du fichier
-                url = api_url('/datasets/{}/upload/'.format(DATASET))
-                response = requests.post(url, files={
+                url = api_url('/datasets/{}/resources/{}/upload/'.format(DATASET, RESOURCE_UID))
+                requests.post(url, files={
                     'file': open(get_or_create_workdir() + 'decp-' + str(ANNEE) + ' .xml', 'rb'),
-                }, headers=HEADERS)
-
-                response = json.loads(response.text)
-                RESOURCE_UID = response['id']
-
-                # #Mise à jour des métadonnées d’une ressource
-                url = api_url('/datasets/{}/resources/{}/'.format(DATASET, RESOURCE_UID))
-                response = requests.put(url, json={
-                    'format': 'xml',
-                    'schema': {'name': '139bercy/format-commande-publique'}
-
                 }, headers=HEADERS)
 
             else:
