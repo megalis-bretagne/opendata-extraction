@@ -85,6 +85,23 @@ def publication_udata(annee=None):
         publication_udata_decp.delay(siren, annee)
 
 
+@celery.task(name='publication_udata_decp_histo')
+def publication_udata_decp_histo():
+    annee_debut = 2014
+    t = time.localtime()
+    annee_courante = int(time.strftime('%Y', t))
+
+    organization_service = OrganizationService()
+    sirens = organization_service.get_all_sirens()
+    for siren in sirens:
+        annee_a_generer = annee_debut
+        while annee_courante >= annee_a_generer:
+            publication_udata_decp.delay(siren, str(annee_a_generer))
+            annee_a_generer += 1
+
+    return {'status': 'OK', 'message': 'generation et publication decp histo'}
+
+
 def is_scdl_empty(filename):
     with open(filename, 'r') as fp:
         for count, _ in enumerate(fp):

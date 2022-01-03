@@ -31,6 +31,7 @@ class AdminCtrl(Resource):
         solr_clear_all()
         return jsonify({"statut": 'ok'})
 
+
 @api.route('/solr/delete/<int:idPublication>')
 class AdminSolrDeleteCtrl(Resource):
     @api.response(200, 'Success')
@@ -57,7 +58,7 @@ class AdminPulicationDelibSCDL(Resource):
         annee = args['annee']
         generation_and_publication_scdl.delay('1', annee)
         return jsonify({
-                           "statut": 'demande de generation et publication du SCDL deliberation sur data gouv effectuée (taches asynchrone)'})
+            "statut": 'demande de generation et publication du SCDL deliberation sur data gouv effectuée (taches asynchrone)'})
 
 
 @api.route('/publier/datagouv/budget')
@@ -70,7 +71,7 @@ class AdminPulicationBudgetSCDL(Resource):
         annee = args['annee']
         generation_and_publication_scdl.delay('5', annee)
         return jsonify({
-                           "statut": 'demande de generation et publication du SCDL budget sur data gouv effectuée (taches asynchrone)'})
+            "statut": 'demande de generation et publication du SCDL budget sur data gouv effectuée (taches asynchrone)'})
 
 
 @api.route('/publier/datagouv/decpHisto')
@@ -82,7 +83,8 @@ class AdminPulicationDecpHisto(Resource):
         from app.tasks.marches_tasks import generation_marche_histo
         generation_marche_histo.delay()
         return jsonify({
-                           "statut": "demande de generation et publication du decp des années historique à partir de 2014 (taches asynchrone)"})
+            "statut": "demande de generation et publication du decp des années historique à partir de 2014 (taches asynchrone)"})
+
 
 @api.route('/publier/datagouv/decpHisto/annee')
 class AdminPulicationDecpHistoAnnee(Resource):
@@ -98,6 +100,7 @@ class AdminPulicationDecpHistoAnnee(Resource):
         return jsonify(
             {"statut": "demande de generation et publication du decp pour l'année en parametre (taches asynchrone)"})
 
+
 @api.route('/publier/datagouv/decp')
 class AdminPublicationDecp(Resource):
     @api.response(200, 'Success')
@@ -106,6 +109,7 @@ class AdminPublicationDecp(Resource):
         generation_marche.delay()
         return jsonify(
             {"statut": "demande de generation et publication du decp pour l'année courante (taches asynchrone)"})
+
 
 @api.route('/pastell/creation/all')
 class AdminPastellAllCtrl(Resource):
@@ -117,6 +121,7 @@ class AdminPastellAllCtrl(Resource):
         creation_et_association_all.delay()
         return jsonify(
             {"statut": "demande de generation et publication du decp de l'année courante (taches asynchrone)"})
+
 
 @api.route('/pastell/declencher')
 class AdminPastellDeclencherCtrl(Resource):
@@ -146,6 +151,7 @@ class AdminUdataDecpCtrl(Resource):
         return jsonify(
             {"statut": 'demande de déclenchement udata decp (taches asynchrone)'})
 
+
 @api.route('/publier/udata/budget')
 class AdminUdataBudgetCtrl(Resource):
     @api.expect(arguments_udata_controller)
@@ -173,6 +179,7 @@ class AdminUdataDeliberationCtrl(Resource):
         return jsonify(
             {"statut": 'demande de déclenchement udata deliberation (taches asynchrone)'})
 
+
 @api.route('/publier/udata/all')
 class AdminUdataAllCtrl(Resource):
     @api.expect(arguments_annee_controller)
@@ -184,6 +191,17 @@ class AdminUdataAllCtrl(Resource):
         publication_udata.delay(annee)
         return jsonify(
             {"statut": 'demande de déclenchement udata budget, deliberation & decp  (taches asynchrone)'})
+
+
+@api.route('/publier/udata/decpHisto')
+class AdminUdataPublicationDecpHisto(Resource):
+    @api.response(200, 'Success')
+    def post(self):
+        from app.tasks.udata_tasks import publication_udata_decp_histo
+        publication_udata_decp_histo.delay()
+        return jsonify({
+            "statut": "demande de generation et publication du decp des années historique à partir de 2014 vers udata (taches asynchrone)"})
+
 
 @api.route('/pastell/declencherAG')
 class AdminPastellDeclencherAGCtrl(Resource):
@@ -215,6 +233,7 @@ class AdminPastellGedPastellCtrl(Resource):
         return jsonify(
             {"statut": 'demande de creation et association du connecteur ged_pastell réalisée (taches asynchrone)'})
 
+
 @api.route('/publication/republier/all/<int:etat>')
 @api.doc(params={'etat': '1 =publie, 0=non, 2=en-cours, 3=en-erreur'})
 class PublicationRepublierCtrl(Resource):
@@ -227,7 +246,7 @@ class PublicationRepublierCtrl(Resource):
         from app.tasks.publication_tasks import publier_acte_task
         try:
             db_sess = db.session
-            #etat =3: en - erreur
+            # etat =3: en - erreur
             liste_publication = Publication.query.filter(Publication.etat == etat)
             for publication in liste_publication:
                 # 1 => publie, 0:non, 2:en-cours,3:en-erreur
@@ -263,7 +282,3 @@ class AdminIsAdmin(Resource):
     def get(self):
         return jsonify(
             {"rep": 'Welcome admin'})
-
-
-
-
