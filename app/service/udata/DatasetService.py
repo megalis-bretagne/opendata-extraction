@@ -9,15 +9,15 @@ from app.tasks import get_or_create_workdir
 
 
 class DatasetService(metaclass=Singleton):
-    """ Service dataset pour udata megalis """
+    """ Service dataset pour udata """
 
     DATASETS_ENDPOINT = "/datasets/"
 
     def __init__(self):
         self.HEADERS = {
-            'X-API-KEY': current_app.config['API_KEY_UDATA_MEGALIS']
+            'X-API-KEY': current_app.config['API_KEY_UDATA']
         }
-        self.API = current_app.config['API_UDATA_MEGALIS']
+        self.API = current_app.config['API_UDATA']
 
     def __create_dataset(self, id_organization: str, description: str, title: str, type_extraction: str,
                          array_tags: array) -> dict or None:

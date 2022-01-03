@@ -13,9 +13,9 @@ arguments_pastell_controller = reqparse.RequestParser()
 arguments_pastell_controller.add_argument('id_e',
                                           help="identifiant de l'entitie dans pastell pour lequel on souhaite effectuer l'action")
 
-arguments_udata_megalis_controller = reqparse.RequestParser()
-arguments_udata_megalis_controller.add_argument('annee', help="Année de generation")
-arguments_udata_megalis_controller.add_argument('siren', help="siren de l'organisme")
+arguments_udata_controller = reqparse.RequestParser()
+arguments_udata_controller.add_argument('annee', help="Année de generation")
+arguments_udata_controller.add_argument('siren', help="siren de l'organisme")
 
 arguments_annee_controller = reqparse.RequestParser()
 arguments_annee_controller.add_argument('annee', help="Année de generation")
@@ -36,18 +36,18 @@ class AdminSolrDeleteCtrl(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     @isAdmin
-    def delete(self, idPublication):
+    def delete(self, id_publication):
         from app.tasks.utils import solr_connexion
         try:
             solr = solr_connexion()
-            solr.delete(q="publication_id:" + str(idPublication))
+            solr.delete(q="publication_id:" + str(id_publication))
         except Exception as e:
-            logging.exception("Erreur lors suppression dans solr de l'idPublicaion: %s" % idPublication)
+            logging.exception("Erreur lors suppression dans solr de l'id_publication: %s" % id_publication)
             raise e
         return jsonify({"statut": 'ok'})
 
 
-@api.route('/publier/scdl/deliberation')
+@api.route('/publier/datagouv/deliberation')
 class AdminPulicationDelibSCDL(Resource):
     @api.expect(arguments_annee_controller)
     @api.response(200, 'Success')
@@ -60,7 +60,7 @@ class AdminPulicationDelibSCDL(Resource):
                            "statut": 'demande de generation et publication du SCDL deliberation sur data gouv effectuée (taches asynchrone)'})
 
 
-@api.route('/publier/scdl/budget')
+@api.route('/publier/datagouv/budget')
 class AdminPulicationBudgetSCDL(Resource):
     @api.expect(arguments_annee_controller)
     @api.response(200, 'Success')
@@ -73,7 +73,7 @@ class AdminPulicationBudgetSCDL(Resource):
                            "statut": 'demande de generation et publication du SCDL budget sur data gouv effectuée (taches asynchrone)'})
 
 
-@api.route('/publier/decpHisto')
+@api.route('/publier/datagouv/decpHisto')
 class AdminPulicationDecpHisto(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -84,7 +84,7 @@ class AdminPulicationDecpHisto(Resource):
         return jsonify({
                            "statut": "demande de generation et publication du decp des années historique à partir de 2014 (taches asynchrone)"})
 
-@api.route('/publier/decpHisto/annee')
+@api.route('/publier/datagouv/decpHisto/annee')
 class AdminPulicationDecpHistoAnnee(Resource):
     @api.expect(arguments_annee_controller)
     @api.response(200, 'Success')
@@ -98,8 +98,8 @@ class AdminPulicationDecpHistoAnnee(Resource):
         return jsonify(
             {"statut": "demande de generation et publication du decp pour l'année en parametre (taches asynchrone)"})
 
-@api.route('/publier/decp')
-class AdminPulicationDecp(Resource):
+@api.route('/publier/datagouv/decp')
+class AdminPublicationDecp(Resource):
     @api.response(200, 'Success')
     def post(self):
         from app.tasks.marches_tasks import generation_marche
@@ -133,57 +133,57 @@ class AdminPastellDeclencherCtrl(Resource):
             {"statut": 'demande de déclenchement pastell realisée (taches asynchrone)'})
 
 
-@api.route('/publier/udata-megalis/decp')
-class AdminUdataMegalisDecpCtrl(Resource):
-    @api.expect(arguments_udata_megalis_controller)
+@api.route('/publier/udata/decp')
+class AdminUdataDecpCtrl(Resource):
+    @api.expect(arguments_udata_controller)
     @api.response(200, 'Success')
     def post(self):
-        from app.tasks.udata_megalis_tasks import publication_udata_megalis_decp
-        args = arguments_udata_megalis_controller.parse_args()
+        from app.tasks.udata_tasks import publication_udata_decp
+        args = arguments_udata_controller.parse_args()
         siren = args['siren']
         annee = args['annee']
-        publication_udata_megalis_decp.delay(siren, annee)
+        publication_udata_decp.delay(siren, annee)
         return jsonify(
-            {"statut": 'demande de déclenchement udata megalis budget (taches asynchrone)'})
+            {"statut": 'demande de déclenchement udata decp (taches asynchrone)'})
 
-@api.route('/publier/udata-megalis/budget')
-class AdminUdataMegalisBudgetCtrl(Resource):
-    @api.expect(arguments_udata_megalis_controller)
+@api.route('/publier/udata/budget')
+class AdminUdataBudgetCtrl(Resource):
+    @api.expect(arguments_udata_controller)
     @api.response(200, 'Success')
     def post(self):
-        from app.tasks.udata_megalis_tasks import publication_udata_megalis_budget
-        args = arguments_udata_megalis_controller.parse_args()
+        from app.tasks.udata_tasks import publication_udata_budget
+        args = arguments_udata_controller.parse_args()
         siren = args['siren']
         annee = args['annee']
-        publication_udata_megalis_budget.delay(siren, annee)
+        publication_udata_budget.delay(siren, annee)
         return jsonify(
-            {"statut": 'demande de déclenchement udata megalis budget (taches asynchrone)'})
+            {"statut": 'demande de déclenchement udata budget (taches asynchrone)'})
 
 
-@api.route('/publier/udata-megalis/deliberation')
-class AdminUdataMegalisDeliberationCtrl(Resource):
-    @api.expect(arguments_udata_megalis_controller)
+@api.route('/publier/udata/deliberation')
+class AdminUdataDeliberationCtrl(Resource):
+    @api.expect(arguments_udata_controller)
     @api.response(200, 'Success')
     def post(self):
-        from app.tasks.udata_megalis_tasks import publication_udata_megalis_deliberation
-        args = arguments_udata_megalis_controller.parse_args()
+        from app.tasks.udata_tasks import publication_udata_deliberation
+        args = arguments_udata_controller.parse_args()
         siren = args['siren']
         annee = args['annee']
-        publication_udata_megalis_deliberation.delay(siren, annee)
+        publication_udata_deliberation.delay(siren, annee)
         return jsonify(
-            {"statut": 'demande de déclenchement udata megalis budget (taches asynchrone)'})
+            {"statut": 'demande de déclenchement udata deliberation (taches asynchrone)'})
 
-@api.route('/publier/udata-megalis/all')
-class AdminUdataMegalisAllCtrl(Resource):
+@api.route('/publier/udata/all')
+class AdminUdataAllCtrl(Resource):
     @api.expect(arguments_annee_controller)
     @api.response(200, 'Success')
     def post(self):
-        from app.tasks.udata_megalis_tasks import publication_udata_megalis
+        from app.tasks.udata_tasks import publication_udata
         args = arguments_annee_controller.parse_args()
         annee = args['annee']
-        publication_udata_megalis.delay(annee)
+        publication_udata.delay(annee)
         return jsonify(
-            {"statut": 'demande de déclenchement udata megalis budget (taches asynchrone)'})
+            {"statut": 'demande de déclenchement udata budget, deliberation & decp  (taches asynchrone)'})
 
 @api.route('/pastell/declencherAG')
 class AdminPastellDeclencherAGCtrl(Resource):

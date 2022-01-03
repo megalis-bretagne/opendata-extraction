@@ -9,14 +9,14 @@ from app.service.Singleton import Singleton
 
 
 class OrganizationService(metaclass=Singleton):
-    """ Service organisation pour udata megalis """
+    """ Service organisation pour udata """
     ORGANIZATION_ENDPOINT = "/organizations/"
 
     def __init__(self):
         self.HEADERS = {
-            'X-API-KEY': current_app.config['API_KEY_UDATA_MEGALIS']
+            'X-API-KEY': current_app.config['API_KEY_UDATA']
         }
-        self.API = current_app.config['API_UDATA_MEGALIS']
+        self.API = current_app.config['API_UDATA']
 
     def get(self, siren) -> dict or None:
         response = requests.get(self.API + self.ORGANIZATION_ENDPOINT, params={'q': 'siren : ' + siren},

@@ -18,7 +18,6 @@ OIDC_REDIRECT_URI = 'http://localhost:5000'
 # SQLAlchemy settings
 #BASE DE DONNEE
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user:password@localhost:3306/data_extraction?charset=utf8'
-#SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user:password@x.x.x.x:xxxx/data_extraction?charset=utf8'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids a SQLAlchemy Warning
 
@@ -68,9 +67,9 @@ DATASET_DELIB_DATAGOUV = '60645c94e2bfd21cdc16c0be'
 # https://www.data.gouv.fr/fr/datasets/budgets-des-collectivites-adherentes-de-megalis-bretagne/
 DATASET_BUDGET_DATAGOUV = '60645b816cccca6dab67f532'
 
-# Catalogue Megalis
-API_UDATA_MEGALIS='https://mon.udata.fr/api/1'
-API_KEY_UDATA_MEGALIS='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+# Catalogue Udata
+API_UDATA='https://mon.udata.fr/api/1'
+API_KEY_UDATA='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 
 
 #Salle des marches Atexo

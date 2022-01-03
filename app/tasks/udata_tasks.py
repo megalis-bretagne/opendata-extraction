@@ -1,15 +1,15 @@
 import time
 
 from app import celeryapp
-from app.service.udata_megalis.DatasetService import DatasetService
-from app.service.udata_megalis.OrganizationService import OrganizationService
+from app.service.udata.DatasetService import DatasetService
+from app.service.udata.OrganizationService import OrganizationService
 from app.tasks import generation_budget, generation_deliberation, generation_decp, get_or_create_workdir
 
 celery = celeryapp.celery
 
 
-@celery.task(name='publication_udata_megalis_budget')
-def publication_udata_megalis_budget(siren, annee):
+@celery.task(name='publication_udata_budget')
+def publication_udata_budget(siren, annee):
     dataset_service = DatasetService()
     organization_service = OrganizationService()
     filename = generation_budget(siren, annee)
@@ -29,8 +29,8 @@ def publication_udata_megalis_budget(siren, annee):
             'annee': str(annee)}
 
 
-@celery.task(name='publication_udata_megalis_deliberation')
-def publication_udata_megalis_deliberation(siren, annee):
+@celery.task(name='publication_udata_deliberation')
+def publication_udata_deliberation(siren, annee):
     dataset_service = DatasetService()
     organization_service = OrganizationService()
     filename = generation_deliberation(siren, annee)
@@ -50,8 +50,8 @@ def publication_udata_megalis_deliberation(siren, annee):
             'annee': str(annee)}
 
 
-@celery.task(name='publication_udata_megalis_decp')
-def publication_udata_megalis_decp(siren, annee):
+@celery.task(name='publication_udata_decp')
+def publication_udata_decp(siren, annee):
     dataset_service = DatasetService()
     organization_service = OrganizationService()
     filename = generation_decp(annee, siren)
@@ -71,8 +71,8 @@ def publication_udata_megalis_decp(siren, annee):
             'annee': str(annee)}
 
 
-@celery.task(name='publication_udata_megalis')
-def publication_udata_megalis(annee=None):
+@celery.task(name='publication_udata')
+def publication_udata(annee=None):
     if annee is None:
         t = time.localtime()
         annee = time.strftime('%Y', t)
@@ -80,9 +80,9 @@ def publication_udata_megalis(annee=None):
     organization_service = OrganizationService()
     sirens = organization_service.get_all_sirens()
     for siren in sirens:
-        publication_udata_megalis_deliberation.delay(siren, annee)
-        publication_udata_megalis_budget.delay(siren, annee)
-        publication_udata_megalis_decp.delay(siren, annee)
+        publication_udata_deliberation.delay(siren, annee)
+        publication_udata_budget.delay(siren, annee)
+        publication_udata_decp.delay(siren, annee)
 
 
 def is_scdl_empty(filename):
