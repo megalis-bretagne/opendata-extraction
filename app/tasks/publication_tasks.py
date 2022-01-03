@@ -60,7 +60,8 @@ def creation_publication_task(zip_path):
                                      modified_at=datetime.now(),
                                      siren=newPublication.siren,
                                      open_data_active=True,
-                                     publication_data_gouv_active=False
+                                     publication_data_gouv_active=False,
+                                     publication_udata_active=False
                                      )
 
         db_sess.add(newParametrage)

@@ -4,7 +4,7 @@ from app import celeryapp
 from app.service.udata.DatasetService import DatasetService
 from app.service.udata.OrganizationService import OrganizationService
 from app.tasks import generation_budget, generation_deliberation, generation_decp, get_or_create_workdir
-
+from app.models.parametrage_model import Parametrage
 celery = celeryapp.celery
 
 
@@ -80,8 +80,10 @@ def publication_udata(annee=None):
     organization_service = OrganizationService()
     sirens = organization_service.get_all_sirens()
     for siren in sirens:
-        publication_udata_deliberation.delay(siren, annee)
-        publication_udata_budget.delay(siren, annee)
+        parametrage = Parametrage.query.filter(Parametrage.siren == siren).first()
+        if parametrage is None or parametrage.publication_udata_active:
+            publication_udata_deliberation.delay(siren, annee)
+            publication_udata_budget.delay(siren, annee)
         publication_udata_decp.delay(siren, annee)
 
 
