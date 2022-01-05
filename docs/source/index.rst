@@ -23,7 +23,6 @@ Documentation des briques opendata de Megalis Bretagne
    guide/parametragePastell
    guide/deploiement
 
-
 .. toctree::
    :maxdepth: 2
    :hidden:
@@ -31,6 +30,13 @@ Documentation des briques opendata de Megalis Bretagne
 
    dev/installation.md
    dev/build.md
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Utilisateur
+   utilisateur/publication.md
+   utilisateur/marqueblanche.md
 
 .. toctree::
    :maxdepth: 2
