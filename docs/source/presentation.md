@@ -59,6 +59,4 @@ Repo : https://github.com/megalis-bretagne/opendata-marque-blanche.git
 * Apache Solr
 
 
-**Test**
-
 
