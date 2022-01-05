@@ -35,6 +35,7 @@ Documentation des briques opendata de Megalis Bretagne
    :maxdepth: 2
    :hidden:
    :caption: Utilisateur
+   
    utilisateur/publication.md
    utilisateur/marqueblanche.md
 
