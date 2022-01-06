@@ -52,6 +52,8 @@ class AdminSolrDeleteCtrl(Resource):
 class AdminPulicationDelibSCDL(Resource):
     @api.expect(arguments_annee_controller)
     @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
     def post(self):
         from app.tasks.datagouv_tasks import generation_and_publication_scdl
         args = arguments_annee_controller.parse_args()
@@ -65,6 +67,8 @@ class AdminPulicationDelibSCDL(Resource):
 class AdminPulicationBudgetSCDL(Resource):
     @api.expect(arguments_annee_controller)
     @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
     def post(self):
         from app.tasks.datagouv_tasks import generation_and_publication_scdl
         args = arguments_annee_controller.parse_args()
@@ -104,6 +108,8 @@ class AdminPulicationDecpHistoAnnee(Resource):
 @api.route('/publier/datagouv/decp')
 class AdminPublicationDecp(Resource):
     @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
     def post(self):
         from app.tasks.marches_tasks import generation_marche
         generation_marche.delay()
@@ -142,6 +148,8 @@ class AdminPastellDeclencherCtrl(Resource):
 class AdminUdataDecpCtrl(Resource):
     @api.expect(arguments_udata_controller)
     @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
     def post(self):
         from app.tasks.udata_tasks import publication_udata_decp
         args = arguments_udata_controller.parse_args()
@@ -156,6 +164,8 @@ class AdminUdataDecpCtrl(Resource):
 class AdminUdataBudgetCtrl(Resource):
     @api.expect(arguments_udata_controller)
     @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
     def post(self):
         from app.tasks.udata_tasks import publication_udata_budget
         args = arguments_udata_controller.parse_args()
@@ -170,6 +180,8 @@ class AdminUdataBudgetCtrl(Resource):
 class AdminUdataDeliberationCtrl(Resource):
     @api.expect(arguments_udata_controller)
     @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
     def post(self):
         from app.tasks.udata_tasks import publication_udata_deliberation
         args = arguments_udata_controller.parse_args()
@@ -184,6 +196,8 @@ class AdminUdataDeliberationCtrl(Resource):
 class AdminUdataAllCtrl(Resource):
     @api.expect(arguments_annee_controller)
     @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
     def post(self):
         from app.tasks.udata_tasks import publication_udata
         args = arguments_annee_controller.parse_args()
@@ -196,6 +210,8 @@ class AdminUdataAllCtrl(Resource):
 @api.route('/publier/udata/decpHisto')
 class AdminUdataPublicationDecpHisto(Resource):
     @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
     def post(self):
         from app.tasks.udata_tasks import publication_udata_decp_histo
         publication_udata_decp_histo.delay()
