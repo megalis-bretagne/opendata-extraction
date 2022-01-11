@@ -1,10 +1,11 @@
 import time
 
 from app import celeryapp
+from app.models.parametrage_model import Parametrage
 from app.service.udata.DatasetService import DatasetService
 from app.service.udata.OrganizationService import OrganizationService
-from app.tasks import generation_budget, generation_deliberation, generation_decp, get_or_create_workdir
-from app.models.parametrage_model import Parametrage
+from app.tasks import generation_budget, generation_deliberation, generation_decp, get_or_create_workdir, SDMException
+
 celery = celeryapp.celery
 
 
@@ -55,6 +56,8 @@ def publication_udata_decp(siren, annee):
     dataset_service = DatasetService()
     organization_service = OrganizationService()
     filename = generation_decp(annee, siren)
+    if filename is None:
+        raise SDMException('erreur lors de l\'appel SDM pour l\'annee {} et le siren {}  '.format(annee, siren))
     organization = organization_service.get(siren)
     dataset_decp = organization_service.get_dataset_decp(organization['id'])
     if dataset_decp is None:

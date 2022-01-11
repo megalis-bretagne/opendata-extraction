@@ -14,4 +14,4 @@ class DecpCtrl(Resource):
         filename = generation_decp(annee, siren)
         if filename is None:
             abort(404)
-        return send_from_directory(get_or_create_workdir(), filename=generation_decp(annee, siren), as_attachment=True)
+        return send_from_directory(get_or_create_workdir(), filename=filename, as_attachment=True)
