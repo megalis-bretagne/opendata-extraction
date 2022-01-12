@@ -11,4 +11,19 @@ Renseignez votre **login** (mail) et votre **mot de passe** , puis  pour vous co
 ![acces](img/acces_pf_meg.PNG)
 
 
-## Autre sous-menu
+## Description du menu général
+
+
+
+## Statuer sur l'état de publication d'une délibération mise à "ne sais pas"
+
+
+
+## Visualiser et modifier le statut "publié" ou "non publié" de vos publications
+
+
+## Visualiser et récupérer le code de la marque-blanche
+
+
+
+## Activer ou non votre publication opendata
