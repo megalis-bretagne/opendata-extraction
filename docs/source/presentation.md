@@ -8,9 +8,9 @@ Il permet la génération et la publication des jeux de données suivants:
 * les budgets ([fichier annuel au format SCDL budget](https://schema.data.gouv.fr/scdl/budget/0.8.1/documentation.html) et fichier PDF sur marque blanche)
 * les marchés publics ([fichier annuel format-commande-publique](https://github.com/139bercy/format-commande-publique))
 
-Une IHM permet aux utilisateurs de gérer leurs publications et des APIs sont disponibles pour automatiser différentes actions.
+Une interface (IHM) dédiée permet aux utilisateurs de gérer leurs publications et des APIs sont également disponibles pour automatiser différentes actions.
 
-Enfin, une réutilisation de [la marque blanche de gironde numérique](https://gitlab.adullact.net/gironde-numerique/data-search-engine) est possible.
+Enfin, une réutilisation de [la marque blanche de gironde numérique](https://gitlab.adullact.net/gironde-numerique/data-search-engine) est possible. Elle permet aux organismes qui le souhaitent d'embarquer dans leur site internet en local les documents publiés ainsi automatiquement.
 
 
 ##Schéma d'architecture
@@ -59,6 +59,6 @@ Repo : https://github.com/megalis-bretagne/opendata-marque-blanche.git
 * Apache Solr
 
 
-**Test**
+
 
 
