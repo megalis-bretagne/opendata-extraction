@@ -37,7 +37,6 @@ Documentation des briques opendata de Megalis Bretagne
    :caption: Utilisateur
    
    utilisateur/publication.md
-   utilisateur/marqueblanche.md
 
 .. toctree::
    :maxdepth: 2
