@@ -28,7 +28,10 @@ Normalement, tous les administrateurs et utilisateurs de la télétransmission o
 
 
 
+
+
 ## Description du menu général
+
 Dans le menu, vous disposez de 4 sous-menus :
 ![acces](img/OD2_01.png)
 
@@ -39,11 +42,61 @@ Dans le menu, vous disposez de 4 sous-menus :
 
 
 
+
+
 ## Statuer sur l'état de publication d'une délibération mise à "ne sais pas"
+
+Dans le menu **"À statuer"**, vous trouverez uniquement les délibérations issues du flux de télétransmission des actes et dont le statut n'a pas encore été défini :
+
++ les délibérations identifiées à "ne sais pas" pour les actes gérés manuellement,
++ toutes délibérations issues des actes gérés automatiquement (flux actes génériques).
+
+Dans l'attente, elles sont à l'état **"non publié"**, c'est-à-dire que l'URL de la délibération n'est pas disponible sur les portails opendata et la délibération et ses annexes ne sont pas publiées sur la marque blanche. Les métadonnées de la délibération (nom, objet, date, etc.) sont a minima publiées sur les portails opendata.
+![acces](img/OD3_01.png)
+
+
+### Mode opératoire pour trancher le statut d'une délibération
+
+Cliquer sur la ligne de la délibération visée **(1)**, et vous verrez les boutons apparaître **(2)** :
+![acces](img/OD3_02.png)
+
+Vous pouvez **visualiser** la délibération avec l'oeil :
+![acces](img/OD3_03.png)
+
+Vous pouvez **publier** le document visé avec le bouton **vert** :
+![acces](img/OD3_04.png)
+
+Vous pouvez **dépublier** le document visé avec le bouton **rouge** :
+![acces](img/OD3_05.png)
+
+Dès que vous cliquez sur **publier** ou **dépublier**, la ligne disparaît puisque vous avez statué sa publication.
+
+Vous pouvez à tout moment **revenir sur le statut de publication d'un document** en allant sur le menu ****"Toutes les publications" (cf. ## Visualiser et modifier le statut "publié" ou "non publié" de vos publications).
+
+
+### Mode opératoire pour trancher le statut de plusieurs délibérations en même temps
+
+Cliquer sur les lignes de délibérations visées, **(1)** et **(2)** dans l'exemple ci-dessous, et vous verrez les boutons apparaître **(3)** :
+![acces](img/OD3_06.png)
+
+Vous pouvez **publier** les documents visés avec le bouton **vert** :
+![acces](img/OD3_07.png)
+
+Vous pouvez **dépublier** les documents visés avec le bouton **rouge** :
+![acces](img/OD3_08.png)
+
+Dès que vous cliquez sur **"publier"** ou **"dépublier"**, les lignes sélectionnées disparaissent de la liste puisque vous avez statué sur leur publication.
+
+Vous pouvez à tout moment revenir sur le statut de publication d'un document en allant sur le menu **"Toutes les publications"** (cf. ## Visualiser et modifier le statut "publié" ou "non publié" de vos publications).
+
+**ASTUCE** : pour modifier en même temps le statut de publication de toutes les délibérations, sélectionnez les toutes en cliquant en haut à droite de la colonne des cases à cocher :
+![acces](img/OD3_09.png)
 
 
 
 ## Visualiser et modifier le statut "publié" ou "non publié" de vos publications
+
+
 
 
 ## Visualiser et récupérer le code de la marque-blanche
