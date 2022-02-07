@@ -10,11 +10,17 @@ https://www.megalis.bretagne.bzh cliquez sur "se connecter"
 ![acces](img/acces_pf_meg.PNG)
 
 Renseignez votre **login** (mail) et votre **mot de passe** , puis cliquez sur "Connexion" pour vous connecter à votre compte.
-
-
+![acces](OD1_02.PNG)
 
 
 Après vous être identifié, cliquez sur :"Mes services".
+![acces](OD1_03.PNG)
+
+Cliquez ensuite sur "Accéder" dans la rubrique "Publication open data" > Accéder :
+![acces](OD1_04.PNG)
+
+Si le pavé "Publication opendata" ne s'affiche pas, c'est sans doute une question de droits d'accès, n'hésitez pas à contacter l'assistance pour les vérifier.
+Normalement, tous les administrateurs et utilisateurs de la télétransmission ont les droits pour accéder à ce service de Publication opendata.
 
 
 
