@@ -17,11 +17,11 @@ Renseignez votre **login** (mail) et votre **mot de passe** , puis cliquez sur "
 
 Après vous être identifié, cliquez sur :**"Mes services"**.
 
-![acces](OD1_03.png)
+![acces](img/OD1_03.png)
 
 Cliquez ensuite sur **"Accéder"** dans la rubrique **"Publication open data"**  :
 
-![acces](OD1_04.png)
+![acces](img/OD1_04.png)
 
 Si le pavé **"Publication opendata"** ne s'affiche pas, c'est sans doute une question de droits d'accès, n'hésitez pas à contacter l'assistance pour les vérifier.
 Normalement, tous les administrateurs et utilisateurs de la télétransmission ont les droits pour accéder à ce service de Publication opendata.
