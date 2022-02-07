@@ -96,7 +96,7 @@ Dès que vous cliquez sur **"publier"** ou **"dépublier"**, les lignes sélecti
 
 Vous pouvez à tout moment revenir sur le statut de publication d'un document en allant sur le menu **"Toutes les publications"** (cf. ## Visualiser et modifier le statut "publié" ou "non publié" de vos publications).
 
-**ASTUCE** : pour modifier en même temps le statut de publication de toutes les délibérations, sélectionnez les toutes en cliquant en haut à droite de la colonne des cases à cocher :
+**ASTUCE** : pour **modifier en même temps** le statut de publication **de toutes les délibérations**, sélectionnez les toutes en cliquant en haut à droite de la colonne des cases à cocher :
 
 ![acces](img/OD3_09.png)
 
@@ -135,6 +135,27 @@ Vous pouvez **dépublier** le document visé avec le bouton **rouge** :
 
 Dès que vous cliquez sur **"publier"** ou **"dépublier"**, l'état de publication de la délibération change dans la liste en fonction de ce que vous avez choisi.
 
+
+### Mode opératoire pour changer l'état de publication de plusieurs délibérations
+
+Cliquer sur les lignes de délibérations visées, **(1)** et **(2)** dans l'exemple ci-dessous, et vous verrez les boutons apparaître (3) :
+
+![acces](img/OD4_05.png)
+
+Vous pouvez **publier** les document visés avec le bouton **vert** :
+
+![acces](img/OD4_06.png)
+
+
+Vous pouvez **dépublier** les documents visés avec le bouton **rouge** :
+
+![acces](img/OD4_07.png)
+
+
+**ASTUCE** : pour **modifier en même temps** le statut de publication **de toutes les délibérations**, sélectionnez les toutes en cliquant en haut à droite de la colonne des cases à cocher :
+
+
+![acces](img/OD4_08.png)
 
 
 ## Visualiser et récupérer le code de la marque-blanche
