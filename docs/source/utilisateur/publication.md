@@ -4,11 +4,18 @@
 
 
 Pour accéder à nos services, "rendez-vous sur notre site
-https://www.megalis.bretagne.bzh cliquez sur "se connecter
+https://www.megalis.bretagne.bzh cliquez sur "se connecter"
 
-Renseignez votre **login** (mail) et votre **mot de passe** , puis  pour vous connecter à votre compte.identifiant mot de passecliquez sur "Connexion"Après vous être identifié, cliquez sur :"Mes services".
 
 ![acces](img/acces_pf_meg.PNG)
+
+Renseignez votre **login** (mail) et votre **mot de passe** , puis cliquez sur "Connexion" pour vous connecter à votre compte.
+
+
+
+
+Après vous être identifié, cliquez sur :"Mes services".
+
 
 
 ## Description du menu général
