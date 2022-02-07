@@ -58,15 +58,19 @@ Dans l'attente, elles sont à l'état **"non publié"**, c'est-à-dire que l'URL
 ### Mode opératoire pour trancher le statut d'une délibération
 
 Cliquer sur la ligne de la délibération visée **(1)**, et vous verrez les boutons apparaître **(2)** :
+
 ![acces](img/OD3_02.png)
 
 Vous pouvez **visualiser** la délibération avec l'oeil :
+
 ![acces](img/OD3_03.png)
 
 Vous pouvez **publier** le document visé avec le bouton **vert** :
+
 ![acces](img/OD3_04.png)
 
 Vous pouvez **dépublier** le document visé avec le bouton **rouge** :
+
 ![acces](img/OD3_05.png)
 
 Dès que vous cliquez sur **publier** ou **dépublier**, la ligne disparaît puisque vous avez statué sa publication.
@@ -77,12 +81,15 @@ Vous pouvez à tout moment **revenir sur le statut de publication d'un document*
 ### Mode opératoire pour trancher le statut de plusieurs délibérations en même temps
 
 Cliquer sur les lignes de délibérations visées, **(1)** et **(2)** dans l'exemple ci-dessous, et vous verrez les boutons apparaître **(3)** :
+
 ![acces](img/OD3_06.png)
 
 Vous pouvez **publier** les documents visés avec le bouton **vert** :
+
 ![acces](img/OD3_07.png)
 
 Vous pouvez **dépublier** les documents visés avec le bouton **rouge** :
+
 ![acces](img/OD3_08.png)
 
 Dès que vous cliquez sur **"publier"** ou **"dépublier"**, les lignes sélectionnées disparaissent de la liste puisque vous avez statué sur leur publication.
@@ -90,6 +97,7 @@ Dès que vous cliquez sur **"publier"** ou **"dépublier"**, les lignes sélecti
 Vous pouvez à tout moment revenir sur le statut de publication d'un document en allant sur le menu **"Toutes les publications"** (cf. ## Visualiser et modifier le statut "publié" ou "non publié" de vos publications).
 
 **ASTUCE** : pour modifier en même temps le statut de publication de toutes les délibérations, sélectionnez les toutes en cliquant en haut à droite de la colonne des cases à cocher :
+
 ![acces](img/OD3_09.png)
 
 
