@@ -11,6 +11,7 @@ https://www.megalis.bretagne.bzh cliquez sur "se connecter"
 
 Renseignez votre **login** (mail) et votre **mot de passe** , puis cliquez sur "Connexion" pour vous connecter à votre compte.
 
+![acces](img/acces_pf_meg.PNG)
 ![acces](img/OD1_02.PNG)
 
 
