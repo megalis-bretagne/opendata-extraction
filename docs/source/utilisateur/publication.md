@@ -104,6 +104,36 @@ Vous pouvez à tout moment revenir sur le statut de publication d'un document en
 
 ## Visualiser et modifier le statut "publié" ou "non publié" de vos publications
 
+Dans le menu **"Toutes les publications"**, vous trouverez l'ensemble des actes (délibérations et budgets) issus du flux de télétransmission des actes.
+
+Dans la colonne **"État"**, il s'agit bien du statut de publication effectif au moment où vous consultez cette page :
+
+* **publié : l'URL de la délibération est disponible** sur les portails opendata et la délibération et ses annexes sont publiées sur la marque blanche
+* **non publié : l'URL de la délibération n'est pas disponible** sur les portails opendata et la délibération et ses annexes ne sont pas publiées sur la marque blanche
+
+Les métadonnées de la délibération (nom, objet, date, etc.) sont a minima publiés sur les portails opendata.
+
+![acces](img/OD4_01.png)
+
+
+
+### Mode opératoire pour changer l'état de publication d'une délibération
+
+Cliquer sur la ligne de la délibération visée **(1)**, et vous verrez les boutons apparaître **(2)** :
+
+![acces](img/OD4_02.png)
+
+
+
+Vous pouvez **publier** le document visé avec le bouton **vert** :
+
+![acces](img/OD4_03.png)
+
+Vous pouvez **dépublier** le document visé avec le bouton **rouge** :
+
+![acces](img/OD4_04.png)
+
+Dès que vous cliquez sur **"publier"** ou **"dépublier"**, l'état de publication de la délibération change dans la liste en fonction de ce que vous avez choisi.
 
 
 
