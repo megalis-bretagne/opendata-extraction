@@ -10,9 +10,8 @@ class StatsPublications(Resource):
     @api.produces(["application/octet-stream"])
     def get(self):
         from sqlalchemy.sql import text
-        from app.tasks.utils import get_or_create_workdir
+        from app.tasks.utils import get_or_create_workdir, query_result_to_csv
         from app import db
-        import csv
         try:
             request = text("""select case when acte_nature=1 THEN 'deliberation' ELSE  'budget' END as 'nature acte',
                                        case when publication_open_data='0' THEN 'oui' when publication_open_data='1' THEN 'non' when publication_open_data='2' THEN 'ne sais pas' ELSE  publication_open_data END as 'combo pastell',
@@ -23,17 +22,7 @@ class StatsPublications(Resource):
             with db.engine.connect() as con:
                 result = con.execute(request);
                 filename = "stats_publications.csv"
-                outfile = open(get_or_create_workdir() + filename, "w")
-                outcsv = csv.writer(outfile, lineterminator="\n")
-                entete = ""
-                for x in result.cursor.description:
-                    if entete != "":
-                        entete += "," + str(x[0])
-                    else:
-                        entete = str(x[0])
-                outfile.write(entete+'\n')
-                outcsv.writerows(result.cursor.fetchall())
-                outfile.close()
+                query_result_to_csv(filename, result)
                 return send_from_directory(get_or_create_workdir(), filename=filename, as_attachment=True)
 
         except FileNotFoundError:
@@ -46,9 +35,8 @@ class StatsNonPublie(Resource):
     @api.produces(["application/octet-stream"])
     def get(self):
         from sqlalchemy.sql import text
-        from app.tasks.utils import get_or_create_workdir
+        from app.tasks.utils import get_or_create_workdir, query_result_to_csv
         from app import db
-        import csv
         try:
             request = text("""select t0.siren, nbOui, nbNon, nbNeSaisPas, nbNon *100 / (nbOui+nbNon) as tauxDeNonPublié
                                 from (select distinct(siren) from publication) t0
@@ -60,21 +48,12 @@ class StatsNonPublie(Resource):
             with db.engine.connect() as con:
                 result = con.execute(request);
                 filename = "stats_taux.csv"
-                outfile = open(get_or_create_workdir() + filename, "w")
-                outcsv = csv.writer(outfile, lineterminator="\n")
-                entete = ""
-                for x in result.cursor.description:
-                    if entete != "":
-                        entete += "," + str(x[0])
-                    else:
-                        entete = str(x[0])
-                outfile.write(entete+'\n')
-                outcsv.writerows(result.cursor.fetchall())
-                outfile.close()
+                query_result_to_csv(filename, result)
                 return send_from_directory(get_or_create_workdir(), filename=filename, as_attachment=True)
 
         except FileNotFoundError:
             abort(404)
+
 
 @api.route('/serviceDesactive')
 class StatsOpenDataDesactive(Resource):
@@ -82,26 +61,16 @@ class StatsOpenDataDesactive(Resource):
     @api.produces(["application/octet-stream"])
     def get(self):
         from sqlalchemy.sql import text
-        from app.tasks.utils import get_or_create_workdir
+        from app.tasks.utils import query_result_to_csv, get_or_create_workdir
         from app import db
-        import csv
         try:
-            request = text("""select siren, count(*) as nbNon from publication where publication_open_data = 1 group by siren order by nbNon desc;""")
+            request = text(
+                """select siren, count(*) as nbNon from publication where publication_open_data = 1 group by siren order by nbNon desc;""")
 
             with db.engine.connect() as con:
                 result = con.execute(request);
                 filename = "stats_desactive.csv"
-                outfile = open(get_or_create_workdir() + filename, "w")
-                outcsv = csv.writer(outfile, lineterminator="\n")
-                entete = ""
-                for x in result.cursor.description:
-                    if entete != "":
-                        entete += "," + str(x[0])
-                    else:
-                        entete = str(x[0])
-                outfile.write(entete+'\n')
-                outcsv.writerows(result.cursor.fetchall())
-                outfile.close()
+                query_result_to_csv(filename, result)
                 return send_from_directory(get_or_create_workdir(), filename=filename, as_attachment=True)
 
         except FileNotFoundError:
