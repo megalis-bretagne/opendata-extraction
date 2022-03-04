@@ -108,13 +108,7 @@ def get_or_create_workdir():
 def query_result_to_csv(filename, result):
     outfile = open(get_or_create_workdir() + filename, "w")
     outcsv = csv.writer(outfile, lineterminator="\n")
-    entete = ""
-    for x in result.cursor.description:
-        if entete != "":
-            entete += "," + str(x[0])
-        else:
-            entete = str(x[0])
-    outfile.write(entete + '\n')
+    outcsv.writerow([row[0] for row in result.cursor.description])
     outcsv.writerows(result.cursor.fetchall())
     outfile.close()
 
