@@ -4,6 +4,7 @@ from flask import send_from_directory
 api = Namespace(name='stats', description='Statistiques de la plateforme')
 
 
+
 @api.route('/publications', doc={
     "description": " Retourne un fichier CSV avec les colonnes suivantes:  <ul><li>type d'acte (déliberaion, budget)</li><li>choix dans Pastell (oui, non, ne sais pas)</li><li>état (publié, non publié)</li><li>total</li></ul>"})
 class StatsPublications(Resource):
@@ -28,6 +29,7 @@ class StatsPublications(Resource):
 
         except FileNotFoundError:
             abort(404)
+
 
 
 @api.route('/tauxNonPublie', doc={
@@ -56,6 +58,7 @@ class StatsNonPublie(Resource):
             abort(404)
 
 
+
 @api.route('/serviceDesactive',
            doc={"description": "Retourne la liste des siren qui ont désactivé le service opendata"})
 class StatsOpenDataDesactive(Resource):
@@ -66,9 +69,7 @@ class StatsOpenDataDesactive(Resource):
         from app.tasks.utils import query_result_to_csv, get_or_create_workdir
         from app import db
         try:
-            request = text(
-                """select siren, open_data_active from parametrage where open_data_active is false;""")
-
+            request = text("""select siren, open_data_active from parametrage where open_data_active is false;""")
             with db.engine.connect() as con:
                 result = con.execute(request);
                 filename = "stats_desactive.csv"
