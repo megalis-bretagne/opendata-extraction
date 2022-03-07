@@ -4,7 +4,8 @@ from flask import send_from_directory
 api = Namespace(name='stats', description='Statistiques de la plateforme')
 
 
-@api.route('/publications')
+@api.route('/publications', doc={
+    "description": " Retourne un fichier CSV avec les colonnes suivantes:  <ul><li>type d'acte (déliberaion, budget)</li><li>choix dans Pastell (oui, non, ne sais pas)</li><li>état (publié, non publié)</li><li>total</li></ul>"})
 class StatsPublications(Resource):
     @api.response(200, 'Success')
     @api.produces(["application/octet-stream"])
@@ -29,7 +30,8 @@ class StatsPublications(Resource):
             abort(404)
 
 
-@api.route('/tauxNonPublie')
+@api.route('/tauxNonPublie', doc={
+    "description": " Retourne un fichier CSV avec les colonnes suivantes:  <ul><li>siren</li><li>nombre d'actes publiés</li><li>nombre d'actes non publiés</li><li>pourcentage non publié</li><li>total</li></ul>"})
 class StatsNonPublie(Resource):
     @api.response(200, 'Success')
     @api.produces(["application/octet-stream"])
@@ -38,12 +40,11 @@ class StatsNonPublie(Resource):
         from app.tasks.utils import get_or_create_workdir, query_result_to_csv
         from app import db
         try:
-            request = text("""select t0.siren, nbOui, nbNon, nbNeSaisPas, nbNon *100 / (nbOui+nbNon) as tauxDeNonPublié
-                                from (select distinct(siren) from publication) t0
-                                         left join (select siren, count(*) as nbOui from publication where publication_open_data = 0 group by siren) t1 on t0.siren = t1.siren
-                                         left join (select siren, count(*) as nbNon from publication where publication_open_data = 1 group by siren) t2 on t0.siren = t2.siren
-                                         left join (select siren, count(*) as nbNeSaisPas from publication where publication_open_data = 2 group by siren) t3 on t0.siren = t3.siren
-                                order by tauxDeNonPublié desc""")
+            request = text("""select t0.siren, nbPublié, nbNonPublié, nbNonPublié *100 / (nbPublié+nbNonPublié) as tauxDeNonPublié
+                            from (select distinct(siren) from publication) t0
+                                     left join (select siren, count(*) as nbPublié from publication where etat = 1 group by siren) t1 on t0.siren = t1.siren
+                                     left join (select siren, count(*) as nbNonPublié from publication where etat = 0 or 2 group by siren) t2 on t0.siren = t2.siren
+                            order by tauxDeNonPublié desc;""")
 
             with db.engine.connect() as con:
                 result = con.execute(request);
@@ -55,7 +56,8 @@ class StatsNonPublie(Resource):
             abort(404)
 
 
-@api.route('/serviceDesactive')
+@api.route('/serviceDesactive',
+           doc={"description": "Retourne la liste des siren qui ont désactivé le service opendata"})
 class StatsOpenDataDesactive(Resource):
     @api.response(200, 'Success')
     @api.produces(["application/octet-stream"])
@@ -65,7 +67,7 @@ class StatsOpenDataDesactive(Resource):
         from app import db
         try:
             request = text(
-                """select siren, count(*) as nbNon from publication where publication_open_data = 1 group by siren order by nbNon desc;""")
+                """select siren, open_data_active from parametrage where open_data_active is false;""")
 
             with db.engine.connect() as con:
                 result = con.execute(request);
