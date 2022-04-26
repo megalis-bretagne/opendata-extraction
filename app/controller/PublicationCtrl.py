@@ -157,7 +157,6 @@ class PublicationSupprimerCtrl(Resource):
         try:
             db_sess = db.session
             publication = Publication.query.filter(Publication.id == id).one()
-            # 1 => publie, 0:non, 2:en-cours,3:en-erreur
             publication.est_supprime = True
             db_sess.commit()
 
