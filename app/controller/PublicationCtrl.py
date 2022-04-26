@@ -109,7 +109,33 @@ class PublicationDepublierCtrl(Resource):
             publication = Publication.query.filter(Publication.id == id).one()
             # 1 => publie, 0:non, 2:en-cours,3:en-erreur
             publication.etat = 2
-            publication.est_masque=True
+            publication.est_masque = True
+            db_sess.commit()
+            task = depublier_acte_task.delay(publication.id)
+            return jsonify(publication.serialize)
+
+        except MultipleResultsFound as e:
+            print(e)
+            api.abort(500, 'MultipleResultsFound')
+        except NoResultFound as e:
+            print(e)
+            api.abort(404, 'Not found')
+
+
+@api.route('/supprimer/<int:id>')
+class PublicationDepublierCtrl(Resource):
+    @api.response(200, 'Success', model_publication)
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    def put(self, id):
+        from app.models.publication_model import Publication
+        from app import db
+        from app.tasks.publication_tasks import depublier_acte_task
+        try:
+            db_sess = db.session
+            publication = Publication.query.filter(Publication.id == id).one()
+            # 1 => publie, 0:non, 2:en-cours,3:en-erreur
+            publication.etat = 2
+            publication.est_masque = True
             db_sess.commit()
             task = depublier_acte_task.delay(publication.id)
             return jsonify(publication.serialize)
@@ -230,12 +256,12 @@ class PublicationSearchCtrl(Resource):
                 searchFilter = "%{}%".format(filter)
                 result = Publication.query.filter(
                     or_(Publication.numero_de_lacte.like(searchFilter), Publication.objet.like(searchFilter)),
-                    Publication.siren == siren, Publication.etat == etat,
+                    Publication.siren == siren, Publication.etat == etat,Publication.est_supprime == 0,
                     Publication.est_masque == est_masque).order_by(
                     sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
             else:
                 result = Publication.query.filter(Publication.siren == siren, Publication.etat == etat,
-                                                  Publication.est_masque == est_masque).order_by(
+                                                  Publication.est_masque == est_masque,Publication.siren == siren,Publication.est_supprime == 0).order_by(
                     sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
         else:
             if (args['filter'] != None and args['filter'] != ''):
@@ -243,11 +269,11 @@ class PublicationSearchCtrl(Resource):
                 searchFilter = "%{}%".format(filter)
                 result = Publication.query.filter(
                     or_(Publication.numero_de_lacte.like(searchFilter), Publication.objet.like(searchFilter)),
-                    Publication.siren == siren,
-                    Publication.est_masque == est_masque).order_by(
+                    Publication.siren == siren,Publication.est_supprime == 0,
+                    Publication.est_masque == est_masque,).order_by(
                     sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
             else:
-                result = Publication.query.filter(Publication.siren == siren).order_by(
+                result = Publication.query.filter(Publication.siren == siren, Publication.est_supprime == 0).order_by(
                     sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
 
         return jsonify(
