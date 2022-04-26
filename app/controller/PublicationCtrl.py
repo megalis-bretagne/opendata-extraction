@@ -154,37 +154,6 @@ class PublicationModifierCtrl(Resource):
             print(e)
             api.abort(404, 'Not found')
 
-
-@api.route('/supprimer/<int:id>')
-class PublicationSupprimerCtrl(Resource):
-    @api.response(200, 'Success', model_publication)
-    @oidc.accept_token(require_token=True, scopes_required=['openid'])
-    def put(self, id):
-        from app.models.publication_model import Publication
-        from app import db
-        from app.tasks.publication_tasks import depublier_acte_task
-        try:
-            db_sess = db.session
-            publication = Publication.query.filter(Publication.id == id).one()
-            publication.est_supprime = True
-
-            # 1 => publie, 0:non, 2:en-cours,3:en-erreur
-            publication.etat = 2
-            publication.est_masque = True
-            db_sess.commit()
-
-            #Dépublication des actes supprimés
-            task = depublier_acte_task.delay(publication.id)
-            return jsonify(publication.serialize)
-
-        except MultipleResultsFound as e:
-            print(e)
-            api.abort(500, 'MultipleResultsFound')
-        except NoResultFound as e:
-            print(e)
-            api.abort(404, 'Not found')
-
-
 @api.route('/masquer/<int:id>')
 class PublicationMasquerCtrl(Resource):
     @api.response(200, 'Success', model_publication)
@@ -240,6 +209,33 @@ class PublicationCtrl(Resource):
         try:
             publication = Publication.query.filter(Publication.id == id).one()
             return jsonify(publication.serialize)
+        except MultipleResultsFound as e:
+            print(e)
+            api.abort(500, 'MultipleResultsFound')
+        except NoResultFound as e:
+            print(e)
+            api.abort(404, 'Not found')
+
+    @api.response(200, 'Success', model_publication)
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    def delete(self, id):
+        from app.models.publication_model import Publication
+        from app import db
+        from app.tasks.publication_tasks import depublier_acte_task
+        try:
+            db_sess = db.session
+            publication = Publication.query.filter(Publication.id == id).one()
+            publication.est_supprime = True
+
+            # 1 => publie, 0:non, 2:en-cours,3:en-erreur
+            publication.etat = 2
+            publication.est_masque = True
+            db_sess.commit()
+
+            #Dépublication des actes supprimés
+            task = depublier_acte_task.delay(publication.id)
+            return jsonify(publication.serialize)
+
         except MultipleResultsFound as e:
             print(e)
             api.abort(500, 'MultipleResultsFound')
