@@ -21,7 +21,7 @@ class Publication(db.Model):
     # utilise pour les budget
     date_budget = db.Column(db.String(10), nullable=True)
     est_masque = db.Column('est_masque', db.Boolean(), nullable=False, server_default='0')
-    est_supprime = db.Column('est_supprime', db.Boolean(), nullable=False, server_default=0)
+    est_supprime = db.Column('est_supprime', db.Boolean(), nullable=False, server_default='0')
     # 1 => publie, 0:non, 2:en-cours,3:en-erreur
     etat: str = db.Column('etat', db.String(1), nullable=False, server_default='0')
     created_at: str = db.Column(db.DateTime(), nullable=False)

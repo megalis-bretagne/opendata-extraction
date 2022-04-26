@@ -84,10 +84,38 @@ def creation_publication_task(zip_path):
             'task_id': str(task)}
 
 
+@celery.task(name='modifier_acte_task')
+def modifier_acte_task(idPublication):
+
+    # on récupère la publication à publier en BDD
+    publication = Publication.query.filter(Publication.id == idPublication).one()
+    solr = solr_connexion()
+
+    try:
+        result = solr.search(q='publication_id : ' + str(idPublication))
+
+        if (result != 0 and len(result.docs) > 0):
+            # Mise à jour dans Solr
+            for doc_res in result.docs:
+                doc_res['description'][0] = publication.objet
+            solr.add(result.docs)
+            return {'status': 'OK', 'message': 'modification acte réalisée',
+                    'publication id': publication.id}
+    except Exception as e:
+        return {'status': 'KO', 'message': 'Probleme accès à solr',
+                'publication id': publication.id}
+
+    return {'status': 'OK', 'message': 'Aucun document solr à modifier',
+            'publication id': publication.id}
+
 @celery.task(name='publier_acte_task')
 def publier_acte_task(idPublication):
     # on récupère la publication à publier en BDD
     publication = Publication.query.filter(Publication.id == idPublication).one()
+
+    if publication.est_supprime:
+        return {'status': 'OK', 'message': 'publication non autorisé car supprimé colonne est_supprimé',
+                'publication id': publication.id}
 
     # CAS d'une republication si deja présent dans solr alors on change de flag est_publié et on remets les fichiers dans le dossier marque blanche
     solr = solr_connexion()

@@ -44,6 +44,10 @@ model_publication_list = api.model('PublicationList', {
 arguments_publication_controller = reqparse.RequestParser()
 arguments_publication_controller.add_argument('siren', help='siren')
 
+arguments_publication_modifier_controller = reqparse.RequestParser()
+arguments_publication_modifier_controller.add_argument('objet', help="objet de l\'acte")
+
+
 publicationParams_search_controller = reqparse.RequestParser()
 publicationParams_search_controller.add_argument('filter', help='filtre de recherche sur le numéro d\'acte')
 publicationParams_search_controller.add_argument('sortDirection', help='asc ou desc (desc par defaut)')
@@ -121,23 +125,26 @@ class PublicationDepublierCtrl(Resource):
             print(e)
             api.abort(404, 'Not found')
 
-
-@api.route('/supprimer/<int:id>')
-class PublicationDepublierCtrl(Resource):
+@api.route('/modifier/<int:id>')
+class PublicationModifierCtrl(Resource):
+    @api.expect(arguments_publication_modifier_controller)
     @api.response(200, 'Success', model_publication)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     def put(self, id):
         from app.models.publication_model import Publication
         from app import db
-        from app.tasks.publication_tasks import depublier_acte_task
+        from app.tasks.publication_tasks import modifier_acte_task
         try:
             db_sess = db.session
             publication = Publication.query.filter(Publication.id == id).one()
-            # 1 => publie, 0:non, 2:en-cours,3:en-erreur
-            publication.etat = 2
-            publication.est_masque = True
+            args = arguments_publication_modifier_controller.parse_args()
+            objet = args['objet']
+
+            print(model_publication)
+            publication.objet = objet
             db_sess.commit()
-            task = depublier_acte_task.delay(publication.id)
+
+            task = modifier_acte_task.delay(publication.id)
             return jsonify(publication.serialize)
 
         except MultipleResultsFound as e:
@@ -147,6 +154,7 @@ class PublicationDepublierCtrl(Resource):
             print(e)
             api.abort(404, 'Not found')
 
+
 @api.route('/supprimer/<int:id>')
 class PublicationSupprimerCtrl(Resource):
     @api.response(200, 'Success', model_publication)
@@ -154,12 +162,19 @@ class PublicationSupprimerCtrl(Resource):
     def put(self, id):
         from app.models.publication_model import Publication
         from app import db
+        from app.tasks.publication_tasks import depublier_acte_task
         try:
             db_sess = db.session
             publication = Publication.query.filter(Publication.id == id).one()
             publication.est_supprime = True
+
+            # 1 => publie, 0:non, 2:en-cours,3:en-erreur
+            publication.etat = 2
+            publication.est_masque = True
             db_sess.commit()
 
+            #Dépublication des actes supprimés
+            task = depublier_acte_task.delay(publication.id)
             return jsonify(publication.serialize)
 
         except MultipleResultsFound as e:
