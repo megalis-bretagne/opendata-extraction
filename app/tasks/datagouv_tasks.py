@@ -156,7 +156,7 @@ def generation_deliberation(siren, annee, flag_active=None):
             VOTE_CONTRE = ''
             VOTE_ABSTENTION = ''
             if doc_res['est_publie'][0]:
-                DELIB_URL = urllib.parse.quote(str(doc_res['filepath'][0]))
+                DELIB_URL = urllib.parse.quote(str(doc_res['filepath'][0]),safe="https://")
             else:
                 DELIB_URL = ''
 
