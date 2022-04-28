@@ -130,7 +130,7 @@ def publier_acte_task(idPublication):
             dossier = publication.siren + os.path.sep + "Budget"
 
 
-        annee=publication.date_de_lacte[0:4]
+        annee=str(publication.date_de_lacte.year)
 
         # copy de l'acte dans le dossier marque blanche
         for acte in publication.actes:
@@ -275,7 +275,7 @@ def traiter_pj(data, hash, infoEtablissement, publication, pj):
     if publication.date_budget:
         annee = publication.date_budget
     else:
-        annee = publication.date_de_lacte[0:4]
+        annee = str(publication.date_de_lacte.year)
 
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + pj.name
 
@@ -297,7 +297,7 @@ def traiter_budget(data, hash, infoEtablissement, publication, acte):
     if publication.date_budget:
         annee = publication.date_budget
     else:
-        annee = publication.date_de_lacte[0:4]
+        annee = str(publication.date_de_lacte.year)
 
     dossier = publication.siren + os.path.sep + "Budget"
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.name
@@ -317,7 +317,7 @@ def traiter_budget(data, hash, infoEtablissement, publication, acte):
 
 def traiter_deliberation(data, hash, infoEtablissement, publication, acte):
 
-    annee = publication.date_de_lacte[0:4]
+    annee = str(publication.date_de_lacte.year)
     parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
     dossier = publication.siren + os.path.sep + "Deliberation"
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.name
@@ -401,7 +401,7 @@ def init_publication(metadataPastell):
     db_sess.add(newPublication)
     db_sess.commit()
 
-    annee = newPublication.date_de_lacte[0:4]
+    annee = str(newPublication.date_de_lacte.year)
     if newPublication.acte_nature == "1":
         dossier = newPublication.siren + os.path.sep + "Deliberation"
         urlPub = newPublication.siren + '/' + "Deliberation"
