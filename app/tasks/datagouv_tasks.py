@@ -139,13 +139,15 @@ def generation_deliberation(siren, annee, flag_active=None):
     lignes = []
     while len(result.docs) > 0:
         for doc_res in result.docs:
+
             COLL_NOM = str(doc_res['entity'][0])
-            COLL_SIRET = str(doc_res['siren'][0]).zfill(9) + str(doc_res['nic'][0]).zfill(5)
-            DELIB_ID = str(doc_res['documentidentifier'][0])
             DELIB_DATE = str(doc_res['date'][0].split("T", 1)[0])
-            DELIB_MATIERE_CODE = str(doc_res['classification_code'][0])
-            DELIB_MATIERE_NOM = str(doc_res['classification_nom'][0])
+            DELIB_ID = str(doc_res['documentidentifier'][0])
             DELIB_OBJET = str(doc_res['description'][0])
+            COLL_SIRET = str(doc_res['siren'].zfill(9)) + str(doc_res['nic'].zfill(5))
+            DELIB_MATIERE_CODE = str(doc_res['classification_code'])
+            DELIB_MATIERE_NOM = str(doc_res['classification_nom'])
+
             BUDGET_ANNEE = ''
             BUDGET_NOM = ''
             PREF_ID = ''
