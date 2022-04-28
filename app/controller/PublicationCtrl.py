@@ -249,7 +249,7 @@ class PublicationCtrl(Resource):
 class PublicationSearchCtrl(Resource):
     @api.expect(publicationParams_search_controller)
     @api.response(200, 'Success', model_publication_list)
-    # @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
     def post(self):
         from app.models.publication_model import Publication, Acte, PieceJointe
         args = publicationParams_search_controller.parse_args()
