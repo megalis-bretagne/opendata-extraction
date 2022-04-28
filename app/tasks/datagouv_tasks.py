@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import time
+import urllib.parse
 
 import requests
 from flask import current_app
@@ -155,7 +156,7 @@ def generation_deliberation(siren, annee, flag_active=None):
             VOTE_CONTRE = ''
             VOTE_ABSTENTION = ''
             if doc_res['est_publie'][0]:
-                DELIB_URL = str(doc_res['filepath'][0])
+                DELIB_URL = urllib.parse.quote(str(doc_res['filepath'][0]))
             else:
                 DELIB_URL = ''
 
