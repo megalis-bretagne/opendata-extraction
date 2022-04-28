@@ -47,7 +47,6 @@ arguments_publication_controller.add_argument('siren', help='siren')
 arguments_publication_modifier_controller = reqparse.RequestParser()
 arguments_publication_modifier_controller.add_argument('objet', help="objet de l\'acte")
 
-
 publicationParams_search_controller = reqparse.RequestParser()
 publicationParams_search_controller.add_argument('filter', help='filtre de recherche sur le numéro d\'acte')
 publicationParams_search_controller.add_argument('sortDirection', help='asc ou desc (desc par defaut)')
@@ -125,6 +124,7 @@ class PublicationDepublierCtrl(Resource):
             print(e)
             api.abort(404, 'Not found')
 
+
 @api.route('/modifier/<int:id>')
 class PublicationModifierCtrl(Resource):
     @api.expect(arguments_publication_modifier_controller)
@@ -153,6 +153,7 @@ class PublicationModifierCtrl(Resource):
         except NoResultFound as e:
             print(e)
             api.abort(404, 'Not found')
+
 
 @api.route('/masquer/<int:id>')
 class PublicationMasquerCtrl(Resource):
@@ -232,7 +233,7 @@ class PublicationCtrl(Resource):
             publication.est_masque = True
             db_sess.commit()
 
-            #Dépublication des actes supprimés
+            # Dépublication des actes supprimés
             task = depublier_acte_task.delay(publication.id)
             return jsonify(publication.serialize)
 
@@ -248,13 +249,16 @@ class PublicationCtrl(Resource):
 class PublicationSearchCtrl(Resource):
     @api.expect(publicationParams_search_controller)
     @api.response(200, 'Success', model_publication_list)
-    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    # @oidc.accept_token(require_token=True, scopes_required=['openid'])
     def post(self):
         from app.models.publication_model import Publication, Acte, PieceJointe
         args = publicationParams_search_controller.parse_args()
         siren = args['siren']
         etat = args['etat']
-        est_masque = args['est_masque']
+        est_supprime = 0
+        est_masque = 0
+        if args['est_masque'] == 'True':
+            est_masque = 1
 
         if (args['sortDirection']) == 'asc':
             if (args['sortField']) == 'numero_de_lacte':
@@ -289,12 +293,13 @@ class PublicationSearchCtrl(Resource):
                 searchFilter = "%{}%".format(filter)
                 result = Publication.query.filter(
                     or_(Publication.numero_de_lacte.like(searchFilter), Publication.objet.like(searchFilter)),
-                    Publication.siren == siren, Publication.etat == etat,Publication.est_supprime == 0,
+                    Publication.siren == siren, Publication.etat == etat, Publication.est_supprime == est_supprime,
                     Publication.est_masque == est_masque).order_by(
                     sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
             else:
                 result = Publication.query.filter(Publication.siren == siren, Publication.etat == etat,
-                                                  Publication.est_masque == est_masque,Publication.siren == siren,Publication.est_supprime == 0).order_by(
+                                                  Publication.est_masque == est_masque, Publication.siren == siren,
+                                                  Publication.est_supprime == est_supprime).order_by(
                     sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
         else:
             if (args['filter'] != None and args['filter'] != ''):
@@ -302,11 +307,12 @@ class PublicationSearchCtrl(Resource):
                 searchFilter = "%{}%".format(filter)
                 result = Publication.query.filter(
                     or_(Publication.numero_de_lacte.like(searchFilter), Publication.objet.like(searchFilter)),
-                    Publication.siren == siren,Publication.est_supprime == 0,
-                    Publication.est_masque == est_masque,).order_by(
+                    Publication.siren == siren, Publication.est_supprime == est_supprime,
+                    Publication.est_masque == est_masque).order_by(
                     sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
             else:
-                result = Publication.query.filter(Publication.siren == siren, Publication.est_supprime == 0).order_by(
+                result = Publication.query.filter(Publication.siren == siren,
+                                                  Publication.est_supprime == est_supprime).order_by(
                     sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
 
         return jsonify(
