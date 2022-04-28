@@ -7,7 +7,6 @@ import json
 from app.models.parametrage_model import Parametrage
 from app.tasks.utils import *
 import hashlib
-import time
 from app import db
 from app.models.publication_model import Publication, Acte, PieceJointe
 from lxml import etree
@@ -129,9 +128,9 @@ def publier_acte_task(idPublication):
             dossier = publication.siren + os.path.sep + "Deliberation"
         elif publication.acte_nature == "5":
             dossier = publication.siren + os.path.sep + "Budget"
-        # generation annee
-        t = time.localtime()
-        annee = time.strftime('%Y', t)
+
+
+        annee=publication.date_de_lacte[0:4]
 
         # copy de l'acte dans le dossier marque blanche
         for acte in publication.actes:
@@ -273,12 +272,10 @@ def traiter_pj(data, hash, infoEtablissement, publication, pj):
     elif publication.acte_nature == "5":
         dossier = publication.siren + os.path.sep + "Budget"
 
-    # generation annee
-    t = time.localtime()
     if publication.date_budget:
         annee = publication.date_budget
     else:
-        annee = time.strftime('%Y', t)
+        annee = publication.date_de_lacte[0:4]
 
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + pj.name
 
@@ -296,13 +293,11 @@ def traiter_pj(data, hash, infoEtablissement, publication, pj):
 
 
 def traiter_budget(data, hash, infoEtablissement, publication, acte):
-    # generation annee
-    t = time.localtime()
 
     if publication.date_budget:
         annee = publication.date_budget
     else:
-        annee = time.strftime('%Y', t)
+        annee = publication.date_de_lacte[0:4]
 
     dossier = publication.siren + os.path.sep + "Budget"
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.name
@@ -321,10 +316,8 @@ def traiter_budget(data, hash, infoEtablissement, publication, acte):
 
 
 def traiter_deliberation(data, hash, infoEtablissement, publication, acte):
-    # generation annee
-    t = time.localtime()
-    annee = time.strftime('%Y', t)
 
+    annee = publication.date_de_lacte[0:4]
     parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
     dossier = publication.siren + os.path.sep + "Deliberation"
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.name
@@ -408,8 +401,7 @@ def init_publication(metadataPastell):
     db_sess.add(newPublication)
     db_sess.commit()
 
-    t = time.localtime()
-    annee = time.strftime('%Y', t)
+    annee = newPublication.date_de_lacte[0:4]
     if newPublication.acte_nature == "1":
         dossier = newPublication.siren + os.path.sep + "Deliberation"
         urlPub = newPublication.siren + '/' + "Deliberation"
