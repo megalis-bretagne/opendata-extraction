@@ -307,8 +307,7 @@ class PublicationSearchCtrl(Resource):
                 searchFilter = "%{}%".format(filter)
                 result = Publication.query.filter(
                     or_(Publication.numero_de_lacte.like(searchFilter), Publication.objet.like(searchFilter)),
-                    Publication.siren == siren, Publication.est_supprime == est_supprime,
-                    Publication.est_masque == est_masque).order_by(
+                    Publication.siren == siren, Publication.est_supprime == est_supprime).order_by(
                     sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
             else:
                 result = Publication.query.filter(Publication.siren == siren,
