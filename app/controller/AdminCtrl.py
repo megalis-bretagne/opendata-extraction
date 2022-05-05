@@ -247,7 +247,7 @@ class AdminPastellGedPastellCtrl(Resource):
         creation_et_association_connecteur_ged_pastell_budget_task.delay(id_e)
         creation_et_association_connecteur_ged_pastell_delib_task.delay(id_e)
         return jsonify(
-            {"statut": 'demande de creation et association du connecteur ged_pastell réalisée (taches asynchrone)'})
+            {"statut": "id_e:" +id_e + '- demande de creation et association du connecteur GED pastell réalisée (taches asynchrone)'})
 
 
 @api.route('/publication/republier/all/<int:etat>')
@@ -287,7 +287,7 @@ class AdminPastellGedSdtpCtrl(Resource):
         id_e = args['id_e']
         creation_et_association_connecteur_ged_sftp_task.delay(id_e)
         return jsonify(
-            {"statut": 'demande de creation et association du connecteur ged_pastell réalisée ( taches asynchrone)'})
+            {"statut": "id_e:" +id_e + '- demande de creation et association du connecteur GED SFTP réalisée (taches asynchrone)'})
 
 
 @api.route('/test/isAdmin')
