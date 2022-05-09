@@ -264,6 +264,20 @@ def gestion_activation_open_data(siren, opendata_active):
             'siren': siren, 'opendata_active': opendata_active}
 
 
+@celery.task(name='republier_all_acte_task')
+def republier_all_acte_task(etat):
+    db_sess = db.session
+    # etat =3: en - erreur
+    liste_publication = Publication.query.filter(Publication.etat == etat)
+    for publication in liste_publication:
+        # 1 => publie, 0:non, 2:en-cours,3:en-erreur
+        publication.etat = 2
+        db_sess.commit()
+        publier_acte_task.delay(publication.id)
+
+    return {'status': 'OK', 'message': 'republier_all_acte_task ','nombre': len(liste_publication)}
+
+
 # FONCTION
 def traiter_pj(data, hash, infoEtablissement, publication, pj):
     dossier = "Budget"

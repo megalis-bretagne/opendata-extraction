@@ -257,22 +257,10 @@ class PublicationRepublierCtrl(Resource):
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     @isAdmin
     def post(self, etat):
-        from app.models.publication_model import Publication
-        from app import db
-        from app.tasks.publication_tasks import publier_acte_task
-        try:
-            db_sess = db.session
-            # etat =3: en - erreur
-            liste_publication = Publication.query.filter(Publication.etat == etat)
-            for publication in liste_publication:
-                # 1 => publie, 0:non, 2:en-cours,3:en-erreur
-                publication.etat = 2
-                db_sess.commit()
-                publier_acte_task.delay(publication.id)
-            return "ok"
-        except NoResultFound as e:
-            print(e)
-            api.abort(404, 'Not found')
+        from app.tasks.publication_tasks import republier_all_acte_task
+        republier_all_acte_task.delay(etat)
+        return jsonify(
+            {"statut": "ETAT:" +etat+ '- demande de republication prise en compte (taches asynchrone)'})
 
 
 @api.route('/pastell/creation/ged_sftp-opendata')
