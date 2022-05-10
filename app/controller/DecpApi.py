@@ -8,16 +8,10 @@ class DecpCtrl(Resource):
     @api.doc('Retourne un fichier au format decp xml')
     @api.response(200, 'Success')
     @api.produces(["application/octet-stream"])
-    def get(self,siren,annee):
-        from app.tasks.marches_tasks import recuperer_decp
-        from app.tasks.utils import clear_wordir, get_or_create_workdir
-        clear_wordir()
-        response =recuperer_decp(annee, siren)
-        filename = f"decp-{siren}{annee}.xml"
-        try:
-            text_file = open(get_or_create_workdir()+filename, "w")
-            text_file.write(response.text)
-            text_file.close()
-            return send_from_directory(get_or_create_workdir(), filename=filename, as_attachment=True)
-        except FileNotFoundError:
+    def get(self, siren, annee):
+        from app.tasks.marches_tasks import generation_decp
+        from app.tasks.utils import get_or_create_workdir
+        filename = generation_decp(annee, siren)
+        if filename is None:
             abort(404)
+        return send_from_directory(get_or_create_workdir(), filename=filename, as_attachment=True)
