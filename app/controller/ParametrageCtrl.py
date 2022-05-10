@@ -12,6 +12,7 @@ model_parametrage = api.model('parametrage', {
     'siren': fields.String,
     'open_data_active': fields.Boolean,
     'publication_data_gouv_active': fields.Boolean,
+    'publication_udata_active': fields.Boolean,
     'uid_data_gouv': fields.String,
     'api_key_data_gouv': fields.String
 })
@@ -26,6 +27,8 @@ arguments_parametrage_controller.add_argument('siren', help='siren')
 arguments_parametrage_controller.add_argument('open_data_active', help='service open data actif',type=bool)
 arguments_parametrage_controller.add_argument('publication_data_gouv_active',
                                               help='service publication data gouv actif',type=bool)
+arguments_parametrage_controller.add_argument('publication_udata_active',
+                                              help='service publication udata actif',type=bool)
 arguments_parametrage_controller.add_argument('uid_data_gouv', help='uid organisme sur data gouv')
 arguments_parametrage_controller.add_argument('api_key_data_gouv', help='api key pour publication sur data gouv')
 
@@ -39,9 +42,9 @@ class ParametrageCtrl(Resource):
         try:
             parametrage = Parametrage.query.filter(Parametrage.siren == siren).one()
             return jsonify(parametrage.serialize)
-        except MultipleResultsFound as e:
+        except MultipleResultsFound:
             api.abort(500, 'MultipleResultsFound')
-        except NoResultFound as e:
+        except NoResultFound:
             # on retourne un parametrage par defaut
             return jsonify(
                 {
@@ -49,6 +52,7 @@ class ParametrageCtrl(Resource):
                     "siren": siren,
                     "open_data_active": False,
                     "publication_data_gouv_active": False,
+                    "publication_udata_active": False,
                     "uid_data_gouv": "",
                     "api_key_data_gouv": ""
                 }
@@ -66,6 +70,7 @@ class ParametrageCtrl(Resource):
             parametrage = Parametrage.query.filter(Parametrage.siren == args['siren']).one()
             parametrage.open_data_active = args['open_data_active']
             parametrage.publication_data_gouv_active = args['publication_data_gouv_active']
+            parametrage.publication_udata_active = args['publication_udata_active']
             parametrage.uid_data_gouv = args['uid_data_gouv']
             parametrage.api_key_data_gouv = args['api_key_data_gouv']
             parametrage.modified_at = datetime.now()
@@ -81,16 +86,17 @@ class ParametrageCtrl(Resource):
         except NoResultFound as e:
             # on ajoute l'organisme dans notre bdd
             db_sess = db.session
-            newParametrage = Parametrage(created_at=datetime.now(),
+            new_parametrage = Parametrage(created_at=datetime.now(),
                                          modified_at=datetime.now(),
                                          siren=args['siren'],
                                          open_data_active=args['open_data_active'],
                                          publication_data_gouv_active=args['publication_data_gouv_active'],
+                                         publication_udata_active=args['publication_udata_active'],
                                          uid_data_gouv=args['uid_data_gouv'],
                                          api_key_data_gouv=args['api_key_data_gouv']
                                          )
-            db_sess.add(newParametrage)
+            db_sess.add(new_parametrage)
             db_sess.commit()
-            parametrage = newParametrage
+            parametrage = new_parametrage
 
         return jsonify(parametrage.serialize)

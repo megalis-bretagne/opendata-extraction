@@ -3,4 +3,5 @@
 from .publication_tasks import *
 from .pastell_tasks import *
 from .marches_tasks import *
+from .datagouv_tasks import *
 from .udata_tasks import *

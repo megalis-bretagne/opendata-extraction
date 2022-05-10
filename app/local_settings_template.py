@@ -18,7 +18,6 @@ OIDC_REDIRECT_URI = 'http://localhost:5000'
 # SQLAlchemy settings
 #BASE DE DONNEE
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user:password@localhost:3306/data_extraction?charset=utf8'
-#SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user:password@x.x.x.x:xxxx/data_extraction?charset=utf8'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids a SQLAlchemy Warning
 
@@ -56,17 +55,22 @@ DIRECTORY_TO_WATCH_ARCHIVE='D:\\toWatch\\archive'
 DIRECTORY_TO_PUBLICATION='D:\\toWatch\\publication'
 
 
-#UDATA - https://www.data.gouv.fr/fr/
-API_UDATA='https://www.data.gouv.fr/api/1'
-API_KEY_UDATA = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+#DATAGOUV - https://www.data.gouv.fr/fr/
+API_DATAGOUV='https://www.data.gouv.fr/api/1'
+API_KEY_DATAGOUV = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 # orga megalis
-ORG_MEGALIS_UDATA = '534fff8ba3a7292c64a77ed3'
+ORG_MEGALIS_DATAGOUV = '534fff8ba3a7292c64a77ed3'
 # https://www.data.gouv.fr/fr/datasets/donnees-essentielles-du-profil-acheteur-megalis-bretagne/
-DATASET_MARCHE_UDATA = '5f4f4f8910f4b55843deae51'
+DATASET_MARCHE_DATAGOUV = '5f4f4f8910f4b55843deae51'
 # https://www.data.gouv.fr/fr/datasets/deliberations-des-collectivites-adherentes-de-megalis-bretagne/
-DATASET_DELIB_UDATA = '60645c94e2bfd21cdc16c0be'
+DATASET_DELIB_DATAGOUV = '60645c94e2bfd21cdc16c0be'
 # https://www.data.gouv.fr/fr/datasets/budgets-des-collectivites-adherentes-de-megalis-bretagne/
-DATASET_BUDGET_UDATA = '60645b816cccca6dab67f532'
+DATASET_BUDGET_DATAGOUV = '60645b816cccca6dab67f532'
+
+# Catalogue Udata
+API_UDATA='https://mon.udata.fr/api/1'
+API_KEY_UDATA='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+
 
 #Salle des marches Atexo
 URL_JETON_SDM = 'https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxx'

@@ -7,7 +7,6 @@ import json
 from app.models.parametrage_model import Parametrage
 from app.tasks.utils import *
 import hashlib
-import time
 from app import db
 from app.models.publication_model import Publication, Acte, PieceJointe
 from lxml import etree
@@ -60,7 +59,8 @@ def creation_publication_task(zip_path):
                                      modified_at=datetime.now(),
                                      siren=newPublication.siren,
                                      open_data_active=True,
-                                     publication_data_gouv_active=False
+                                     publication_data_gouv_active=False,
+                                     publication_udata_active=False
                                      )
 
         db_sess.add(newParametrage)
@@ -83,10 +83,38 @@ def creation_publication_task(zip_path):
             'task_id': str(task)}
 
 
+@celery.task(name='modifier_acte_task')
+def modifier_acte_task(idPublication):
+
+    # on récupère la publication à publier en BDD
+    publication = Publication.query.filter(Publication.id == idPublication).one()
+    solr = solr_connexion()
+
+    try:
+        result = solr.search(q='publication_id : ' + str(idPublication))
+
+        if (result != 0 and len(result.docs) > 0):
+            # Mise à jour dans Solr
+            for doc_res in result.docs:
+                doc_res['description'][0] = publication.objet
+            solr.add(result.docs)
+            return {'status': 'OK', 'message': 'modification acte réalisée',
+                    'publication id': publication.id}
+    except Exception as e:
+        return {'status': 'KO', 'message': 'Probleme accès à solr',
+                'publication id': publication.id}
+
+    return {'status': 'OK', 'message': 'Aucun document solr à modifier',
+            'publication id': publication.id}
+
 @celery.task(name='publier_acte_task')
 def publier_acte_task(idPublication):
     # on récupère la publication à publier en BDD
     publication = Publication.query.filter(Publication.id == idPublication).one()
+
+    if publication.est_supprime:
+        return {'status': 'OK', 'message': 'publication non autorisé car supprimé colonne est_supprimé',
+                'publication id': publication.id}
 
     # CAS d'une republication si deja présent dans solr alors on change de flag est_publié et on remets les fichiers dans le dossier marque blanche
     solr = solr_connexion()
@@ -100,9 +128,9 @@ def publier_acte_task(idPublication):
             dossier = publication.siren + os.path.sep + "Deliberation"
         elif publication.acte_nature == "5":
             dossier = publication.siren + os.path.sep + "Budget"
-        # generation annee
-        t = time.localtime()
-        annee = time.strftime('%Y', t)
+
+
+        annee=str(publication.date_de_lacte.year)
 
         # copy de l'acte dans le dossier marque blanche
         for acte in publication.actes:
@@ -236,6 +264,20 @@ def gestion_activation_open_data(siren, opendata_active):
             'siren': siren, 'opendata_active': opendata_active}
 
 
+@celery.task(name='republier_all_acte_task')
+def republier_all_acte_task(etat):
+    db_sess = db.session
+    # etat =3: en - erreur
+    liste_publication = Publication.query.filter(Publication.etat == etat)
+    for publication in liste_publication:
+        # 1 => publie, 0:non, 2:en-cours,3:en-erreur
+        publication.etat = 2
+        db_sess.commit()
+        publier_acte_task.delay(publication.id)
+
+    return {'status': 'OK', 'message': 'republier_all_acte_task ','nombre': len(liste_publication)}
+
+
 # FONCTION
 def traiter_pj(data, hash, infoEtablissement, publication, pj):
     dossier = "Budget"
@@ -244,12 +286,10 @@ def traiter_pj(data, hash, infoEtablissement, publication, pj):
     elif publication.acte_nature == "5":
         dossier = publication.siren + os.path.sep + "Budget"
 
-    # generation annee
-    t = time.localtime()
     if publication.date_budget:
         annee = publication.date_budget
     else:
-        annee = time.strftime('%Y', t)
+        annee = str(publication.date_de_lacte.year)
 
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + pj.name
 
@@ -267,13 +307,11 @@ def traiter_pj(data, hash, infoEtablissement, publication, pj):
 
 
 def traiter_budget(data, hash, infoEtablissement, publication, acte):
-    # generation annee
-    t = time.localtime()
 
     if publication.date_budget:
         annee = publication.date_budget
     else:
-        annee = time.strftime('%Y', t)
+        annee = str(publication.date_de_lacte.year)
 
     dossier = publication.siren + os.path.sep + "Budget"
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.name
@@ -292,10 +330,8 @@ def traiter_budget(data, hash, infoEtablissement, publication, acte):
 
 
 def traiter_deliberation(data, hash, infoEtablissement, publication, acte):
-    # generation annee
-    t = time.localtime()
-    annee = time.strftime('%Y', t)
 
+    annee = str(publication.date_de_lacte.year)
     parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
     dossier = publication.siren + os.path.sep + "Deliberation"
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.name
@@ -379,8 +415,7 @@ def init_publication(metadataPastell):
     db_sess.add(newPublication)
     db_sess.commit()
 
-    t = time.localtime()
-    annee = time.strftime('%Y', t)
+    annee = str(newPublication.date_de_lacte.year)
     if newPublication.acte_nature == "1":
         dossier = newPublication.siren + os.path.sep + "Deliberation"
         urlPub = newPublication.siren + '/' + "Deliberation"
@@ -472,9 +507,21 @@ class MetadataPastell:
         self.classification = metajson['classification']
 
         x = self.classification.split(" ", 1)
+
+        #valeur par defaut
+        self.classification_code = "6"
+
         if len(x) == 2:
             self.classification_code = x[0]
-            self.classification_nom = x[1]
+        elif len(x) == 1:
+            self.classification_code = x[0]
+
+        classification_code_split = self.classification_code.split(".", -1)
+        if len(classification_code_split) > 2:
+            self.classification_nom = classification_actes_dict[float(classification_code_split[0] + '.' + classification_code_split[1])]
+        else:
+            self.classification_nom = classification_actes_dict[float(self.classification_code)]
+
 
 
 class InfoEtablissement:

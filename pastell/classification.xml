@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<actes:RetourClassification xmlns:actes="http://www.interieur.gouv.fr/ACTES#v1.1-20040216">
+  <actes:DateClassification>2017-11-13</actes:DateClassification>
+  <actes:NaturesActes>
+
+    <actes:NatureActe actes:CodeNatureActe="5" actes:Libelle="Documents budgétaires et financiers" actes:TypeAbrege="BF">
+      <actes:TypePJNatureActe actes:CodeTypePJ="99_BU" actes:Libelle="Budget"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="70_DE" actes:Libelle="Délibération"/>
+    </actes:NatureActe>
+    <actes:NatureActe actes:CodeNatureActe="6" actes:Libelle="Autres" actes:TypeAbrege="AU">
+      <actes:TypePJNatureActe actes:CodeTypePJ="99_AU" actes:Libelle="Autre document"/>
+    </actes:NatureActe>
+    <actes:NatureActe actes:CodeNatureActe="4" actes:Libelle="Contrats,conventions et avenants" actes:TypeAbrege="CC">
+      <actes:TypePJNatureActe actes:CodeTypePJ="99_CO" actes:Libelle="Contrat"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="10_DE" actes:Libelle="Délibération autorisant à passer le contrat"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="11_AP" actes:Libelle="Cahier des clauses administratives particulières"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="11_AV" actes:Libelle="Avis du jury de concours"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="11_IN" actes:Libelle="Invitation des candidats à soumissionner"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="11_JU" actes:Libelle="Rapport justifiant le choix du marché, les modalités et la procédure de passation"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="11_RC" actes:Libelle="Règlement de consultation"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="11_TP" actes:Libelle="Cahier des clauses techniques particulières"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="12_AD" actes:Libelle="Avis de délégation"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="12_CC" actes:Libelle="Cahier des charges"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="12_CD" actes:Libelle="Contrat de délégation"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="12_CR" actes:Libelle="Courriers de rejet des offres incomplètes ou irrecevables"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="12_DC" actes:Libelle="Documents de consultation"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="12_IP" actes:Libelle="Invitation à présenter une offre"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="12_NR" actes:Libelle="Notification du rejet des offres"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="12_RS" actes:Libelle="Rapport de sélection du délégataire"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="12_ST" actes:Libelle="Spécifications techniques et fonctionnelles"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="17_RC" actes:Libelle="Règlement de concours"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="31_DP" actes:Libelle="Documents pré-contractuels"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="32_DE" actes:Libelle="Délibération de déclassement"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="32_DC" actes:Libelle="Délibération constatant la désaffectation"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="33_CC" actes:Libelle="Contrat de concession"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="32_DP" actes:Libelle="Documents pré-contractuels"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="32_CV" actes:Libelle="Contrat de vente"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="42_AT" actes:Libelle="Attestation"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="42_AC" actes:Libelle="Avenant au contrat"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="42_DE" actes:Libelle="Délibération"/>
+    </actes:NatureActe>
+    <actes:NatureActe actes:CodeNatureActe="2" actes:Libelle="Actes réglementaires" actes:TypeAbrege="AR">
+      <actes:TypePJNatureActe actes:CodeTypePJ="99_AT" actes:Libelle="Acte réglementaire"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="21_DA" actes:Libelle="Décision arrêtant le projet"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="21_DE" actes:Libelle="Délibération de prescription"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="21_GP" actes:Libelle="Récépissé dépôt GPU"/>
+    </actes:NatureActe>
+    <actes:NatureActe actes:CodeNatureActe="3" actes:Libelle="Actes individuels" actes:TypeAbrege="AI">
+      <actes:TypePJNatureActe actes:CodeTypePJ="99_AI" actes:Libelle="Acte individuel"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_PN" actes:Libelle="Plans"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_DD" actes:Libelle="Demande"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_DN" actes:Libelle="Décision"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_NE" actes:Libelle="Notice explicative"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_AT" actes:Libelle="Attestation"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_AV" actes:Libelle="Avis"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_AG" actes:Libelle="Agrément ou certificat"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_AR" actes:Libelle="Accusé de réception"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_TA" actes:Libelle="Tableau"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_LE" actes:Libelle="Lettre"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_CO" actes:Libelle="Convention"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_PE" actes:Libelle="Présentation des états initiaux et futurs"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="22_DP" actes:Libelle="Document photographique"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="41_NC" actes:Libelle="Notification de création ou de vacance de poste"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="41_DE" actes:Libelle="Délibération établissant la liste de postes à pourvoir"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="41_CA" actes:Libelle="Avis de commission administrative paritaire"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="41_IC" actes:Libelle="Information du centre de gestion"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="41_AT" actes:Libelle="Attestation"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="41_CM" actes:Libelle="Avis de la commission mixte paritaire"/>
+    </actes:NatureActe>
+    <actes:NatureActe actes:CodeNatureActe="1" actes:Libelle="Délibérations" actes:TypeAbrege="DE">
+      <actes:TypePJNatureActe actes:CodeTypePJ="99_DE" actes:Libelle="Délibération"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="12_AD" actes:Libelle="Avis de délégation"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="21_DA" actes:Libelle="Décision arrêtant le projet"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="21_GP" actes:Libelle="Récépissé dépôt GPU"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="31_CO" actes:Libelle="Contrat"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="31_DP" actes:Libelle="Documents pré-contractuels"/>
+      <actes:TypePJNatureActe actes:CodeTypePJ="32_DP" actes:Libelle="Documents pré-contractuels"/>
+    </actes:NatureActe>
+  </actes:NaturesActes>
+  <actes:Matieres>
+    <actes:Matiere1 actes:CodeMatiere="1" actes:Libelle="Commande Publique">
+      <actes:Matiere2 actes:CodeMatiere="1" actes:Libelle="Marches publics"/>
+      <actes:Matiere2 actes:CodeMatiere="2" actes:Libelle="Delegation de service public"/>
+      <actes:Matiere2 actes:CodeMatiere="3" actes:Libelle="Conventions de Mandat"/>
+      <actes:Matiere2 actes:CodeMatiere="4" actes:Libelle="Autres types de contrats"/>
+      <actes:Matiere2 actes:CodeMatiere="5" actes:Libelle="Transactions /protocole d accord transactionnel"/>
+      <actes:Matiere2 actes:CodeMatiere="6" actes:Libelle="Actes relatifs a la maitrise d oeuvre"/>
+      <actes:Matiere2 actes:CodeMatiere="7" actes:Libelle="Actes speciaux et divers"/>
+    </actes:Matiere1>
+    <actes:Matiere1 actes:CodeMatiere="2" actes:Libelle="Urbanisme">
+      <actes:Matiere2 actes:CodeMatiere="1" actes:Libelle="Documents d urbanisme "/>
+      <actes:Matiere2 actes:CodeMatiere="2"
+                      actes:Libelle="Actes relatifs au droit d occupation ou d utilisation des sols"/>
+      <actes:Matiere2 actes:CodeMatiere="3" actes:Libelle="Droit de preemption urbain "/>
+    </actes:Matiere1>
+    <actes:Matiere1 actes:CodeMatiere="3" actes:Libelle="Domaine et patrimoine">
+      <actes:Matiere2 actes:CodeMatiere="1" actes:Libelle="Acquisitions"/>
+      <actes:Matiere2 actes:CodeMatiere="2" actes:Libelle="Alienations"/>
+      <actes:Matiere2 actes:CodeMatiere="3" actes:Libelle="Locations"/>
+      <actes:Matiere2 actes:CodeMatiere="4" actes:Libelle="Limites territoriales"/>
+      <actes:Matiere2 actes:CodeMatiere="5" actes:Libelle="Autres actes de gestion du domaine public"/>
+      <actes:Matiere2 actes:CodeMatiere="6" actes:Libelle="Autres actes de gestion du domaine prive"/>
+    </actes:Matiere1>
+    <actes:Matiere1 actes:CodeMatiere="4" actes:Libelle="Fonction publique">
+      <actes:Matiere2 actes:CodeMatiere="1" actes:Libelle="Personnel titulaires et stagiaires de la F.P.T."/>
+      <actes:Matiere2 actes:CodeMatiere="2" actes:Libelle="Personnel contractuel"/>
+      <actes:Matiere2 actes:CodeMatiere="3" actes:Libelle="Fonction publique hospitaliere"/>
+      <actes:Matiere2 actes:CodeMatiere="4" actes:Libelle="Autres categories de personnels"/>
+      <actes:Matiere2 actes:CodeMatiere="5" actes:Libelle="Regime indemnitaire"/>
+    </actes:Matiere1>
+    <actes:Matiere1 actes:CodeMatiere="5" actes:Libelle="Institutions et vie politique">
+      <actes:Matiere2 actes:CodeMatiere="1" actes:Libelle="Election executif"/>
+      <actes:Matiere2 actes:CodeMatiere="2" actes:Libelle="Fonctionnement des assemblees"/>
+      <actes:Matiere2 actes:CodeMatiere="3" actes:Libelle="Designation de representants"/>
+      <actes:Matiere2 actes:CodeMatiere="4" actes:Libelle="Delegation de fonctions"/>
+      <actes:Matiere2 actes:CodeMatiere="5" actes:Libelle="Delegation de signature"/>
+      <actes:Matiere2 actes:CodeMatiere="6" actes:Libelle="Exercice des mandats locaux"/>
+      <actes:Matiere2 actes:CodeMatiere="7" actes:Libelle="Intercommunalite"/>
+      <actes:Matiere2 actes:CodeMatiere="8" actes:Libelle="Decision d ester en justice"/>
+    </actes:Matiere1>
+    <actes:Matiere1 actes:CodeMatiere="6" actes:Libelle="Libertes publiques et pourvoirs de police">
+      <actes:Matiere2 actes:CodeMatiere="1" actes:Libelle="Police municipale"/>
+      <actes:Matiere2 actes:CodeMatiere="2" actes:Libelle="Pouvoir du president du conseil general"/>
+      <actes:Matiere2 actes:CodeMatiere="3" actes:Libelle="Pouvoir du president du conseil regional"/>
+      <actes:Matiere2 actes:CodeMatiere="4" actes:Libelle="Autres actes reglementaires"/>
+      <actes:Matiere2 actes:CodeMatiere="5"
+                      actes:Libelle="Actes pris au nom de l Etat et soumis au controle hierarchique"/>
+    </actes:Matiere1>
+    <actes:Matiere1 actes:CodeMatiere="7" actes:Libelle="Finances locales">
+      <actes:Matiere2 actes:CodeMatiere="1" actes:Libelle="Decisions budgetaires"/>
+      <actes:Matiere2 actes:CodeMatiere="2" actes:Libelle="Fiscalite"/>
+      <actes:Matiere2 actes:CodeMatiere="3" actes:Libelle="Emprunts"/>
+      <actes:Matiere2 actes:CodeMatiere="4" actes:Libelle="Interventions economiques"/>
+      <actes:Matiere2 actes:CodeMatiere="5" actes:Libelle="Subventions"/>
+      <actes:Matiere2 actes:CodeMatiere="6" actes:Libelle="Contributions budgetaires"/>
+      <actes:Matiere2 actes:CodeMatiere="7" actes:Libelle="Avances"/>
+      <actes:Matiere2 actes:CodeMatiere="8" actes:Libelle="Fonds de concours"/>
+      <actes:Matiere2 actes:CodeMatiere="9" actes:Libelle="Prise de participation (SEM, etc...)"/>
+      <actes:Matiere2 actes:CodeMatiere="10" actes:Libelle="Divers"/>
+    </actes:Matiere1>
+    <actes:Matiere1 actes:CodeMatiere="8" actes:Libelle="Domaines de competences par themes">
+      <actes:Matiere2 actes:CodeMatiere="1" actes:Libelle="Enseignement"/>
+      <actes:Matiere2 actes:CodeMatiere="2" actes:Libelle="Aide sociale"/>
+      <actes:Matiere2 actes:CodeMatiere="3" actes:Libelle="Voirie"/>
+      <actes:Matiere2 actes:CodeMatiere="4" actes:Libelle="Amenagement du territoire"/>
+      <actes:Matiere2 actes:CodeMatiere="5" actes:Libelle="Politique de la ville-habitat-logement"/>
+      <actes:Matiere2 actes:CodeMatiere="6" actes:Libelle="Emploi-formation professionnelle"/>
+      <actes:Matiere2 actes:CodeMatiere="7" actes:Libelle="Transports"/>
+      <actes:Matiere2 actes:CodeMatiere="8" actes:Libelle="Environnement"/>
+      <actes:Matiere2 actes:CodeMatiere="9" actes:Libelle="Culture"/>
+    </actes:Matiere1>
+    <actes:Matiere1 actes:CodeMatiere="9" actes:Libelle="Autres domaines de competences">
+      <actes:Matiere2 actes:CodeMatiere="1" actes:Libelle="Autres domaines de competences des communes"/>
+      <actes:Matiere2 actes:CodeMatiere="2" actes:Libelle="Autres domaines de competences des departements"/>
+      <actes:Matiere2 actes:CodeMatiere="3" actes:Libelle="Autres domaines de competences des regions"/>
+      <actes:Matiere2 actes:CodeMatiere="4" actes:Libelle="Voeux et motions"/>
+    </actes:Matiere1>
+  </actes:Matieres>
+</actes:RetourClassification>
+

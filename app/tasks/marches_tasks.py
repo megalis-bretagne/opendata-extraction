@@ -1,30 +1,42 @@
 import calendar
-from xml.etree import ElementTree
-
-from flask import current_app
-from app.tasks.utils import *
-
-from app import celeryapp
-import json, requests
+import json
 import time
 from xml.dom import minidom
+from xml.etree import ElementTree
+
+import requests
+
+from app import celeryapp
+from app.tasks.utils import *
+
 celery = celeryapp.celery
 
 
-@celery.task(name='generation_marche')
-def generation_marche():
+class SDMException(Exception):
+    pass
+
+
+@celery.task(name='generation_marche', bind=True)
+def generation_marche(self):
     # generation annee
     t = time.localtime()
-    ANNEE = time.strftime('%Y', t)
-    return generation_and_publication_decp_pour_annee(ANNEE)
+    annee = time.strftime('%Y', t)
+    reponse = generation_and_publication_decp_pour_annee(annee)
+    if reponse['status'] == 'KO':
+        raise SDMException(reponse['message'])
+    return reponse
 
-@celery.task(name='generation_marche_annee')
-def generation_marche_annee(annee):
-    return generation_and_publication_decp_pour_annee(annee)
+
+@celery.task(name='generation_marche_annee', bind=True)
+def generation_marche_annee(self, annee):
+    reponse = generation_and_publication_decp_pour_annee(annee)
+    if reponse['status'] == 'KO':
+        raise SDMException(reponse['message'])
+    return reponse
 
 
-@celery.task(name='generation_marche_histo')
-def generation_marche_histo():
+@celery.task(name='generation_marche_histo', bind=True)
+def generation_marche_histo(self):
     annee_debut = 2014
     # generation annee
     t = time.localtime()
@@ -35,13 +47,15 @@ def generation_marche_histo():
         annee_a_generer += 1
     print("END " + str(annee_a_generer))
 
-def recuperer_decp(annee, siren):
 
+def generation_decp(annee, siren) -> str or None:
+    """génération du fichier decp pour un siren & annee donne. Si renvoie None alors aucun fichier n'a été généré"""
+    clear_wordir()
     # generation annee
     ANNEE = annee
     url_jeton_sdm = current_app.config['URL_JETON_SDM']
     try:
-        response = requests.get(url_jeton_sdm);
+        response = requests.get(url_jeton_sdm)
         doc = minidom.parseString(response.text)
         jeton = doc.getElementsByTagName("ticket")[0].firstChild.data
 
@@ -53,10 +67,22 @@ def recuperer_decp(annee, siren):
             'date_notif_min': '01-01-' + str(ANNEE),
             'date_notif_max': '31-12-' + str(ANNEE)
         })
-    except Exception as e:
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><marches></marches>"
 
-    return reponse_export_pivot
+        if reponse_export_pivot.status_code != 200:
+            return None
+    except Exception:
+        return None
+
+    filename = f"decp-{siren}{annee}.xml"
+    try:
+        text_file = open(get_or_create_workdir() + filename, "w")
+        text_file.write(reponse_export_pivot.text)
+        text_file.close()
+
+    except FileNotFoundError:
+        return None
+
+    return filename
 
 
 def generation_and_publication_decp_pour_annee(annee):
@@ -64,8 +90,8 @@ def generation_and_publication_decp_pour_annee(annee):
 
     ANNEE = str(annee)
     url_jeton_sdm = current_app.config['URL_JETON_SDM']
-    API_KEY = current_app.config['API_KEY_UDATA']
-    DATASET = current_app.config['DATASET_MARCHE_UDATA']
+    API_KEY = current_app.config['API_KEY_DATAGOUV']
+    DATASET = current_app.config['DATASET_MARCHE_DATAGOUV']
     HEADERS = {
         'X-API-KEY': API_KEY,
     }
@@ -83,31 +109,33 @@ def generation_and_publication_decp_pour_annee(annee):
         MOIS_EN_COURS = time.strftime('%m', t)
 
         xml_data = None
-        month=1
+        month = 1
         while month <= 12:
-            monthStr = "{:02d}".format(month)
-            maxDay=calendar.monthrange(int(annee), month)[1]
+            month_str = "{:02d}".format(month)
+            max_day = calendar.monthrange(int(annee), month)[1]
 
-            if int(annee) == int (ANNEE_EN_COURS):
-                if (month > int(MOIS_EN_COURS)):
-                    break
-
-            reponse_export_pivot = requests.post(url_format_pivot, json={
-                'token': jeton,
-                'format': 'xml',
-                'date_notif_min': '01-'+monthStr+'-' + str(ANNEE),
-                'date_notif_max': str(maxDay)+'-'+monthStr+'-' + str(ANNEE)
-            })
-
+            if int(annee) == int(ANNEE_EN_COURS) and (month > int(MOIS_EN_COURS)):
+                break
+            try:
+                reponse_export_pivot = requests.post(url_format_pivot, json={
+                    'token': jeton,
+                    'format': 'xml',
+                    'date_notif_min': '01-' + month_str + '-' + str(ANNEE),
+                    'date_notif_max': str(max_day) + '-' + month_str + '-' + str(ANNEE)
+                })
+                if reponse_export_pivot.status_code != 200:
+                    return {'status': 'KO', 'message': 'erreur lors de l\'appel SDM pour l\'annee {}'.format(annee)}
+            except Exception:
+                return {'status': 'KO', 'message': 'erreur lors de l\'appel SDM pour l\'annee {}'.format(annee)}
             data = ElementTree.fromstring(reponse_export_pivot.text)
             if xml_data is None:
                 xml_data = data
             else:
                 xml_data.extend(data)
-            month=month+1
+            month = month + 1
 
         # Ecriture du fichier dans dossier workdir
-        f = open(get_or_create_workdir() + 'decp-' + str(ANNEE) + ' .xml', 'w',encoding='utf8')
+        f = open(get_or_create_workdir() + 'decp-' + str(ANNEE) + ' .xml', 'w', encoding='utf8')
         if xml_data is not None:
             xmlstr = ElementTree.tostring(xml_data, encoding='utf8', method='xml')
             f.write(xmlstr.decode("utf8"))
@@ -127,25 +155,9 @@ def generation_and_publication_decp_pour_annee(annee):
 
                 print('update resource id :' + RESOURCE_UID)
 
-                # on supprime la resource
-                url = api_url('/datasets/{}/resources/{}'.format(DATASET, RESOURCE_UID))
-                response = requests.delete(url, headers=HEADERS);
-
-                # ajout de la  nouvelle version du fichier
-                url = api_url('/datasets/{}/upload/'.format(DATASET))
-                response = requests.post(url, files={
+                url = api_url('/datasets/{}/resources/{}/upload/'.format(DATASET, RESOURCE_UID))
+                requests.post(url, files={
                     'file': open(get_or_create_workdir() + 'decp-' + str(ANNEE) + ' .xml', 'rb'),
-                }, headers=HEADERS)
-
-                response = json.loads(response.text)
-                RESOURCE_UID = response['id']
-
-                # #Mise à jour des métadonnées d’une ressource
-                url = api_url('/datasets/{}/resources/{}/'.format(DATASET, RESOURCE_UID))
-                response = requests.put(url, json={
-                    'format': 'xml',
-                    'schema': {'name': '139bercy/format-commande-publique'}
-
                 }, headers=HEADERS)
 
             else:
@@ -168,11 +180,12 @@ def generation_and_publication_decp_pour_annee(annee):
 
                 }, headers=HEADERS)
 
-    except Exception as e:
-        print("Erreur lors de la récupération du jeton SDM", e)
+    except Exception:
+        return {'status': 'KO', 'message': 'erreur lors de l\'appel SDM pour l\'annee {}'.format(annee)}
 
     return {'status': 'OK', 'message': 'publication decp sur data.gouv', 'annee': str(ANNEE)}
 
+
 def api_url(path):
-    API = current_app.config['API_UDATA']
+    API = current_app.config['API_DATAGOUV']
     return API + path
