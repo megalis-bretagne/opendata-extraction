@@ -507,9 +507,21 @@ class MetadataPastell:
         self.classification = metajson['classification']
 
         x = self.classification.split(" ", 1)
+
+        #valeur par defaut
+        self.classification_code = "6"
+
         if len(x) == 2:
             self.classification_code = x[0]
-            self.classification_nom = x[1]
+        elif len(x) == 1:
+            self.classification_code = x[0]
+
+        classification_code_split = self.classification_code.split(".", -1)
+        if len(classification_code_split) > 2:
+            self.classification_nom = classification_actes_dict[float(classification_code_split[0] + '.' + classification_code_split[1])]
+        else:
+            self.classification_nom = classification_actes_dict[float(self.classification_code)]
+
 
 
 class InfoEtablissement:
