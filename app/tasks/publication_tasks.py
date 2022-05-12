@@ -108,7 +108,7 @@ def modifier_acte_task(idPublication):
             'publication id': publication.id}
 
 
-@celery.task(name='publier_acte_task')
+@celery.task(name='publier_acte_task', rate_limit='25/m')
 def publier_acte_task(idPublication):
     # on récupère la publication à publier en BDD
     publication = Publication.query.filter(Publication.id == idPublication).one()
