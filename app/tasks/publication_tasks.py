@@ -49,7 +49,6 @@ def creation_publication_task(zip_path):
     # check and init parametrage
     try:
         Parametrage.query.filter(Parametrage.siren == newPublication.siren).one()
-
     except MultipleResultsFound as e:
         # todo delete puis recreer le parametrage
         print(e)
@@ -66,6 +65,9 @@ def creation_publication_task(zip_path):
         db_sess.add(newParametrage)
         db_sess.commit()
 
+    #init des documents dans solr avec est_publie=False
+    insert_solr(newPublication)
+
     # si acte différent de budget et publication opendata non ou ne sais pas alors on de
     if metadataPastell.acte_nature != "5":
         if metadataPastell.publication_open_data == '1' or metadataPastell.publication_open_data == '2':
@@ -76,12 +78,10 @@ def creation_publication_task(zip_path):
     newPublication.etat = 2
     db_sess = db.session
     db_sess.add(newPublication)
-
     task = publier_acte_task.delay(newPublication.id)
 
     return {'status': 'OK', 'message': 'tache de publication demandée', 'publication_id': newPublication.id,
             'task_id': str(task)}
-
 
 @celery.task(name='modifier_acte_task')
 def modifier_acte_task(idPublication):
@@ -124,41 +124,95 @@ def publier_acte_task(idPublication):
         result = 0
 
     if (result != 0 and len(result.docs) > 0):
-        if publication.acte_nature == "1":
-            dossier = publication.siren + os.path.sep + "Deliberation"
-        elif publication.acte_nature == "5":
-            dossier = publication.siren + os.path.sep + "Budget"
+        lien_symbolique_et_etat_solr(publication, solr, result)
+    else:
+        insert_solr(publication)
+        try:
+            result = solr.search(q='publication_id : ' + str(idPublication))
+            lien_symbolique_et_etat_solr(publication, solr, result)
+        except Exception as e:
+            result = 0
 
+        if (result != 0 and len(result.docs) > 0):
+            lien_symbolique_et_etat_solr(publication, solr, result)
+        else:
+            # Mise à jour de la publication à erreur
+            db_sess = db.session
+            publication = Publication.query.filter(Publication.id == idPublication).one()
+            db_sess.add(publication)
+            # 1 => publie, 0:non, 2:en-cours,3:en-erreur
+            publication.etat = 3
+            publication.modified_at = datetime.now()
+            db_sess.commit()
+            return {'status': 'KO', 'message': 'pas de document dans solr',
+                    'publication id': publication.id}
 
-        annee=str(publication.date_de_lacte.year)
+    # Mise à jour de la publication
+    db_sess = db.session
+    publication = Publication.query.filter(Publication.id == idPublication).one()
+    db_sess.add(publication)
+    # 1 => publie, 0:non, 2:en-cours,3:en-erreur
+    publication.etat = 1
+    publication.modified_at = datetime.now()
+    db_sess.commit()
+    return {'status': 'OK', 'message': 'publication open data réalisé',
+            'publication id': publication.id}
 
-        # copy de l'acte dans le dossier marque blanche
-        for acte in publication.actes:
-            symlink_file(acte.path,
-                         current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                         acte.name)
+@celery.task(name='depublier_acte_task')
+def depublier_acte_task(idPublication):
+    publication = Publication.query.filter(Publication.id == idPublication).one()
+    if publication:
+        # suppression dans solr
+        solr = solr_connexion()
+        result = solr.search(q='publication_id : ' + str(idPublication))
 
-        # copy des pj dans le dossier marque blanche
-        for pj in publication.pieces_jointe:
-            symlink_file(pj.path,
-                         current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                         pj.name)
-
-        # Mise à jour dans Solr
+        # suppression sur le filesystem
         for doc_res in result.docs:
-            doc_res['est_publie'][0] = True
+            parseResult = urllib.parse.urlparse(str(doc_res['filepath'][0]))
+            doc_res['est_publie'][0] = False
+            try:
+                os.remove(current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path)
+            except FileNotFoundError as e:
+                logging.info("fichier deja supprimé:" + current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path)
+
         solr.add(result.docs)
 
         # Mise à jour de la publication
         db_sess = db.session
-        publication = Publication.query.filter(Publication.id == idPublication).one()
         db_sess.add(publication)
         # 1 => publie, 0:non, 2:en-cours,3:en-erreur
-        publication.etat = 1
+        publication.etat = 0
         publication.modified_at = datetime.now()
         db_sess.commit()
-        return {'status': 'OK', 'message': 'republication open data réalisé',
-                'publication id': publication.id}
+
+    return {'status': 'OK', 'message': 'depublication open data réalisée',
+            'publication id': idPublication}
+
+@celery.task(name='gestion_activation_open_data_task')
+def gestion_activation_open_data(siren, opendata_active):
+    solr = solr_connexion()
+    result = solr.search(q='siren : ' + str(siren))
+    for doc_res in result.docs:
+        doc_res['opendata_active'][0] = opendata_active
+    solr.add(result.docs)
+
+    return {'status': 'OK', 'message': 'mise à jour du flag opendata_active dans solr',
+            'siren': siren, 'opendata_active': opendata_active}
+
+@celery.task(name='republier_all_acte_task')
+def republier_all_acte_task(etat):
+    db_sess = db.session
+    # etat =3: en - erreur
+    liste_publication = Publication.query.filter(Publication.etat == etat)
+    for publication in liste_publication:
+        # 1 => publie, 0:non, 2:en-cours,3:en-erreur
+        publication.etat = 2
+        db_sess.commit()
+        publier_acte_task.delay(publication.id)
+    return {'status': 'OK', 'message': 'republier_all_acte_task ','nombre': len(liste_publication)}
+
+# FONCTION
+def insert_solr(publication):
 
     # call API insee v3, sur /siret avec siren en parametre + etablissementSiege=true
     result = api_insee_call(publication.siren)
@@ -204,81 +258,35 @@ def publier_acte_task(idPublication):
 
                 except pysolr.SolrError as e:
                     logging.exception("fichier ignore : %s" % pj)
-
     except Exception as e:
         logging.exception("probleme traitement PJ : on ignore")
 
-    # Mise à jour de la publication
-    db_sess = db.session
-    publication = Publication.query.filter(Publication.id == idPublication).one()
-    db_sess.add(publication)
-    # 1 => publie, 0:non, 2:en-cours,3:en-erreur
-    publication.etat = 1
-    publication.modified_at = datetime.now()
-    db_sess.commit()
+def lien_symbolique_et_etat_solr(publication,solr,result):
+    if publication.acte_nature == "1":
+        dossier = publication.siren + os.path.sep + "Deliberation"
+    elif publication.acte_nature == "5":
+        dossier = publication.siren + os.path.sep + "Budget"
 
-    return {'status': 'OK', 'message': 'publication open data réalisé',
-            'publication id': publication.id}
+    annee = str(publication.date_de_lacte.year)
 
+    # copy de l'acte dans le dossier marque blanche
+    for acte in publication.actes:
+        symlink_file(acte.path,
+                     current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
+                     acte.name)
 
-@celery.task(name='depublier_acte_task')
-def depublier_acte_task(idPublication):
-    publication = Publication.query.filter(Publication.id == idPublication).one()
-    if publication:
-        # suppression dans solr
-        solr = solr_connexion()
-        result = solr.search(q='publication_id : ' + str(idPublication))
+    # copy des pj dans le dossier marque blanche
+    for pj in publication.pieces_jointe:
+        symlink_file(pj.path,
+                     current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
+                     pj.name)
 
-        # suppression sur le filesystem
-        for doc_res in result.docs:
-            parseResult = urllib.parse.urlparse(str(doc_res['filepath'][0]))
-            doc_res['est_publie'][0] = False
-            try:
-                os.remove(current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path)
-            except FileNotFoundError as e:
-                logging.info("fichier deja supprimé:" + current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path)
-
-        solr.add(result.docs)
-
-        # Mise à jour de la publication
-        db_sess = db.session
-        db_sess.add(publication)
-        # 1 => publie, 0:non, 2:en-cours,3:en-erreur
-        publication.etat = 0
-        publication.modified_at = datetime.now()
-        db_sess.commit()
-
-    return {'status': 'OK', 'message': 'depublication open data réalisée',
-            'publication id': idPublication}
-
-
-@celery.task(name='gestion_activation_open_data_task')
-def gestion_activation_open_data(siren, opendata_active):
-    solr = solr_connexion()
-    result = solr.search(q='siren : ' + str(siren))
+    # Mise à jour dans Solr
     for doc_res in result.docs:
-        doc_res['opendata_active'][0] = opendata_active
+        doc_res['est_publie'][0] = True
     solr.add(result.docs)
 
-    return {'status': 'OK', 'message': 'mise à jour du flag opendata_active dans solr',
-            'siren': siren, 'opendata_active': opendata_active}
 
-
-@celery.task(name='republier_all_acte_task')
-def republier_all_acte_task(etat):
-    db_sess = db.session
-    # etat =3: en - erreur
-    liste_publication = Publication.query.filter(Publication.etat == etat)
-    for publication in liste_publication:
-        # 1 => publie, 0:non, 2:en-cours,3:en-erreur
-        publication.etat = 2
-        db_sess.commit()
-        publier_acte_task.delay(publication.id)
-
-    return {'status': 'OK', 'message': 'republier_all_acte_task ','nombre': len(liste_publication)}
-
-
-# FONCTION
 def traiter_pj(data, hash, infoEtablissement, publication, pj):
     dossier = "Budget"
     if publication.acte_nature == "1":
@@ -305,7 +313,6 @@ def traiter_pj(data, hash, infoEtablissement, publication, pj):
                  pj.name)
     return data['metadata']
 
-
 def traiter_budget(data, hash, infoEtablissement, publication, acte):
 
     if publication.date_budget:
@@ -328,7 +335,6 @@ def traiter_budget(data, hash, infoEtablissement, publication, acte):
                  acte.name)
     return data['metadata']
 
-
 def traiter_deliberation(data, hash, infoEtablissement, publication, acte):
 
     annee = str(publication.date_de_lacte.year)
@@ -346,7 +352,6 @@ def traiter_deliberation(data, hash, infoEtablissement, publication, acte):
                  acte.name)
     return data['metadata']
 
-
 def init_document(content, data, hash, infoEtablissement, parametrage, publication, urlPDF, typology):
     data['metadata']['_text_'] = content
     data['metadata']["hash"] = hash
@@ -354,7 +359,7 @@ def init_document(content, data, hash, infoEtablissement, parametrage, publicati
     data['metadata']["filepath"] = urlPDF
     data['metadata']["stream_content_type"] = data['metadata']["Content-Type"]
     # etat publication
-    data['metadata']["est_publie"] = True
+    data['metadata']["est_publie"] = False
     data['metadata']["opendata_active"] = parametrage.open_data_active
     data['metadata']["date_budget"] = publication.date_budget
     # partie métadata (issu du fichier metadata.json de pastell)
@@ -382,7 +387,6 @@ def init_document(content, data, hash, infoEtablissement, parametrage, publicati
     data['metadata']["activite"] = infoEtablissement.activitePrincipaleUniteLegale,
     data['metadata']["nomenclatureactivite"] = infoEtablissement.nomenclatureActivitePrincipaleUniteLegale
 
-
 def init_publication(metadataPastell):
     WORKDIR = get_or_create_workdir()
     # publication open data oui par défaut 0:oui / 1:non / 2:Ne sais pas
@@ -406,7 +410,7 @@ def init_publication(metadataPastell):
         created_at=datetime.now(),
         modified_at=datetime.now(),
         date_budget=date_budget,
-        # est_publie
+        est_publie=0,
         classification_code=metadataPastell.classification_code,
         classification_nom=metadataPastell.classification_nom,
         acte_nature=metadataPastell.acte_nature,
@@ -471,7 +475,6 @@ def init_publication(metadataPastell):
     db_sess.commit()
     return newPublication
 
-
 class MetadataPastell:
     def __init__(self, metajson):
         self.numero_de_lacte = metajson['numero_de_lacte']
@@ -522,8 +525,6 @@ class MetadataPastell:
         else:
             self.classification_nom = classification_actes_dict[float(self.classification_code)]
 
-
-
 class InfoEtablissement:
     def __init__(self, resultApi):
         self.numeroVoieEtablissement = ''
@@ -568,7 +569,6 @@ class InfoEtablissement:
             self.denominationUniteLegale = resultApi['uniteLegale']['denominationUniteLegale']
         if resultApi['nic'] != None:
             self.nic = resultApi['nic']
-
 
 def __get_date_buget(xml_file: str):
     namespaces = {'nms': 'http://www.minefi.gouv.fr/cp/demat/docbudgetaire'}
