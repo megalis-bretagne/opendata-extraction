@@ -49,7 +49,6 @@ def creation_publication_task(zip_path):
     # check and init parametrage
     try:
         Parametrage.query.filter(Parametrage.siren == newPublication.siren).one()
-
     except MultipleResultsFound as e:
         # todo delete puis recreer le parametrage
         print(e)
@@ -66,6 +65,9 @@ def creation_publication_task(zip_path):
         db_sess.add(newParametrage)
         db_sess.commit()
 
+    # init des documents dans solr avec est_publie=False
+    insert_solr(newPublication)
+
     # si acte différent de budget et publication opendata non ou ne sais pas alors on de
     if metadataPastell.acte_nature != "5":
         if metadataPastell.publication_open_data == '1' or metadataPastell.publication_open_data == '2':
@@ -76,7 +78,6 @@ def creation_publication_task(zip_path):
     newPublication.etat = 2
     db_sess = db.session
     db_sess.add(newPublication)
-
     task = publier_acte_task.delay(newPublication.id)
 
     return {'status': 'OK', 'message': 'tache de publication demandée', 'publication_id': newPublication.id,
@@ -85,7 +86,6 @@ def creation_publication_task(zip_path):
 
 @celery.task(name='modifier_acte_task')
 def modifier_acte_task(idPublication):
-
     # on récupère la publication à publier en BDD
     publication = Publication.query.filter(Publication.id == idPublication).one()
     solr = solr_connexion()
@@ -107,7 +107,8 @@ def modifier_acte_task(idPublication):
     return {'status': 'OK', 'message': 'Aucun document solr à modifier',
             'publication id': publication.id}
 
-@celery.task(name='publier_acte_task')
+
+@celery.task(name='publier_acte_task', rate_limit='20/m')
 def publier_acte_task(idPublication):
     # on récupère la publication à publier en BDD
     publication = Publication.query.filter(Publication.id == idPublication).one()
@@ -124,89 +125,28 @@ def publier_acte_task(idPublication):
         result = 0
 
     if (result != 0 and len(result.docs) > 0):
-        if publication.acte_nature == "1":
-            dossier = publication.siren + os.path.sep + "Deliberation"
-        elif publication.acte_nature == "5":
-            dossier = publication.siren + os.path.sep + "Budget"
+        lien_symbolique_et_etat_solr(publication)
+    else:
+        insert_solr(publication)
+        try:
+            result = solr.search(q='publication_id : ' + str(idPublication))
+            lien_symbolique_et_etat_solr(publication)
+        except Exception as e:
+            result = 0
 
-
-        annee=str(publication.date_de_lacte.year)
-
-        # copy de l'acte dans le dossier marque blanche
-        for acte in publication.actes:
-            symlink_file(acte.path,
-                         current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                         acte.name)
-
-        # copy des pj dans le dossier marque blanche
-        for pj in publication.pieces_jointe:
-            symlink_file(pj.path,
-                         current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                         pj.name)
-
-        # Mise à jour dans Solr
-        for doc_res in result.docs:
-            doc_res['est_publie'][0] = True
-        solr.add(result.docs)
-
-        # Mise à jour de la publication
-        db_sess = db.session
-        publication = Publication.query.filter(Publication.id == idPublication).one()
-        db_sess.add(publication)
-        # 1 => publie, 0:non, 2:en-cours,3:en-erreur
-        publication.etat = 1
-        publication.modified_at = datetime.now()
-        db_sess.commit()
-        return {'status': 'OK', 'message': 'republication open data réalisé',
-                'publication id': publication.id}
-
-    # call API insee v3, sur /siret avec siren en parametre + etablissementSiege=true
-    result = api_insee_call(publication.siren)
-    if len(result['etablissements']) > 0:
-        infoEtablissement = InfoEtablissement(result['etablissements'][0])
-
-    # Pour tous les actes ( documents lié à la publication)
-    for acte in publication.actes:
-        with open(acte.path, 'rb') as fh:
-            try:
-                solr = solr_connexion()
-                data = solr.extract(fh, extractOnly=True)
-                # generation du hash
-                hash = hashlib.md5(fh.read()).hexdigest()
-                if publication.acte_nature == "1":
-                    traiter_deliberation(data, hash, infoEtablissement, publication, acte)
-                elif publication.acte_nature == "5":
-                    traiter_budget(data, hash, infoEtablissement, publication, acte)
-                # insert dans apache solr
-                solr.add(data['metadata'])
-
-            except Exception as e:
-                db_sess = db.session
-                publication.etat = '3'
-                db_sess.add(publication)
-                db_sess.commit()
-                logging.exception("Erreur lors de la publication de l'acte: %s" % acte)
-                raise e
-
-    # Pour tous les fichiers pj présents dans le zip
-    try:
-        for pj in publication.pieces_jointe:
-            with open(pj.path, 'rb') as fh:
-                try:
-                    solr = solr_connexion()
-                    data = solr.extract(fh, extractOnly=True)
-                    # generation du hash
-                    hash = hashlib.md5(fh.read()).hexdigest()
-                    traiter_pj(data, hash, infoEtablissement, publication, pj)
-
-                    # insert dans apache solr
-                    solr.add(data['metadata'])
-
-                except pysolr.SolrError as e:
-                    logging.exception("fichier ignore : %s" % pj)
-
-    except Exception as e:
-        logging.exception("probleme traitement PJ : on ignore")
+        if (result != 0 and len(result.docs) > 0):
+            lien_symbolique_et_etat_solr(publication)
+        else:
+            # Mise à jour de la publication à erreur
+            db_sess = db.session
+            publication = Publication.query.filter(Publication.id == idPublication).one()
+            db_sess.add(publication)
+            # 1 => publie, 0:non, 2:en-cours,3:en-erreur
+            publication.etat = 3
+            publication.modified_at = datetime.now()
+            db_sess.commit()
+            return {'status': 'KO', 'message': 'pas de document dans solr',
+                    'publication id': publication.id}
 
     # Mise à jour de la publication
     db_sess = db.session
@@ -216,7 +156,6 @@ def publier_acte_task(idPublication):
     publication.etat = 1
     publication.modified_at = datetime.now()
     db_sess.commit()
-
     return {'status': 'OK', 'message': 'publication open data réalisé',
             'publication id': publication.id}
 
@@ -274,11 +213,87 @@ def republier_all_acte_task(etat):
         publication.etat = 2
         db_sess.commit()
         publier_acte_task.delay(publication.id)
-
-    return {'status': 'OK', 'message': 'republier_all_acte_task ','nombre': len(liste_publication)}
+    return {'status': 'OK', 'message': 'republier_all_acte_task '}
 
 
 # FONCTION
+def insert_solr(publication):
+    # call API insee v3, sur /siret avec siren en parametre + etablissementSiege=true
+    result = api_insee_call(publication.siren)
+    if len(result['etablissements']) > 0:
+        infoEtablissement = InfoEtablissement(result['etablissements'][0])
+
+    # Pour tous les actes ( documents lié à la publication)
+    for acte in publication.actes:
+        with open(acte.path, 'rb') as fh:
+            try:
+                solr = solr_connexion()
+                data = solr.extract(fh, extractOnly=True)
+                # generation du hash
+                hash = hashlib.md5(fh.read()).hexdigest()
+                if publication.acte_nature == "1":
+                    traiter_deliberation(data, hash, infoEtablissement, publication, acte)
+                elif publication.acte_nature == "5":
+                    traiter_budget(data, hash, infoEtablissement, publication, acte)
+                # insert dans apache solr
+                solr.add(data['metadata'])
+
+            except Exception as e:
+                db_sess = db.session
+                publication.etat = '3'
+                db_sess.add(publication)
+                db_sess.commit()
+                logging.exception("Erreur lors de la publication de l'acte: %s" % acte)
+                raise e
+
+    # Pour tous les fichiers pj présents dans le zip
+    try:
+        for pj in publication.pieces_jointe:
+            with open(pj.path, 'rb') as fh:
+                try:
+                    solr = solr_connexion()
+                    data = solr.extract(fh, extractOnly=True)
+                    # generation du hash
+                    hash = hashlib.md5(fh.read()).hexdigest()
+                    traiter_pj(data, hash, infoEtablissement, publication, pj)
+
+                    # insert dans apache solr
+                    solr.add(data['metadata'])
+
+                except pysolr.SolrError as e:
+                    logging.exception("fichier ignore : %s" % pj)
+    except Exception as e:
+        logging.exception("probleme traitement PJ : on ignore")
+
+
+def lien_symbolique_et_etat_solr(publication):
+    if publication.acte_nature == "1":
+        dossier = publication.siren + os.path.sep + "Deliberation"
+    elif publication.acte_nature == "5":
+        dossier = publication.siren + os.path.sep + "Budget"
+
+    annee = str(publication.date_de_lacte.year)
+
+    # copy de l'acte dans le dossier marque blanche
+    for acte in publication.actes:
+        symlink_file(acte.path,
+                     current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
+                     acte.name)
+
+    # copy des pj dans le dossier marque blanche
+    for pj in publication.pieces_jointe:
+        symlink_file(pj.path,
+                     current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
+                     pj.name)
+
+    solr = solr_connexion()
+    result = solr.search(q='publication_id : ' + str(publication.id))
+    # Mise à jour dans Solr
+    for doc_res in result.docs:
+        doc_res['est_publie'][0] = True
+    solr.add(result.docs)
+
+
 def traiter_pj(data, hash, infoEtablissement, publication, pj):
     dossier = "Budget"
     if publication.acte_nature == "1":
@@ -307,7 +322,6 @@ def traiter_pj(data, hash, infoEtablissement, publication, pj):
 
 
 def traiter_budget(data, hash, infoEtablissement, publication, acte):
-
     if publication.date_budget:
         annee = publication.date_budget
     else:
@@ -330,7 +344,6 @@ def traiter_budget(data, hash, infoEtablissement, publication, acte):
 
 
 def traiter_deliberation(data, hash, infoEtablissement, publication, acte):
-
     annee = str(publication.date_de_lacte.year)
     parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
     dossier = publication.siren + os.path.sep + "Deliberation"
@@ -354,7 +367,7 @@ def init_document(content, data, hash, infoEtablissement, parametrage, publicati
     data['metadata']["filepath"] = urlPDF
     data['metadata']["stream_content_type"] = data['metadata']["Content-Type"]
     # etat publication
-    data['metadata']["est_publie"] = True
+    data['metadata']["est_publie"] = False
     data['metadata']["opendata_active"] = parametrage.open_data_active
     data['metadata']["date_budget"] = publication.date_budget
     # partie métadata (issu du fichier metadata.json de pastell)
@@ -406,7 +419,6 @@ def init_publication(metadataPastell):
         created_at=datetime.now(),
         modified_at=datetime.now(),
         date_budget=date_budget,
-        # est_publie
         classification_code=metadataPastell.classification_code,
         classification_nom=metadataPastell.classification_nom,
         acte_nature=metadataPastell.acte_nature,
@@ -423,7 +435,7 @@ def init_publication(metadataPastell):
         dossier = newPublication.siren + os.path.sep + "Budget"
         urlPub = newPublication.siren + '/' + "Budget"
 
-    contient_acte_tamponne=False
+    contient_acte_tamponne = False
     for acte_tamponne in metadataPastell.liste_acte_tamponne:
         dossier_publication = current_app.config['DIR_PUBLICATION'] + dossier + os.path.sep + annee + os.path.sep
         newDoc = Acte(
@@ -438,7 +450,7 @@ def init_publication(metadataPastell):
         move_file(path, dossier_publication, acte_tamponne)
         contient_acte_tamponne = True
 
-    #si on a pas d'acte tamponne on prend le fichier non tamponné
+    # si on a pas d'acte tamponne on prend le fichier non tamponné
     if contient_acte_tamponne is False:
         for arrete in metadataPastell.liste_arrete:
             dossier_publication = current_app.config['DIR_PUBLICATION'] + dossier + os.path.sep + annee + os.path.sep
@@ -508,7 +520,7 @@ class MetadataPastell:
 
         x = self.classification.split(" ", 1)
 
-        #valeur par defaut
+        # valeur par defaut
         self.classification_code = "6"
 
         if len(x) == 2:
@@ -518,10 +530,10 @@ class MetadataPastell:
 
         classification_code_split = self.classification_code.split(".", -1)
         if len(classification_code_split) > 2:
-            self.classification_nom = classification_actes_dict[float(classification_code_split[0] + '.' + classification_code_split[1])]
+            self.classification_nom = classification_actes_dict[
+                float(classification_code_split[0] + '.' + classification_code_split[1])]
         else:
             self.classification_nom = classification_actes_dict[float(self.classification_code)]
-
 
 
 class InfoEtablissement:
@@ -549,7 +561,8 @@ class InfoEtablissement:
         if resultApi['adresseEtablissement']['complementAdresseEtablissement'] != None:
             self.complementAdresseEtablissement = resultApi['adresseEtablissement']['complementAdresseEtablissement']
         if resultApi['adresseEtablissement']['distributionSpecialeEtablissement'] != None:
-            self.distributionSpecialeEtablissement = resultApi['adresseEtablissement']['distributionSpecialeEtablissement']
+            self.distributionSpecialeEtablissement = resultApi['adresseEtablissement'][
+                'distributionSpecialeEtablissement']
         if resultApi['adresseEtablissement']['codePostalEtablissement'] != None:
             self.codePostalEtablissement = resultApi['adresseEtablissement']['codePostalEtablissement']
         if resultApi['adresseEtablissement']['libelleCommuneEtablissement'] != None:
@@ -563,7 +576,8 @@ class InfoEtablissement:
         if resultApi['uniteLegale']['activitePrincipaleUniteLegale'] != None:
             self.activitePrincipaleUniteLegale = resultApi['uniteLegale']['activitePrincipaleUniteLegale']
         if resultApi['uniteLegale']['nomenclatureActivitePrincipaleUniteLegale'] != None:
-            self.nomenclatureActivitePrincipaleUniteLegale = resultApi['uniteLegale']['nomenclatureActivitePrincipaleUniteLegale']
+            self.nomenclatureActivitePrincipaleUniteLegale = resultApi['uniteLegale'][
+                'nomenclatureActivitePrincipaleUniteLegale']
         if resultApi['uniteLegale']['denominationUniteLegale'] != None:
             self.denominationUniteLegale = resultApi['uniteLegale']['denominationUniteLegale']
         if resultApi['nic'] != None:

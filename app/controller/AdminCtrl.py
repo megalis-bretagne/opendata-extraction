@@ -260,7 +260,7 @@ class PublicationRepublierCtrl(Resource):
         from app.tasks.publication_tasks import republier_all_acte_task
         republier_all_acte_task.delay(etat)
         return jsonify(
-            {"statut": "ETAT:" +etat+ '- demande de republication prise en compte (taches asynchrone)'})
+            {"statut": "ETAT:" +str(etat)+ '- demande de republication prise en compte (taches asynchrone)'})
 
 
 @api.route('/pastell/creation/ged_sftp-opendata')
