@@ -18,7 +18,7 @@ else:
     manager = Manager(create_app)
 
 #manager.add_command('db', Migrate)
-manager.add_command('init_db', InitDbCommand)
+# manager.add_command('init_db', InitDbCommand)
 manager.add_command('watcher', WatcherCommand)
 
 if __name__ == "__main__":

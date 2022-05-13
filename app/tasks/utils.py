@@ -7,7 +7,7 @@ from functools import lru_cache
 from api_insee import ApiInsee
 from flask import current_app
 
-@lru_cache(maxsize=32)
+@lru_cache(maxsize=1600)
 def api_insee_call(siren):
     api = ApiInsee(
         key = current_app.config['API_SIREN_KEY'],
