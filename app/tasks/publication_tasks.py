@@ -108,7 +108,7 @@ def modifier_acte_task(idPublication):
             'publication id': publication.id}
 
 
-@celery.task(name='publier_acte_task', rate_limit='25/m')
+@celery.task(name='publier_acte_task', rate_limit='20/m')
 def publier_acte_task(idPublication):
     # on récupère la publication à publier en BDD
     publication = Publication.query.filter(Publication.id == idPublication).one()
@@ -419,7 +419,6 @@ def init_publication(metadataPastell):
         created_at=datetime.now(),
         modified_at=datetime.now(),
         date_budget=date_budget,
-        est_publie=0,
         classification_code=metadataPastell.classification_code,
         classification_nom=metadataPastell.classification_nom,
         acte_nature=metadataPastell.acte_nature,
