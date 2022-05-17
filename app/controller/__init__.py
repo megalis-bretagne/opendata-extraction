@@ -1,4 +1,5 @@
 from flask import url_for
+
 from flask_restx import Api
 from app.controller.PublicationCtrl import api as publicationApi
 from app.controller.ParametrageCtrl import api as parametrageApi
@@ -6,7 +7,7 @@ from app.controller.HealthCtrl import api as healthApi
 from app.controller.AdminCtrl import api as adminApi
 from app.controller.DecpApi import api as decpApi
 from app.controller.ScdlApi import api as scdlApi
-
+from app.controller.StatsApi import api as statsApi
 
 # Fix of returning swagger.json on HTTP
 @property
@@ -31,3 +32,4 @@ api.add_namespace(healthApi)
 api.add_namespace(publicationApi)
 api.add_namespace(parametrageApi)
 api.add_namespace(adminApi)
+api.add_namespace(statsApi)
