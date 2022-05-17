@@ -83,7 +83,6 @@ def creation_publication_task(zip_path):
     return {'status': 'OK', 'message': 'tache de publication demandée', 'publication_id': newPublication.id,
             'task_id': str(task)}
 
-
 @celery.task(name='modifier_acte_task')
 def modifier_acte_task(idPublication):
     # on récupère la publication à publier en BDD
@@ -107,8 +106,7 @@ def modifier_acte_task(idPublication):
     return {'status': 'OK', 'message': 'Aucun document solr à modifier',
             'publication id': publication.id}
 
-
-@celery.task(name='publier_acte_task', rate_limit='20/m')
+@celery.task(name='publier_acte_task', rate_limit='5/s')
 def publier_acte_task(idPublication):
     # on récupère la publication à publier en BDD
     publication = Publication.query.filter(Publication.id == idPublication).one()
@@ -159,7 +157,6 @@ def publier_acte_task(idPublication):
     return {'status': 'OK', 'message': 'publication open data réalisé',
             'publication id': publication.id}
 
-
 @celery.task(name='depublier_acte_task')
 def depublier_acte_task(idPublication):
     publication = Publication.query.filter(Publication.id == idPublication).one()
@@ -190,7 +187,6 @@ def depublier_acte_task(idPublication):
     return {'status': 'OK', 'message': 'depublication open data réalisée',
             'publication id': idPublication}
 
-
 @celery.task(name='gestion_activation_open_data_task')
 def gestion_activation_open_data(siren, opendata_active):
     solr = solr_connexion()
@@ -201,7 +197,6 @@ def gestion_activation_open_data(siren, opendata_active):
 
     return {'status': 'OK', 'message': 'mise à jour du flag opendata_active dans solr',
             'siren': siren, 'opendata_active': opendata_active}
-
 
 @celery.task(name='republier_all_acte_task')
 def republier_all_acte_task(etat):
@@ -215,14 +210,23 @@ def republier_all_acte_task(etat):
         publier_acte_task.delay(publication.id)
     return {'status': 'OK', 'message': 'republier_all_acte_task '}
 
+# @celery.task(name='indexer_publication_task')
+# def indexer_publication_task(idPublication):
+#     """Permet d'indexer un publication dans sol
+#
+#     Parameters:
+#     idPublication (int): identifiant de la
+#
+#     Returns:
+#     int:Returning value
+#
+#    """
 
-# FONCTION
+
+
+#FONCTION
 def insert_solr(publication):
-    # call API insee v3, sur /siret avec siren en parametre + etablissementSiege=true
-    result = api_insee_call(publication.siren)
-    if len(result['etablissements']) > 0:
-        infoEtablissement = InfoEtablissement(result['etablissements'][0])
-
+    infoEtablissement = api_insee_call(publication.siren)
     # Pour tous les actes ( documents lié à la publication)
     for acte in publication.actes:
         with open(acte.path, 'rb') as fh:
@@ -534,55 +538,6 @@ class MetadataPastell:
                 float(classification_code_split[0] + '.' + classification_code_split[1])]
         else:
             self.classification_nom = classification_actes_dict[float(self.classification_code)]
-
-
-class InfoEtablissement:
-    def __init__(self, resultApi):
-        self.numeroVoieEtablissement = ''
-        self.typeVoieEtablissement = ''
-        self.libelleVoieEtablissement = ''
-        self.complementAdresseEtablissement = ''
-        self.distributionSpecialeEtablissement = ''
-        self.codePostalEtablissement = ''
-        self.libelleCommuneEtablissement = ''
-        self.codeCedexEtablissement = ''
-        self.categorieEntreprise = ''
-        self.categorieJuridiqueUniteLegale = ''
-        self.activitePrincipaleUniteLegale = ''
-        self.nomenclatureActivitePrincipaleUniteLegale = ''
-        self.denominationUniteLegale = ''
-        self.nic = ''
-        if resultApi['adresseEtablissement']['numeroVoieEtablissement'] != None:
-            self.numeroVoieEtablissement = resultApi['adresseEtablissement']['numeroVoieEtablissement']
-        if resultApi['adresseEtablissement']['typeVoieEtablissement'] != None:
-            self.typeVoieEtablissement = resultApi['adresseEtablissement']['typeVoieEtablissement']
-        if resultApi['adresseEtablissement']['libelleVoieEtablissement'] != None:
-            self.libelleVoieEtablissement = resultApi['adresseEtablissement']['libelleVoieEtablissement']
-        if resultApi['adresseEtablissement']['complementAdresseEtablissement'] != None:
-            self.complementAdresseEtablissement = resultApi['adresseEtablissement']['complementAdresseEtablissement']
-        if resultApi['adresseEtablissement']['distributionSpecialeEtablissement'] != None:
-            self.distributionSpecialeEtablissement = resultApi['adresseEtablissement'][
-                'distributionSpecialeEtablissement']
-        if resultApi['adresseEtablissement']['codePostalEtablissement'] != None:
-            self.codePostalEtablissement = resultApi['adresseEtablissement']['codePostalEtablissement']
-        if resultApi['adresseEtablissement']['libelleCommuneEtablissement'] != None:
-            self.libelleCommuneEtablissement = resultApi['adresseEtablissement']['libelleCommuneEtablissement']
-        if resultApi['adresseEtablissement']['codeCedexEtablissement'] != None:
-            self.codeCedexEtablissement = resultApi['adresseEtablissement']['codeCedexEtablissement']
-        if resultApi['uniteLegale']['categorieEntreprise'] != None:
-            self.categorieEntreprise = resultApi['uniteLegale']['categorieEntreprise']
-        if resultApi['uniteLegale']['categorieJuridiqueUniteLegale'] != None:
-            self.categorieJuridiqueUniteLegale = resultApi['uniteLegale']['categorieJuridiqueUniteLegale']
-        if resultApi['uniteLegale']['activitePrincipaleUniteLegale'] != None:
-            self.activitePrincipaleUniteLegale = resultApi['uniteLegale']['activitePrincipaleUniteLegale']
-        if resultApi['uniteLegale']['nomenclatureActivitePrincipaleUniteLegale'] != None:
-            self.nomenclatureActivitePrincipaleUniteLegale = resultApi['uniteLegale'][
-                'nomenclatureActivitePrincipaleUniteLegale']
-        if resultApi['uniteLegale']['denominationUniteLegale'] != None:
-            self.denominationUniteLegale = resultApi['uniteLegale']['denominationUniteLegale']
-        if resultApi['nic'] != None:
-            self.nic = resultApi['nic']
-
 
 def __get_date_buget(xml_file: str):
     namespaces = {'nms': 'http://www.minefi.gouv.fr/cp/demat/docbudgetaire'}
