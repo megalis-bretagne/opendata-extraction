@@ -38,11 +38,6 @@ def creation_publication_task(zip_path):
 
     metadataPastell = MetadataPastell(metadata)
 
-    # si nature de l'acte différent de délibération ou bin budget on ignore le fichier
-    if metadataPastell.acte_nature != "1" and metadataPastell.acte_nature != "5":
-        return {'status': 'ignore', 'message': 'nature acte différent de délibération ou budget',
-                'acte_nature': str(metadataPastell.acte_nature)}
-
     # init publication table
     newPublication = init_publication(metadataPastell)
 
@@ -59,20 +54,13 @@ def creation_publication_task(zip_path):
                                      siren=newPublication.siren,
                                      open_data_active=True,
                                      publication_data_gouv_active=False,
-                                     publication_udata_active=False
-                                     )
-
+                                     publication_udata_active=False)
         db_sess.add(newParametrage)
         db_sess.commit()
 
     # init des documents dans solr avec est_publie=False
     insert_solr(newPublication)
 
-    # si acte différent de budget et publication opendata non ou ne sais pas alors on de
-    if metadataPastell.acte_nature != "5":
-        if metadataPastell.publication_open_data == '1' or metadataPastell.publication_open_data == '2':
-            return {'status': 'ignore', 'message': 'publication open data différent de oui',
-                    'publication_open_data': str(metadataPastell.publication_open_data)}
 
     # creation de la tache de publication openData et on passe l'état de la publication à en cours
     newPublication.etat = 2
@@ -235,10 +223,7 @@ def insert_solr(publication):
                 data = solr.extract(fh, extractOnly=True)
                 # generation du hash
                 hash = hashlib.md5(fh.read()).hexdigest()
-                if publication.acte_nature == "1":
-                    traiter_deliberation(data, hash, infoEtablissement, publication, acte)
-                elif publication.acte_nature == "5":
-                    traiter_budget(data, hash, infoEtablissement, publication, acte)
+                traiter_actes(data, hash, infoEtablissement, publication, acte,isPj=False)
                 # insert dans apache solr
                 solr.add(data['metadata'])
 
@@ -259,7 +244,7 @@ def insert_solr(publication):
                     data = solr.extract(fh, extractOnly=True)
                     # generation du hash
                     hash = hashlib.md5(fh.read()).hexdigest()
-                    traiter_pj(data, hash, infoEtablissement, publication, pj)
+                    traiter_actes(data, hash, infoEtablissement, publication, pj, isPj=True)
 
                     # insert dans apache solr
                     solr.add(data['metadata'])
@@ -269,14 +254,25 @@ def insert_solr(publication):
     except Exception as e:
         logging.exception("probleme traitement PJ : on ignore")
 
-
 def lien_symbolique_et_etat_solr(publication):
     if publication.acte_nature == "1":
         dossier = publication.siren + os.path.sep + "Deliberation"
+    elif publication.acte_nature == "2":
+        dossier = publication.siren + os.path.sep + "Actes_reglementaires"
+    elif publication.acte_nature == "3":
+        dossier = publication.siren + os.path.sep + "Actes_individuels"
+    elif publication.acte_nature == "4":
+        dossier = publication.siren + os.path.sep + "Contrats_conventions_avenants"
     elif publication.acte_nature == "5":
         dossier = publication.siren + os.path.sep + "Budget"
+    elif publication.acte_nature == "6":
+        dossier = publication.siren + os.path.sep + "Autres"
 
-    annee = str(publication.date_de_lacte.year)
+    if publication.date_budget:
+        annee = publication.date_budget
+    else:
+        annee = str(publication.date_de_lacte.year)
+
 
     # copy de l'acte dans le dossier marque blanche
     for acte in publication.actes:
@@ -297,72 +293,54 @@ def lien_symbolique_et_etat_solr(publication):
         doc_res['est_publie'][0] = True
     solr.add(result.docs)
 
+def traiter_actes(data, hash, infoEtablissement, publication, acte,isPj):
 
-def traiter_pj(data, hash, infoEtablissement, publication, pj):
-    dossier = "Budget"
+    if publication.date_budget:
+        annee = publication.date_budget
+    else:
+        annee = str(publication.date_de_lacte.year)
+    parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
+
     if publication.acte_nature == "1":
         dossier = publication.siren + os.path.sep + "Deliberation"
+        typology="99_DE"
+        format="html5lib"
+    elif publication.acte_nature == "2":
+        dossier = publication.siren + os.path.sep + "Actes_reglementaires"
+        typology="99_AT"
+        format="html5lib"
+    elif publication.acte_nature == "3":
+        dossier = publication.siren + os.path.sep + "Actes_individuels"
+        typology="99_AI"
+        format="html5lib"
+    elif publication.acte_nature == "4":
+        dossier = publication.siren + os.path.sep + "Contrats_conventions_avenants"
+        typology="99_CO"
+        format="html5lib"
     elif publication.acte_nature == "5":
         dossier = publication.siren + os.path.sep + "Budget"
+        typology="99_BU"
+        format="xml"
+    elif publication.acte_nature == "6":
+        dossier = publication.siren + os.path.sep + "Autres"
+        typology="99_AU"
+        format="html5lib"
 
-    if publication.date_budget:
-        annee = publication.date_budget
-    else:
-        annee = str(publication.date_de_lacte.year)
-
-    urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + pj.name
-
-    parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
-
-    content = extract_content(data['contents'], "html5lib")
-
-    # initialisation du document apache solr
-    init_document(content, data, hash, infoEtablissement, parametrage, publication, urlPDF, "PJ")
-
-    # dépot dans le serveur
-    symlink_file(pj.path, current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                 pj.name)
-    return data['metadata']
+    if isPj == True:
+        typology = "PJ"
+        format = "html5lib"
 
 
-def traiter_budget(data, hash, infoEtablissement, publication, acte):
-    if publication.date_budget:
-        annee = publication.date_budget
-    else:
-        annee = str(publication.date_de_lacte.year)
-
-    dossier = publication.siren + os.path.sep + "Budget"
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.name
-
-    parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
-
-    content = extract_content(data['contents'], "xml")
+    content = extract_content(data['contents'], format)
 
     # initialisation du document apache solr
-    init_document(content, data, hash, infoEtablissement, parametrage, publication, urlPDF, "99_BU")
+    init_document(content, data, hash, infoEtablissement, parametrage, publication, urlPDF, typology)
 
     # dépot dans le serveur
     symlink_file(acte.path, current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
                  acte.name)
     return data['metadata']
-
-
-def traiter_deliberation(data, hash, infoEtablissement, publication, acte):
-    annee = str(publication.date_de_lacte.year)
-    parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
-    dossier = publication.siren + os.path.sep + "Deliberation"
-    urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.name
-
-    content = extract_content(data['contents'], "html5lib")
-
-    # initialisation du document apache solr
-    init_document(content, data, hash, infoEtablissement, parametrage, publication, urlPDF, "99_DE")
-
-    # dépot dans le serveur
-    symlink_file(acte.path, current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                 acte.name)
-    return data['metadata']
-
 
 def init_document(content, data, hash, infoEtablissement, parametrage, publication, urlPDF, typology):
     data['metadata']['_text_'] = content
@@ -399,26 +377,27 @@ def init_document(content, data, hash, infoEtablissement, parametrage, publicati
     data['metadata']["activite"] = infoEtablissement.activitePrincipaleUniteLegale,
     data['metadata']["nomenclatureactivite"] = infoEtablissement.nomenclatureActivitePrincipaleUniteLegale
 
-
 def init_publication(metadataPastell):
     WORKDIR = get_or_create_workdir()
     # publication open data oui par défaut 0:oui / 1:non / 2:Ne sais pas
     pub_open_data = '0'
     date_budget = None
-    if metadataPastell.acte_nature != "5":
-        if metadataPastell.publication_open_data == '1' or metadataPastell.publication_open_data == '2':
-            pub_open_data = metadataPastell.publication_open_data
     # SI acte BUDGET, alors on lit le fichier xml pour obtenir l'année
-    else:
-        xml_buget = WORKDIR + metadataPastell.liste_arrete[0]
-        date_budget = __get_date_buget(xml_buget)
+    if metadataPastell.acte_nature == "5":
+        try:
+            xml_buget = WORKDIR + metadataPastell.liste_arrete[0]
+            date_budget = __get_date_buget(xml_buget)
+        except Exception as e:
+            # probleme de lecture du fichier XML
+            # probablement pas un fichier XML
+            print(e)
 
     db_sess = db.session
     newPublication = Publication(
         numero_de_lacte=metadataPastell.numero_de_lacte,
         objet=metadataPastell.objet,
         siren=metadataPastell.siren,
-        publication_open_data=pub_open_data,
+        publication_open_data=metadataPastell.publication_open_data,
         date_de_lacte=metadataPastell.date_de_lacte,
         created_at=datetime.now(),
         modified_at=datetime.now(),
@@ -426,18 +405,31 @@ def init_publication(metadataPastell):
         classification_code=metadataPastell.classification_code,
         classification_nom=metadataPastell.classification_nom,
         acte_nature=metadataPastell.acte_nature,
-        envoi_depot=metadataPastell.envoi_depot,
+        envoi_depot=metadataPastell.envoi_depot
     )
     db_sess.add(newPublication)
     db_sess.commit()
 
     annee = str(newPublication.date_de_lacte.year)
+
     if newPublication.acte_nature == "1":
         dossier = newPublication.siren + os.path.sep + "Deliberation"
         urlPub = newPublication.siren + '/' + "Deliberation"
+    elif newPublication.acte_nature == "2":
+        dossier = newPublication.siren + os.path.sep + "Actes_reglementaires"
+        urlPub = newPublication.siren + '/' + "Actes_reglementaires"
+    elif newPublication.acte_nature == "3":
+        dossier = newPublication.siren + os.path.sep + "Actes_individuels"
+        urlPub = newPublication.siren + '/' + "Actes_individuels"
+    elif newPublication.acte_nature == "4":
+        dossier = newPublication.siren + os.path.sep + "Contrats_conventions_avenants"
+        urlPub = newPublication.siren + '/' + "Contrats_conventions_avenants"
     elif newPublication.acte_nature == "5":
         dossier = newPublication.siren + os.path.sep + "Budget"
         urlPub = newPublication.siren + '/' + "Budget"
+    elif newPublication.acte_nature == "6":
+        dossier = newPublication.siren + os.path.sep + "Autres"
+        urlPub = newPublication.siren + '/' + "Autres"
 
     contient_acte_tamponne = False
     for acte_tamponne in metadataPastell.liste_acte_tamponne:
@@ -487,7 +479,6 @@ def init_publication(metadataPastell):
     db_sess.commit()
     return newPublication
 
-
 class MetadataPastell:
     def __init__(self, metajson):
         self.numero_de_lacte = metajson['numero_de_lacte']
@@ -514,8 +505,13 @@ class MetadataPastell:
             self.liste_autre_document_attache = []
         self.type_piece = metajson['type_piece']
 
+        # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
+        # ou bien que la valeur est vide ça veut dire que l'utilsateur n'a rien selectionné dans pastell alors publication_open_data =0 (OUI)
         if 'publication_open_data' in metajson:
-            self.publication_open_data = metajson['publication_open_data']
+            if len(metajson['publication_open_data']) ==0:
+                self.publication_open_data = '0'
+            else:
+                self.publication_open_data = metajson['publication_open_data']
         else:
             self.publication_open_data = '0'
 
