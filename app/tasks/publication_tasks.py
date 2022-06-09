@@ -36,17 +36,23 @@ def creation_publication_task(zip_path):
     with open(WORKDIR + 'metadata.json') as f:
         metadata = json.load(f)
 
-    metadataPastell = MetadataPastell(metadata)
 
-    # init publication table
-    newPublication = init_publication(metadataPastell)
+    try:
+        metadataPastell = MetadataPastell(metadata)
+        # init publication table
+        newPublication = init_publication(metadataPastell)
+    except Exception as e:
+        shutil.move(WORKDIR + 'objet.zip', current_app.config['DIRECTORY_TO_WATCH_ERREURS'])
+        return {'status': 'KO', 'message': 'Metada incomplete', 'Erreur': print(e)}
 
     # check and init parametrage
     try:
         Parametrage.query.filter(Parametrage.siren == newPublication.siren).one()
     except MultipleResultsFound as e:
         # todo delete puis recreer le parametrage
-        print(e)
+        shutil.move(WORKDIR + 'objet.zip', current_app.config['DIRECTORY_TO_WATCH_ERREURS'])
+        return {'status': 'KO', 'message': 'probleme parametrage','siren': newPublication.siren}
+
     except NoResultFound as e:
         db_sess = db.session
         newParametrage = Parametrage(created_at=datetime.now(),
@@ -61,7 +67,6 @@ def creation_publication_task(zip_path):
     # init des documents dans solr avec est_publie=False
     insert_solr(newPublication)
 
-
     # creation de la tache de publication openData et on passe l'état de la publication à en cours
     newPublication.etat = 2
     db_sess = db.session
@@ -70,6 +75,7 @@ def creation_publication_task(zip_path):
 
     return {'status': 'OK', 'message': 'tache de publication demandée', 'publication_id': newPublication.id,
             'task_id': str(task)}
+
 
 @celery.task(name='modifier_acte_task')
 def modifier_acte_task(idPublication):
@@ -93,6 +99,7 @@ def modifier_acte_task(idPublication):
 
     return {'status': 'OK', 'message': 'Aucun document solr à modifier',
             'publication id': publication.id}
+
 
 @celery.task(name='publier_acte_task', rate_limit='5/s')
 def publier_acte_task(idPublication):
@@ -145,6 +152,7 @@ def publier_acte_task(idPublication):
     return {'status': 'OK', 'message': 'publication open data réalisé',
             'publication id': publication.id}
 
+
 @celery.task(name='depublier_acte_task')
 def depublier_acte_task(idPublication):
     publication = Publication.query.filter(Publication.id == idPublication).one()
@@ -175,6 +183,7 @@ def depublier_acte_task(idPublication):
     return {'status': 'OK', 'message': 'depublication open data réalisée',
             'publication id': idPublication}
 
+
 @celery.task(name='gestion_activation_open_data_task')
 def gestion_activation_open_data(siren, opendata_active):
     solr = solr_connexion()
@@ -185,6 +194,7 @@ def gestion_activation_open_data(siren, opendata_active):
 
     return {'status': 'OK', 'message': 'mise à jour du flag opendata_active dans solr',
             'siren': siren, 'opendata_active': opendata_active}
+
 
 @celery.task(name='republier_all_acte_task')
 def republier_all_acte_task(etat):
@@ -197,6 +207,7 @@ def republier_all_acte_task(etat):
         db_sess.commit()
         publier_acte_task.delay(publication.id)
     return {'status': 'OK', 'message': 'republier_all_acte_task '}
+
 
 # @celery.task(name='indexer_publication_task')
 # def indexer_publication_task(idPublication):
@@ -211,8 +222,7 @@ def republier_all_acte_task(etat):
 #    """
 
 
-
-#FONCTION
+# FONCTION
 def insert_solr(publication):
     infoEtablissement = api_insee_call(publication.siren)
     # Pour tous les actes ( documents lié à la publication)
@@ -223,7 +233,7 @@ def insert_solr(publication):
                 data = solr.extract(fh, extractOnly=True)
                 # generation du hash
                 hash = hashlib.md5(fh.read()).hexdigest()
-                traiter_actes(data, hash, infoEtablissement, publication, acte,isPj=False)
+                traiter_actes(data, hash, infoEtablissement, publication, acte, isPj=False)
                 # insert dans apache solr
                 solr.add(data['metadata'])
 
@@ -254,6 +264,7 @@ def insert_solr(publication):
     except Exception as e:
         logging.exception("probleme traitement PJ : on ignore")
 
+
 def lien_symbolique_et_etat_solr(publication):
     if publication.acte_nature == "1":
         dossier = publication.siren + os.path.sep + "Deliberation"
@@ -272,7 +283,6 @@ def lien_symbolique_et_etat_solr(publication):
         annee = publication.date_budget
     else:
         annee = str(publication.date_de_lacte.year)
-
 
     # copy de l'acte dans le dossier marque blanche
     for acte in publication.actes:
@@ -293,8 +303,8 @@ def lien_symbolique_et_etat_solr(publication):
         doc_res['est_publie'][0] = True
     solr.add(result.docs)
 
-def traiter_actes(data, hash, infoEtablissement, publication, acte,isPj):
 
+def traiter_actes(data, hash, infoEtablissement, publication, acte, isPj):
     if publication.date_budget:
         annee = publication.date_budget
     else:
@@ -303,33 +313,32 @@ def traiter_actes(data, hash, infoEtablissement, publication, acte,isPj):
 
     if publication.acte_nature == "1":
         dossier = publication.siren + os.path.sep + "Deliberation"
-        typology="99_DE"
-        format="html5lib"
+        typology = "99_DE"
+        format = "html5lib"
     elif publication.acte_nature == "2":
         dossier = publication.siren + os.path.sep + "Actes_reglementaires"
-        typology="99_AT"
-        format="html5lib"
+        typology = "99_AT"
+        format = "html5lib"
     elif publication.acte_nature == "3":
         dossier = publication.siren + os.path.sep + "Actes_individuels"
-        typology="99_AI"
-        format="html5lib"
+        typology = "99_AI"
+        format = "html5lib"
     elif publication.acte_nature == "4":
         dossier = publication.siren + os.path.sep + "Contrats_conventions_avenants"
-        typology="99_CO"
-        format="html5lib"
+        typology = "99_CO"
+        format = "html5lib"
     elif publication.acte_nature == "5":
         dossier = publication.siren + os.path.sep + "Budget"
-        typology="99_BU"
-        format="xml"
+        typology = "99_BU"
+        format = "xml"
     elif publication.acte_nature == "6":
         dossier = publication.siren + os.path.sep + "Autres"
-        typology="99_AU"
-        format="html5lib"
+        typology = "99_AU"
+        format = "html5lib"
 
     if isPj == True:
         typology = "PJ"
         format = "html5lib"
-
 
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.name
     content = extract_content(data['contents'], format)
@@ -341,6 +350,7 @@ def traiter_actes(data, hash, infoEtablissement, publication, acte,isPj):
     symlink_file(acte.path, current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
                  acte.name)
     return data['metadata']
+
 
 def init_document(content, data, hash, infoEtablissement, parametrage, publication, urlPDF, typology):
     data['metadata']['_text_'] = content
@@ -376,6 +386,7 @@ def init_document(content, data, hash, infoEtablissement, parametrage, publicati
     data['metadata']["entity"] = infoEtablissement.denominationUniteLegale,
     data['metadata']["activite"] = infoEtablissement.activitePrincipaleUniteLegale,
     data['metadata']["nomenclatureactivite"] = infoEtablissement.nomenclatureActivitePrincipaleUniteLegale
+
 
 def init_publication(metadataPastell):
     WORKDIR = get_or_create_workdir()
@@ -479,6 +490,7 @@ def init_publication(metadataPastell):
     db_sess.commit()
     return newPublication
 
+
 class MetadataPastell:
     def __init__(self, metajson):
         self.numero_de_lacte = metajson['numero_de_lacte']
@@ -505,24 +517,39 @@ class MetadataPastell:
             self.liste_autre_document_attache = []
         self.type_piece = metajson['type_piece']
 
-        # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
-        # ou bien que la valeur est vide ça veut dire que l'utilsateur n'a rien selectionné dans pastell alors publication_open_data =0 (OUI)
-        if 'publication_open_data' in metajson:
-            if len(metajson['publication_open_data']) ==0:
-                self.publication_open_data = '0'
-            else:
-                self.publication_open_data = metajson['publication_open_data']
-        else:
-            self.publication_open_data = '0'
 
         self.acte_nature = metajson['acte_nature']
         self.classification = metajson['classification']
 
-        x = self.classification.split(" ", 1)
+        if 'publication_open_data' in metajson:
+            if len(metajson['publication_open_data']) == 0:
+                # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
+                if self.acte_nature == '1' and self.acte_nature == '2' or self.acte_nature == '5':
+                    # délib, actes réglementaires et budget oui par defaut
+                    self.publication_open_data = '0'
+                elif self.acte_nature == '3' and self.acte_nature == '6':
+                    # actes individuels et autres non par defaut
+                    self.publication_open_data = '1'
+                else:
+                    # le reste à ne sais pas
+                    self.publication_open_data = '2'
+            else:
+                self.publication_open_data = metajson['publication_open_data']
+        else:
+            # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
+            if self.acte_nature == '1' and self.acte_nature == '2' or self.acte_nature == '5':
+                #délib, actes réglementaires et budget oui par defaut
+                self.publication_open_data = '0'
+            elif self.acte_nature == '3' and self.acte_nature == '6':
+                #actes individuels et autres non par defaut
+                self.publication_open_data = '1'
+            else:
+                #le reste à ne sais pas
+                self.publication_open_data = '2'
 
+        x = self.classification.split(" ", 1)
         # valeur par defaut
         self.classification_code = "6"
-
         if len(x) == 2:
             self.classification_code = x[0]
         elif len(x) == 1:
@@ -534,6 +561,7 @@ class MetadataPastell:
                 float(classification_code_split[0] + '.' + classification_code_split[1])]
         else:
             self.classification_nom = classification_actes_dict[float(self.classification_code)]
+
 
 def __get_date_buget(xml_file: str):
     namespaces = {'nms': 'http://www.minefi.gouv.fr/cp/demat/docbudgetaire'}
