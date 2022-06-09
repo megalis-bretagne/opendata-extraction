@@ -68,13 +68,17 @@ def creation_publication_task(zip_path):
     insert_solr(newPublication)
 
     # creation de la tache de publication openData et on passe l'état de la publication à en cours
-    newPublication.etat = 2
-    db_sess = db.session
-    db_sess.add(newPublication)
-    task = publier_acte_task.delay(newPublication.id)
 
-    return {'status': 'OK', 'message': 'tache de publication demandée', 'publication_id': newPublication.id,
+    if metadataPastell.publication_open_data == '0':
+        newPublication.etat = 2
+        db_sess = db.session
+        db_sess.add(newPublication)
+        task = publier_acte_task.delay(newPublication.id)
+        return {'status': 'OK', 'message': 'tache de publication demandée', 'publication_id': newPublication.id,
             'task_id': str(task)}
+    else:
+        return {'status': 'OK', 'message': 'Acte non publié', 'publication_open_data': str(metadataPastell.publication_open_data),
+            'nature': str(metadataPastell.acte_nature)}
 
 
 @celery.task(name='modifier_acte_task')
@@ -524,10 +528,10 @@ class MetadataPastell:
         if 'publication_open_data' in metajson:
             if len(metajson['publication_open_data']) == 0:
                 # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
-                if self.acte_nature == '1' and self.acte_nature == '2' or self.acte_nature == '5':
+                if self.acte_nature == '1' or self.acte_nature == '2' or self.acte_nature == '5':
                     # délib, actes réglementaires et budget oui par defaut
                     self.publication_open_data = '0'
-                elif self.acte_nature == '3' and self.acte_nature == '6':
+                elif self.acte_nature == '3' or self.acte_nature == '6':
                     # actes individuels et autres non par defaut
                     self.publication_open_data = '1'
                 else:
@@ -537,10 +541,10 @@ class MetadataPastell:
                 self.publication_open_data = metajson['publication_open_data']
         else:
             # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
-            if self.acte_nature == '1' and self.acte_nature == '2' or self.acte_nature == '5':
+            if self.acte_nature == '1' or self.acte_nature == '2' or self.acte_nature == '5':
                 #délib, actes réglementaires et budget oui par defaut
                 self.publication_open_data = '0'
-            elif self.acte_nature == '3' and self.acte_nature == '6':
+            elif self.acte_nature == '3' or self.acte_nature == '6':
                 #actes individuels et autres non par defaut
                 self.publication_open_data = '1'
             else:
