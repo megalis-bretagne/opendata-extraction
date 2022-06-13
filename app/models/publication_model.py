@@ -11,8 +11,8 @@ class Publication(db.Model):
     numero_de_lacte: str = db.Column(db.String(20), nullable=False)
     objet: str = db.Column(db.String(256), nullable=False)
     siren: str = db.Column(db.String(9), nullable=False)
-    # 0:oui, 1:non, 2:ne sais pas
-    publication_open_data: str = db.Column(db.String(1), nullable=False, server_default='0')
+    # 3:oui (0:oui historiquement), 1:non, 2:ne sais pas
+    publication_open_data: str = db.Column(db.String(1), nullable=False, server_default='2')
     date_de_lacte: str = db.Column(db.DateTime(), nullable=False)
     classification_code = db.Column(db.String(10), nullable=False)
     classification_nom = db.Column(db.String(100), nullable=False)

@@ -69,7 +69,7 @@ def creation_publication_task(zip_path):
 
     # creation de la tache de publication openData et on passe l'état de la publication à en cours
 
-    if metadataPastell.publication_open_data == '0':
+    if metadataPastell.publication_open_data == '3':
         newPublication.etat = 2
         db_sess = db.session
         db_sess.add(newPublication)
@@ -530,7 +530,7 @@ class MetadataPastell:
                 # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
                 if self.acte_nature == '1' or self.acte_nature == '2' or self.acte_nature == '5':
                     # délib, actes réglementaires et budget oui par defaut
-                    self.publication_open_data = '0'
+                    self.publication_open_data = '3'
                 elif self.acte_nature == '3' or self.acte_nature == '6':
                     # actes individuels et autres non par defaut
                     self.publication_open_data = '1'
@@ -543,7 +543,7 @@ class MetadataPastell:
             # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
             if self.acte_nature == '1' or self.acte_nature == '2' or self.acte_nature == '5':
                 #délib, actes réglementaires et budget oui par defaut
-                self.publication_open_data = '0'
+                self.publication_open_data = '3'
             elif self.acte_nature == '3' or self.acte_nature == '6':
                 #actes individuels et autres non par defaut
                 self.publication_open_data = '1'
