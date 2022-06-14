@@ -26,6 +26,7 @@ class Publication(db.Model):
     etat: str = db.Column('etat', db.String(1), nullable=False, server_default='0')
     created_at: str = db.Column(db.DateTime(), nullable=False)
     modified_at: str = db.Column(db.DateTime(), nullable=False)
+    date_publication: str = db.Column(db.DateTime(), nullable=False)
     actes = relationship("Acte", lazy="joined")
     pieces_jointe = relationship("PieceJointe", lazy="joined")
 
