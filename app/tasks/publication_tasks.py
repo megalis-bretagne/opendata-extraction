@@ -460,9 +460,18 @@ def init_publication(metadataPastell):
             path=dossier_publication + acte_tamponne,
             publication_id=newPublication.id
         )
+        format = str('.' + acte_tamponne.split(".")[-1])
         db_sess.add(newDoc)
+        db_sess.flush()
+        db_sess.refresh()
+
+        newDoc.path = dossier_publication + newDoc.id + format
+        newDoc.url = current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(
+            newDoc.id + format)
+
+
         path = WORKDIR + acte_tamponne
-        move_file(path, dossier_publication, acte_tamponne)
+        move_file(path, dossier_publication, newDoc.id + format)
         contient_acte_tamponne = True
 
     # si on a pas d'acte tamponne on prend le fichier non tamponné
@@ -471,14 +480,21 @@ def init_publication(metadataPastell):
             dossier_publication = current_app.config['DIR_PUBLICATION'] + dossier + os.path.sep + annee + os.path.sep
             newDoc = Acte(
                 name=arrete,
+                publication_id=newPublication.id,
                 url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(
                     arrete),
-                path=dossier_publication + arrete,
-                publication_id=newPublication.id
+                path=dossier_publication + arrete
             )
+            format = str('.' + arrete.split(".")[-1])
             db_sess.add(newDoc)
+            db_sess.flush()
+            db_sess.refresh()
+            newDoc.path = dossier_publication + newDoc.id + format
+            newDoc.url = current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(
+                newDoc.id + format)
+
             path = WORKDIR + arrete
-            move_file(path, dossier_publication, arrete)
+            move_file(path, dossier_publication, newDoc.id + format)
 
     # Pour tous les fichiers pj présents dans le zip
     if metadataPastell.liste_autre_document_attache is not None:
