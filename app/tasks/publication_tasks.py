@@ -463,7 +463,7 @@ def init_publication(metadataPastell):
         format = str('.' + acte_tamponne.split(".")[-1])
         db_sess.add(newDoc)
         db_sess.flush()
-        db_sess.refresh()
+        db_sess.refresh(newDoc)
 
         newDoc.path = dossier_publication + newDoc.id + format
         newDoc.url = current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(
@@ -488,7 +488,7 @@ def init_publication(metadataPastell):
             format = str('.' + arrete.split(".")[-1])
             db_sess.add(newDoc)
             db_sess.flush()
-            db_sess.refresh()
+            db_sess.refresh(newDoc)
             newDoc.path = dossier_publication + newDoc.id + format
             newDoc.url = current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(
                 newDoc.id + format)
