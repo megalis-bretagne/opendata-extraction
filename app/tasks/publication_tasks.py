@@ -3,6 +3,7 @@ import urllib
 from zipfile import ZipFile
 from sqlalchemy.exc import NoResultFound, MultipleResultsFound
 from app import celeryapp
+from app import celeryapp
 import json
 from app.models.parametrage_model import Parametrage
 from app.tasks.utils import *
@@ -308,7 +309,6 @@ def lien_symbolique_et_etat_solr(publication):
     # Mise à jour dans Solr
     for doc_res in result.docs:
         doc_res['est_publie'][0] = True
-        doc_res["date_publication"][0] = publication.date_publication.strftime("%Y-%m-%dT%H:%M:%SZ")
     solr.add(result.docs)
 
 
@@ -372,8 +372,6 @@ def init_document(content, data, hash, infoEtablissement, parametrage, publicati
     data['metadata']["date_budget"] = publication.date_budget
     # partie métadata (issu du fichier metadata.json de pastell)
     data['metadata']["date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
-    if publication.date_publication is not None:
-        data['metadata']["date_publication"] = publication.date_publication.strftime("%Y-%m-%dT%H:%M:%SZ")
     data['metadata']["description"] = publication.objet
     data['metadata']["documentidentifier"] = publication.numero_de_lacte
     data['metadata']["documenttype"] = publication.acte_nature
