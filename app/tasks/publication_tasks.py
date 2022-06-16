@@ -465,13 +465,13 @@ def init_publication(metadataPastell):
         db_sess.flush()
         db_sess.refresh(newDoc)
 
-        newDoc.path = dossier_publication + newDoc.id + format
+        newDoc.path = dossier_publication + str(newDoc.id) + format
         newDoc.url = current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(
-            newDoc.id + format)
+            str(newDoc.id)  + format)
 
 
         path = WORKDIR + acte_tamponne
-        move_file(path, dossier_publication, newDoc.id + format)
+        move_file(path, dossier_publication, str(newDoc.id)  + format)
         contient_acte_tamponne = True
 
     # si on a pas d'acte tamponne on prend le fichier non tamponné
@@ -489,12 +489,12 @@ def init_publication(metadataPastell):
             db_sess.add(newDoc)
             db_sess.flush()
             db_sess.refresh(newDoc)
-            newDoc.path = dossier_publication + newDoc.id + format
+            newDoc.path = dossier_publication + str(newDoc.id) + format
             newDoc.url = current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(
-                newDoc.id + format)
+                str(newDoc.id)  + format)
 
             path = WORKDIR + arrete
-            move_file(path, dossier_publication, newDoc.id + format)
+            move_file(path, dossier_publication, str(newDoc.id)  + format)
 
     # Pour tous les fichiers pj présents dans le zip
     if metadataPastell.liste_autre_document_attache is not None:
