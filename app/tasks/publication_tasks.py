@@ -492,7 +492,7 @@ def init_publication(metadataPastell):
                 publication_id=newPublication.id,
                 url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
                 hash=hash,
-                path=dossier_publication + arrete
+                path=dossier_publication + hash + format,
             )
             db_sess.add(newDoc)
             move_file(path, dossier_publication, hash + format)
