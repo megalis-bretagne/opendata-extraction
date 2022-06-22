@@ -300,24 +300,19 @@ def lien_symbolique_et_etat_solr(publication):
     else:
         annee = str(publication.date_de_lacte.year)
 
-
-
-
     # copy de l'acte dans le dossier marque blanche
     for acte in publication.actes:
-        format = str('.' + acte.name.split(".")[-1])
+        extension = str('.' + acte.name.split(".")[-1])
         symlink_file(acte.path,
                      current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                     acte.hash + format)
+                     acte.hash + extension)
 
     # copy des pj dans le dossier marque blanche
     for pj in publication.pieces_jointe:
-
-        format = str('.' + acte.name.split(".")[-1])
+        extension = str('.' + pj.name.split(".")[-1])
         symlink_file(pj.path,
                      current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                     pj.name + format)
-
+                     pj.name + extension)
 
     solr = solr_connexion()
     result = solr.search(q='publication_id : ' + str(publication.id))
@@ -326,7 +321,7 @@ def lien_symbolique_et_etat_solr(publication):
         doc_res['est_publie'][0] = True
         if 'date_de_publication' in doc_res:
             now = datetime.now()  # current date and time
-            doc_res['date_de_publication'][0] =  now.strftime("%Y-%m-%dT%H:%M:%SZ")
+            doc_res['date_de_publication'][0] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     solr.add(result.docs)
 
 
@@ -366,15 +361,17 @@ def traiter_actes(data, publication, acte, isPj):
         typology = "PJ"
         format = "html5lib"
 
-    urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.name
+    extension = str('.' + acte.name.split(".")[-1])
+
+    urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.hash + extension
     content = extract_content(data['contents'], format)
 
-    #initialisation du document apache solr
+    # initialisation du document apache solr
     init_document(content, data, acte, parametrage, publication, urlPDF, typology)
 
     # dépot dans le serveur
     symlink_file(acte.path, current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                 acte.name)
+                 acte.hash + extension)
     return data['metadata']
 
 
