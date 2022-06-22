@@ -1,6 +1,8 @@
 import csv
 import hashlib
 import logging
+from urllib.parse import quote
+
 import pysolr, re, os, errno, shutil
 import requests
 from bs4 import BeautifulSoup
@@ -57,6 +59,18 @@ def solr_connexion():
     solr.ping()
     return solr
 
+def index_file_in_solr(file_obj,params):
+    filename = quote(file_obj.name.encode("utf-8"))
+    r = requests.post(
+        'https://solr-preprod.megalis.bretagne.bzh/solr/publication_core/update/extract',
+        params=params,
+        json={
+            "extractOnly": "false",
+            "lowernames": "true",
+            "wt": "json"
+        },
+        files={"file": (filename, file_obj)},
+    )
 
 def solr_clear_all():
     solr_address = current_app.config['URL_SOLR'] + "{}".format(current_app.config['INDEX_DELIB_SOLR'])

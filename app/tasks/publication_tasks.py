@@ -131,7 +131,7 @@ def publier_acte_task(idPublication, reindexationSolr=False):
         insert_solr(publication)
         try:
             result = solr.search(q='publication_id : ' + str(idPublication))
-            lien_symbolique_et_etat_solr(publication,reindexationSolr)
+            lien_symbolique_et_etat_solr(publication, reindexationSolr)
         except Exception as e:
             result = 0
 
@@ -244,10 +244,9 @@ def insert_solr(publication):
         with open(acte.path, 'rb') as fh:
             try:
                 solr = solr_connexion()
-                data = solr.extract(fh, extractOnly=True)
-                traiter_actes(data, publication, acte, isPj=False)
+                params = traiter_actes(publication, acte, isPj=False)
                 # insert dans apache solr
-                solr.add(data['metadata'])
+                index_file_in_solr(fh, params)
 
             except Exception as e:
                 db_sess = db.session
@@ -267,12 +266,9 @@ def insert_solr(publication):
 
             with open(pj.path, 'rb') as fh:
                 try:
-                    solr = solr_connexion()
-                    data = solr.extract(fh, extractOnly=True)
-                    traiter_actes(data, publication, pj, isPj=True)
-
+                    params = traiter_actes(publication, pj, isPj=True)
                     # insert dans apache solr
-                    solr.add(data['metadata'])
+                    index_file_in_solr(fh, params)
 
                 except pysolr.SolrError as e:
                     logging.exception("fichier ignore : %s" % pj)
@@ -280,7 +276,7 @@ def insert_solr(publication):
         logging.exception("probleme traitement PJ : on ignore")
 
 
-def lien_symbolique_et_etat_solr(publication,reindexationSolr=False):
+def lien_symbolique_et_etat_solr(publication, reindexationSolr=False):
     if publication.acte_nature == "1":
         dossier = publication.siren + os.path.sep + "Deliberation"
     elif publication.acte_nature == "2":
@@ -318,7 +314,7 @@ def lien_symbolique_et_etat_solr(publication,reindexationSolr=False):
     # Mise à jour dans Solr
     for doc_res in result.docs:
         if reindexationSolr:
-            doc_res['est_publie'][0]=publication.etat
+            doc_res['est_publie'][0] = publication.etat
         else:
             doc_res['est_publie'][0] = True
         if 'date_de_publication' in doc_res:
@@ -326,7 +322,7 @@ def lien_symbolique_et_etat_solr(publication,reindexationSolr=False):
     solr.add(result.docs)
 
 
-def traiter_actes(data, publication, acte, isPj):
+def traiter_actes(publication, acte, isPj):
     if publication.date_budget:
         annee = publication.date_budget
     else:
@@ -367,53 +363,45 @@ def traiter_actes(data, publication, acte, isPj):
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.hash + extension
     # content = extract_content(data['contents'], format)
 
+    data = {}
+    data["uprefix"] = 'ignored_'
+    data["commit"] = 'true'
+
     # initialisation du document apache solr
     init_document(data, acte, parametrage, publication, urlPDF, typology)
 
     # dépot dans le serveur
     symlink_file(acte.path, current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
                  acte.hash + extension)
-    return data['metadata']
+    return data
 
 
-def init_document(content, data, acte, parametrage, publication, urlPDF, typology):
-    # data['metadata']['_text_'] = content
-    data['metadata']["hash"] = acte.hash
-    data['metadata']["publication_id"] = publication.id
-    data['metadata']["filepath"] = urlPDF
-    data['metadata']["stream_content_type"] = data['metadata']["Content-Type"]
+def init_document(data, acte, parametrage, publication, urlPDF, typology):
+    data["uprefix"] = 'ignored_'
+    data["commit"] = 'true'
+    data["literal.hash"] = acte.hash
+    data["literal.publication_id"] = publication.id
+    data["literal.filepath"] = urlPDF
+    # data["literal.stream_content_type"] = data['metadata']["Content-Type"]
     # etat publication
-    data['metadata']["est_publie"] = False
-    data['metadata']["opendata_active"] = parametrage.open_data_active
-    data['metadata']["date_budget"] = publication.date_budget
+    data["literal.est_publie"] = False
+    data["literal.opendata_active"] = parametrage.open_data_active
+    data["literal.date_budget"] = publication.date_budget
+
     # partie métadata (issu du fichier metadata.json de pastell)
-    data['metadata']["date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
-
+    data["literal.date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
     now = datetime.now()  # current date and time
-    data['metadata']["date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    data["literal.date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    data['metadata']["description"] = publication.objet
-    data['metadata']["documentidentifier"] = publication.numero_de_lacte
-    data['metadata']["documenttype"] = publication.acte_nature
-    data['metadata']["classification"] = publication.classification_code + " " + publication.classification_nom,
-    data['metadata']["classification_code"] = publication.classification_code,
-    data['metadata']["classification_nom"] = publication.classification_nom,
-    data['metadata']["typology"] = typology,
+    data["literal.description"] = publication.objet
+    data["literal.documentidentifier"] = publication.numero_de_lacte
+    data["literal.documenttype"] = publication.acte_nature
+    data["literal.classification"] = publication.classification_code + " " + publication.classification_nom,
+    data["literal.classification_code"] = publication.classification_code,
+    data["literal.classification_nom"] = publication.classification_nom,
+    data["literal.typology"] = typology,
     # PARTIE RESULT API SIRENE
-    data['metadata']["siren"] = publication.siren,
-    # data['metadata']["nic"] = infoEtablissement.nic,
-    # data['metadata'][
-    #     "adresse1"] = infoEtablissement.numeroVoieEtablissement + " " + infoEtablissement.typeVoieEtablissement + " " + infoEtablissement.libelleVoieEtablissement,
-    # data['metadata']["adresse2"] = infoEtablissement.complementAdresseEtablissement,
-    # data['metadata']["ville"] = infoEtablissement.libelleCommuneEtablissement,
-    # data['metadata']["codepostal"] = infoEtablissement.codePostalEtablissement,
-    # data['metadata']["boitepostale"] = infoEtablissement.distributionSpecialeEtablissement,
-    # data['metadata']["cedex"] = infoEtablissement.codeCedexEtablissement,
-    # data['metadata']["categorie"] = infoEtablissement.categorieEntreprise,
-    # data['metadata']["categoriejuridique"] = infoEtablissement.categorieJuridiqueUniteLegale,
-    # data['metadata']["entity"] = infoEtablissement.denominationUniteLegale,
-    # data['metadata']["activite"] = infoEtablissement.activitePrincipaleUniteLegale,
-    # data['metadata']["nomenclatureactivite"] = infoEtablissement.nomenclatureActivitePrincipaleUniteLegale
+    data["literal.siren"] = publication.siren
 
 
 def init_publication(metadataPastell):
