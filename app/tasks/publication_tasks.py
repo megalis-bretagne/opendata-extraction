@@ -106,8 +106,8 @@ def modifier_acte_task(idPublication):
             'publication id': publication.id}
 
 
-@celery.task(name='publier_acte_task', rate_limit='5/s')
-def publier_acte_task(idPublication):
+@celery.task(name='publier_acte_task')
+def publier_acte_task(idPublication, reindexationSolr=False):
     # on récupère la publication à publier en BDD
     publication = Publication.query.filter(Publication.id == idPublication).one()
 
@@ -122,7 +122,7 @@ def publier_acte_task(idPublication):
     except Exception as e:
         result = 0
 
-    if publication.date_publication is None:
+    if not reindexationSolr:
         publication.date_publication = datetime.now()
 
     if (result != 0 and len(result.docs) > 0):
@@ -131,7 +131,7 @@ def publier_acte_task(idPublication):
         insert_solr(publication)
         try:
             result = solr.search(q='publication_id : ' + str(idPublication))
-            lien_symbolique_et_etat_solr(publication)
+            lien_symbolique_et_etat_solr(publication,reindexationSolr)
         except Exception as e:
             result = 0
 
@@ -213,7 +213,7 @@ def republier_all_acte_task(etat):
         # 1 => publie, 0:non, 2:en-cours,3:en-erreur
         publication.etat = 2
         db_sess.commit()
-        publier_acte_task.delay(publication.id)
+        publier_acte_task.delay(publication.id, False)
     return {'status': 'OK', 'message': 'republier_all_acte_task '}
 
 
@@ -246,7 +246,6 @@ def insert_solr(publication):
                 solr = solr_connexion()
                 data = solr.extract(fh, extractOnly=True)
                 traiter_actes(data, publication, acte, isPj=False)
-
                 # insert dans apache solr
                 solr.add(data['metadata'])
 
@@ -281,7 +280,7 @@ def insert_solr(publication):
         logging.exception("probleme traitement PJ : on ignore")
 
 
-def lien_symbolique_et_etat_solr(publication):
+def lien_symbolique_et_etat_solr(publication,reindexationSolr=False):
     if publication.acte_nature == "1":
         dossier = publication.siren + os.path.sep + "Deliberation"
     elif publication.acte_nature == "2":
@@ -318,10 +317,12 @@ def lien_symbolique_et_etat_solr(publication):
     result = solr.search(q='publication_id : ' + str(publication.id))
     # Mise à jour dans Solr
     for doc_res in result.docs:
-        doc_res['est_publie'][0] = True
+        if reindexationSolr:
+            doc_res['est_publie'][0]=publication.etat
+        else:
+            doc_res['est_publie'][0] = True
         if 'date_de_publication' in doc_res:
-            now = datetime.now()  # current date and time
-            doc_res['date_de_publication'][0] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+            doc_res['date_de_publication'][0] = publication.date_publication.strftime("%Y-%m-%dT%H:%M:%SZ")
     solr.add(result.docs)
 
 
@@ -364,10 +365,10 @@ def traiter_actes(data, publication, acte, isPj):
     extension = str('.' + acte.name.split(".")[-1])
 
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.hash + extension
-    content = extract_content(data['contents'], format)
+    # content = extract_content(data['contents'], format)
 
     # initialisation du document apache solr
-    init_document(content, data, acte, parametrage, publication, urlPDF, typology)
+    init_document(data, acte, parametrage, publication, urlPDF, typology)
 
     # dépot dans le serveur
     symlink_file(acte.path, current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
@@ -376,7 +377,7 @@ def traiter_actes(data, publication, acte, isPj):
 
 
 def init_document(content, data, acte, parametrage, publication, urlPDF, typology):
-    data['metadata']['_text_'] = content
+    # data['metadata']['_text_'] = content
     data['metadata']["hash"] = acte.hash
     data['metadata']["publication_id"] = publication.id
     data['metadata']["filepath"] = urlPDF
