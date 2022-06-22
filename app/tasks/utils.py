@@ -61,15 +61,19 @@ def solr_connexion():
 
 def index_file_in_solr(file_obj,params):
     filename = quote(file_obj.name.encode("utf-8"))
-    r = requests.post(
-        'https://solr-preprod.megalis.bretagne.bzh/solr/publication_core/update/extract',
+    solr_address=current_app.config['URL_SOLR']+ "{}".format(current_app.config['INDEX_DELIB_SOLR'])
+    handler = "/update/extract"
+    requests.post(
+        solr_address+handler,
         params=params,
         json={
             "extractOnly": "false",
             "lowernames": "true",
-            "wt": "json"
+            "wt": "json",
+            "overwrite":'true',
+            "commit":"true"
         },
-        files={"file": (filename, file_obj)},
+        files={"file": (filename, file_obj)}
     )
 
 def solr_clear_all():
