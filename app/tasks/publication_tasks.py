@@ -377,8 +377,7 @@ def traiter_actes(publication, acte, isPj):
 
 
 def init_document(data, acte, parametrage, publication, urlPDF, typology):
-    data["uprefix"] = 'ignored_'
-    data["commit"] = 'true'
+
     data["literal.hash"] = acte.hash
     data["literal.publication_id"] = publication.id
     data["literal.filepath"] = urlPDF
