@@ -488,7 +488,7 @@ def init_publication(metadataPastell):
             publication_id=newPublication.id
         )
         db_sess.add(newDoc)
-        move_file(path, dossier_publication, + hash + format)
+        move_file(path, dossier_publication, hash + format)
         contient_acte_tamponne = True
 
     # si on a pas d'acte tamponne on prend le fichier non tamponné
@@ -506,7 +506,7 @@ def init_publication(metadataPastell):
                 path=dossier_publication + arrete
             )
             db_sess.add(newDoc)
-            move_file(path, dossier_publication, + hash + format)
+            move_file(path, dossier_publication, hash + format)
     # Pour tous les fichiers pj présents dans le zip
     if metadataPastell.liste_autre_document_attache is not None:
         for pj in metadataPastell.liste_autre_document_attache:
@@ -524,7 +524,7 @@ def init_publication(metadataPastell):
                 publication_id=newPublication.id
             )
             db_sess.add(newPj)
-            move_file(path, dossier_publication, + hash + format)
+            move_file(path, dossier_publication, hash + format)
     db_sess.commit()
     return newPublication
 
