@@ -62,6 +62,7 @@ class Acte(db.Model):
     url: str = db.Column(db.String(500), nullable=False)
     # ajout du path pour la task publier_acte_task (utiliser en backend)
     path: str = db.Column(db.String(500), nullable=False)
+    hash: str  = db.Column(db.String(65), nullable=False)
     publication_id = Column(Integer, ForeignKey('publication.id'))
 
     @property
@@ -71,6 +72,7 @@ class Acte(db.Model):
             'name': self.name,
             'url': self.url,
             'path': self.path,
+            'hash': self.hash,
             'publication_id': self.publication_id
         }
 
@@ -82,6 +84,7 @@ class PieceJointe(db.Model):
     url: str = db.Column(db.String(500), nullable=False)
     # ajout du path pour la task publier_acte_task (utiliser en backend)
     path: str = db.Column(db.String(500), nullable=False)
+    hash: str  = db.Column(db.String(65), nullable=False)
     publication_id = Column(Integer, ForeignKey('publication.id'))
 
     @property
@@ -91,5 +94,6 @@ class PieceJointe(db.Model):
             'name': self.name,
             'url': self.url,
             'path': self.path,
+            'hash': self.hash,
             'publication_id': self.publication_id
         }

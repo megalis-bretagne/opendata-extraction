@@ -1,4 +1,5 @@
 import csv
+import hashlib
 import logging
 import pysolr, re, os, errno, shutil
 import requests
@@ -35,6 +36,17 @@ def api_insee_call(siren):
             return InfoEtablissement(reponse['unite_legale'], False)
         else:
             return None
+
+
+def get_hash(filePath):
+    BLOCK_SIZE = 65536  # The size of each read from the file
+    file_hash = hashlib.sha256()
+    with open(filePath, 'rb') as f:  # Open the file to read it's bytes
+        fb = f.read(BLOCK_SIZE)  # Read from the file. Take in the amount declared above
+        while len(fb) > 0:  # While there is still data being read from the file
+            file_hash.update(fb)  # Update the hash
+            fb = f.read(BLOCK_SIZE)  # Read the next block from the file
+    return file_hash.hexdigest()
 
 
 def solr_connexion():
@@ -110,6 +122,7 @@ def clear_wordir():
     filelist = [f for f in os.listdir(WORKDIR)]
     for f in filelist:
         os.remove(os.path.join(WORKDIR, f))
+    return WORKDIR
 
 
 def get_or_create_workdir():

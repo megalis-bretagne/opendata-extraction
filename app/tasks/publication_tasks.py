@@ -23,7 +23,7 @@ def creation_publication_task(zip_path):
     shutil.copy(zip_path, current_app.config['DIRECTORY_TO_WATCH_ARCHIVE'])
 
     PATH_FILE = zip_path
-    WORKDIR = get_or_create_workdir()
+    WORKDIR = clear_wordir()
 
     # move file to workdir
     shutil.move(PATH_FILE, WORKDIR + 'objet.zip')
@@ -36,7 +36,6 @@ def creation_publication_task(zip_path):
     # lecture du fichier metadata.json
     with open(WORKDIR + 'metadata.json') as f:
         metadata = json.load(f)
-
 
     try:
         metadataPastell = MetadataPastell(metadata)
@@ -52,7 +51,7 @@ def creation_publication_task(zip_path):
     except MultipleResultsFound as e:
         # todo delete puis recreer le parametrage
         shutil.move(WORKDIR + 'objet.zip', current_app.config['DIRECTORY_TO_WATCH_ERREURS'])
-        return {'status': 'KO', 'message': 'probleme parametrage','siren': newPublication.siren}
+        return {'status': 'KO', 'message': 'probleme parametrage', 'siren': newPublication.siren}
 
     except NoResultFound as e:
         db_sess = db.session
@@ -76,10 +75,11 @@ def creation_publication_task(zip_path):
         db_sess.add(newPublication)
         task = publier_acte_task.delay(newPublication.id)
         return {'status': 'OK', 'message': 'tache de publication demandée', 'publication_id': newPublication.id,
-            'task_id': str(task)}
+                'task_id': str(task)}
     else:
-        return {'status': 'OK', 'message': 'Acte non publié', 'publication_open_data': str(metadataPastell.publication_open_data),
-            'nature': str(metadataPastell.acte_nature)}
+        return {'status': 'OK', 'message': 'Acte non publié',
+                'publication_open_data': str(metadataPastell.publication_open_data),
+                'nature': str(metadataPastell.acte_nature)}
 
 
 @celery.task(name='modifier_acte_task')
@@ -232,16 +232,21 @@ def republier_all_acte_task(etat):
 
 # FONCTION
 def insert_solr(publication):
-    infoEtablissement = api_insee_call(publication.siren)
+    # infoEtablissement = api_insee_call(publication.siren)
+
     # Pour tous les actes ( documents lié à la publication)
     for acte in publication.actes:
+
+        if acte.hash is None:
+            acte.hash = get_hash(acte.path)
+            db.session.add(acte)
+
         with open(acte.path, 'rb') as fh:
             try:
                 solr = solr_connexion()
                 data = solr.extract(fh, extractOnly=True)
-                # generation du hash
-                hash = hashlib.md5(fh.read()).hexdigest()
-                traiter_actes(data, hash, infoEtablissement, publication, acte, isPj=False)
+                traiter_actes(data, publication, acte, isPj=False)
+
                 # insert dans apache solr
                 solr.add(data['metadata'])
 
@@ -256,13 +261,16 @@ def insert_solr(publication):
     # Pour tous les fichiers pj présents dans le zip
     try:
         for pj in publication.pieces_jointe:
+
+            if pj.hash is None:
+                pj.hash = get_hash(pj.path)
+                db.session.add(pj)
+
             with open(pj.path, 'rb') as fh:
                 try:
                     solr = solr_connexion()
                     data = solr.extract(fh, extractOnly=True)
-                    # generation du hash
-                    hash = hashlib.md5(fh.read()).hexdigest()
-                    traiter_actes(data, hash, infoEtablissement, publication, pj, isPj=True)
+                    traiter_actes(data, publication, pj, isPj=True)
 
                     # insert dans apache solr
                     solr.add(data['metadata'])
@@ -292,27 +300,37 @@ def lien_symbolique_et_etat_solr(publication):
     else:
         annee = str(publication.date_de_lacte.year)
 
+
+
+
     # copy de l'acte dans le dossier marque blanche
     for acte in publication.actes:
+        format = str('.' + acte.name.split(".")[-1])
         symlink_file(acte.path,
                      current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                     acte.name)
+                     acte.hash + format)
 
     # copy des pj dans le dossier marque blanche
     for pj in publication.pieces_jointe:
+
+        format = str('.' + acte.name.split(".")[-1])
         symlink_file(pj.path,
                      current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                     pj.name)
+                     pj.name + format)
+
 
     solr = solr_connexion()
     result = solr.search(q='publication_id : ' + str(publication.id))
     # Mise à jour dans Solr
     for doc_res in result.docs:
         doc_res['est_publie'][0] = True
+        if 'date_de_publication' in doc_res:
+            now = datetime.now()  # current date and time
+            doc_res['date_de_publication'][0] =  now.strftime("%Y-%m-%dT%H:%M:%SZ")
     solr.add(result.docs)
 
 
-def traiter_actes(data, hash, infoEtablissement, publication, acte, isPj):
+def traiter_actes(data, publication, acte, isPj):
     if publication.date_budget:
         annee = publication.date_budget
     else:
@@ -351,8 +369,8 @@ def traiter_actes(data, hash, infoEtablissement, publication, acte, isPj):
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.name
     content = extract_content(data['contents'], format)
 
-    # initialisation du document apache solr
-    init_document(content, data, hash, infoEtablissement, parametrage, publication, urlPDF, typology)
+    #initialisation du document apache solr
+    init_document(content, data, acte, parametrage, publication, urlPDF, typology)
 
     # dépot dans le serveur
     symlink_file(acte.path, current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
@@ -360,9 +378,9 @@ def traiter_actes(data, hash, infoEtablissement, publication, acte, isPj):
     return data['metadata']
 
 
-def init_document(content, data, hash, infoEtablissement, parametrage, publication, urlPDF, typology):
+def init_document(content, data, acte, parametrage, publication, urlPDF, typology):
     data['metadata']['_text_'] = content
-    data['metadata']["hash"] = hash
+    data['metadata']["hash"] = acte.hash
     data['metadata']["publication_id"] = publication.id
     data['metadata']["filepath"] = urlPDF
     data['metadata']["stream_content_type"] = data['metadata']["Content-Type"]
@@ -372,6 +390,10 @@ def init_document(content, data, hash, infoEtablissement, parametrage, publicati
     data['metadata']["date_budget"] = publication.date_budget
     # partie métadata (issu du fichier metadata.json de pastell)
     data['metadata']["date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    now = datetime.now()  # current date and time
+    data['metadata']["date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+
     data['metadata']["description"] = publication.objet
     data['metadata']["documentidentifier"] = publication.numero_de_lacte
     data['metadata']["documenttype"] = publication.acte_nature
@@ -381,19 +403,19 @@ def init_document(content, data, hash, infoEtablissement, parametrage, publicati
     data['metadata']["typology"] = typology,
     # PARTIE RESULT API SIRENE
     data['metadata']["siren"] = publication.siren,
-    data['metadata']["nic"] = infoEtablissement.nic,
-    data['metadata'][
-        "adresse1"] = infoEtablissement.numeroVoieEtablissement + " " + infoEtablissement.typeVoieEtablissement + " " + infoEtablissement.libelleVoieEtablissement,
-    data['metadata']["adresse2"] = infoEtablissement.complementAdresseEtablissement,
-    data['metadata']["ville"] = infoEtablissement.libelleCommuneEtablissement,
-    data['metadata']["codepostal"] = infoEtablissement.codePostalEtablissement,
-    data['metadata']["boitepostale"] = infoEtablissement.distributionSpecialeEtablissement,
-    data['metadata']["cedex"] = infoEtablissement.codeCedexEtablissement,
-    data['metadata']["categorie"] = infoEtablissement.categorieEntreprise,
-    data['metadata']["categoriejuridique"] = infoEtablissement.categorieJuridiqueUniteLegale,
-    data['metadata']["entity"] = infoEtablissement.denominationUniteLegale,
-    data['metadata']["activite"] = infoEtablissement.activitePrincipaleUniteLegale,
-    data['metadata']["nomenclatureactivite"] = infoEtablissement.nomenclatureActivitePrincipaleUniteLegale
+    # data['metadata']["nic"] = infoEtablissement.nic,
+    # data['metadata'][
+    #     "adresse1"] = infoEtablissement.numeroVoieEtablissement + " " + infoEtablissement.typeVoieEtablissement + " " + infoEtablissement.libelleVoieEtablissement,
+    # data['metadata']["adresse2"] = infoEtablissement.complementAdresseEtablissement,
+    # data['metadata']["ville"] = infoEtablissement.libelleCommuneEtablissement,
+    # data['metadata']["codepostal"] = infoEtablissement.codePostalEtablissement,
+    # data['metadata']["boitepostale"] = infoEtablissement.distributionSpecialeEtablissement,
+    # data['metadata']["cedex"] = infoEtablissement.codeCedexEtablissement,
+    # data['metadata']["categorie"] = infoEtablissement.categorieEntreprise,
+    # data['metadata']["categoriejuridique"] = infoEtablissement.categorieJuridiqueUniteLegale,
+    # data['metadata']["entity"] = infoEtablissement.denominationUniteLegale,
+    # data['metadata']["activite"] = infoEtablissement.activitePrincipaleUniteLegale,
+    # data['metadata']["nomenclatureactivite"] = infoEtablissement.nomenclatureActivitePrincipaleUniteLegale
 
 
 def init_publication(metadataPastell):
@@ -453,64 +475,56 @@ def init_publication(metadataPastell):
     contient_acte_tamponne = False
     for acte_tamponne in metadataPastell.liste_acte_tamponne:
         dossier_publication = current_app.config['DIR_PUBLICATION'] + dossier + os.path.sep + annee + os.path.sep
-        newDoc = Acte(
-            name=acte_tamponne,
-            url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(
-                acte_tamponne),
-            path=dossier_publication + acte_tamponne,
-            publication_id=newPublication.id
-        )
-        format = str('.' + acte_tamponne.split(".")[-1])
-        db_sess.add(newDoc)
-        db_sess.flush()
-        db_sess.refresh(newDoc)
-
-        newDoc.path = dossier_publication + str(newDoc.id) + format
-        newDoc.url = current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(
-            str(newDoc.id)  + format)
-
 
         path = WORKDIR + acte_tamponne
-        move_file(path, dossier_publication, str(newDoc.id)  + format)
+        format = str('.' + acte_tamponne.split(".")[-1])
+        hash = get_hash(path)
+
+        newDoc = Acte(
+            name=acte_tamponne,
+            url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
+            path=dossier_publication + hash + format,
+            hash=hash,
+            publication_id=newPublication.id
+        )
+        db_sess.add(newDoc)
+        move_file(path, dossier_publication, + hash + format)
         contient_acte_tamponne = True
 
     # si on a pas d'acte tamponne on prend le fichier non tamponné
     if contient_acte_tamponne is False:
         for arrete in metadataPastell.liste_arrete:
             dossier_publication = current_app.config['DIR_PUBLICATION'] + dossier + os.path.sep + annee + os.path.sep
+            path = WORKDIR + arrete
+            format = str('.' + arrete.split(".")[-1])
+            hash = get_hash(path)
             newDoc = Acte(
                 name=arrete,
                 publication_id=newPublication.id,
-                url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(
-                    arrete),
+                url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
+                hash=hash,
                 path=dossier_publication + arrete
             )
-            format = str('.' + arrete.split(".")[-1])
             db_sess.add(newDoc)
-            db_sess.flush()
-            db_sess.refresh(newDoc)
-            newDoc.path = dossier_publication + str(newDoc.id) + format
-            newDoc.url = current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(
-                str(newDoc.id)  + format)
-
-            path = WORKDIR + arrete
-            move_file(path, dossier_publication, str(newDoc.id)  + format)
-
+            move_file(path, dossier_publication, + hash + format)
     # Pour tous les fichiers pj présents dans le zip
     if metadataPastell.liste_autre_document_attache is not None:
         for pj in metadataPastell.liste_autre_document_attache:
             dossier_publication = current_app.config['DIR_PUBLICATION'] + dossier + os.path.sep + annee + os.path.sep
+            path = WORKDIR + pj
+            format = str('.' + pj.split(".")[-1])
+            hash = get_hash(path)
+
             newPj = PieceJointe(
                 name=pj,
                 url=current_app.config[
-                        'URL_PUBLICATION'] + urlPub + '/' + annee + '/' + urllib.parse.quote(pj),
-                path=dossier_publication + pj,
+                        'URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
+                path=dossier_publication + hash + format,
+                hash=hash,
                 publication_id=newPublication.id
             )
             db_sess.add(newPj)
-            path = WORKDIR + pj
-            move_file(path, dossier_publication, newPj.name)
-
+            move_file(path, dossier_publication, + hash + format)
     db_sess.commit()
     return newPublication
 
@@ -541,7 +555,6 @@ class MetadataPastell:
             self.liste_autre_document_attache = []
         self.type_piece = metajson['type_piece']
 
-
         self.acte_nature = metajson['acte_nature']
         self.classification = metajson['classification']
 
@@ -562,13 +575,13 @@ class MetadataPastell:
         else:
             # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
             if self.acte_nature == '1' or self.acte_nature == '2' or self.acte_nature == '5':
-                #délib, actes réglementaires et budget oui par defaut
+                # délib, actes réglementaires et budget oui par defaut
                 self.publication_open_data = '3'
             elif self.acte_nature == '3' or self.acte_nature == '6':
-                #actes individuels et autres non par defaut
+                # actes individuels et autres non par defaut
                 self.publication_open_data = '1'
             else:
-                #le reste à ne sais pas
+                # le reste à ne sais pas
                 self.publication_open_data = '2'
 
         x = self.classification.split(" ", 1)
