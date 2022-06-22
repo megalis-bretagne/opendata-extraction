@@ -150,14 +150,18 @@ def publier_acte_task(idPublication, reindexationSolr=False):
                     'publication id': publication.id}
 
     # Mise à jour de la publication
-    db_sess = db.session
-    publication = Publication.query.filter(Publication.id == idPublication).one()
-    db_sess.add(publication)
-    # 1 => publie, 0:non, 2:en-cours,3:en-erreur
-    publication.etat = 1
-    publication.modified_at = datetime.now()
-    db_sess.commit()
-    return {'status': 'OK', 'message': 'publication open data réalisé',
+    if not reindexationSolr:
+        db_sess = db.session
+        publication = Publication.query.filter(Publication.id == idPublication).one()
+        db_sess.add(publication)
+        # 1 => publie, 0:non, 2:en-cours,3:en-erreur
+        publication.etat = 1
+        publication.modified_at = datetime.now()
+        db_sess.commit()
+        return {'status': 'OK', 'message': 'publication open data réalisé',
+            'publication id': publication.id}
+    else:
+        return {'status': 'OK', 'message': 'publication open data réalisé (moder eindexationSolr) ',
             'publication id': publication.id}
 
 
@@ -211,9 +215,9 @@ def republier_all_acte_task(etat):
     liste_publication = Publication.query.filter(Publication.etat == etat)
     for publication in liste_publication:
         # 1 => publie, 0:non, 2:en-cours,3:en-erreur
-        publication.etat = 2
-        db_sess.commit()
-        publier_acte_task.delay(publication.id, False)
+        # publication.etat = 2
+        # db_sess.commit()
+        publier_acte_task.delay(publication.id, True)
     return {'status': 'OK', 'message': 'republier_all_acte_task '}
 
 
