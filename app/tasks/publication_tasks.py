@@ -368,8 +368,8 @@ def traiter_actes(publication, acte, isPj):
     # content = extract_content(data['contents'], format)
 
     data = {}
-    data["uprefix"] = 'ignored_'
-    data["commit"] = 'true'
+    # data["uprefix"] = 'ignored_'
+    # data["commit"] = 'true'
 
     # initialisation du document apache solr
     init_document(data, acte, parametrage, publication, urlPDF, typology)
