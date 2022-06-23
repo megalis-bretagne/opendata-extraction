@@ -67,13 +67,12 @@ def index_file_in_solr(file_obj,params):
         solr_address+handler,
         params=params,
         json={
-            "extractOnly": "false",
             "lowernames": "true",
             "wt": "json",
             "overwrite":'true',
             "commit":"true"
         },
-        files={"file": (filename, file_obj)}
+        files={"myFile": (filename, file_obj)}
     )
 
 def solr_clear_all():
