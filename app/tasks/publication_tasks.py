@@ -335,41 +335,29 @@ def traiter_actes(publication, acte, isPj):
     if publication.acte_nature == "1":
         dossier = publication.siren + os.path.sep + "Deliberation"
         typology = "99_DE"
-        format = "html5lib"
     elif publication.acte_nature == "2":
         dossier = publication.siren + os.path.sep + "Actes_reglementaires"
         typology = "99_AT"
-        format = "html5lib"
     elif publication.acte_nature == "3":
         dossier = publication.siren + os.path.sep + "Actes_individuels"
         typology = "99_AI"
-        format = "html5lib"
     elif publication.acte_nature == "4":
         dossier = publication.siren + os.path.sep + "Contrats_conventions_avenants"
         typology = "99_CO"
-        format = "html5lib"
     elif publication.acte_nature == "5":
         dossier = publication.siren + os.path.sep + "Budget"
         typology = "99_BU"
-        format = "xml"
     elif publication.acte_nature == "6":
         dossier = publication.siren + os.path.sep + "Autres"
         typology = "99_AU"
-        format = "html5lib"
 
     if isPj == True:
         typology = "PJ"
-        format = "html5lib"
 
     extension = str('.' + acte.name.split(".")[-1])
-
     urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.hash + extension
-    # content = extract_content(data['contents'], format)
 
     data = {}
-    # data["uprefix"] = 'ignored_'
-    data["commit"] = 'true'
-
     # initialisation du document apache solr
     init_document(data, acte, parametrage, publication, urlPDF, typology)
 

@@ -60,6 +60,10 @@ def solr_connexion():
     return solr
 
 def index_file_in_solr(file_obj,params):
+
+    # params["uprefix"] = 'ignored_'
+    params["commit"] = 'true'
+
     filename = quote(file_obj.name.encode("utf-8"))
     solr_address=current_app.config['URL_SOLR']+ "{}".format(current_app.config['INDEX_DELIB_SOLR'])
     handler = "/update/extract"
