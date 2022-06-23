@@ -247,7 +247,6 @@ def insert_solr(publication):
 
         with open(acte.path, 'rb') as fh:
             try:
-                solr = solr_connexion()
                 params = traiter_actes(publication, acte, isPj=False)
                 # insert dans apache solr
                 index_file_in_solr(fh, params)
@@ -369,7 +368,7 @@ def traiter_actes(publication, acte, isPj):
 
     data = {}
     # data["uprefix"] = 'ignored_'
-    # data["commit"] = 'true'
+    data["commit"] = 'true'
 
     # initialisation du document apache solr
     init_document(data, acte, parametrage, publication, urlPDF, typology)
