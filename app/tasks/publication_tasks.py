@@ -471,10 +471,10 @@ def init_publication(metadataPastell):
 
         newDoc = Acte(
             name=acte_tamponne,
+            publication_id=newPublication.id,
             url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
             path=dossier_publication + hash + format,
-            hash=hash,
-            publication_id=newPublication.id
+            hash=hash
         )
         db_sess.add(newDoc)
         move_file(path, dossier_publication, hash + format)
@@ -491,8 +491,8 @@ def init_publication(metadataPastell):
                 name=arrete,
                 publication_id=newPublication.id,
                 url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
-                hash=hash,
                 path=dossier_publication + hash + format,
+                hash=hash
             )
             db_sess.add(newDoc)
             move_file(path, dossier_publication, hash + format)
