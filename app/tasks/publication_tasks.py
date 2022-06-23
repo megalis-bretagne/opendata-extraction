@@ -524,13 +524,16 @@ class MetadataPastell:
         self.date_de_lacte = metajson['date_de_lacte']
         self.objet = metajson['objet']
         self.siren = metajson['siren']
+        self.acte_nature = metajson['acte_nature']
+
+
         if 'envoi_depot' in metajson:
             self.envoi_depot = metajson['envoi_depot']
         else:
             self.envoi_depot = 'checked'
+
         # liste de fichier arrete
         self.liste_arrete = metajson['arrete']
-
         # liste de fichier arrete tamponne
         if 'acte_tamponne' in metajson:
             self.liste_acte_tamponne = metajson['acte_tamponne']
@@ -542,10 +545,18 @@ class MetadataPastell:
             self.liste_autre_document_attache = metajson['autre_document_attache']
         else:
             self.liste_autre_document_attache = []
-        self.type_piece = metajson['type_piece']
 
-        self.acte_nature = metajson['acte_nature']
-        self.classification = metajson['classification']
+        if 'type_piece' in metajson:
+            self.type_piece = metajson['type_piece']
+        else:
+            self.type_piece = ''
+
+
+        if 'classification' in metajson:
+            self.classification = metajson['classification']
+        else:
+            self.classification = ''
+
 
         if 'publication_open_data' in metajson:
             if len(metajson['publication_open_data']) == 0:
