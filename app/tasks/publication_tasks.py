@@ -391,7 +391,7 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     data["literal.filepath"] = urlPDF
     # data["literal.stream_content_type"] = data['metadata']["Content-Type"]
     # etat publication
-    data["literal.est_publie"] = False
+    data["literal.est_publie"] = True
     data["literal.opendata_active"] = parametrage.open_data_active
     data["literal.date_budget"] = publication.date_budget
 
