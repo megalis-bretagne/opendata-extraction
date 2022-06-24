@@ -389,17 +389,17 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     data["literal.hash"] = acte.hash
     data["literal.publication_id"] = publication.id
     data["literal.filepath"] = urlPDF
-    # data["literal.stream_content_type"] = data['metadata']["Content-Type"]
+
     # etat publication
-    # data["literal.est_publie"] = False
-    # data["literal.opendata_active"] = parametrage.open_data_active
-    # data["literal.date_budget"] = publication.date_budget
-    #
-    # # partie métadata (issu du fichier metadata.json de pastell)
+    data["literal.est_publie"] = False
+    data["literal.opendata_active"] = parametrage.open_data_active
+    data["literal.date_budget"] = publication.date_budget
+
+    # partie métadata (issu du fichier metadata.json de pastell)
     # data["literal.date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
     # now = datetime.now()  # current date and time
     # data["literal.date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
-    #
+    # #
     # data["literal.description"] = publication.objet
     # data["literal.documentidentifier"] = publication.numero_de_lacte
     # data["literal.documenttype"] = publication.acte_nature
