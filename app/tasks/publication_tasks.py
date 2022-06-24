@@ -316,8 +316,8 @@ def lien_symbolique_et_etat_solr(publication, reindexationSolr=False):
     for doc_res in result.docs:
         if reindexationSolr:
             doc_res['est_publie'][0] = publication.etat
-        else:
-            doc_res['est_publie'][0] = True
+        # else:
+            # doc_res['est_publie'][0] = 'true'
         if 'date_de_publication' in doc_res:
             doc_res['date_de_publication'][0] = publication.date_publication.strftime("%Y-%m-%dT%H:%M:%SZ")
     solr.add(result.docs)
@@ -391,7 +391,7 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     data["literal.filepath"] = urlPDF
 
     # # etat publication
-    # data["literal.est_publie"] = True
+    data["literal.est_publie"] = True
     data["literal.opendata_active"] = parametrage.open_data_active
     data["literal.date_budget"] = publication.date_budget
 
