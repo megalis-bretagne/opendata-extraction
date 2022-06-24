@@ -1,4 +1,5 @@
 import csv
+import datetime
 import hashlib
 import logging
 from urllib.parse import quote
@@ -68,6 +69,24 @@ def index_file_in_solr(path, params):
         # params["uprefix"] = 'ignored_'
         params["commit"] = 'true'
 
+        params["literal.hash"] = '9ebbd0b25760557393a43064a92bae539d96210'
+        params["literal.publication_id"] = 123
+        params["literal.filepath"] = "https://data-preprod.megalis.bretagne.bzh/OpenData/253514491/Budget/2020/e5753a1c860c06fb54fbf45d456f597f3a4b4613e8f825a8c027b91df10ea8d2.pdf"
+        params["literal.est_publie"] = True
+        params["literal.opendata_active"] = True
+        params["literal.date_budget"] = "2022"
+        now = datetime.now()
+        params["literal.date"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+        params["literal.date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+        params["literal.description"] = 'publication.objet'
+        params["literal.documentidentifier"] = 'DELIB_TEST'
+        params["literal.documenttype"] = 1
+        params["literal.classification"] = "7.1 Finances locales/Divers"
+        params["literal.classification_code"] = "7.1"
+        params["literal.classification_nom"] = 'Finances locales/Divers'
+        params["literal.typology"] = "99_DE"
+        params["literal.siren"] = "242900710"
+
         solr_address = current_app.config['URL_SOLR'] + "{}".format(current_app.config['INDEX_DELIB_SOLR'])
         handler = "/update/extract"
         requests.post(
@@ -81,6 +100,7 @@ def index_file_in_solr(path, params):
             },
             files={"file": (filename, file_obj)}
         )
+
 
 
 def solr_clear_all():
