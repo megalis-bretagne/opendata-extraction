@@ -393,22 +393,22 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     # # etat publication
     # data["literal.est_publie"] = True
     data["literal.opendata_active"] = parametrage.open_data_active
-    # data["literal.date_budget"] = publication.date_budget
+    data["literal.date_budget"] = publication.date_budget
 
-    # partie métadata (issu du fichier metadata.json de pastell)
-    # data["literal.date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
-    # now = datetime.now()  # current date and time
-    # data["literal.date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
-    # #
-    # data["literal.description"] = publication.objet
-    # data["literal.documentidentifier"] = publication.numero_de_lacte
-    # data["literal.documenttype"] = publication.acte_nature
-    # data["literal.classification"] = publication.classification_code + " " + publication.classification_nom,
-    # data["literal.classification_code"] = publication.classification_code,
-    # data["literal.classification_nom"] = publication.classification_nom,
-    # data["literal.typology"] = typology,
-    # # PARTIE RESULT API SIRENE
-    # data["literal.siren"] = publication.siren
+    #partie métadata (issu du fichier metadata.json de pastell)
+    data["literal.date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
+    now = datetime.now()  # current date and time
+    data["literal.date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    #
+    data["literal.description"] = publication.objet
+    data["literal.documentidentifier"] = publication.numero_de_lacte
+    data["literal.documenttype"] = publication.acte_nature
+    data["literal.classification"] = publication.classification_code + " " + publication.classification_nom,
+    data["literal.classification_code"] = publication.classification_code,
+    data["literal.classification_nom"] = publication.classification_nom,
+    data["literal.typology"] = typology,
+    # PARTIE RESULT API SIRENE
+    data["literal.siren"] = publication.siren
 
 
 def init_publication(metadataPastell):
