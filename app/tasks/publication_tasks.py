@@ -390,10 +390,10 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     data["literal.publication_id"] = publication.id
     data["literal.filepath"] = urlPDF
 
-    # etat publication
-    data["literal.est_publie"] = False
+    # # etat publication
+    # data["literal.est_publie"] = False
     data["literal.opendata_active"] = parametrage.open_data_active
-    data["literal.date_budget"] = publication.date_budget
+    # data["literal.date_budget"] = publication.date_budget
 
     # partie métadata (issu du fichier metadata.json de pastell)
     # data["literal.date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
