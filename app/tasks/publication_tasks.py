@@ -131,12 +131,11 @@ def publier_acte_task(idPublication, reindexationSolr=False):
         insert_solr(publication)
         try:
             result = solr.search(q='publication_id : ' + str(idPublication))
-            lien_symbolique_et_etat_solr(publication, reindexationSolr)
         except Exception as e:
             result = 0
 
         if (result != 0 and len(result.docs) > 0):
-            lien_symbolique_et_etat_solr(publication)
+            lien_symbolique_et_etat_solr(publication, reindexationSolr)
         else:
             # Mise à jour de la publication à erreur
             db_sess = db.session
