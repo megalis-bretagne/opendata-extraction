@@ -11,6 +11,7 @@ from functools import lru_cache
 from api_insee import ApiInsee
 from flask import current_app
 
+
 @lru_cache(maxsize=25)
 def api_insee_call(siren):
     if current_app.config['USE_API_INSEE']:
@@ -59,24 +60,28 @@ def solr_connexion():
     solr.ping()
     return solr
 
-def index_file_in_solr(file_obj,params):
 
-    # params["uprefix"] = 'ignored_'
-    params["commit"] = 'true'
+def index_file_in_solr(path, params):
+    with open(path, 'rb') as file_obj:
+        filename = quote(file_obj.name.encode("utf-8"))
 
-    filename = quote(file_obj.name.encode("utf-8"))
-    solr_address=current_app.config['URL_SOLR']+ "{}".format(current_app.config['INDEX_DELIB_SOLR'])
-    handler = "/update/extract"
-    requests.post(
-        solr_address+handler,
-        params=params,
-        json={
-            "extractOnly": "false",
-            "lowernames": "true",
-            "wt": "json"
-        },
-        files={"file": (filename, file_obj)}
-    )
+        # params["uprefix"] = 'ignored_'
+        params["commit"] = 'true'
+
+        solr_address = current_app.config['URL_SOLR'] + "{}".format(current_app.config['INDEX_DELIB_SOLR'])
+        handler = "/update/extract"
+        requests.post(
+            # solr_address + handler,
+            'https://solr-preprod.megalis.bretagne.bzh/solr/publication_core/update/extract',
+            params=params,
+            json={
+                "extractOnly": "false",
+                "lowernames": "true",
+                "wt": "json"
+            },
+            files={"file": (filename, file_obj)}
+        )
+
 
 def solr_clear_all():
     solr_address = current_app.config['URL_SOLR'] + "{}".format(current_app.config['INDEX_DELIB_SOLR'])

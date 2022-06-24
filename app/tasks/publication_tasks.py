@@ -245,19 +245,18 @@ def insert_solr(publication):
             acte.hash = get_hash(acte.path)
             db.session.add(acte)
 
-        with open(acte.path, 'rb') as fh:
-            try:
-                params = traiter_actes(publication, acte, isPj=False)
-                # insert dans apache solr
-                index_file_in_solr(fh, params)
+        try:
+            params = traiter_actes(publication, acte, isPj=False)
+            # insert dans apache solr
+            index_file_in_solr(acte.path, params)
 
-            except Exception as e:
-                db_sess = db.session
-                publication.etat = '3'
-                db_sess.add(publication)
-                db_sess.commit()
-                logging.exception("Erreur lors de la publication de l'acte: %s" % acte)
-                raise e
+        except Exception as e:
+            db_sess = db.session
+            publication.etat = '3'
+            db_sess.add(publication)
+            db_sess.commit()
+            logging.exception("Erreur lors de la publication de l'acte: %s" % acte)
+            raise e
 
     # Pour tous les fichiers pj présents dans le zip
     try:
@@ -266,15 +265,14 @@ def insert_solr(publication):
             if pj.hash is None:
                 pj.hash = get_hash(pj.path)
                 db.session.add(pj)
+            try:
+                params = traiter_actes(publication, pj, isPj=True)
+                # insert dans apache solr
+                index_file_in_solr(pj.path, params)
 
-            with open(pj.path, 'rb') as fh:
-                try:
-                    params = traiter_actes(publication, pj, isPj=True)
-                    # insert dans apache solr
-                    index_file_in_solr(fh, params)
+            except pysolr.SolrError as e:
+                logging.exception("fichier ignore : %s" % pj)
 
-                except pysolr.SolrError as e:
-                    logging.exception("fichier ignore : %s" % pj)
     except Exception as e:
         logging.exception("probleme traitement PJ : on ignore")
 
