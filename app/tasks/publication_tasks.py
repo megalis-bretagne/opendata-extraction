@@ -132,7 +132,7 @@ def publier_acte_task(idPublication, reindexationSolr=False):
 
     try:
         insert_solr(publication, est_publie=True)
-        lien_symbolique(publication, reindexationSolr)
+        lien_symbolique(publication)
 
     except Exception as e:
         logging.exception(e)
