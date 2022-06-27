@@ -57,9 +57,9 @@ class AdminPulicationRejeu(Resource):
     def post(self):
         from app.tasks.publication_tasks import creation_publication_task
         import os
-        for file in os.listdir(current_app.config['DIRECTORY_RELAUNCH']):
-            if file.endswith(".zip"):
-                creation_publication_task.delay(os.path.join(current_app.config['DIRECTORY_RELAUNCH'], file))
+        for entry in os.scandir(current_app.config['DIRECTORY_RELAUNCH']):
+            if entry.name.endswith(".zip"):
+                creation_publication_task.delay(os.path.join(current_app.config['DIRECTORY_RELAUNCH'], entry.name))
 
         return jsonify({
             "statut": 'demande de relance des fichiers zip présent dans le dossier de relance  (taches asynchrone)'})
