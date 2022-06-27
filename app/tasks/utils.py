@@ -65,12 +65,10 @@ def solr_connexion():
 def index_file_in_solr(path, params):
     with open(path, 'rb') as file_obj:
         filename = quote(file_obj.name.encode("utf-8"))
-
         solr_address = current_app.config['URL_SOLR'] + "{}".format(current_app.config['INDEX_DELIB_SOLR'])
         handler = "/update/extract"
         requests.post(
-            # solr_address + handler,
-            'https://solr-preprod.megalis.bretagne.bzh/solr/publication_core/update/extract',
+            solr_address + handler,
             params=params,
             json={
                 "extractOnly": "false",

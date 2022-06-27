@@ -65,10 +65,9 @@ def creation_publication_task(zip_path):
         db_sess.commit()
 
     # init des documents dans solr avec est_publie=False
-    insert_solr(newPublication)
+    insert_solr(newPublication, est_publie=False)
 
     # creation de la tache de publication openData et on passe l'état de la publication à en cours
-
     if metadataPastell.publication_open_data == '3':
         newPublication.etat = 2
         db_sess = db.session
@@ -119,34 +118,28 @@ def publier_acte_task(idPublication, reindexationSolr=False):
     solr = solr_connexion()
     try:
         result = solr.search(q='publication_id : ' + str(idPublication))
+        for doc_res in result.docs:
+            solr.delete(doc_res['id'])
     except Exception as e:
         result = 0
 
     if not reindexationSolr:
         publication.date_publication = datetime.now()
 
-    if (result != 0 and len(result.docs) > 0):
-        lien_symbolique_et_etat_solr(publication)
-    else:
-        insert_solr(publication)
-        try:
-            result = solr.search(q='publication_id : ' + str(idPublication))
-        except Exception as e:
-            result = 0
+    try:
+        insert_solr(publication, est_publie=True)
+        lien_symbolique(publication, reindexationSolr)
 
-        if (result != 0 and len(result.docs) > 0):
-            lien_symbolique_et_etat_solr(publication, reindexationSolr)
-        else:
-            # Mise à jour de la publication à erreur
-            db_sess = db.session
-            publication = Publication.query.filter(Publication.id == idPublication).one()
-            db_sess.add(publication)
-            # 1 => publie, 0:non, 2:en-cours,3:en-erreur
-            publication.etat = 3
-            publication.modified_at = datetime.now()
-            db_sess.commit()
-            return {'status': 'KO', 'message': 'pas de document dans solr',
-                    'publication id': publication.id}
+    except Exception as e:
+        db_sess = db.session
+        publication = Publication.query.filter(Publication.id == idPublication).one()
+        db_sess.add(publication)
+        # 1 => publie, 0:non, 2:en-cours,3:en-erreur
+        publication.etat = 3
+        publication.modified_at = datetime.now()
+        db_sess.commit()
+        return {'status': 'KO', 'message': 'pas de document dans solr',
+                'publication id': publication.id}
 
     # Mise à jour de la publication
     if not reindexationSolr:
@@ -158,10 +151,10 @@ def publier_acte_task(idPublication, reindexationSolr=False):
         publication.modified_at = datetime.now()
         db_sess.commit()
         return {'status': 'OK', 'message': 'publication open data réalisé',
-            'publication id': publication.id}
+                'publication id': publication.id}
     else:
         return {'status': 'OK', 'message': 'publication open data réalisé (moder eindexationSolr) ',
-            'publication id': publication.id}
+                'publication id': publication.id}
 
 
 @celery.task(name='depublier_acte_task')
@@ -234,7 +227,7 @@ def republier_all_acte_task(etat):
 
 
 # FONCTION
-def insert_solr(publication):
+def insert_solr(publication, est_publie):
     # infoEtablissement = api_insee_call(publication.siren)
 
     # Pour tous les actes ( documents lié à la publication)
@@ -247,8 +240,8 @@ def insert_solr(publication):
         try:
             params = traiter_actes(publication, acte, isPj=False)
             # insert dans apache solr
+            params["literal.est_publie"] = est_publie
             index_file_in_solr(acte.path, params)
-
         except Exception as e:
             db_sess = db.session
             publication.etat = '3'
@@ -267,6 +260,7 @@ def insert_solr(publication):
             try:
                 params = traiter_actes(publication, pj, isPj=True)
                 # insert dans apache solr
+                params["literal.est_publie"] = est_publie
                 index_file_in_solr(pj.path, params)
 
             except pysolr.SolrError as e:
@@ -276,7 +270,7 @@ def insert_solr(publication):
         logging.exception("probleme traitement PJ : on ignore")
 
 
-def lien_symbolique_et_etat_solr(publication, reindexationSolr=False):
+def lien_symbolique(publication):
     if publication.acte_nature == "1":
         dossier = publication.siren + os.path.sep + "Deliberation"
     elif publication.acte_nature == "2":
@@ -308,18 +302,6 @@ def lien_symbolique_et_etat_solr(publication, reindexationSolr=False):
         symlink_file(pj.path,
                      current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
                      pj.name + extension)
-
-    # solr = solr_connexion()
-    # result = solr.search(q='publication_id : ' + str(publication.id))
-    # # Mise à jour dans Solr
-    # for doc_res in result.docs:
-    #     if reindexationSolr:
-    #         doc_res['est_publie'][0] = publication.etat
-    #     # else:
-    #         # doc_res['est_publie'][0] = 'true'
-    #     if 'date_de_publication' in doc_res:
-    #         doc_res['date_de_publication'][0] = publication.date_publication.strftime("%Y-%m-%dT%H:%M:%SZ")
-    # solr.add(result.docs)
 
 
 def traiter_actes(publication, acte, isPj):
@@ -365,40 +347,18 @@ def traiter_actes(publication, acte, isPj):
 
 
 def init_document(data, acte, parametrage, publication, urlPDF, typology):
-
-    # data["literal.hash"] = '9ebbd0b25760557393a43064a92bae539d96210'
-    # data["literal.publication_id"] = 123
-    # data["literal.filepath"] = "https://data-preprod.megalis.bretagne.bzh/OpenData/253514491/Budget/2020/e5753a1c860c06fb54fbf45d456f597f3a4b4613e8f825a8c027b91df10ea8d2.pdf"
-    # data["literal.est_publie"] = True
-    # data["literal.opendata_active"] = True
-    # data["literal.date_budget"] = "2022"
-    # now = datetime.now()
-    # data["literal.date"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
-    # data["literal.date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
-    # data["literal.description"] = 'publication.objet'
-    # data["literal.documentidentifier"] = 'DELIB_TEST'
-    # data["literal.documenttype"] = 1
-    # data["literal.classification"] = "7.1 Finances locales/Divers"
-    # data["literal.classification_code"] = "7.1"
-    # data["literal.classification_nom"] = 'Finances locales/Divers'
-    # data["literal.typology"] = "99_DE"
-    # data["literal.siren"] = "242900710"
-
     data["commit"] = 'true'
     data["literal.hash"] = acte.hash
     data["literal.publication_id"] = publication.id
     data["literal.filepath"] = urlPDF
-
     # # etat publication
-    data["literal.est_publie"] = False
+    # data["literal.est_publie"] = False
     data["literal.opendata_active"] = parametrage.open_data_active
     data["literal.date_budget"] = publication.date_budget
-
-    #partie métadata (issu du fichier metadata.json de pastell)
+    # partie métadata (issu du fichier metadata.json de pastell)
     data["literal.date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
     now = datetime.now()  # current date and time
     data["literal.date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
-    #
     data["literal.description"] = publication.objet
     data["literal.documentidentifier"] = publication.numero_de_lacte
     data["literal.documenttype"] = publication.acte_nature
@@ -529,7 +489,6 @@ class MetadataPastell:
         self.siren = metajson['siren']
         self.acte_nature = metajson['acte_nature']
 
-
         if 'envoi_depot' in metajson:
             self.envoi_depot = metajson['envoi_depot']
         else:
@@ -554,12 +513,10 @@ class MetadataPastell:
         else:
             self.type_piece = ''
 
-
         if 'classification' in metajson:
             self.classification = metajson['classification']
         else:
             self.classification = ''
-
 
         if 'publication_open_data' in metajson:
             if len(metajson['publication_open_data']) == 0:
