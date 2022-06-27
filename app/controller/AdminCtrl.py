@@ -1,6 +1,6 @@
 import logging
 
-from flask import jsonify
+from flask import jsonify, current_app
 from flask_restx import Namespace, Resource, reqparse
 from sqlalchemy.exc import NoResultFound
 
@@ -47,6 +47,22 @@ class AdminSolrDeleteCtrl(Resource):
             raise e
         return jsonify({"statut": 'ok'})
 
+
+
+@api.route('/publier/rejeu')
+class AdminPulicationRejeu(Resource):
+    @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
+    def post(self):
+        from app.tasks.publication_tasks import creation_publication_task
+        import os
+        for file in os.listdir(current_app.config['DIRECTORY_RELAUNCH']):
+            if file.endswith(".zip"):
+                creation_publication_task.delay(os.path.join(current_app.config['DIRECTORY_RELAUNCH'], file))
+
+        return jsonify({
+            "statut": 'demande de relance des fichiers zip présent dans le dossier de relance  (taches asynchrone)'})
 
 @api.route('/publier/datagouv/deliberation')
 class AdminPulicationDelibSCDL(Resource):
