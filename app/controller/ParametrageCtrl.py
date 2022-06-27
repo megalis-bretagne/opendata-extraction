@@ -70,7 +70,8 @@ class ParametrageCtrl(Resource):
             parametrage = Parametrage.query.filter(Parametrage.siren == args['siren']).one()
             parametrage.open_data_active = args['open_data_active']
             parametrage.publication_data_gouv_active = args['publication_data_gouv_active']
-            parametrage.publication_udata_active = args['publication_udata_active']
+            # parametrage.publication_udata_active = args['publication_udata_active']
+            parametrage.publication_udata_active = True
             parametrage.uid_data_gouv = args['uid_data_gouv']
             parametrage.api_key_data_gouv = args['api_key_data_gouv']
             parametrage.modified_at = datetime.now()
@@ -91,7 +92,8 @@ class ParametrageCtrl(Resource):
                                          siren=args['siren'],
                                          open_data_active=args['open_data_active'],
                                          publication_data_gouv_active=args['publication_data_gouv_active'],
-                                         publication_udata_active=args['publication_udata_active'],
+                                         # publication_udata_active=args['publication_udata_active'],
+                                         publication_udata_active=True,
                                          uid_data_gouv=args['uid_data_gouv'],
                                          api_key_data_gouv=args['api_key_data_gouv']
                                          )
