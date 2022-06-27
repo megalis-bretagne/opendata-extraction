@@ -54,6 +54,8 @@ DIRECTORY_TO_WATCH='D:\\toWatch\\in\\'
 DIRECTORY_TO_WATCH_ARCHIVE='D:\\toWatch\\archive'
 DIRECTORY_TO_PUBLICATION='D:\\toWatch\\publication'
 
+DIRECTORY_RELAUNCH='D:\\toRelaunch\\'
+
 
 #DATAGOUV - https://www.data.gouv.fr/fr/
 API_DATAGOUV='https://www.data.gouv.fr/api/1'
