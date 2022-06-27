@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 import urllib
 from zipfile import ZipFile
@@ -134,6 +135,7 @@ def publier_acte_task(idPublication, reindexationSolr=False):
         lien_symbolique(publication, reindexationSolr)
 
     except Exception as e:
+        logging.exception(e)
         db_sess = db.session
         publication = Publication.query.filter(Publication.id == idPublication).one()
         db_sess.add(publication)
