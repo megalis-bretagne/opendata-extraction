@@ -1,7 +1,7 @@
 from datetime import datetime
 import urllib
 from zipfile import ZipFile
-from sqlalchemy.exc import NoResultFound, MultipleResultsFound
+from sqlalchemy.exc import NoResultFound, MultipleResultsFound, IntegrityError
 from app import celeryapp
 from app import celeryapp
 import json
@@ -46,23 +46,26 @@ def creation_publication_task(zip_path):
         return {'status': 'KO', 'message': 'Metada incomplete', 'Erreur': print(e)}
 
     # check and init parametrage
-    try:
-        Parametrage.query.filter(Parametrage.siren == newPublication.siren).one()
-    except MultipleResultsFound as e:
-        # todo delete puis recreer le parametrage
-        shutil.move(WORKDIR + 'objet.zip', current_app.config['DIRECTORY_TO_WATCH_ERREURS'])
-        return {'status': 'KO', 'message': 'probleme parametrage', 'siren': newPublication.siren}
 
-    except NoResultFound as e:
+    parametrage = Parametrage.query.filter(Parametrage.siren == newPublication.siren).first()
+    if parametrage is None:
         db_sess = db.session
-        newParametrage = Parametrage(created_at=datetime.now(),
-                                     modified_at=datetime.now(),
-                                     siren=newPublication.siren,
-                                     open_data_active=True,
-                                     publication_data_gouv_active=False,
-                                     publication_udata_active=False)
-        db_sess.add(newParametrage)
-        db_sess.commit()
+        try:
+
+            newParametrage = Parametrage(created_at=datetime.now(),
+                                         modified_at=datetime.now(),
+                                         siren=newPublication.siren,
+                                         open_data_active=True,
+                                         publication_data_gouv_active=False,
+                                         publication_udata_active=False)
+            db_sess.add(newParametrage)
+            db_sess.commit()
+
+        except IntegrityError:
+            # an other worker already inserted the parametrage
+            db_sess.rollback()
+
+
 
     # init des documents dans solr avec est_publie=False
     insert_solr(newPublication)
