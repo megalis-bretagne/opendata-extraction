@@ -14,7 +14,7 @@ from app.tasks import solr_connexion, clear_wordir, get_or_create_workdir
 celery = celeryapp.celery
 
 
-@celery.task(name='generation_and_publication_scdl')
+@celery.task(name='generation_and_publication_SCDL')
 def generation_and_publication_scdl(type, param_annee):
     t = time.localtime()
     annee = time.strftime('%Y', t)
