@@ -44,8 +44,9 @@ def creation_publication_task(zip_path):
         newPublication = init_publication(metadataPastell)
     except Exception as e:
 
-        strDate=datetime.now().strftime('-%Y-%m-%d-%H-%M-%S')
-        shutil.move(WORKDIR + 'pastell_'+strDate+'.zip', current_app.config['DIRECTORY_TO_WATCH_ERREURS'])
+        strDate = datetime.now().strftime('-%Y-%m-%d-%H-%M-%S')
+        shutil.move(WORKDIR + 'objet.zip',
+                    current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + 'pastell_' + strDate + '.zip')
         return {'status': 'KO', 'message': 'Metada incomplete', 'Erreur': print(e)}
 
     # check and init parametrage
@@ -67,8 +68,6 @@ def creation_publication_task(zip_path):
         except IntegrityError:
             # an other worker already inserted the parametrage
             db_sess.rollback()
-
-
 
     # init des documents dans solr avec est_publie=False
     insert_solr(newPublication, est_publie=False)
