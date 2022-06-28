@@ -58,7 +58,7 @@ class Publication(db.Model):
 class Acte(db.Model):
     __tablename__ = 'acte'
     id: int = db.Column(db.Integer, primary_key=True)
-    name: str = db.Column(db.String(200), nullable=False)
+    name: str = db.Column(db.String(300), nullable=False)
     url: str = db.Column(db.String(500), nullable=False)
     # ajout du path pour la task publier_acte_task (utiliser en backend)
     path: str = db.Column(db.String(500), nullable=False)
