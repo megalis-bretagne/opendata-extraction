@@ -1,6 +1,6 @@
 import logging
 
-from flask import jsonify
+from flask import jsonify, current_app
 from flask_restx import Namespace, Resource, reqparse
 from sqlalchemy.exc import NoResultFound
 
@@ -47,6 +47,22 @@ class AdminSolrDeleteCtrl(Resource):
             raise e
         return jsonify({"statut": 'ok'})
 
+
+
+@api.route('/publier/rejeu')
+class AdminPulicationRejeu(Resource):
+    @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
+    def post(self):
+        from app.tasks.publication_tasks import creation_publication_task
+        import os
+        for entry in os.scandir(current_app.config['DIRECTORY_RELAUNCH']):
+            if entry.name.endswith(".zip"):
+                creation_publication_task.delay(os.path.join(current_app.config['DIRECTORY_RELAUNCH'], entry.name))
+
+        return jsonify({
+            "statut": 'demande de relance des fichiers zip présent dans le dossier de relance  (taches asynchrone)'})
 
 @api.route('/publier/datagouv/deliberation')
 class AdminPulicationDelibSCDL(Resource):
@@ -129,19 +145,33 @@ class AdminPastellAllCtrl(Resource):
             {"statut": "demande de generation et publication du decp de l'année courante (taches asynchrone)"})
 
 
-@api.route('/pastell/declencher')
-class AdminPastellDeclencherCtrl(Resource):
+
+@api.route('/pastell/creation/all-new')
+class AdminPastellAllNewCtrl(Resource):
+    @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
+    def post(self):
+        from app.tasks.pastell_tasks import creation_et_association_new_all_task
+        creation_et_association_new_all_task.delay()
+        return jsonify(
+            {"statut": "demande de generation et publication du decp de l'année courante (taches asynchrone)"})
+
+@api.route('/pastell/creation/ged-megalis-opendata-new')
+class AdminPastellGedPastellNewCtrl(Resource):
     @api.expect(arguments_pastell_controller)
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     @isAdmin
     def post(self):
-        from app.tasks.pastell_tasks import delecher_pastell_task
+        from app.tasks.pastell_tasks import creation_et_association_connecteur_transformateur_task
+        from app.tasks.pastell_tasks import creation_et_association_connecteur_ged_megalis_opendata_task
         args = arguments_pastell_controller.parse_args()
         id_e = args['id_e']
-        delecher_pastell_task.delay(id_e)
+        creation_et_association_connecteur_ged_megalis_opendata_task.delay(id_e)
+        creation_et_association_connecteur_transformateur_task.delay(id_e)
         return jsonify(
-            {"statut": 'demande de déclenchement pastell realisée (taches asynchrone)'})
+            {"statut": "id_e:" +id_e + '- demande de creation et association du connecteur GED pastell et transfo réalisée (taches asynchrone)'})
 
 
 @api.route('/publier/udata/decp')
@@ -218,17 +248,6 @@ class AdminUdataPublicationDecpHisto(Resource):
         return jsonify({
             "statut": "demande de generation et publication du decp des années historique à partir de 2014 vers udata (taches asynchrone)"})
 
-
-@api.route('/pastell/declencherAG')
-class AdminPastellDeclencherAGCtrl(Resource):
-    @api.response(200, 'Success')
-    @oidc.accept_token(require_token=True, scopes_required=['openid'])
-    @isAdmin
-    def post(self):
-        from app.tasks.pastell_tasks import delecher_pastell_all_AG_task
-        delecher_pastell_all_AG_task.delay()
-        return jsonify(
-            {"statut": 'demande de déclenchement des actes generique dans pastell realisée (taches asynchrone)'})
 
 
 @api.route('/pastell/creation/ged-megalis-opendata')

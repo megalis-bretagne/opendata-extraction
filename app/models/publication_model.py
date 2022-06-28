@@ -11,8 +11,8 @@ class Publication(db.Model):
     numero_de_lacte: str = db.Column(db.String(20), nullable=False)
     objet: str = db.Column(db.String(256), nullable=False)
     siren: str = db.Column(db.String(9), nullable=False)
-    # 0:oui, 1:non, 2:ne sais pas
-    publication_open_data: str = db.Column(db.String(1), nullable=False, server_default='0')
+    # 3:oui (0:oui historiquement), 1:non, 2:ne sais pas
+    publication_open_data: str = db.Column(db.String(1), nullable=False, server_default='2')
     date_de_lacte: str = db.Column(db.DateTime(), nullable=False)
     classification_code = db.Column(db.String(10), nullable=False)
     classification_nom = db.Column(db.String(100), nullable=False)
@@ -26,6 +26,7 @@ class Publication(db.Model):
     etat: str = db.Column('etat', db.String(1), nullable=False, server_default='0')
     created_at: str = db.Column(db.DateTime(), nullable=False)
     modified_at: str = db.Column(db.DateTime(), nullable=False)
+    date_publication: str = db.Column(db.DateTime(), nullable=False)
     actes = relationship("Acte", lazy="joined")
     pieces_jointe = relationship("PieceJointe", lazy="joined")
 
@@ -57,10 +58,11 @@ class Publication(db.Model):
 class Acte(db.Model):
     __tablename__ = 'acte'
     id: int = db.Column(db.Integer, primary_key=True)
-    name: str = db.Column(db.String(200), nullable=False)
+    name: str = db.Column(db.String(300), nullable=False)
     url: str = db.Column(db.String(500), nullable=False)
     # ajout du path pour la task publier_acte_task (utiliser en backend)
     path: str = db.Column(db.String(500), nullable=False)
+    hash: str  = db.Column(db.String(65), nullable=False)
     publication_id = Column(Integer, ForeignKey('publication.id'))
 
     @property
@@ -70,6 +72,7 @@ class Acte(db.Model):
             'name': self.name,
             'url': self.url,
             'path': self.path,
+            'hash': self.hash,
             'publication_id': self.publication_id
         }
 
@@ -81,6 +84,7 @@ class PieceJointe(db.Model):
     url: str = db.Column(db.String(500), nullable=False)
     # ajout du path pour la task publier_acte_task (utiliser en backend)
     path: str = db.Column(db.String(500), nullable=False)
+    hash: str  = db.Column(db.String(65), nullable=False)
     publication_id = Column(Integer, ForeignKey('publication.id'))
 
     @property
@@ -90,5 +94,6 @@ class PieceJointe(db.Model):
             'name': self.name,
             'url': self.url,
             'path': self.path,
+            'hash': self.hash,
             'publication_id': self.publication_id
         }

@@ -1,5 +1,9 @@
 import csv
+from datetime import datetime
+import hashlib
 import logging
+from urllib.parse import quote
+
 import pysolr, re, os, errno, shutil
 import requests
 from bs4 import BeautifulSoup
@@ -7,6 +11,7 @@ import paramiko
 from functools import lru_cache
 from api_insee import ApiInsee
 from flask import current_app
+
 
 @lru_cache(maxsize=25)
 def api_insee_call(siren):
@@ -37,6 +42,17 @@ def api_insee_call(siren):
             return None
 
 
+def get_hash(filePath):
+    BLOCK_SIZE = 65536  # The size of each read from the file
+    file_hash = hashlib.sha256()
+    with open(filePath, 'rb') as f:  # Open the file to read it's bytes
+        fb = f.read(BLOCK_SIZE)  # Read from the file. Take in the amount declared above
+        while len(fb) > 0:  # While there is still data being read from the file
+            file_hash.update(fb)  # Update the hash
+            fb = f.read(BLOCK_SIZE)  # Read the next block from the file
+    return file_hash.hexdigest()
+
+
 def solr_connexion():
     solr_address = current_app.config['URL_SOLR'] + "{}".format(current_app.config['INDEX_DELIB_SOLR'])
     solr = pysolr.Solr(solr_address, always_commit=True, timeout=120,
@@ -44,6 +60,24 @@ def solr_connexion():
     # # Do a health check.
     solr.ping()
     return solr
+
+
+def index_file_in_solr(path, params):
+    with open(path, 'rb') as file_obj:
+        filename = quote(file_obj.name.encode("utf-8"))
+        solr_address = current_app.config['URL_SOLR'] + "{}".format(current_app.config['INDEX_DELIB_SOLR'])
+        handler = "/update/extract"
+        requests.post(
+            solr_address + handler,
+            params=params,
+            json={
+                "extractOnly": "false",
+                "lowernames": "true",
+                "wt": "json"
+            },
+            files={"file": (filename, file_obj)}
+        )
+
 
 
 def solr_clear_all():
@@ -110,6 +144,7 @@ def clear_wordir():
     filelist = [f for f in os.listdir(WORKDIR)]
     for f in filelist:
         os.remove(os.path.join(WORKDIR, f))
+    return WORKDIR
 
 
 def get_or_create_workdir():

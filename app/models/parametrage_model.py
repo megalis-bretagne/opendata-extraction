@@ -3,7 +3,7 @@ from app import db
 class Parametrage(db.Model):
     __tablename__ = 'parametrage'
     id: int = db.Column(db.Integer, primary_key=True)
-    siren: str = db.Column(db.String(9), nullable=False)
+    siren: str = db.Column(db.String(9), nullable=False,unique=True)
     open_data_active = db.Column('open_data_active', db.Boolean(), nullable=False, server_default='0')
     publication_data_gouv_active = db.Column('publication_data_gouv_active', db.Boolean(), nullable=False, server_default='0')
     publication_udata_active = db.Column('publication_udata_active', db.Boolean(), nullable=False, server_default='0')

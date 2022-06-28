@@ -196,3 +196,4 @@ venv.bak/
 #settings
 app/local_settings.py
 app/keycloak.json
+TESTS/
