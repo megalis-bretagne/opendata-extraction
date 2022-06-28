@@ -46,7 +46,7 @@ def creation_publication_task(zip_path):
 
         strDate = datetime.now().strftime('-%Y-%m-%d-%H-%M-%S')
         shutil.move(WORKDIR + 'objet.zip',
-                    current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + 'pastell_' + strDate + '.zip')
+                    current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_' + strDate + '.zip')
         return {'status': 'KO', 'message': 'Metada incomplete', 'Erreur': print(e)}
 
     # check and init parametrage
