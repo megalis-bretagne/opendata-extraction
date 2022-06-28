@@ -44,7 +44,7 @@ def creation_publication_task(zip_path):
         newPublication = init_publication(metadataPastell)
     except Exception as e:
 
-        strDate = datetime.now().strftime('-%Y-%m-%d-%H-%M-%S')
+        strDate = datetime.now().strftime('%Y-%m-%d-%H%M%S')
         shutil.move(WORKDIR + 'objet.zip',
                     current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_' + strDate + '.zip')
         return {'status': 'KO', 'message': 'Metada incomplete', 'Erreur': print(e)}
