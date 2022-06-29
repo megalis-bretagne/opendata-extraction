@@ -4,12 +4,15 @@ from flask_restx import Namespace, reqparse, fields, Resource
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from app import oidc
+from app.tasks import api_insee_call
 
 api = Namespace(name='parametrage', description='API de gestion du paramétrage <b>(API sécurisée)</b>')
 
 model_parametrage = api.model('parametrage', {
     'id': fields.Integer,
     'siren': fields.String,
+    'nic': fields.String,
+    'denomination': fields.String,
     'open_data_active': fields.Boolean,
     'publication_data_gouv_active': fields.Boolean,
     'publication_udata_active': fields.Boolean,
@@ -24,11 +27,11 @@ model_parametrage_list = api.model('ParametrageList', {
 arguments_parametrage_controller = reqparse.RequestParser()
 arguments_parametrage_controller.add_argument('id', help='id parametrage')
 arguments_parametrage_controller.add_argument('siren', help='siren')
-arguments_parametrage_controller.add_argument('open_data_active', help='service open data actif',type=bool)
+arguments_parametrage_controller.add_argument('open_data_active', help='service open data actif', type=bool)
 arguments_parametrage_controller.add_argument('publication_data_gouv_active',
-                                              help='service publication data gouv actif',type=bool)
+                                              help='service publication data gouv actif', type=bool)
 arguments_parametrage_controller.add_argument('publication_udata_active',
-                                              help='service publication udata actif',type=bool)
+                                              help='service publication udata actif', type=bool)
 arguments_parametrage_controller.add_argument('uid_data_gouv', help='uid organisme sur data gouv')
 arguments_parametrage_controller.add_argument('api_key_data_gouv', help='api key pour publication sur data gouv')
 
@@ -50,6 +53,8 @@ class ParametrageCtrl(Resource):
                 {
                     "id": '0',
                     "siren": siren,
+                    "nic": "",
+                    "denomination": "",
                     "open_data_active": False,
                     "publication_data_gouv_active": False,
                     "publication_udata_active": False,
@@ -61,13 +66,18 @@ class ParametrageCtrl(Resource):
     @api.expect(arguments_parametrage_controller)
     @api.response(200, 'Success', model_parametrage)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
-    def post(self,siren):
+    def post(self, siren):
         from app.models.parametrage_model import Parametrage
         from app.tasks.publication_tasks import gestion_activation_open_data
         from app import db
         args = arguments_parametrage_controller.parse_args()
+        etablissement = api_insee_call(siren)
+        if etablissement is None:
+            api.abort(400, 'etablissement not found in URL_API_ENNTREPRISE')
         try:
             parametrage = Parametrage.query.filter(Parametrage.siren == args['siren']).one()
+            parametrage.nic = etablissement.nic
+            parametrage.denomination = etablissement.denominationUniteLegale
             parametrage.open_data_active = args['open_data_active']
             parametrage.publication_data_gouv_active = args['publication_data_gouv_active']
             # parametrage.publication_udata_active = args['publication_udata_active']
@@ -78,7 +88,7 @@ class ParametrageCtrl(Resource):
             db_sess = db.session
             db_sess.add(parametrage)
             db_sess.commit()
-            gestion_activation_open_data.delay( args['siren'], args['open_data_active'])
+            gestion_activation_open_data.delay(args['siren'], args['open_data_active'])
 
         except MultipleResultsFound as e:
             print(e)
@@ -88,15 +98,17 @@ class ParametrageCtrl(Resource):
             # on ajoute l'organisme dans notre bdd
             db_sess = db.session
             new_parametrage = Parametrage(created_at=datetime.now(),
-                                         modified_at=datetime.now(),
-                                         siren=args['siren'],
-                                         open_data_active=args['open_data_active'],
-                                         publication_data_gouv_active=args['publication_data_gouv_active'],
-                                         # publication_udata_active=args['publication_udata_active'],
-                                         publication_udata_active=True,
-                                         uid_data_gouv=args['uid_data_gouv'],
-                                         api_key_data_gouv=args['api_key_data_gouv']
-                                         )
+                                          modified_at=datetime.now(),
+                                          siren=args['siren'],
+                                          nic=etablissement.nic,
+                                          denomination=etablissement.denominationUniteLegale,
+                                          open_data_active=args['open_data_active'],
+                                          publication_data_gouv_active=args['publication_data_gouv_active'],
+                                          # publication_udata_active=args['publication_udata_active'],
+                                          publication_udata_active=True,
+                                          uid_data_gouv=args['uid_data_gouv'],
+                                          api_key_data_gouv=args['api_key_data_gouv']
+                                          )
             db_sess.add(new_parametrage)
             db_sess.commit()
             parametrage = new_parametrage
