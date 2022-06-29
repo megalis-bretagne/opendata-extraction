@@ -8,6 +8,7 @@ import requests
 from flask import current_app
 
 from app import celeryapp
+from app.models.parametrage_model import Parametrage
 from app.models.publication_model import Publication
 from app.tasks import solr_connexion, clear_wordir, get_or_create_workdir
 
@@ -62,7 +63,7 @@ def generation_budget(siren, annee, flag_active=None):
     result = \
         solr.search(q=query,
                     **{
-                        'fl': 'entity,nic,siren,documentidentifier,classification_code,classification_nom,description,'
+                        'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
                               'filepath,documenttype,date,est_publie,date_budget,publication_id',
                         'start': start,
                         'rows': rows
@@ -90,7 +91,7 @@ def generation_budget(siren, annee, flag_active=None):
             solr.search(
                 q=query,
                 **{
-                    'fl': 'entity,nic,siren,documentidentifier,classification_code,classification_nom,description,'
+                    'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
                           'filepath,documenttype,date,est_publie,date_budget,publication_id',
                     'start': start,
                     'rows': rows
@@ -129,7 +130,7 @@ def generation_deliberation(siren, annee, flag_active=None):
     result = \
         solr.search(q=query,
                     **{
-                        'fl': 'entity,nic,siren,documentidentifier,classification_code,classification_nom,description,'
+                        'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
                               'filepath,documenttype,date,est_publie',
                         'start': start,
                         'rows': rows,
@@ -139,12 +140,12 @@ def generation_deliberation(siren, annee, flag_active=None):
     lignes = []
     while len(result.docs) > 0:
         for doc_res in result.docs:
-
-            COLL_NOM = str(doc_res['entity'][0])
+            parametrage = Parametrage.query.filter(Parametrage.siren == doc_res['siren']).first()
+            COLL_NOM = parametrage.denomination
             DELIB_DATE = str(doc_res['date'][0].split("T", 1)[0])
             DELIB_ID = str(doc_res['documentidentifier'][0])
             DELIB_OBJET = str(doc_res['description'][0])
-            COLL_SIRET = str(doc_res['siren'].zfill(9)) + str(doc_res['nic'].zfill(5))
+            COLL_SIRET = str(doc_res['siren'].zfill(9) + parametrage.nic)
             DELIB_MATIERE_CODE = str(doc_res['classification_code'])
             DELIB_MATIERE_NOM = str(doc_res['classification_nom'])
 
@@ -171,7 +172,7 @@ def generation_deliberation(siren, annee, flag_active=None):
         result = \
             solr.search(q=query,
                         **{
-                            'fl': 'entity,nic,siren,documentidentifier,classification_code,classification_nom,description,'
+                            'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
                                   'filepath,documenttype,date,est_publie',
                             'start': start,
                             'rows': rows,

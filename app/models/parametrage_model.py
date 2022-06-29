@@ -3,7 +3,9 @@ from app import db
 class Parametrage(db.Model):
     __tablename__ = 'parametrage'
     id: int = db.Column(db.Integer, primary_key=True)
-    siren: str = db.Column(db.String(9), nullable=False,unique=True)
+    siren: str = db.Column(db.String(9), nullable=False, unique=True)
+    nic: str = db.Column(db.String(5), nullable=False)
+    denomination: str = db.Column(db.String(256), nullable=False)
     open_data_active = db.Column('open_data_active', db.Boolean(), nullable=False, server_default='0')
     publication_data_gouv_active = db.Column('publication_data_gouv_active', db.Boolean(), nullable=False, server_default='0')
     publication_udata_active = db.Column('publication_udata_active', db.Boolean(), nullable=False, server_default='0')
@@ -18,6 +20,8 @@ class Parametrage(db.Model):
        return {
            'id'         : self.id,
            'siren': self.siren,
+           'nic': self.nic,
+           'denomination': self.denomination,
            'open_data_active': self.open_data_active,
            'publication_data_gouv_active': self.publication_data_gouv_active,
            'publication_udata_active': self.publication_udata_active,

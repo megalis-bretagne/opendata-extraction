@@ -47,6 +47,7 @@ def create_celery_app(_app=None):
     TaskBase = celery.Task
 
     celery.conf.beat_schedule = _app.config['CELERY_CRON']
+    celery.control.rate_limit('valorisation_nic_denomination', '6/s')
 
     class ContextTask(TaskBase):
         abstract = True

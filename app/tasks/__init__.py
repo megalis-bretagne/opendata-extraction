@@ -5,3 +5,5 @@ from .pastell_tasks import *
 from .marches_tasks import *
 from .datagouv_tasks import *
 from .udata_tasks import *
+from .udata_tasks import *
+from .parametrage_tasks import *
