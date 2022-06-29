@@ -18,7 +18,7 @@ def valorisation_nic_denomination(self, siren):
         return {'status': 'Ok', 'message': 'Pas de parametrage existant'}
     etablissement = api_insee_call(siren)
     if etablissement is None:
-        raise InseeFailure('L\'établisement' + siren + ' n\'existe pas ou api entreprise est injoignable')
+        raise InseeFailure('L\'établisement ' + siren + ' n\'existe pas ou api entreprise est injoignable')
     parametrage.nic = etablissement.nic
     parametrage.denomination = etablissement.denominationUniteLegale
     db_sess = db.session
@@ -33,6 +33,6 @@ def valorisation_all_nic_denomination(self):
     all_parametrage = Parametrage.query.all()
     index = 0
     for parametrage in all_parametrage:
-        valorisation_nic_denomination.apply_async(args=[parametrage.siren], countdown=(int(index / 1000) * 70))
+        valorisation_nic_denomination.delay(parametrage.siren)
         index = index + 1
     return {'status': 'Ok', 'message': 'tous les nic et raison social vont être mis à jour'}
