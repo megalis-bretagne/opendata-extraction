@@ -55,14 +55,22 @@ def creation_publication_task(zip_path):
     if parametrage is None:
         db_sess = db.session
         try:
+            etab = api_insee_call(newPublication.siren)
+            nic = "00000"
+            denomination = ""
+            if etab is not None:
+                nic = etab.nic
+                denomination = etab.denominationUniteLegale
 
-            newParametrage = Parametrage(created_at=datetime.now(),
-                                         modified_at=datetime.now(),
-                                         siren=newPublication.siren,
-                                         open_data_active=True,
-                                         publication_data_gouv_active=False,
-                                         publication_udata_active=False)
-            db_sess.add(newParametrage)
+            new_parametrage = Parametrage(created_at=datetime.now(),
+                                          modified_at=datetime.now(),
+                                          siren=newPublication.siren,
+                                          nic=nic,
+                                          denomination=denomination,
+                                          open_data_active=True,
+                                          publication_data_gouv_active=False,
+                                          publication_udata_active=False)
+            db_sess.add(new_parametrage)
             db_sess.commit()
 
         except IntegrityError:

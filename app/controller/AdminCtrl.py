@@ -294,7 +294,19 @@ class AdminPastellGedSdtpCtrl(Resource):
         id_e = args['id_e']
         creation_et_association_connecteur_ged_sftp_task.delay(id_e)
         return jsonify(
-            {"statut": "id_e:" +id_e + '- demande de creation et association du connecteur GED SFTP réalisée (taches asynchrone)'})
+            {"statut": "id_e:" + id_e + '- demande de creation et association du connecteur GED SFTP réalisée (taches asynchrone)'})
+
+
+@api.route('/parametrage/valorisation')
+class AdminValorisation(Resource):
+    @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
+    def post(self):
+        from app.tasks.parametrage_tasks import valorisation_all_nic_denomination
+        valorisation_all_nic_denomination.delay()
+        return jsonify(
+            {"statut": 'Valorisation des nic et denomination'})
 
 
 @api.route('/test/isAdmin')
