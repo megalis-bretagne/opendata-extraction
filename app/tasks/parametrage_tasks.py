@@ -33,6 +33,6 @@ def valorisation_all_nic_denomination(self):
     all_parametrage = Parametrage.query.all()
     index = 0
     for parametrage in all_parametrage:
-        valorisation_nic_denomination.delay(parametrage.siren).apply_async(countdown=(int(index / 1000) * 70))
+        valorisation_nic_denomination.apply_async(args=parametrage.siren, countdown=(int(index / 1000) * 70))
         index = index + 1
     return {'status': 'Ok', 'message': 'tous les nic et raison social vont être mis à jour'}
