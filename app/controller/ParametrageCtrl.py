@@ -24,8 +24,8 @@ model_parametrage_list = api.model('ParametrageList', {
 })
 
 arguments_parametrage_controller = reqparse.RequestParser()
+
 arguments_parametrage_controller.add_argument('id', help='id parametrage')
-arguments_parametrage_controller.add_argument('siren', help='siren')
 arguments_parametrage_controller.add_argument('open_data_active', help='service open data actif', type=bool)
 arguments_parametrage_controller.add_argument('publication_data_gouv_active',
                                               help='service publication data gouv actif', type=bool)
@@ -36,6 +36,7 @@ arguments_parametrage_controller.add_argument('api_key_data_gouv', help='api key
 
 
 @api.route('/<siren>')
+@api.param('siren', 'siren')
 class ParametrageCtrl(Resource):
     @api.response(200, 'Success', model_parametrage)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -75,11 +76,11 @@ class ParametrageCtrl(Resource):
         if etablissement is None:
             api.abort(400, 'etablissement not found in URL_API_ENNTREPRISE')
         try:
-            parametrage = Parametrage.query.filter(Parametrage.siren == args['siren']).one()
+            parametrage = Parametrage.query.filter(Parametrage.siren == siren).one()
             parametrage.nic = etablissement.nic
             parametrage.denomination = etablissement.denominationUniteLegale
-            parametrage.open_data_active = args['open_data_active']
-            parametrage.publication_data_gouv_active = args['publication_data_gouv_active']
+            parametrage.open_data_active = args['open_data_active'] or False
+            parametrage.publication_data_gouv_active = args['publication_data_gouv_active'] or False
             # parametrage.publication_udata_active = args['publication_udata_active']
             parametrage.publication_udata_active = True
             parametrage.uid_data_gouv = args['uid_data_gouv']
@@ -88,7 +89,7 @@ class ParametrageCtrl(Resource):
             db_sess = db.session
             db_sess.add(parametrage)
             db_sess.commit()
-            gestion_activation_open_data.delay(args['siren'], args['open_data_active'])
+            gestion_activation_open_data.delay(siren, args['open_data_active'])
 
         except MultipleResultsFound as e:
             print(e)
@@ -99,11 +100,11 @@ class ParametrageCtrl(Resource):
             db_sess = db.session
             new_parametrage = Parametrage(created_at=datetime.now(),
                                           modified_at=datetime.now(),
-                                          siren=args['siren'],
+                                          siren=siren,
                                           nic=etablissement.nic,
                                           denomination=etablissement.denominationUniteLegale,
-                                          open_data_active=args['open_data_active'],
-                                          publication_data_gouv_active=args['publication_data_gouv_active'],
+                                          open_data_active=args['open_data_active'] or False,
+                                          publication_data_gouv_active=args['publication_data_gouv_active'] or False,
                                           # publication_udata_active=args['publication_udata_active'],
                                           publication_udata_active=True,
                                           uid_data_gouv=args['uid_data_gouv'],
