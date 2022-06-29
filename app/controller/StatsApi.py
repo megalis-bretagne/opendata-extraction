@@ -4,13 +4,14 @@ from flask import send_from_directory
 api = Namespace(name='stats', description='Statistiques de la plateforme')
 
 arguments_publications = reqparse.RequestParser()
-arguments_publications.add_argument('startDate', help="Filtre les publications les plus jeunes depuis la date donnée sur la date de l'acte. Sous le Format \"2022-01-13\"")
-arguments_publications.add_argument('endDate', help="Filtre les publications les plus vielles depuis la date donnée sur la date de l'acte. Sous le Format \"2022-09-17\"")
+arguments_publications.add_argument('startDate', help="Filtre les publications les plus jeunes depuis la date donnée sur la date de publication. Sous le Format \"2022-01-13\"")
+arguments_publications.add_argument('endDate', help="Filtre les publications les plus vielles depuis la date donnée sur la date de publication. Sous le Format \"2022-09-17\"")
 
 
 @api.route('/publications', doc={
     "description": " Retourne un fichier CSV avec les colonnes suivantes:  <ul><li>type d'acte (déliberaion, budget)</li><li>choix dans Pastell (oui, non, ne sais pas)</li><li>état (publié, non publié)</li><li>total</li></ul>"})
 class StatsPublications(Resource):
+    @api.expect(arguments_publications)
     @api.response(200, 'Success')
     @api.produces(["application/octet-stream"])
     def get(self):
@@ -24,9 +25,9 @@ class StatsPublications(Resource):
             array_condition = []
             condition = ""
             if start_date is not None:
-                array_condition.append("date_de_lacte >= "+start_date)
+                array_condition.append("date_publication >= '"+start_date+"'")
             if end_date is not None:
-                array_condition.append("date_de_lacte <= "+end_date)
+                array_condition.append("date_publication <= '"+end_date+"'")
             if len(array_condition) > 0:
                 condition = "where " + " and ".join(array_condition)
 
