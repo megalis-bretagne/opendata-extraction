@@ -4,7 +4,6 @@ from flask_restx import Namespace, reqparse, fields, Resource
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from app import oidc
-from app.tasks import api_insee_call
 
 api = Namespace(name='parametrage', description='API de gestion du paramétrage <b>(API sécurisée)</b>')
 
@@ -69,6 +68,7 @@ class ParametrageCtrl(Resource):
     def post(self, siren):
         from app.models.parametrage_model import Parametrage
         from app.tasks.publication_tasks import gestion_activation_open_data
+        from app.tasks.utils import api_insee_call
         from app import db
         args = arguments_parametrage_controller.parse_args()
         etablissement = api_insee_call(siren)
