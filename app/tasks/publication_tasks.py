@@ -530,7 +530,7 @@ class MetadataPastell:
         if 'classification' in metajson:
             self.classification = metajson['classification']
         else:
-            self.classification = ''
+            self.classification = '9.2'
 
         if 'publication_open_data' in metajson:
             if len(metajson['publication_open_data']) == 0:
