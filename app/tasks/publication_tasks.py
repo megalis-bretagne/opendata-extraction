@@ -560,7 +560,7 @@ class MetadataPastell:
 
         x = self.classification.split(" ", 1)
         # valeur par defaut
-        self.classification_code = "6"
+        self.classification_code = 9.2
         if len(x) == 2:
             self.classification_code = x[0]
         elif len(x) == 1:
