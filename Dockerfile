@@ -1,5 +1,5 @@
 # set base image (host OS)
-FROM python:3.9.5-slim-buster
+FROM python:3.9.13-buster
 
 RUN apt-get update
 RUN apt-get install -y xmlstarlet
