@@ -3,6 +3,9 @@ from datetime import datetime
 import urllib
 from zipfile import ZipFile
 from sqlalchemy.exc import NoResultFound, MultipleResultsFound, IntegrityError
+from web3 import Web3
+from web3.middleware import geth_poa_middleware
+
 from app import celeryapp
 from app import celeryapp
 import json
@@ -164,12 +167,54 @@ def publier_acte_task(idPublication, reindexationSolr=False):
         publication.etat = 1
         publication.modified_at = datetime.now()
         db_sess.commit()
+
+        if current_app.config['USE_BLOCKCHAIN']:
+            publier_blockchain_task.delay(publication.id)
+
         return {'status': 'OK', 'message': 'publication open data réalisé',
                 'publication id': publication.id}
     else:
         return {'status': 'OK', 'message': 'publication open data réalisé (moder eindexationSolr) ',
                 'publication id': publication.id}
 
+
+@celery.task(name='publier_blockchain_task')
+def publier_blockchain_task(idPublication):
+    contract_address = '0xcb00c34B9B5687CCb44AfA332EF78BD6d423F598'
+    account_from = {
+        'private_key': '0x329dbeab55c08f6ed56d29af9ac44dc74e6d6380c12e4d938abf4664cd227f81',
+        'address': '0x858077f49B961ef27b0B09313BedFE33Aca0ca44',
+    }
+    abi = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_publisher","type":"address"},{"indexed":false,"internalType":"string","name":"_siren","type":"string"},{"indexed":false,"internalType":"string","name":"_url","type":"string"},{"indexed":false,"internalType":"string","name":"_hash","type":"string"},{"indexed":false,"internalType":"uint256","name":"_timestamp","type":"uint256"}],"name":"NewPublication","type":"event"},{"inputs":[{"internalType":"bytes32","name":"Doc_Hash","type":"bytes32"}],"name":"UpdateEvent","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"x","type":"string"}],"name":"existingInTab","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAllPublications","outputs":[{"components":[{"internalType":"address","name":"Publisher","type":"address"},{"internalType":"string","name":"Publisher_siren","type":"string"},{"internalType":"string","name":"Doc_url","type":"string"},{"internalType":"string","name":"Doc_hash","type":"string"},{"internalType":"uint256","name":"Doc_timestamp","type":"uint256"}],"internalType":"struct megalisV1.Publication[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAllSirens","outputs":[{"internalType":"string[]","name":"","type":"string[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"}],"name":"getSirenPublications","outputs":[{"components":[{"internalType":"address","name":"Publisher","type":"address"},{"internalType":"string","name":"Publisher_siren","type":"string"},{"internalType":"string","name":"Doc_url","type":"string"},{"internalType":"string","name":"Doc_hash","type":"string"},{"internalType":"uint256","name":"Doc_timestamp","type":"uint256"}],"internalType":"struct megalisV1.Publication[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"}],"name":"listOnGoingPublications","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"},{"internalType":"string","name":"doc_url","type":"string"},{"internalType":"string","name":"doc_hash","type":"string"}],"name":"publish","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"tab_publisher","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]'
+
+    w3 = Web3(Web3.HTTPProvider("https://polygon-testnet.blastapi.io/45b75e5c-bd21-4b10-8e72-381013ae52fb"))
+    w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+
+    # 4. Create contract instance
+    publisher = w3.eth.contract(address=contract_address, abi=abi)
+
+    # on récupère la publication à publier en BDD
+    publication = Publication.query.filter(Publication.id == idPublication).one()
+
+    # copy de l'acte dans le dossier marque blanche
+    for acte in publication.actes:
+        # 5. Build increment tx
+        publisher_tx = publisher.functions.publish(publication.siren, acte.url, acte.hash).buildTransaction(
+            {
+                'from': account_from['address'],
+                'nonce': w3.eth.get_transaction_count(account_from['address']),
+            }
+        )
+        # 6. Sign tx with PK
+        tx_create = w3.eth.account.sign_transaction(publisher_tx, account_from['private_key'])
+        # 7. Send tx and wait for receipt
+        tx_hash = w3.eth.send_raw_transaction(tx_create.rawTransaction)
+        tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+
+        return {'status': 'OK', 'message': 'publie sur polygon ! ;)',
+                'tx_receipt': tx_receipt}
+
+    return {'status': 'KO', 'message': 'non publié :(',}
 
 @celery.task(name='depublier_acte_task')
 def depublier_acte_task(idPublication):
