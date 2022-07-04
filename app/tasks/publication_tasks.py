@@ -211,10 +211,21 @@ def publier_blockchain_task(idPublication):
         tx_hash = w3.eth.send_raw_transaction(tx_create.rawTransaction)
         tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 
-        return {'status': 'OK', 'message': 'publie sur polygon ! ;)',
-                'tx_receipt': tx_receipt}
+        solr = solr_connexion()
+        try:
+            result = solr.search(q='publication_id : ' + str(idPublication))
+            for doc_res in result.docs:
+                solr.delete(doc_res['id'])
+        except Exception as e:
+            result = 0
 
-    return {'status': 'KO', 'message': 'non publié :(',}
+        insert_solr(publication, est_publie=True, est_dans_blockain=True, blockain_tx=tx_receipt.transactionHash.hex())
+
+        return {'status': 'OK', 'message': 'publie sur polygon ! ;)',
+                'tx_receipt': tx_receipt.transactionHash.hex()}
+
+    return {'status': 'KO', 'message': 'non publié :(', }
+
 
 @celery.task(name='depublier_acte_task')
 def depublier_acte_task(idPublication):
@@ -286,7 +297,7 @@ def republier_all_acte_task(etat):
 
 
 # FONCTION
-def insert_solr(publication, est_publie):
+def insert_solr(publication, est_publie, est_dans_blockain=False, blockain_tx=''):
     # infoEtablissement = api_insee_call(publication.siren)
 
     # Pour tous les actes ( documents lié à la publication)
@@ -300,6 +311,12 @@ def insert_solr(publication, est_publie):
             params = traiter_actes(publication, acte, isPj=False)
             # insert dans apache solr
             params["literal.est_publie"] = est_publie
+            if est_dans_blockain:
+                params["literal.blockhain_enable"] = True
+                # params["literal.blockhain_date"] = est_publie
+                params["literal.blockhain_transaction"] = str(blockain_tx)
+                params["literal.blockhain_url"] = 'https://mumbai.polygonscan.com/tx/' + str(blockain_tx)
+
             index_file_in_solr(acte.path, params)
         except Exception as e:
             db_sess = db.session
