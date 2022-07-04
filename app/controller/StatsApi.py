@@ -31,7 +31,7 @@ class StatsPublications(Resource):
             if len(array_condition) > 0:
                 condition = "where " + " and ".join(array_condition)
 
-            request = text("""select case when acte_nature=1 THEN 'déliberation' when acte_nature=2 THEN 'Actes réglementaires' when acte_nature=3 THEN 'Actes individuels' when acte_nature=4 THEN 'Contrats,conventions et avenants' when acte_nature=5 THEN 'budget' ELSE  'Autres' END as 'nature acte',',
+            request = text("""select case when acte_nature=1 THEN 'déliberation' when acte_nature=2 THEN 'Actes réglementaires' when acte_nature=3 THEN 'Actes individuels' when acte_nature=4 THEN 'Contrats,conventions et avenants' when acte_nature=5 THEN 'budget' ELSE  'Autres' END as 'nature acte',
                                        case when publication_open_data='3' THEN 'oui' when publication_open_data='1' THEN 'non' when publication_open_data='2' THEN 'ne sais pas' ELSE  publication_open_data END as 'combo pastell',
                                        case when etat=1 THEN 'publié' when etat=0 THEN 'non publié' when etat=2 THEN 'en cours' ELSE  'en erreur' END as 'etat',
                                        count(*) as nombre 
