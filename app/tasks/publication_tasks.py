@@ -312,10 +312,10 @@ def insert_solr(publication, est_publie, est_dans_blockain=False, blockain_tx=''
             # insert dans apache solr
             params["literal.est_publie"] = est_publie
             if est_dans_blockain:
-                params["literal.blockhain_enable"] = True
+                params["literal.blockchain_enable"] = True
                 # params["literal.blockhain_date"] = est_publie
-                params["literal.blockhain_transaction"] = str(blockain_tx)
-                params["literal.blockhain_url"] = 'https://mumbai.polygonscan.com/tx/' + str(blockain_tx)
+                params["literal.blockchain_transaction"] = str(blockain_tx)
+                params["literal.blockchain_url"] = 'https://mumbai.polygonscan.com/tx/' + str(blockain_tx)
 
             index_file_in_solr(acte.path, params)
         except Exception as e:
