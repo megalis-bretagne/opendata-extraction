@@ -9,39 +9,14 @@ API_SIREN_KEY = 'xxxxxxxxxxxxxxxxxxx'
 API_SIREN_SECRET = 'xxxxxxxxxxxxxxxxxxxxxxxxx'
 
 # ***************************** AJOUT JULIEN *****************************
+USE_BLOCKCHAIN = True
 PRIVATE_KEY = '0x3a54e7c526de24a882e50452534f2a30dc7e491f253e2c784ca41382c59722d3'
 PUBLIC_KEY = '0x82de905E53cB57Cfd7c1e9B7552a175756d96EFd'
-
-NETWORK_NAME = 'Ropsten' # Choisir : Ropsten | Rinkeby | Kovan | Goerli | Mumbai | Gnosis
-
-if NETWORK_NAME == 'Ropsten':
-    CONTRACT_ADDRESS = '0x3342b056Af4A655802074A4E09c0A10Ac086B4e9'
-    HTTP_PROVIDER = 'https://eth-ropsten.alchemyapi.io/v2/ej3ZztXfH3rAmUWlZS6pYLaavZdob2Ts'
-    ETHERSCAN_URL = 'https://ropsten.etherscan.io/tx/'
-elif NETWORK_NAME == 'Rinkeby':
-    CONTRACT_ADDRESS = '0x3342b056Af4A655802074A4E09c0A10Ac086B4e9'
-    HTTP_PROVIDER = 'https://eth-rinkeby.blastapi.io/45b75e5c-bd21-4b10-8e72-381013ae52fb'
-    ETHERSCAN_URL = 'https://rinkeby.etherscan.io/tx/'
-elif NETWORK_NAME == 'Kovan':
-    CONTRACT_ADDRESS = '0x347a2ea7BC38A50B53a1197f4195a39d0692a893'
-    HTTP_PROVIDER = 'https://eth-kovan.blastapi.io/45b75e5c-bd21-4b10-8e72-381013ae52fb'
-    ETHERSCAN_URL = 'https://kovan.etherscan.io/tx/'
-elif NETWORK_NAME == 'Goerli':
-    CONTRACT_ADDRESS = '0x347a2ea7BC38A50B53a1197f4195a39d0692a893'
-    HTTP_PROVIDER = 'https://eth-goerli.g.alchemy.com/v2/5_yxDSqTkpxKef4Y4ix9yXlmQbh8wr0K'
-    ETHERSCAN_URL = 'https://goerli.etherscan.io/tx/'
-elif NETWORK_NAME == 'Mumbai':
-    CONTRACT_ADDRESS = '0x347a2ea7BC38A50B53a1197f4195a39d0692a893'
-    HTTP_PROVIDER = 'https://polygon-testnet.blastapi.io/45b75e5c-bd21-4b10-8e72-381013ae52fb'
-    ETHERSCAN_URL = 'https://mumbai.polygonscan.com/tx/'
-elif NETWORK_NAME == 'Gnosis':
-    CONTRACT_ADDRESS = '0x3342b056Af4A655802074A4E09c0A10Ac086B4e9'
-    HTTP_PROVIDER = 'https://gnosis-mainnet.blastapi.io/45b75e5c-bd21-4b10-8e72-381013ae52fb'
-    ETHERSCAN_URL = 'https://blockscout.com/xdai/mainnet/tx/'
-else:
-    CONTRACT_ADDRESS = 'INCONNU'
-    HTTP_PROVIDER = 'INCONNU'
-    ETHERSCAN_URL = 'INCONNU'
+NETWORK_NAME = 'Ropsten'
+CONTRACT_ADDRESS = '0x3342b056Af4A655802074A4E09c0A10Ac086B4e9'
+HTTP_PROVIDER = 'https://eth-ropsten.alchemyapi.io/v2/ej3ZztXfH3rAmUWlZS6pYLaavZdob2Ts'
+BLOCKCHAIN_EXPLORER = 'https://ropsten.etherscan.io/tx/'
+BLOCKCHAIN_ABI = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"_siren","type":"string"},{"indexed":false,"internalType":"string","name":"_url","type":"string"},{"indexed":false,"internalType":"uint256","name":"_timestamp","type":"uint256"}],"name":"NewPublication","type":"event"},{"inputs":[{"internalType":"string","name":"x","type":"string"}],"name":"existingInTab","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAllSirens","outputs":[{"internalType":"string[]","name":"","type":"string[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"}],"name":"getSirenPublications","outputs":[{"components":[{"internalType":"string","name":"Publisher_siren","type":"string"},{"internalType":"string","name":"Doc_url","type":"string"},{"internalType":"uint256","name":"Doc_timestamp","type":"uint256"}],"internalType":"structmegalisV2.Publication[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"},{"internalType":"string","name":"doc_url","type":"string"}],"name":"publish","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"tab_publisher","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]'
 # ***************************** AJOUT JULIEN *****************************
 
 CELERY_BROKER_URL = 'redis://redis:6379/1'

@@ -187,7 +187,7 @@ def publier_blockchain_task(idPublication):
         'address': current_app.config['PUBLIC_KEY'],
     }
 
-    #abi = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"_siren","type":"string"},{"indexed":false,"internalType":"string","name":"_url","type":"string"},{"indexed":false,"internalType":"uint256","name":"_timestamp","type":"uint256"}],"name":"NewPublication","type":"event"},{"inputs":[{"internalType":"string","name":"x","type":"string"}],"name":"existingInTab","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAllSirens","outputs":[{"internalType":"string[]","name":"","type":"string[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"}],"name":"getSirenPublications","outputs":[{"components":[{"internalType":"string","name":"Publisher_siren","type":"string"},{"internalType":"string","name":"Doc_url","type":"string"},{"internalType":"uint256","name":"Doc_timestamp","type":"uint256"}],"internalType":"structmegalisV2.Publication[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"},{"internalType":"string","name":"doc_url","type":"string"}],"name":"publish","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"tab_publisher","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]'
+    abi = current_app.config['BLOCKCHAIN_ABI']
 
     w3 = Web3(Web3.HTTPProvider(current_app.config['HTTP_PROVIDER']))
 
@@ -224,7 +224,7 @@ def publier_blockchain_task(idPublication):
 
         insert_solr(publication, est_publie=True, est_dans_blockchain=True, blockchain_tx=tx_receipt.transactionHash.hex())
 
-        return {'status': 'OK', 'message': 'publié sur ' + NETWORK_NAME + ' ;)',
+        return {'status': 'OK', 'message': 'publié sur ' + current_app.config['NETWORK_NAME'] + ' ;)',
                 'tx_receipt': tx_receipt.transactionHash.hex()}
 
     return {'status': 'KO', 'message': 'non publié :(', }
@@ -316,10 +316,8 @@ def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_t
             params["literal.est_publie"] = est_publie
             if est_dans_blockchain:
                 params["literal.blockchain_enable"] = True
-                # params["literal.blockchain_date"] = est_publie
                 params["literal.blockchain_transaction"] = str(blockchain_tx)
-                # A modifier si en fonction du réseau que l'on veut
-                params["literal.blockchain_url"] = current_app.config['ETHERSCAN_URL'] + str(blockchain_tx)
+                params["literal.blockchain_url"] = current_app.config['BLOCKCHAIN_EXPLORER'] + str(blockchain_tx)
 
             index_file_in_solr(acte.path, params)
         except Exception as e:
