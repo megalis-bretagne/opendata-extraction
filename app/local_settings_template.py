@@ -8,6 +8,42 @@ DEBUG = True
 API_SIREN_KEY = 'xxxxxxxxxxxxxxxxxxx'
 API_SIREN_SECRET = 'xxxxxxxxxxxxxxxxxxxxxxxxx'
 
+# ***************************** AJOUT JULIEN *****************************
+PRIVATE_KEY = '0x3a54e7c526de24a882e50452534f2a30dc7e491f253e2c784ca41382c59722d3'
+PUBLIC_KEY = '0x82de905E53cB57Cfd7c1e9B7552a175756d96EFd'
+
+NETWORK_NAME = 'Ropsten' # Choisir : Ropsten | Rinkeby | Kovan | Goerli | Mumbai | Gnosis
+
+if NETWORK_NAME == 'Ropsten':
+    CONTRACT_ADDRESS = '0x3342b056Af4A655802074A4E09c0A10Ac086B4e9'
+    HTTP_PROVIDER = 'https://eth-ropsten.alchemyapi.io/v2/ej3ZztXfH3rAmUWlZS6pYLaavZdob2Ts'
+    ETHERSCAN_URL = 'https://ropsten.etherscan.io/tx/'
+elif NETWORK_NAME == 'Rinkeby':
+    CONTRACT_ADDRESS = '0x3342b056Af4A655802074A4E09c0A10Ac086B4e9'
+    HTTP_PROVIDER = 'https://eth-rinkeby.blastapi.io/45b75e5c-bd21-4b10-8e72-381013ae52fb'
+    ETHERSCAN_URL = 'https://rinkeby.etherscan.io/tx/'
+elif NETWORK_NAME == 'Kovan':
+    CONTRACT_ADDRESS = '0x347a2ea7BC38A50B53a1197f4195a39d0692a893'
+    HTTP_PROVIDER = 'https://eth-kovan.blastapi.io/45b75e5c-bd21-4b10-8e72-381013ae52fb'
+    ETHERSCAN_URL = 'https://kovan.etherscan.io/tx/'
+elif NETWORK_NAME == 'Goerli':
+    CONTRACT_ADDRESS = '0x347a2ea7BC38A50B53a1197f4195a39d0692a893'
+    HTTP_PROVIDER = 'https://eth-goerli.g.alchemy.com/v2/5_yxDSqTkpxKef4Y4ix9yXlmQbh8wr0K'
+    ETHERSCAN_URL = 'https://goerli.etherscan.io/tx/'
+elif NETWORK_NAME == 'Mumbai':
+    CONTRACT_ADDRESS = '0x347a2ea7BC38A50B53a1197f4195a39d0692a893'
+    HTTP_PROVIDER = 'https://polygon-testnet.blastapi.io/45b75e5c-bd21-4b10-8e72-381013ae52fb'
+    ETHERSCAN_URL = 'https://mumbai.polygonscan.com/tx/'
+elif NETWORK_NAME == 'Gnosis':
+    CONTRACT_ADDRESS = '0x3342b056Af4A655802074A4E09c0A10Ac086B4e9'
+    HTTP_PROVIDER = 'https://gnosis-mainnet.blastapi.io/45b75e5c-bd21-4b10-8e72-381013ae52fb'
+    ETHERSCAN_URL = 'https://blockscout.com/xdai/mainnet/tx/'
+else:
+    CONTRACT_ADDRESS = 'INCONNU'
+    HTTP_PROVIDER = 'INCONNU'
+    ETHERSCAN_URL = 'INCONNU'
+# ***************************** AJOUT JULIEN *****************************
+
 CELERY_BROKER_URL = 'redis://redis:6379/1'
 result_backend = 'redis://redis:6379/0'
 

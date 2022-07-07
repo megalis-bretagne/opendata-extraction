@@ -180,14 +180,17 @@ def publier_acte_task(idPublication, reindexationSolr=False):
 
 @celery.task(name='publier_blockchain_task')
 def publier_blockchain_task(idPublication):
-    contract_address = '0xcb00c34B9B5687CCb44AfA332EF78BD6d423F598'
-    account_from = {
-        'private_key': '0x329dbeab55c08f6ed56d29af9ac44dc74e6d6380c12e4d938abf4664cd227f81',
-        'address': '0x858077f49B961ef27b0B09313BedFE33Aca0ca44',
-    }
-    abi = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_publisher","type":"address"},{"indexed":false,"internalType":"string","name":"_siren","type":"string"},{"indexed":false,"internalType":"string","name":"_url","type":"string"},{"indexed":false,"internalType":"string","name":"_hash","type":"string"},{"indexed":false,"internalType":"uint256","name":"_timestamp","type":"uint256"}],"name":"NewPublication","type":"event"},{"inputs":[{"internalType":"bytes32","name":"Doc_Hash","type":"bytes32"}],"name":"UpdateEvent","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"x","type":"string"}],"name":"existingInTab","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAllPublications","outputs":[{"components":[{"internalType":"address","name":"Publisher","type":"address"},{"internalType":"string","name":"Publisher_siren","type":"string"},{"internalType":"string","name":"Doc_url","type":"string"},{"internalType":"string","name":"Doc_hash","type":"string"},{"internalType":"uint256","name":"Doc_timestamp","type":"uint256"}],"internalType":"struct megalisV1.Publication[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAllSirens","outputs":[{"internalType":"string[]","name":"","type":"string[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"}],"name":"getSirenPublications","outputs":[{"components":[{"internalType":"address","name":"Publisher","type":"address"},{"internalType":"string","name":"Publisher_siren","type":"string"},{"internalType":"string","name":"Doc_url","type":"string"},{"internalType":"string","name":"Doc_hash","type":"string"},{"internalType":"uint256","name":"Doc_timestamp","type":"uint256"}],"internalType":"struct megalisV1.Publication[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"}],"name":"listOnGoingPublications","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"},{"internalType":"string","name":"doc_url","type":"string"},{"internalType":"string","name":"doc_hash","type":"string"}],"name":"publish","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"tab_publisher","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]'
+    contract_address = current_app.config['CONTRACT_ADDRESS']
 
-    w3 = Web3(Web3.HTTPProvider("https://polygon-testnet.blastapi.io/45b75e5c-bd21-4b10-8e72-381013ae52fb"))
+    account_from = {
+        'private_key': current_app.config['PRIVATE_KEY'],
+        'address': current_app.config['PUBLIC_KEY'],
+    }
+
+    #abi = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"_siren","type":"string"},{"indexed":false,"internalType":"string","name":"_url","type":"string"},{"indexed":false,"internalType":"uint256","name":"_timestamp","type":"uint256"}],"name":"NewPublication","type":"event"},{"inputs":[{"internalType":"string","name":"x","type":"string"}],"name":"existingInTab","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAllSirens","outputs":[{"internalType":"string[]","name":"","type":"string[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"}],"name":"getSirenPublications","outputs":[{"components":[{"internalType":"string","name":"Publisher_siren","type":"string"},{"internalType":"string","name":"Doc_url","type":"string"},{"internalType":"uint256","name":"Doc_timestamp","type":"uint256"}],"internalType":"structmegalisV2.Publication[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"publisher_siren","type":"string"},{"internalType":"string","name":"doc_url","type":"string"}],"name":"publish","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"tab_publisher","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]'
+
+    w3 = Web3(Web3.HTTPProvider(current_app.config['HTTP_PROVIDER']))
+
     w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
     # 4. Create contract instance
@@ -199,7 +202,7 @@ def publier_blockchain_task(idPublication):
     # copy de l'acte dans le dossier marque blanche
     for acte in publication.actes:
         # 5. Build increment tx
-        publisher_tx = publisher.functions.publish(publication.siren, acte.url, acte.hash).buildTransaction(
+        publisher_tx = publisher.functions.publish(publication.siren, acte.url).buildTransaction(
             {
                 'from': account_from['address'],
                 'nonce': w3.eth.get_transaction_count(account_from['address']),
@@ -219,9 +222,9 @@ def publier_blockchain_task(idPublication):
         except Exception as e:
             result = 0
 
-        insert_solr(publication, est_publie=True, est_dans_blockain=True, blockain_tx=tx_receipt.transactionHash.hex())
+        insert_solr(publication, est_publie=True, est_dans_blockchain=True, blockchain_tx=tx_receipt.transactionHash.hex())
 
-        return {'status': 'OK', 'message': 'publie sur polygon ! ;)',
+        return {'status': 'OK', 'message': 'publié sur ' + NETWORK_NAME + ' ;)',
                 'tx_receipt': tx_receipt.transactionHash.hex()}
 
     return {'status': 'KO', 'message': 'non publié :(', }
@@ -297,7 +300,7 @@ def republier_all_acte_task(etat):
 
 
 # FONCTION
-def insert_solr(publication, est_publie, est_dans_blockain=False, blockain_tx=''):
+def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_tx=''):
     # infoEtablissement = api_insee_call(publication.siren)
 
     # Pour tous les actes ( documents lié à la publication)
@@ -311,11 +314,12 @@ def insert_solr(publication, est_publie, est_dans_blockain=False, blockain_tx=''
             params = traiter_actes(publication, acte, isPj=False)
             # insert dans apache solr
             params["literal.est_publie"] = est_publie
-            if est_dans_blockain:
+            if est_dans_blockchain:
                 params["literal.blockchain_enable"] = True
-                # params["literal.blockhain_date"] = est_publie
-                params["literal.blockchain_transaction"] = str(blockain_tx)
-                params["literal.blockchain_url"] = 'https://mumbai.polygonscan.com/tx/' + str(blockain_tx)
+                # params["literal.blockchain_date"] = est_publie
+                params["literal.blockchain_transaction"] = str(blockchain_tx)
+                # A modifier si en fonction du réseau que l'on veut
+                params["literal.blockchain_url"] = current_app.config['ETHERSCAN_URL'] + str(blockchain_tx)
 
             index_file_in_solr(acte.path, params)
         except Exception as e:
