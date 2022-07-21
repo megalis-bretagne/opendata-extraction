@@ -19,7 +19,7 @@ class OrganizationService(metaclass=Singleton):
         self.API = current_app.config['API_UDATA']
 
     def get(self, siren) -> dict or None:
-        response = requests.get(self.API + self.ORGANIZATION_ENDPOINT, params={'q': 'siren : ' + siren},
+        response = requests.get(self.API + "/2" + self.ORGANIZATION_ENDPOINT + "search/", params={'q': 'siren : ' + siren},
                                 headers=self.HEADERS)
 
         if response.status_code == 200:
@@ -30,7 +30,7 @@ class OrganizationService(metaclass=Singleton):
 
     def get_all_sirens(self) -> array:
         page_size = 50
-        next_page = self.API + self.ORGANIZATION_ENDPOINT + "?q=siren+%3A&page_size={}&page={}".format(page_size, "1")
+        next_page = self.API + "/2" + self.ORGANIZATION_ENDPOINT + "search/" + "?q=siren+%3A&page_size={}&page={}".format(page_size, "1")
         sirens = []
         while next_page is not None:
             response = requests.get(next_page, headers=self.HEADERS)
@@ -44,7 +44,7 @@ class OrganizationService(metaclass=Singleton):
 
     def get_datasets(self, id_organization) -> array or None:
 
-        response = requests.get(self.API + self.ORGANIZATION_ENDPOINT + id_organization + '/datasets/',
+        response = requests.get(self.API + "/1" + self.ORGANIZATION_ENDPOINT + id_organization + '/datasets/',
                                 headers=self.HEADERS)
         result = json.loads(response.content.decode("utf-8"))
         return result['data']

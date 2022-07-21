@@ -35,7 +35,7 @@ class DatasetService(metaclass=Singleton):
             "tags": array_tags,
             "title": title
         }
-        response = requests.post(self.API + self.DATASETS_ENDPOINT, headers=self.HEADERS, json=payload)
+        response = requests.post(self.API + "/1" + self.DATASETS_ENDPOINT, headers=self.HEADERS, json=payload)
         if response.status_code != 201:
             return None
         else:
@@ -115,7 +115,7 @@ class DatasetService(metaclass=Singleton):
             if resource['title'].casefold() == filename.casefold():
                 # Maj resource
                 id_resource = resource['id']
-                url = self.API + self.DATASETS_ENDPOINT + '{}/resources/{}/upload/'.format(id_dataset, id_resource)
+                url = self.API + "/1" + self.DATASETS_ENDPOINT + '{}/resources/{}/upload/'.format(id_dataset, id_resource)
                 response = requests.post(url, files={
                     'file': open(get_or_create_workdir() + filename, 'rb'),
                 }, headers=self.HEADERS)
@@ -125,7 +125,7 @@ class DatasetService(metaclass=Singleton):
                     return json.loads(response.content.decode("utf-8"))
 
         # Création ressource
-        url = self.API + self.DATASETS_ENDPOINT + '{}/upload/'.format(id_dataset)
+        url = self.API + "/1" + self.DATASETS_ENDPOINT + '{}/upload/'.format(id_dataset)
         response = requests.post(url, files={
             'file': open(get_or_create_workdir() + filename, 'rb'),
         }, headers=self.HEADERS)
@@ -136,7 +136,7 @@ class DatasetService(metaclass=Singleton):
         resource = json.loads(response.content.decode("utf-8"))
 
         # Mise à jour des métadonnées d’une ressource
-        url = self.API + self.DATASETS_ENDPOINT + '{}/resources/{}/'.format(id_dataset, resource['id'])
+        url = self.API + "/1" + self.DATASETS_ENDPOINT + '{}/resources/{}/'.format(id_dataset, resource['id'])
         requests.put(url, json={
             'format': filename.split(".")[-1],
             'schema': schema,
@@ -162,5 +162,5 @@ class DatasetService(metaclass=Singleton):
         for resource in dataset['resources']:
             if resource['title'] == filename:
                 requests.delete(
-                    self.API + self.DATASETS_ENDPOINT + dataset['id'] + "/resources/" + resource['id'] + "/",
+                    self.API + "/1" + self.DATASETS_ENDPOINT + dataset['id'] + "/resources/" + resource['id'] + "/",
                     headers=self.HEADERS)
