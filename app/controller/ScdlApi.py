@@ -58,3 +58,30 @@ class ScdlDeliberationAllCtrl(Resource):
                                        as_attachment=True)
         except FileNotFoundError:
             abort(404)
+
+
+@api.route('/actes/<int:siren>/<int:annee>')
+class ScdlActeCtrl(Resource):
+    @api.response(200, 'Success')
+    @api.produces(["application/octet-stream"])
+    def get(self, siren, annee):
+        from app.tasks.datagouv_tasks import generation_acte
+        from app.tasks.utils import get_or_create_workdir
+        try:
+            return send_from_directory(get_or_create_workdir(), filename=generation_acte(siren, annee),
+                                       as_attachment=True)
+        except FileNotFoundError:
+            abort(404)
+
+@api.route('/actes/<int:annee>')
+class ScdlActeAllCtrl(Resource):
+    @api.response(200, 'Success')
+    @api.produces(["application/octet-stream"])
+    def get(self, annee):
+        from app.tasks.datagouv_tasks import generation_acte
+        from app.tasks.utils import get_or_create_workdir
+        try:
+            return send_from_directory(get_or_create_workdir(), filename=generation_acte('*', annee),
+                                       as_attachment=True)
+        except FileNotFoundError:
+            abort(404)
