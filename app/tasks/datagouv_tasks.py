@@ -164,7 +164,7 @@ def generation_acte(siren, annee):
             line = '"' + COLL_NOM + '"' + ';' + '"' + COLL_SIRET + '"' + ';' + '"' + DELIB_ID + '"' + ';' + '"' + DELIB_DATE + '"' + ';' + '"' + DELIB_MATIERE_CODE + '"' + ';' \
                    + '"' + DELIB_MATIERE_NOM + '"' + ';' + '"' + DELIB_OBJET + '"' + ';' + '"' + BUDGET_ANNEE + '"' + ';' + '"' + BUDGET_NOM + '"' + ';' + '"' + PREF_ID + '"' + \
                    ';' + '"' + PREF_DATE + '"' + ';' + '"' + VOTE_EFFECTIF + '"' + ';' + '"' + VOTE_REEL + '"' + ';' + '"' + VOTE_POUR + '"' + ';' + '"' + VOTE_CONTRE + '"' + ';' \
-                   + '"' + VOTE_ABSTENTION + '"' + ';' + '"' + DELIB_URL + '"' +  PUBLICATION_DATE + '"' + NATURE_ACTE + '"' +'\n'
+                   + '"' + VOTE_ABSTENTION + '"' + ';' + '"' + DELIB_URL + '"' + ';' +  PUBLICATION_DATE + '"' + ';' + NATURE_ACTE + '"' +'\n'
             lignes.append(line)
         start = start + rows
         result = \
