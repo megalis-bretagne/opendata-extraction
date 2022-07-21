@@ -34,3 +34,4 @@ zipfile37==0.1.3
 api-insee==1.5
 lxml==4.6.3
 odfpy==1.4.1
+web3==5.29.2

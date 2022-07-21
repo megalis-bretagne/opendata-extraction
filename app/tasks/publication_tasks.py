@@ -3,6 +3,9 @@ from datetime import datetime
 import urllib
 from zipfile import ZipFile
 from sqlalchemy.exc import NoResultFound, MultipleResultsFound, IntegrityError
+from web3 import Web3
+from web3.middleware import geth_poa_middleware
+
 from app import celeryapp
 from app import celeryapp
 import json
@@ -164,11 +167,67 @@ def publier_acte_task(idPublication, reindexationSolr=False):
         publication.etat = 1
         publication.modified_at = datetime.now()
         db_sess.commit()
+
+        if current_app.config['USE_BLOCKCHAIN']:
+            publier_blockchain_task.delay(publication.id)
+
         return {'status': 'OK', 'message': 'publication open data réalisé',
                 'publication id': publication.id}
     else:
         return {'status': 'OK', 'message': 'publication open data réalisé (moder eindexationSolr) ',
                 'publication id': publication.id}
+
+
+@celery.task(name='publier_blockchain_task')
+def publier_blockchain_task(idPublication):
+    contract_address = current_app.config['CONTRACT_ADDRESS']
+
+    account_from = {
+        'private_key': current_app.config['PRIVATE_KEY'],
+        'address': current_app.config['PUBLIC_KEY'],
+    }
+
+    abi = current_app.config['BLOCKCHAIN_ABI']
+
+    w3 = Web3(Web3.HTTPProvider(current_app.config['HTTP_PROVIDER']))
+
+    w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+
+    # 4. Create contract instance
+    publisher = w3.eth.contract(address=contract_address, abi=abi)
+
+    # on récupère la publication à publier en BDD
+    publication = Publication.query.filter(Publication.id == idPublication).one()
+
+    # copy de l'acte dans le dossier marque blanche
+    for acte in publication.actes:
+        # 5. Build increment tx
+        publisher_tx = publisher.functions.publish(publication.siren, acte.url).buildTransaction(
+            {
+                'from': account_from['address'],
+                'nonce': w3.eth.get_transaction_count(account_from['address']),
+            }
+        )
+        # 6. Sign tx with PK
+        tx_create = w3.eth.account.sign_transaction(publisher_tx, account_from['private_key'])
+        # 7. Send tx and wait for receipt
+        tx_hash = w3.eth.send_raw_transaction(tx_create.rawTransaction)
+        tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+
+        solr = solr_connexion()
+        try:
+            result = solr.search(q='publication_id : ' + str(idPublication))
+            for doc_res in result.docs:
+                solr.delete(doc_res['id'])
+        except Exception as e:
+            result = 0
+
+        insert_solr(publication, est_publie=True, est_dans_blockchain=True, blockchain_tx=tx_receipt.transactionHash.hex())
+
+        return {'status': 'OK', 'message': 'publié sur ' + current_app.config['NETWORK_NAME'] + ' ;)',
+                'tx_receipt': tx_receipt.transactionHash.hex()}
+
+    return {'status': 'KO', 'message': 'non publié :(', }
 
 
 @celery.task(name='depublier_acte_task')
@@ -241,7 +300,7 @@ def republier_all_acte_task(etat):
 
 
 # FONCTION
-def insert_solr(publication, est_publie):
+def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_tx=''):
     # infoEtablissement = api_insee_call(publication.siren)
 
     # Pour tous les actes ( documents lié à la publication)
@@ -255,6 +314,11 @@ def insert_solr(publication, est_publie):
             params = traiter_actes(publication, acte, isPj=False)
             # insert dans apache solr
             params["literal.est_publie"] = est_publie
+            if est_dans_blockchain:
+                params["literal.blockchain_enable"] = True
+                params["literal.blockchain_transaction"] = str(blockchain_tx)
+                params["literal.blockchain_url"] = current_app.config['BLOCKCHAIN_EXPLORER'] + str(blockchain_tx)
+
             index_file_in_solr(acte.path, params)
         except Exception as e:
             db_sess = db.session
@@ -530,7 +594,7 @@ class MetadataPastell:
         if 'classification' in metajson:
             self.classification = metajson['classification']
         else:
-            self.classification = ''
+            self.classification = '9.2'
 
         if 'publication_open_data' in metajson:
             if len(metajson['publication_open_data']) == 0:
@@ -560,7 +624,7 @@ class MetadataPastell:
 
         x = self.classification.split(" ", 1)
         # valeur par defaut
-        self.classification_code = "6"
+        self.classification_code = 9.2
         if len(x) == 2:
             self.classification_code = x[0]
         elif len(x) == 1:
