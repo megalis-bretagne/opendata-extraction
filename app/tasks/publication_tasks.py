@@ -545,24 +545,31 @@ def init_publication(metadataPastell):
             )
             db_sess.add(newDoc)
             move_file(path, dossier_publication, hash + format)
-    # Pour tous les fichiers pj présents dans le zip
-    if metadataPastell.liste_autre_document_attache is not None:
-        for pj in metadataPastell.liste_autre_document_attache:
-            dossier_publication = current_app.config['DIR_PUBLICATION'] + dossier + os.path.sep + annee + os.path.sep
-            path = WORKDIR + pj
-            format = str('.' + pj.split(".")[-1])
-            hash = get_hash(path)
 
-            newPj = PieceJointe(
-                name=pj,
-                url=current_app.config[
-                        'URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
-                path=dossier_publication + hash + format,
-                hash=hash,
-                publication_id=newPublication.id
-            )
-            db_sess.add(newPj)
-            move_file(path, dossier_publication, hash + format)
+    try :
+        # Pour tous les fichiers pj présents dans le zip
+        if metadataPastell.liste_autre_document_attache is not None:
+            for pj in metadataPastell.liste_autre_document_attache:
+                dossier_publication = current_app.config['DIR_PUBLICATION'] + dossier + os.path.sep + annee + os.path.sep
+                path = WORKDIR + pj
+                format = str('.' + pj.split(".")[-1])
+                hash = get_hash(path)
+
+                newPj = PieceJointe(
+                    name=pj,
+                    url=current_app.config[
+                            'URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
+                    path=dossier_publication + hash + format,
+                    hash=hash,
+                    publication_id=newPublication.id
+                )
+                move_file(path, dossier_publication, hash + format)
+                db_sess.add(newPj)
+
+    except Exception as e:
+        print("Problème de création de la PJ, on ignore")
+        logging.exception(e)
+
     db_sess.commit()
     return newPublication
 
