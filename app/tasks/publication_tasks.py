@@ -43,14 +43,22 @@ def creation_publication_task(zip_path):
 
     try:
         metadataPastell = MetadataPastell(metadata)
-        # init publication table
-        newPublication = init_publication(metadataPastell)
-    except Exception as e:
 
+    except Exception as e:
+        print(e)
         strDate = datetime.now().strftime('%Y-%m-%d-%H%M%S')
         shutil.move(WORKDIR + 'objet.zip',
                     current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_' + strDate + '.zip')
         return {'status': 'KO', 'message': 'Metada incomplete', 'Erreur': print(e)}
+
+    try:
+        # init publication table
+        newPublication = init_publication(metadataPastell)
+    except Exception as e:
+        strDate = datetime.now().strftime('%Y-%m-%d-%H%M%S')
+        shutil.move(WORKDIR + 'objet.zip',
+                    current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_' + strDate + '.zip')
+        return {'status': 'KO', 'message': 'erreur_init_publication', 'Erreur': print(e)}
 
     # check and init parametrage
 
@@ -537,24 +545,31 @@ def init_publication(metadataPastell):
             )
             db_sess.add(newDoc)
             move_file(path, dossier_publication, hash + format)
-    # Pour tous les fichiers pj présents dans le zip
-    if metadataPastell.liste_autre_document_attache is not None:
-        for pj in metadataPastell.liste_autre_document_attache:
-            dossier_publication = current_app.config['DIR_PUBLICATION'] + dossier + os.path.sep + annee + os.path.sep
-            path = WORKDIR + pj
-            format = str('.' + pj.split(".")[-1])
-            hash = get_hash(path)
 
-            newPj = PieceJointe(
-                name=pj,
-                url=current_app.config[
-                        'URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
-                path=dossier_publication + hash + format,
-                hash=hash,
-                publication_id=newPublication.id
-            )
-            db_sess.add(newPj)
-            move_file(path, dossier_publication, hash + format)
+    try :
+        # Pour tous les fichiers pj présents dans le zip
+        if metadataPastell.liste_autre_document_attache is not None:
+            for pj in metadataPastell.liste_autre_document_attache:
+                dossier_publication = current_app.config['DIR_PUBLICATION'] + dossier + os.path.sep + annee + os.path.sep
+                path = WORKDIR + pj
+                format = str('.' + pj.split(".")[-1])
+                hash = get_hash(path)
+
+                newPj = PieceJointe(
+                    name=pj,
+                    url=current_app.config[
+                            'URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
+                    path=dossier_publication + hash + format,
+                    hash=hash,
+                    publication_id=newPublication.id
+                )
+                move_file(path, dossier_publication, hash + format)
+                db_sess.add(newPj)
+
+    except Exception as e:
+        print("Problème de création de la PJ, on ignore")
+        logging.exception(e)
+
     db_sess.commit()
     return newPublication
 

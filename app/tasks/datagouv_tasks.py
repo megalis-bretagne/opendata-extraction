@@ -99,6 +99,98 @@ def generation_budget(siren, annee, flag_active=None):
     return filename
 
 
+def generation_acte(siren, annee):
+    # on clear le workdir
+    clear_wordir()
+    ANNEE = str(annee)
+    SIREN = str(siren)
+
+    # connexion solr
+    solr = solr_connexion()
+    start = 0
+    rows = 100
+
+    # construction de la requete solr
+    query = '-typology: PJ AND est_publie: true'
+    if str(siren) == '*':
+        filename = 'ACTES-' + ANNEE + '.csv'
+    else:
+        filename = 'ACTES-' + SIREN + '-' + ANNEE + '.csv'
+        query = query + ' AND siren: ' + SIREN
+
+    # generation de l'url du fichier scdl
+    csv_file_path = get_or_create_workdir() + filename
+
+    # On recherche dans apache solr les documents pour un publie qui ne sont pas des annexes et on fitre sur l'année passée en parametre ANNEE et le siren si present
+    result = \
+        solr.search(q=query,
+                    **{
+                        'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
+                              'filepath,documenttype,date,est_publie,date_de_publication,documenttype',
+                        'start': start,
+                        'rows': rows,
+                        'fq': 'date:[' + ANNEE + '-01-01T00:00:00Z TO ' + ANNEE + '-12-31T23:59:59Z]'
+                    })
+
+    lignes = []
+    while len(result.docs) > 0:
+        for doc_res in result.docs:
+            parametrage = Parametrage.query.filter(Parametrage.siren == doc_res['siren']).first()
+            COLL_NOM = parametrage.denomination
+            DELIB_DATE = str(doc_res['date'][0].split("T", 1)[0])
+            DELIB_ID = str(doc_res['documentidentifier'][0])
+            DELIB_OBJET = str(doc_res['description'][0])
+            COLL_SIRET = str(doc_res['siren'].zfill(9) + parametrage.nic)
+            DELIB_MATIERE_CODE = str(doc_res['classification_code'])
+            DELIB_MATIERE_NOM = str(doc_res['classification_nom'])
+
+            PUBLICATION_DATE=str(doc_res['date_de_publication'][0].split("T", 1)[0])
+            NATURE_ACTE = str(doc_res['documenttype'][0])
+
+            BUDGET_ANNEE = ''
+            BUDGET_NOM = ''
+            PREF_ID = ''
+            PREF_DATE = ''
+            VOTE_EFFECTIF = ''
+            VOTE_REEL = ''
+            VOTE_POUR = ''
+            VOTE_CONTRE = ''
+            VOTE_ABSTENTION = ''
+            if doc_res['est_publie'][0]:
+                DELIB_URL = urllib.parse.quote(str(doc_res['filepath'][0]),safe="https://")
+            else:
+                DELIB_URL = ''
+
+            line = '"' + COLL_NOM + '"' + ';' + '"' + COLL_SIRET + '"' + ';' + '"' + DELIB_ID + '"' + ';' + '"' + DELIB_DATE + '"' + ';' + '"' + DELIB_MATIERE_CODE + '"' + ';' \
+                   + '"' + DELIB_MATIERE_NOM + '"' + ';' + '"' + DELIB_OBJET + '"' + ';' + '"' + BUDGET_ANNEE + '"' + ';' + '"' + BUDGET_NOM + '"' + ';' + '"' + PREF_ID + '"' + \
+                   ';' + '"' + PREF_DATE + '"' + ';' + '"' + VOTE_EFFECTIF + '"' + ';' + '"' + VOTE_REEL + '"' + ';' + '"' + VOTE_POUR + '"' + ';' + '"' + VOTE_CONTRE + '"' + ';' \
+                   + '"' + VOTE_ABSTENTION + '"' + ';' + '"' + DELIB_URL + '"' + ';' +  PUBLICATION_DATE + '"' + ';' + NATURE_ACTE + '"' +'\n'
+            lignes.append(line)
+        start = start + rows
+        result = \
+            solr.search(q=query,
+                        **{
+                            'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
+                                  'filepath,documenttype,date,est_publie,date_de_publication,documenttype',
+                            'start': start,
+                            'rows': rows,
+                            'fq': 'date:[' + ANNEE + '-01-01T00:00:00Z TO ' + ANNEE + '-12-31T23:59:59Z]'
+                        })
+
+    # Ecriture du fichier scdl
+    header = "COLL_NOM;COLL_SIRET;DELIB_ID;DELIB_DATE;DELIB_MATIERE_CODE;DELIB_MATIERE_NOM;DELIB_OBJET;BUDGET_ANNEE;BUDGET_NOM;PREF_ID;PREF_DATE;VOTE_EFFECTIF;VOTE_REEL;VOTE_POUR;VOTE_CONTRE;VOTE_ABSTENTION;DELIB_URL;PUBLICATION_DATE;NATURE_ACTE"
+    f = open(csv_file_path, 'w')
+    f.write(header + '\n')
+    for ligne in lignes:
+        try:
+            f.write(ligne)
+        except Exception:
+            logging.exception("on ignore la ligne" + ligne)
+    f.close()
+    return filename
+
+
+
 def generation_deliberation(siren, annee, flag_active=None):
     # on clear le workdir
     clear_wordir()
