@@ -108,7 +108,7 @@ def generation_acte(siren, annee):
     # connexion solr
     solr = solr_connexion()
     start = 0
-    rows = 100
+    rows = 500
 
     # construction de la requete solr
     query = '-typology: PJ AND est_publie: true'
@@ -202,7 +202,7 @@ def generation_deliberation(siren, annee, flag_active=None):
     solr = solr_connexion()
 
     start = 0
-    rows = 100
+    rows = 500
 
     # construction de la requete solr
     query = 'typology: 99_DE AND documenttype:' + str(TYPE)
