@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 import urllib
 from zipfile import ZipFile
 from sqlalchemy.exc import NoResultFound, MultipleResultsFound, IntegrityError
@@ -444,6 +444,9 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     # partie métadata (issu du fichier metadata.json de pastell)
     data["literal.date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
     now = datetime.now()  # current date and time
+    # on ajoute 10s à la date_de_publication des PJ pour pouvoir utiliser ce critère pour le tri
+    if typology == "PJ":
+        now = now + timedelta(seconds=10)
     data["literal.date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     data["literal.description"] = publication.objet
     data["literal.documentidentifier"] = publication.numero_de_lacte
