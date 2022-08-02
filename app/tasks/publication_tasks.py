@@ -45,11 +45,10 @@ def creation_publication_task(zip_path):
         metadataPastell = MetadataPastell(metadata)
 
     except Exception as e:
-        print(e)
         strDate = datetime.now().strftime('%Y-%m-%d-%H%M%S')
         shutil.move(WORKDIR + 'objet.zip',
                     current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_' + strDate + '.zip')
-        return {'status': 'KO', 'message': 'Metada incomplete', 'Erreur': print(e)}
+        raise e
 
     try:
         # init publication table
@@ -57,8 +56,9 @@ def creation_publication_task(zip_path):
     except Exception as e:
         strDate = datetime.now().strftime('%Y-%m-%d-%H%M%S')
         shutil.move(WORKDIR + 'objet.zip',
-                    current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_' + strDate + '.zip')
-        return {'status': 'KO', 'message': 'erreur_init_publication', 'Erreur': print(e)}
+                    current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_'+metadataPastell.siren+'_' + strDate + '.zip')
+        raise e
+
 
     # check and init parametrage
 
