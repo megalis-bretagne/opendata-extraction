@@ -522,7 +522,7 @@ def init_publication(metadataPastell):
         hash = get_hash(path)
 
         newDoc = Acte(
-            name=acte_tamponne,
+            name=acte_tamponne.encode('latin-1','ignore').decode('latin-1', 'ignore'),
             publication_id=newPublication.id,
             url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
             path=dossier_publication + hash + format,
@@ -540,7 +540,7 @@ def init_publication(metadataPastell):
             format = str('.' + arrete.split(".")[-1])
             hash = get_hash(path)
             newDoc = Acte(
-                name=arrete,
+                name=arrete.encode('latin-1','ignore').decode('latin-1', 'ignore'),
                 publication_id=newPublication.id,
                 url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
                 path=dossier_publication + hash + format,
@@ -559,7 +559,7 @@ def init_publication(metadataPastell):
                 hash = get_hash(path)
 
                 newPj = PieceJointe(
-                    name=pj,
+                    name=pj.encode('latin-1','ignore').decode('latin-1', 'ignore'),
                     url=current_app.config[
                             'URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
                     path=dossier_publication + hash + format,
