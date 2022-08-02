@@ -443,11 +443,14 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     data["literal.date_budget"] = publication.date_budget
     # partie métadata (issu du fichier metadata.json de pastell)
     data["literal.date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
-    now = publication.date_publication  # current date and time
-    # on ajoute 10s à la date_de_publication des PJ pour pouvoir utiliser ce critère pour le tri
-    if typology == "PJ":
-        now = now + timedelta(seconds=10)
-    data["literal.date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    date_publication = publication.date_publication
+    if publication.date_publication is not None:
+        # on ajoute 10s à la date_de_publication des PJ pour pouvoir utiliser ce critère pour le tri
+        if typology == "PJ":
+            date_publication = date_publication + timedelta(seconds=10)
+        data["literal.date_de_publication"] = date_publication.strftime("%Y-%m-%dT%H:%M:%SZ")
+
     data["literal.description"] = publication.objet
     data["literal.documentidentifier"] = publication.numero_de_lacte
     data["literal.documenttype"] = publication.acte_nature
