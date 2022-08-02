@@ -122,8 +122,7 @@ def modifier_acte_task(idPublication):
             return {'status': 'OK', 'message': 'modification acte réalisée',
                     'publication id': publication.id}
     except Exception as e:
-        return {'status': 'KO', 'message': 'Probleme accès à solr',
-                'publication id': publication.id}
+        raise e
 
     return {'status': 'OK', 'message': 'Aucun document solr à modifier',
             'publication id': publication.id}
@@ -163,8 +162,7 @@ def publier_acte_task(idPublication, reindexationSolr=False):
         publication.etat = 3
         publication.modified_at = datetime.now()
         db_sess.commit()
-        return {'status': 'KO', 'message': 'pas de document dans solr',
-                'publication id': publication.id}
+        raise e
 
     # Mise à jour de la publication
     if not reindexationSolr:
