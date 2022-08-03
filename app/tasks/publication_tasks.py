@@ -521,7 +521,8 @@ def init_publication(metadataPastell):
         path = WORKDIR + acte_tamponne
         format = str('.' + acte_tamponne.split(".")[-1])
         hash = get_hash(path)
-
+        #encode('latin-1','ignore').decode('latin-1', 'ignore')
+        #pour ne pas faire planter la bdd qui est encodée en latin-1
         newDoc = Acte(
             name=acte_tamponne.encode('latin-1','ignore').decode('latin-1', 'ignore'),
             publication_id=newPublication.id,
@@ -540,6 +541,8 @@ def init_publication(metadataPastell):
             path = WORKDIR + arrete
             format = str('.' + arrete.split(".")[-1])
             hash = get_hash(path)
+            # encode('latin-1','ignore').decode('latin-1', 'ignore')
+            # pour ne pas faire planter la bdd qui est encodée en latin-1
             newDoc = Acte(
                 name=arrete.encode('latin-1','ignore').decode('latin-1', 'ignore'),
                 publication_id=newPublication.id,
@@ -558,7 +561,8 @@ def init_publication(metadataPastell):
                 path = WORKDIR + pj
                 format = str('.' + pj.split(".")[-1])
                 hash = get_hash(path)
-
+                # encode('latin-1','ignore').decode('latin-1', 'ignore')
+                # pour ne pas faire planter la bdd qui est encodée en latin-1
                 newPj = PieceJointe(
                     name=pj.encode('latin-1','ignore').decode('latin-1', 'ignore'),
                     url=current_app.config[
