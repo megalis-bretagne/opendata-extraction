@@ -1,23 +1,16 @@
-import logging
-from datetime import datetime, timedelta
+from datetime import timedelta
 import urllib
 from zipfile import ZipFile
-from sqlalchemy.exc import NoResultFound, MultipleResultsFound, IntegrityError
-from web3 import Web3
-from web3.middleware import geth_poa_middleware
-
-from app import celeryapp
+from sqlalchemy.exc import IntegrityError
 from app import celeryapp
 import json
 from app.models.parametrage_model import Parametrage
 from app.tasks.utils import *
-import hashlib
 from app import db
 from app.models.publication_model import Publication, Acte, PieceJointe
 from lxml import etree
 
 celery = celeryapp.celery
-
 
 # TASKS
 @celery.task(name='creation_publication_task')
@@ -186,6 +179,9 @@ def publier_acte_task(idPublication, reindexationSolr=False):
 
 @celery.task(name='publier_blockchain_task')
 def publier_blockchain_task(idPublication):
+    from web3 import Web3
+    from web3.middleware import geth_poa_middleware
+
     contract_address = current_app.config['CONTRACT_ADDRESS']
 
     account_from = {
