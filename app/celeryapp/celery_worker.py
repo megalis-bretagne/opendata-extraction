@@ -6,6 +6,7 @@ python celery -A app.celeryapp.celery_worker.celery worker --pool=solo --logleve
 """
 from app import celeryapp, create_app
 
+
 app = create_app(oidcEnable=False)
 celery = celeryapp.create_celery_app(app)
 celeryapp.celery = celery

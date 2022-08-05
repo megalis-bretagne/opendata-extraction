@@ -1,23 +1,16 @@
-import logging
-from datetime import datetime, timedelta
+from datetime import timedelta
 import urllib
 from zipfile import ZipFile
-from sqlalchemy.exc import NoResultFound, MultipleResultsFound, IntegrityError
-from web3 import Web3
-from web3.middleware import geth_poa_middleware
-
-from app import celeryapp
+from sqlalchemy.exc import IntegrityError
 from app import celeryapp
 import json
 from app.models.parametrage_model import Parametrage
 from app.tasks.utils import *
-import hashlib
 from app import db
 from app.models.publication_model import Publication, Acte, PieceJointe
 from lxml import etree
 
 celery = celeryapp.celery
-
 
 # TASKS
 @celery.task(name='creation_publication_task')
@@ -45,11 +38,10 @@ def creation_publication_task(zip_path):
         metadataPastell = MetadataPastell(metadata)
 
     except Exception as e:
-        print(e)
         strDate = datetime.now().strftime('%Y-%m-%d-%H%M%S')
         shutil.move(WORKDIR + 'objet.zip',
                     current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_' + strDate + '.zip')
-        return {'status': 'KO', 'message': 'Metada incomplete', 'Erreur': print(e)}
+        raise e
 
     try:
         # init publication table
@@ -57,8 +49,9 @@ def creation_publication_task(zip_path):
     except Exception as e:
         strDate = datetime.now().strftime('%Y-%m-%d-%H%M%S')
         shutil.move(WORKDIR + 'objet.zip',
-                    current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_' + strDate + '.zip')
-        return {'status': 'KO', 'message': 'erreur_init_publication', 'Erreur': print(e)}
+                    current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_'+metadataPastell.siren+'_' + strDate + '.zip')
+        raise e
+
 
     # check and init parametrage
 
@@ -122,8 +115,7 @@ def modifier_acte_task(idPublication):
             return {'status': 'OK', 'message': 'modification acte réalisée',
                     'publication id': publication.id}
     except Exception as e:
-        return {'status': 'KO', 'message': 'Probleme accès à solr',
-                'publication id': publication.id}
+        raise e
 
     return {'status': 'OK', 'message': 'Aucun document solr à modifier',
             'publication id': publication.id}
@@ -163,8 +155,7 @@ def publier_acte_task(idPublication, reindexationSolr=False):
         publication.etat = 3
         publication.modified_at = datetime.now()
         db_sess.commit()
-        return {'status': 'KO', 'message': 'pas de document dans solr',
-                'publication id': publication.id}
+        raise e
 
     # Mise à jour de la publication
     if not reindexationSolr:
@@ -188,6 +179,9 @@ def publier_acte_task(idPublication, reindexationSolr=False):
 
 @celery.task(name='publier_blockchain_task')
 def publier_blockchain_task(idPublication):
+    from web3 import Web3
+    from web3.middleware import geth_poa_middleware
+
     contract_address = current_app.config['CONTRACT_ADDRESS']
 
     account_from = {
@@ -443,11 +437,14 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     data["literal.date_budget"] = publication.date_budget
     # partie métadata (issu du fichier metadata.json de pastell)
     data["literal.date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
-    now = datetime.now()  # current date and time
-    # on ajoute 10s à la date_de_publication des PJ pour pouvoir utiliser ce critère pour le tri
-    if typology == "PJ":
-        now = now + timedelta(seconds=10)
-    data["literal.date_de_publication"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    date_publication = publication.date_publication
+    if publication.date_publication is not None:
+        # on ajoute 10s à la date_de_publication des PJ pour pouvoir utiliser ce critère pour le tri
+        if typology == "PJ":
+            date_publication = date_publication + timedelta(seconds=10)
+        data["literal.date_de_publication"] = date_publication.strftime("%Y-%m-%dT%H:%M:%SZ")
+
     data["literal.description"] = publication.objet
     data["literal.documentidentifier"] = publication.numero_de_lacte
     data["literal.documenttype"] = publication.acte_nature
@@ -520,9 +517,10 @@ def init_publication(metadataPastell):
         path = WORKDIR + acte_tamponne
         format = str('.' + acte_tamponne.split(".")[-1])
         hash = get_hash(path)
-
+        #encode('latin-1','ignore').decode('latin-1', 'ignore')
+        #pour ne pas faire planter la bdd qui est encodée en latin-1
         newDoc = Acte(
-            name=acte_tamponne,
+            name=acte_tamponne.encode('latin-1','ignore').decode('latin-1', 'ignore'),
             publication_id=newPublication.id,
             url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
             path=dossier_publication + hash + format,
@@ -539,8 +537,10 @@ def init_publication(metadataPastell):
             path = WORKDIR + arrete
             format = str('.' + arrete.split(".")[-1])
             hash = get_hash(path)
+            # encode('latin-1','ignore').decode('latin-1', 'ignore')
+            # pour ne pas faire planter la bdd qui est encodée en latin-1
             newDoc = Acte(
-                name=arrete,
+                name=arrete.encode('latin-1','ignore').decode('latin-1', 'ignore'),
                 publication_id=newPublication.id,
                 url=current_app.config['URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
                 path=dossier_publication + hash + format,
@@ -557,9 +557,10 @@ def init_publication(metadataPastell):
                 path = WORKDIR + pj
                 format = str('.' + pj.split(".")[-1])
                 hash = get_hash(path)
-
+                # encode('latin-1','ignore').decode('latin-1', 'ignore')
+                # pour ne pas faire planter la bdd qui est encodée en latin-1
                 newPj = PieceJointe(
-                    name=pj,
+                    name=pj.encode('latin-1','ignore').decode('latin-1', 'ignore'),
                     url=current_app.config[
                             'URL_PUBLICATION'] + urlPub + '/' + annee + '/' + hash + format,
                     path=dossier_publication + hash + format,
