@@ -8,6 +8,7 @@ from app.controller.AdminCtrl import api as adminApi
 from app.controller.DecpApi import api as decpApi
 from app.controller.ScdlApi import api as scdlApi
 from app.controller.StatsApi import api as statsApi
+from app.controller.BudgetMarqueBlancheApi import api as budgetMarqueBlancheApi
 
 # Fix of returning swagger.json on HTTP
 @property
@@ -33,3 +34,4 @@ api.add_namespace(publicationApi)
 api.add_namespace(parametrageApi)
 api.add_namespace(adminApi)
 api.add_namespace(statsApi)
+api.add_namespace(budgetMarqueBlancheApi)
