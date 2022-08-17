@@ -12,8 +12,6 @@ redis==3.5.3
 Flask-Migrate==3.0.1
 Flask-Script==2.0.6
 Flask-SQLAlchemy==2.5.1
-pytest==6.2.4
-pytest-cov==2.12.1
 attrs==21.2.0
 feedparser==6.0.2
 requests==2.25.1
