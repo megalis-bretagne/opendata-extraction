@@ -36,3 +36,4 @@ api-insee==1.5
 lxml==4.9.1
 odfpy==1.4.1
 web3==5.29.2
+pygelf==0.4.2

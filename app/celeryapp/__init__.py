@@ -8,6 +8,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 #from flask_debugtoolbar import DebugToolbarExtension
 
+from app.shared.logger_utils import create_or_get_gelf_loghandler
+
 CELERY_TASK_LIST = [
     'app.tasks',
 ]
@@ -110,3 +112,7 @@ def setup_loggers(logger, *args, **kwargs):
     FMI: https://www.distributedpython.com/2018/10/01/celery-docker-startup/
     """
     logger.addHandler(logging.StreamHandler(sys.stdout))
+
+    gelf_log_handler = create_or_get_gelf_loghandler()
+    if gelf_log_handler:
+        logger.addHandler(gelf_log_handler)

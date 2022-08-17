@@ -1,5 +1,7 @@
 # __init__.py is a special Python file that allows a directory to become
 # a Python package so it can be accessed using the 'import' statement.
+import logging
+
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -15,9 +17,17 @@ oidc = OpenIDConnect()
 from app import celeryapp
 from app.controller import api
 
+from app.shared.logger_utils import create_or_get_gelf_loghandler
+
 def create_app(extra_config_settings={},oidcEnable=True):
     """Create a Flask application.
     """
+
+    # Logging
+    gelf_log_handler = create_or_get_gelf_loghandler()
+    if gelf_log_handler:
+        logging.getLogger().addHandler(gelf_log_handler)
+
     # Instantiate Flask
     app = Flask(__name__)
 
