@@ -1,0 +1,1380 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="http://odm-budgetaire.org/xsl/planCompte.xsl"?>
+<!--    Copyright
+    2010 axYus - http://www.axyus.com
+
+    This file is part of ODM print-comp.
+
+    ODM print-comp is free software; you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+    ODM print-comp is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with ODM print-comp; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA-->
+<Nomenclature Norme="M14" Declinaison="M14_CCAS_INF3500" Exer="2022">
+  <Nature>
+    <Chapitres>
+      <Chapitre Code="002" Libelle="Résultat de fonctionnement reporté" Lib_court="Résultat de fonctionnement reporté" TypeChapitre="L" Section="F" Special="0"/>
+      <Chapitre Code="011" Libelle="Charges à caractère général" Lib_court="Charges à caractère général" TypeChapitre="G" Section="F" Special="0"/>
+      <Chapitre Code="012" Libelle="Charges de personnel et frais assimilés" Lib_court="Charges de personnel, frais assimilés" TypeChapitre="G" Section="F" Special="0"/>
+      <Chapitre Code="013" Libelle="Atténuations de charges" Lib_court="Atténuations de charges" TypeChapitre="G" Section="F" Special="0"/>
+      <Chapitre Code="014" Libelle="Atténuations de produits" Lib_court="Atténuations de produits" TypeChapitre="G" Section="F" Special="0" PourEtatSeul="1"/>
+      <Chapitre Code="022" Libelle="Dépenses imprévues" Lib_court="Dépenses imprévues" TypeChapitre="L" Section="F" Special="0"/>
+      <Chapitre Code="023" Libelle="Virement à la section d'investissement" Lib_court="Virement à la section d'investissement" TypeChapitre="L" Section="F" Special="0"/>
+      <Chapitre Code="042" Libelle="Opérations d'ordre de transfert entre sections" Lib_court="Opérat° ordre transfert entre sections" TypeChapitre="G" Section="F" Special="0"/>
+      <Chapitre Code="043" Libelle="Opérations d'ordre à l'intérieur de la section de fonctionnement" Lib_court="Opérat° ordre intérieur de la section" TypeChapitre="G" Section="F" Special="0"/>
+      <Chapitre Code="65" Libelle="Autres charges de gestion courante" Lib_court="Autres charges de gestion courante" TypeChapitre="C" Section="F" Special="0"/>
+      <Chapitre Code="656" Libelle="Frais de fonctionnement des groupes d'élus" Lib_court="Frais de fonctionnement des groupes d'él" TypeChapitre="C" Section="F" Special="0" PourEtatSeul="1"/>
+      <Chapitre Code="66" Libelle="Charges financières" Lib_court="Charges financières" TypeChapitre="C" Section="F" Special="0"/>
+      <Chapitre Code="67" Libelle="Charges exceptionnelles" Lib_court="Charges exceptionnelles" TypeChapitre="C" Section="F" Special="0"/>
+      <Chapitre Code="68" Libelle="Dotations aux provisions semi-budgétaires" Lib_court="Dotations provisions semi-budgétaires" TypeChapitre="C" Section="F" Special="0"/>
+      <Chapitre Code="70" Libelle="Produits des services, du domaine et ventes diverses" Lib_court="Produits services, domaine et ventes div" TypeChapitre="C" Section="F" Special="0"/>
+      <Chapitre Code="73" Libelle="Impôts et taxes" Lib_court="Impôts et taxes" TypeChapitre="C" Section="F" Special="0"/>
+      <Chapitre Code="74" Libelle="Dotations et participations" Lib_court="Dotations et participations" TypeChapitre="C" Section="F" Special="0"/>
+      <Chapitre Code="75" Libelle="Autres produits de gestion courante" Lib_court="Autres produits de gestion courante" TypeChapitre="C" Section="F" Special="0"/>
+      <Chapitre Code="76" Libelle="Produits financiers" Lib_court="Produits financiers" TypeChapitre="C" Section="F" Special="0"/>
+      <Chapitre Code="77" Libelle="Produits exceptionnels" Lib_court="Produits exceptionnels" TypeChapitre="C" Section="F" Special="0"/>
+      <Chapitre Code="78" Libelle="Reprises sur provisions semi-budgétaires" Lib_court="Reprises provisions semi-budgétaires" TypeChapitre="C" Section="F" Special="0"/>
+      <Chapitre Code="001" Libelle="Solde d'exécution de la section d'investissement reporté" Lib_court="Solde exécution invest. reporté" TypeChapitre="L" Section="I" Special="0"/>
+      <Chapitre Code="010" Libelle="Stocks" Lib_court="Stocks" TypeChapitre="G" Section="I" Special="0"/>
+      <Chapitre Code="020" Libelle="Dépenses imprévues" Lib_court="Dépenses imprévues" TypeChapitre="L" Section="I" Special="0"/>
+      <Chapitre Code="021" Libelle="Virement de la section de fonctionnement" Lib_court="Virement de la sect° de fonctionnement" TypeChapitre="L" Section="I" Special="0"/>
+      <Chapitre Code="024" Libelle="Produits des cessions d'immobilisations" Lib_court="Produits des cessions d'immo." TypeChapitre="L" Section="I" Special="0"/>
+      <Chapitre Code="040" Libelle="Opérations d'ordre de transfert entre sections" Lib_court="Opérat° ordre transfert entre sections" TypeChapitre="G" Section="I" Special="0"/>
+      <Chapitre Code="041" Libelle="Opérations patrimoniales" Lib_court="Opérations patrimoniales" TypeChapitre="G" Section="I" Special="0"/>
+      <Chapitre Code="10" Libelle="Dotations, fonds divers et réserves" Lib_court="Dotations, fonds divers et réserves" TypeChapitre="C" Section="I" Special="0"/>
+      <Chapitre Code="13" Libelle="Subventions d'investissement" Lib_court="Subventions d'investissement" TypeChapitre="C" Section="I" Special="0"/>
+      <Chapitre Code="16" Libelle="Emprunts et dettes assimilées" Lib_court="Emprunts et dettes assimilées" TypeChapitre="C" Section="I" Special="0"/>
+      <Chapitre Code="18" Libelle="Compte de liaison : affectation (budgets annexes - régies non personnalisées)" Lib_court="Compte de liaison : affectat° BA" TypeChapitre="C" Section="I" Special="0"/>
+      <Chapitre Code="20" Libelle="Immobilisations incorporelles" Lib_court="Immobilisations incorporelles" TypeChapitre="C" Section="I" Special="0"/>
+      <Chapitre Code="204" Libelle="Subventions d'équipement versées" Lib_court="Subventions d'équipement versées" TypeChapitre="C" Section="I" Special="0"/>
+      <Chapitre Code="21" Libelle="Immobilisations corporelles" Lib_court="Immobilisations corporelles" TypeChapitre="C" Section="I" Special="0"/>
+      <Chapitre Code="22" Libelle="Immobilisations reçues en affectation" Lib_court="Immobilisations reçues en affectation" TypeChapitre="C" Section="I" Special="0"/>
+      <Chapitre Code="23" Libelle="Immobilisations en cours" Lib_court="Immobilisations en cours" TypeChapitre="C" Section="I" Special="0"/>
+      <Chapitre Code="26" Libelle="Participations et créances rattachées à des participations" Lib_court="Participat° et créances rattachées" TypeChapitre="C" Section="I" Special="0"/>
+      <Chapitre Code="27" Libelle="Autres immobilisations financières" Lib_court="Autres immobilisations financières" TypeChapitre="C" Section="I" Special="0"/>
+    </Chapitres>
+    <Comptes>
+      <Compte Code="001" Libelle="Solde d'exécution de la section d'investissement reporté" Lib_court="Solde d'exécution sect° d'investissement" DEquip="0" DR="001" DOES="" DOIS="" REquip="0" RR="001" ROES="" ROIS=""/>
+      <Compte Code="002" Libelle="Résultat de fonctionnement reporté" Lib_court="Résultat de fonctionnement reporté" DEquip="0" DR="002" DOES="" DOIS="" REquip="0" RR="002" ROES="" ROIS=""/>
+      <Compte Code="020" Libelle="Dépenses imprévues" Lib_court="Dépenses imprévues" DEquip="0" DR="020" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      <Compte Code="021" Libelle="Virement de la section de fonctionnement" Lib_court="Virement de la section de fonctionnement" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="021" ROIS=""/>
+      <Compte Code="022" Libelle="Dépenses imprévues" Lib_court="Dépenses imprévues" DEquip="0" DR="022" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      <Compte Code="023" Libelle="Virement à la section d'investissement" Lib_court="Virement à la section d'investissement" DEquip="0" DR="" DOES="023" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      <Compte Code="024" Libelle="Produits des cessions d'immobilisations" Lib_court="Produits des cessions d'immobilisations" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="024" ROES="" ROIS=""/>
+      <Compte Code="10" Libelle="Dotations, fonds divers et réserves" Lib_court="Dotations, fonds divers et réserves" RegrTotalise="1">
+        <Compte Code="102" Libelle="Dotations et fonds d'investissement" Lib_court="Dotations et fonds d'investissement">
+          <Compte Code="1021" Libelle="Dotation" Lib_court="Dotation" DEquip="0" DR="10" DOES="040" DOIS="041" REquip="0" RR="10" ROES="040" ROIS="041"/>
+          <Compte Code="1022" Libelle="Fonds d'investissement" Lib_court="Fonds d'investissement">
+            <Compte Code="10222" Libelle="FCTVA" Lib_court="FCTVA" DEquip="0" DR="10" DOES="" DOIS="" REquip="0" RR="10" ROES="" ROIS=""/>
+            <Compte Code="10228" Libelle="Autres fonds" Lib_court="Autres fonds" DEquip="0" DR="10" DOES="" DOIS="" REquip="0" RR="10" ROES="" ROIS=""/>
+            <Compte Code="10229" Libelle="Reprise sur FCTVA" Lib_court="Reprise sur FCTVA" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="1025" Libelle="Dons et legs en capital" Lib_court="Dons et legs en capital">
+            <Compte Code="10251" Libelle="Dons et legs en capital" Lib_court="Dons et legs en capital" DEquip="0" DR="10" DOES="" DOIS="041" REquip="0" RR="10" ROES="" ROIS="041"/>
+            <Compte Code="10259" Libelle="Reprise sur dons et legs en capital" Lib_court="Reprise sur dons et legs en capital" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="1027" Libelle="Mise à disposition (chez le bénéficiaire)" Lib_court="Mise à disposit° (chez le bénéficiaire)" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="103" Libelle="Plan de relance FCTVA" Lib_court="Plan de relance FCTVA" DEquip="0" DR="10" DOES="" DOIS="" REquip="0" RR="10" ROES="" ROIS="" Supprime="1" SupprimeDepuis="2021-11-25T14:00:00"/>
+        <Compte Code="106" Libelle="Réserves" Lib_court="Réserves">
+          <Compte Code="1068" Libelle="Excédents de fonctionnement capitalisés" Lib_court="Excédents de fonctionnement capitalisés" DEquip="0" DR="10" DOES="040" DOIS="041" REquip="0" RR="10" ROES="040" ROIS="041"/>
+          <Compte Code="1069" Libelle="Reprise 1997 sur les excédents capitalisés - Neutralisation de l'excédent des charges sur les produits" Lib_court="Reprise 1997 sur excédents capitalisés" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="11" Libelle="Report à nouveau (solde créditeur ou débiteur)" Lib_court="Report à nouveau">
+        <Compte Code="110" Libelle="Report à nouveau (solde créditeur)" Lib_court="Report à nouveau (solde créditeur)" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="119" Libelle="Report à nouveau (solde débiteur)" Lib_court="Report à nouveau (solde débiteur)" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="12" Libelle="Résultat de l'exercice (excédentaire ou déficitaire)" Lib_court="Résultat de l'exercice" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      <Compte Code="13" Libelle="Subventions d'investissement" Lib_court="Subventions d'investissement" RegrTotalise="1">
+        <Compte Code="131" Libelle="Subventions d'investissement rattachées aux actifs amortissables" Lib_court="Subv inv rattachées aux actifs amort">
+          <Compte Code="1311" Libelle="Etat et établissements nationaux" Lib_court="Subv. transf. Etat et établ. Nationaux" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1312" Libelle="Régions" Lib_court="Subv. transf. Régions" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1313" Libelle="Départements" Lib_court="Subv. transf. Départements" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1314" Libelle="Communes" Lib_court="Subv. transf. Communes" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1315" Libelle="Groupements de collectivités et collectivités à statut particulier" Lib_court="Group. coll et coll. statut particulier" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1316" Libelle="Autres établissements publics locaux" Lib_court="Subv. transf. Autres E.P.L." DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1317" Libelle="Budget communautaire et fonds structurels" Lib_court="Subv. transf. Budget communautaire, FS" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1318" Libelle="Autres" Lib_court="Autres subventions d'équipement transf." DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+        </Compte>
+        <Compte Code="132" Libelle="Subventions d'investissement rattachées aux actifs non amortissables" Lib_court="Subv inv rattachées aux actifs non amort">
+          <Compte Code="1321" Libelle="Etat et établissements nationaux" Lib_court="Subv. non transf. Etat, établ. nationaux" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1322" Libelle="Régions" Lib_court="Subv. non transf. Régions" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1323" Libelle="Départements" Lib_court="Subv. non transf. Départements" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1324" Libelle="Communes" Lib_court="Subv. non transf. Communes" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1325" Libelle="Groupements de collectivités et collectivités à statut particulier" Lib_court="Group. coll et coll. statut particulier" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1326" Libelle="Autres établissements publics locaux" Lib_court="Subv. non transf. Autres E.P.L." DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1327" Libelle="Budget communautaire et fonds structurels" Lib_court="Subv. non transf. Budget communautaire" DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+          <Compte Code="1328" Libelle="Autres" Lib_court="Autres subventions d'équip. non transf." DEquip="0" DR="13" DOES="" DOIS="041" REquip="1" RR="13" ROES="" ROIS="041"/>
+        </Compte>
+        <Compte Code="138" Libelle="Autres subventions d'investissement non transférables" Lib_court="Autres subvent° invest. non transf." RegrTotalise="1">
+          <Compte Code="1381" Libelle="Etat et établissements nationaux" Lib_court="Subv non transf Etat, établ. nationaux" DEquip="0" DR="13" DOES="" DOIS="" REquip="0" RR="13" ROES="" ROIS=""/>
+          <Compte Code="1382" Libelle="Régions" Lib_court="Subv non transf Régions" DEquip="0" DR="13" DOES="" DOIS="" REquip="0" RR="13" ROES="" ROIS=""/>
+          <Compte Code="1383" Libelle="Départements" Lib_court="Subv non transf Départements" DEquip="0" DR="13" DOES="" DOIS="" REquip="0" RR="13" ROES="" ROIS=""/>
+          <Compte Code="1384" Libelle="Communes" Lib_court="Subv non transf. Communes" DEquip="0" DR="13" DOES="" DOIS="" REquip="0" RR="13" ROES="" ROIS=""/>
+          <Compte Code="1385" Libelle="Groupements de collectivités et collectivités à statut particulier" Lib_court="Group. coll et coll. statut particulier" DEquip="0" DR="13" DOES="" DOIS="" REquip="0" RR="13" ROES="" ROIS=""/>
+          <Compte Code="1386" Libelle="Autres établissements publics locaux" Lib_court="Subv non transf. Autres EPL" DEquip="0" DR="13" DOES="" DOIS="" REquip="0" RR="13" ROES="" ROIS=""/>
+          <Compte Code="1387" Libelle="Budget communautaire et fonds structurels" Lib_court="Subv non transf. Budget communautaire FS" DEquip="0" DR="13" DOES="" DOIS="" REquip="0" RR="13" ROES="" ROIS=""/>
+          <Compte Code="1388" Libelle="Autres" Lib_court="Autres subventions non transférables" DEquip="0" DR="13" DOES="" DOIS="" REquip="0" RR="13" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="139" Libelle="Subventions d'investissement transférées au compte de résultat" Lib_court="Subv. invest. transférées cpte résultat" RegrTotalise="1">
+          <Compte Code="1391" Libelle="Subventions d'investissement rattachées aux actifs amortissables" Lib_court="Subv inv rattachées aux actifs amort">
+            <Compte Code="13911" Libelle="Etat et établissements nationaux" Lib_court="Etat et établissements nationaux" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="13912" Libelle="Régions" Lib_court="Sub. transf cpte résult. Régions" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="13913" Libelle="Départements" Lib_court="Sub. transf cpte résult. Départements" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="13914" Libelle="Communes" Lib_court="Sub. transf cpte résult. Communes" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="13915" Libelle="Groupements de collectivités" Lib_court="Groupements de collectivités" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="13916" Libelle="Autres établissements publics locaux" Lib_court="Sub. transf cpte résult. Autres EPL" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="13917" Libelle="Budget communautaire et fonds structurels" Lib_court="Sub. transf cpte résult.Budget communaut" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="13918" Libelle="Autres" Lib_court="Autres subventions d'équipement" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+        </Compte>
+      </Compte>
+      <Compte Code="15" Libelle="Provisions pour risques et charges" Lib_court="Provisions pour risques et charges" RegrTotalise="1">
+        <Compte Code="151" Libelle="Provisions pour risques" Lib_court="Provisions pour risques">
+          <Compte Code="1511" Libelle="Provisions pour litiges" Lib_court="Provisions pour litiges">
+            <Compte Code="15111" Libelle="Provisions pour litiges" Lib_court="Provisions pour litiges" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="15112" Libelle="Provisions pour litiges" Lib_court="Provisions pour litiges" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="1515" Libelle="Provision pour pertes de change" Lib_court="Provisions pour pertes de change">
+            <Compte Code="15151" Libelle="Provision pour pertes de change" Lib_court="Provisions pour pertes de change" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="15152" Libelle="Provision pour pertes de change" Lib_court="Provisions pour pertes de change" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="1517" Libelle="Provision pour garanties d'emprunt" Lib_court="Provisions pour garanties d'emprunt">
+            <Compte Code="15171" Libelle="Provision pour garanties d'emprunt" Lib_court="Provisions pour garanties d'emprunt" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="15172" Libelle="Provision pour garanties d'emprunt" Lib_court="Provisions pour garanties d'emprunt" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="1518" Libelle="Autres provisions pour risques" Lib_court="Autres provisions pour risques">
+            <Compte Code="15181" Libelle="Autres provisions pour risques" Lib_court="Autres provisions pour risques" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="15182" Libelle="Autres provisions pour risques" Lib_court="Autres provisions pour risques" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="152" Libelle="Provisions pour risques et charges sur emprunts" Lib_court="Prov. risques et charges sur emprunts">
+          <Compte Code="1521" Libelle="Provisions pour risques et charges sur emprunts" Lib_court="Prov. risques et charges sur emprunts" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="1522" Libelle="Provisions pour risques et charges sur emprunts" Lib_court="Prov. risques et charges sur emprunts" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+        </Compte>
+        <Compte Code="157" Libelle="Provisions pour charges à répartir sur plusieurs exercices" Lib_court="Provisions pour charges à répartir">
+          <Compte Code="1572" Libelle="Provision pour grosses réparations" Lib_court="Provisions pour grosses réparations">
+            <Compte Code="15721" Libelle="Provision pour grosses réparations" Lib_court="Provisions pour grosses réparations" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="15722" Libelle="Provision pour grosses réparations" Lib_court="Provisions pour grosses réparations" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="158" Libelle="Autres provisions pour charges" Lib_court="Autres provisions pour charges">
+          <Compte Code="1581" Libelle="Autres provisions pour charges" Lib_court="Autres provisions pour charges" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="1582" Libelle="Autres provisions pour charges" Lib_court="Autres provisions pour charges" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="16" Libelle="Emprunts et dettes assimilées" Lib_court="Emprunts et dettes assimilées" RegrTotalise="1">
+        <Compte Code="163" Libelle="Emprunts obligataires" Lib_court="Emprunts obligataires" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+        <Compte Code="164" Libelle="Emprunts auprès des établissements financiers" Lib_court="Emprunts auprès des éts. financiers">
+          <Compte Code="1641" Libelle="Emprunts en euros" Lib_court="Emprunts en euros" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+          <Compte Code="1643" Libelle="Emprunts en devises" Lib_court="Emprunts en devises" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+          <Compte Code="1644" Libelle="Emprunts assortis d'une option de tirage sur ligne trésorerie" Lib_court="Emprunts assortis d'une option de tirage">
+            <Compte Code="16441" Libelle="Opérations afférentes à l'emprunt" Lib_court="Opérat° afférentes à l'emprunt" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+            <Compte Code="16449" Libelle="Opérations afférentes à l'option de tirage sur ligne de trésorerie" Lib_court="Opérat° de tirage sur ligne trésorerie" DEquip="0" DR="16" DOES="" DOIS="041" REquip="1" RR="16" ROES="" ROIS="041"/>
+          </Compte>
+          <Compte Code="1645" Libelle="Remboursements temporaires sur emprunts auprès des établissements financiers" Lib_court="Remb temp / empr auprès éts financiers">
+            <Compte Code="16451" Libelle="Remboursements temporaires sur emprunts en euros" Lib_court="Remb. temporaires emprunts en euros" DEquip="0" DR="16" DOES="" DOIS="041" REquip="1" RR="16" ROES="" ROIS="041"/>
+            <Compte Code="16452" Libelle="Remboursements temporaires sur emprunts en devises" Lib_court="Remb. temporaires emprunts en devises" DEquip="0" DR="16" DOES="" DOIS="041" REquip="1" RR="16" ROES="" ROIS="041"/>
+          </Compte>
+        </Compte>
+        <Compte Code="165" Libelle="Dépôts et cautionnements reçus" Lib_court="Dépôts et cautionnements reçus" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="0" RR="16" ROES="040" ROIS="041"/>
+        <Compte Code="166" Libelle="Refinancement de dette" Lib_court="Refinancement de dette" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="0" RR="16" ROES="040" ROIS="041"/>
+        <Compte Code="167" Libelle="Emprunts et dettes assorties de conditions particulières" Lib_court="Emprunts et dettes condit° particulières">
+          <Compte Code="1671" Libelle="Avances consolidées du Trésor" Lib_court="Avances consolidées du Trésor" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+          <Compte Code="1672" Libelle="Emprunts sur comptes spéciaux du Trésor" Lib_court="Emprunts sur comptes spéciaux du Trésor" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+          <Compte Code="1676" Libelle="Dettes envers locataires - acquéreurs" Lib_court="Dettes envers locataires - acquéreurs" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+          <Compte Code="1678" Libelle="Autres emprunts et dettes" Lib_court="Autres emprunts et dettes" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+        </Compte>
+        <Compte Code="168" Libelle="Autres emprunts et dettes assimilées" Lib_court="Autres emprunts et dettes assimilées">
+          <Compte Code="1681" Libelle="Autres emprunts" Lib_court="Autres emprunts">
+            <Compte Code="16811" Libelle="Organismes d'assurances" Lib_court="Emprunts - Organismes d'assurances" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+            <Compte Code="16812" Libelle="Entreprises non financières" Lib_court="Emprunts - Entreprises non financières" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+            <Compte Code="16813" Libelle="Particuliers" Lib_court="Emprunts - Particuliers" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+            <Compte Code="16814" Libelle="Etrangers" Lib_court="Emprunts - Etrangers" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+            <Compte Code="16818" Libelle="Autres prêteurs" Lib_court="Emprunts - Autres prêteurs" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+          </Compte>
+          <Compte Code="1687" Libelle="Autres dettes" Lib_court="Autres dettes">
+            <Compte Code="16871" Libelle="Etat et établissements nationaux" Lib_court="Dette - Etat et établissements nationaux" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+            <Compte Code="16872" Libelle="Régions" Lib_court="Dettes - Régions" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+            <Compte Code="16873" Libelle="Départements" Lib_court="Dettes - Départements" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+            <Compte Code="16874" Libelle="Communes" Lib_court="Dettes - Communes" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+            <Compte Code="16875" Libelle="Groupements de collectivités et collectivités à statut particulier" Lib_court="Group. coll et coll. statut particulier" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+            <Compte Code="16876" Libelle="Autres établissements publics locaux" Lib_court="Dettes - Autres établ. publics locaux" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+            <Compte Code="16878" Libelle="Autres organismes et particuliers" Lib_court="Dettes - Autres organismes, particuliers" DEquip="0" DR="16" DOES="040" DOIS="041" REquip="1" RR="16" ROES="040" ROIS="041"/>
+          </Compte>
+          <Compte Code="1688" Libelle="Intérêts courus" Lib_court="Intérêts courus">
+            <Compte Code="16883" Libelle="Intérêts courus sur emprunts obligataires" Lib_court="Intérêts courus - emprunts obligataire" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="16884" Libelle="Intérêts courus sur emprunts auprès des établissements financiers" Lib_court="Int courus / empr auprès éts financiers" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="16888" Libelle="Intérêts courus sur autres emprunts et dettes assimilées" Lib_court="Intérêts courus - autres emprunts, dette" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="169" Libelle="Primes de remboursement des obligations" Lib_court="Primes de remboursement des obligations" DEquip="0" DR="" DOES="040" DOIS="041" REquip="0" RR="" ROES="040" ROIS="041"/>
+      </Compte>
+      <Compte Code="18" Libelle="Comptes de liaison : affectation (budgets annexes - régies non personnalisées)" Lib_court="Comptes liaison : affectat° (BA, régies)">
+        <Compte Code="181" Libelle="Comptes de liaison : affectation à" Lib_court="Comptes de liaison : affectation à" DEquip="0" DR="18" DOES="" DOIS="" REquip="0" RR="18" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="19" Libelle="Neutralisations et régularisations d'opérations" Lib_court="Neutral. et régul. d'opérations" RegrTotalise="1">
+        <Compte Code="192" Libelle="Plus ou moins-values sur cessions d'immobilisations" Lib_court="Plus ou moins-values sur cession immo." DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+        <Compte Code="193" Libelle="Autres neutralisations et régularisations d'opérations" Lib_court="Autres neutral. et régul. d'opérations" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="194" Libelle="Provisions pour risques et charges sur emprunts - Stock à la date de première application" Lib_court="Prov. sur emprunts - stock à 1ère appli" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="198" Libelle="Neutralisation des amortissements des subventions d'équipement versées" Lib_court="Neutral. amort. subv. équip. versées" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="20" Libelle="Immobilisations incorporelles" Lib_court="Immobilisations incorporelles" RegrTotalise="1">
+        <Compte Code="203" Libelle="Frais d'études, de recherche et de développement et frais d'insertion" Lib_court="Frais d'études, recherche, développement" DEquip="1" DR="20" DOES="040" DOIS="041" REquip="1" RR="20" ROES="040" ROIS="041"/>
+        <Compte Code="204" Libelle="Subventions d'équipement versées" Lib_court="Subventions d'équipement versées" RegrTotalise="1">
+          <Compte Code="2041" Libelle="Subventions d'équipement aux organismes publics" Lib_court="Subv. équip. organismes publics">
+            <Compte Code="20411" Libelle="Biens mobiliers, matériel et études" Lib_court="Subv. Public : Bien mobilier, matériel" DEquip="1" DR="204" DOES="" DOIS="041" REquip="1" RR="204" ROES="" ROIS="041"/>
+            <Compte Code="20412" Libelle="Bâtiments et installations" Lib_court="Subv. Public : Bâtiments, installations" DEquip="1" DR="204" DOES="" DOIS="041" REquip="1" RR="204" ROES="" ROIS="041"/>
+            <Compte Code="20413" Libelle="Projets d'infrastructures d'intérêt national" Lib_court="Subv. Public : Projet infrastructure" DEquip="1" DR="204" DOES="" DOIS="041" REquip="1" RR="204" ROES="" ROIS="041"/>
+          </Compte>
+          <Compte Code="2042" Libelle="Subvention d'équipement aux personnes de droit privé" Lib_court="Subv. équip. personnes droit privé">
+            <Compte Code="20421" Libelle="Biens mobiliers, matériel et études" Lib_court="Subv. Privé : Bien mobilier, matériel" DEquip="1" DR="204" DOES="" DOIS="041" REquip="1" RR="204" ROES="" ROIS="041"/>
+            <Compte Code="20422" Libelle="Bâtiments et installations" Lib_court="Subv. Privé : Bâtiments, installations" DEquip="1" DR="204" DOES="" DOIS="041" REquip="1" RR="204" ROES="" ROIS="041"/>
+            <Compte Code="20423" Libelle="Projets d'infrastructures d'intérêt national" Lib_court="Subv. Privé : Projet infrastructure" DEquip="1" DR="204" DOES="" DOIS="041" REquip="1" RR="204" ROES="" ROIS="041"/>
+          </Compte>
+          <Compte Code="2044" Libelle="Subventions d'équipement en nature" Lib_court="Subventions d'équipement en nature">
+            <Compte Code="20441" Libelle="Organismes publics" Lib_court="Subv nature Organismes publics">
+              <Compte Code="204411" Libelle="Biens mobiliers, matériel et études" Lib_court="Sub nat org pub - Biens mob, mat, études" DEquip="0" DR="" DOES="" DOIS="041" REquip="0" RR="" ROES="" ROIS="041"/>
+              <Compte Code="204412" Libelle="Bâtiments et installations" Lib_court="Sub nat org pub - Bâtiments, installat°" DEquip="0" DR="" DOES="" DOIS="041" REquip="0" RR="" ROES="" ROIS="041"/>
+              <Compte Code="204413" Libelle="Projets d'infrastructures d'intérêt national" Lib_court="Sub nat org pub-Proj infrastruct int nat" DEquip="0" DR="" DOES="" DOIS="041" REquip="0" RR="" ROES="" ROIS="041"/>
+            </Compte>
+            <Compte Code="20442" Libelle="Personnes de droit privé" Lib_court="Subv. nature Personnes de droit privé">
+              <Compte Code="204421" Libelle="Biens mobiliers, matériel et études" Lib_court="Sub nat privé - Biens mob, mat, études" DEquip="0" DR="" DOES="" DOIS="041" REquip="0" RR="" ROES="" ROIS="041"/>
+              <Compte Code="204422" Libelle="Bâtiments et installations" Lib_court="Sub nat privé - Bâtiments et installat°" DEquip="0" DR="" DOES="" DOIS="041" REquip="0" RR="" ROES="" ROIS="041"/>
+              <Compte Code="204423" Libelle="Projets d'infrastructures d'intérêt national" Lib_court="Sub nat privé - Proj infrastruct int nat" DEquip="0" DR="" DOES="" DOIS="041" REquip="0" RR="" ROES="" ROIS="041"/>
+            </Compte>
+          </Compte>
+        </Compte>
+        <Compte Code="205" Libelle="Concessions et droits similaires, brevets, licences, marques, procédés, logiciels, droits et valeurs similaires" Lib_court="Licences, logiciels, droits similaires" DEquip="1" DR="20" DOES="040" DOIS="041" REquip="1" RR="20" ROES="040" ROIS="041"/>
+        <Compte Code="208" Libelle="Autres immobilisations incorporelles" Lib_court="Autres immobilisations incorporelles">
+          <Compte Code="2087" Libelle="Immobilisations incorporelles reçues au titre d'une mise à disposition" Lib_court="Immo. incorp. reçues - mise à dispo." DEquip="1" DR="20" DOES="040" DOIS="041" REquip="1" RR="20" ROES="040" ROIS="041"/>
+          <Compte Code="2088" Libelle="Autres immobilisations incorporelles" Lib_court="Autres immobilisations incorporelles" DEquip="1" DR="20" DOES="040" DOIS="041" REquip="1" RR="20" ROES="040" ROIS="041"/>
+        </Compte>
+      </Compte>
+      <Compte Code="21" Libelle="Immobilisations corporelles" Lib_court="Immobilisations corporelles" RegrTotalise="1">
+        <Compte Code="211" Libelle="Terrains" Lib_court="Terrains">
+          <Compte Code="2111" Libelle="Terrains nus" Lib_court="Terrains nus" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2113" Libelle="Terrains aménagés autres que voirie" Lib_court="Terrains aménagés autres que voirie" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2115" Libelle="Terrains bâtis" Lib_court="Terrains bâtis" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2117" Libelle="Bois et forêts" Lib_court="Bois et forêts" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2118" Libelle="Autres terrains" Lib_court="Autres terrains" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+        </Compte>
+        <Compte Code="212" Libelle="Agencements et aménagements de terrains" Lib_court="Agencements et aménagements de terrains">
+          <Compte Code="2121" Libelle="Plantations d'arbres et d'arbustes" Lib_court="Plantations d'arbres et d'arbustes" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2128" Libelle="Autres agencements et aménagements" Lib_court="Autres agencements et aménagements" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+        </Compte>
+        <Compte Code="213" Libelle="Constructions" Lib_court="Constructions">
+          <Compte Code="2131" Libelle="Bâtiments publics" Lib_court="Bâtiments publics" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2132" Libelle="Immeubles de rapport" Lib_court="Immeubles de rapport" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2135" Libelle="Installations générales, agencements, aménagements des constructions" Lib_court="Installations générales, agencements" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2138" Libelle="Autres constructions" Lib_court="Autres constructions" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+        </Compte>
+        <Compte Code="214" Libelle="Constructions sur sol d'autrui" Lib_court="Constructions sur sol d'autrui">
+          <Compte Code="2141" Libelle="Constructions sur sol d'autrui - Bâtiments publics" Lib_court="Construct° sol autrui - Bâtiment public" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2142" Libelle="Constructions sur sol d'autrui - Immeubles de rapport" Lib_court="Construct° sol autrui - Immeuble rapport" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2145" Libelle="Constructions sur sol d'autrui - Installation générales, agencements, aménagements" Lib_court="Construct° sol autrui - Instal. géné." DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2148" Libelle="Constructions sur sol d'autrui - Autres constructions" Lib_court="Autres constructions sur sol d'autrui" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+        </Compte>
+        <Compte Code="215" Libelle="Installations, matériel et outillage techniques" Lib_court="Installat°, matériel, outillage techniq.">
+          <Compte Code="2155" Libelle="Réseaux informatiques" Lib_court="Réseaux informatiques" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2158" Libelle="Autres installations, matériel et outillage techniques" Lib_court="Autres installat°, matériel et outillage" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+        </Compte>
+        <Compte Code="216" Libelle="Collections et oeuvres d'art" Lib_court="Collections et oeuvres d'art">
+          <Compte Code="2161" Libelle="Oeuvres et objets d'art" Lib_court="Oeuvres et objets d'art" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2168" Libelle="Autres collections et oeuvres d'art" Lib_court="Autres collections et oeuvres d'art" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+        </Compte>
+        <Compte Code="217" Libelle="Immobilisations corporelles reçues au titre d'une mise à disposition" Lib_court="Immo. corporelles reçues mises à dispo.">
+          <Compte Code="2171" Libelle="Terrains" Lib_court="Terrains (mise à dispo)" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2172" Libelle="Agencements et aménagements de terrains" Lib_court="Aménagements terrains (mise à dispo)" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2173" Libelle="Constructions" Lib_court="Constructions (mise à dispo)" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2174" Libelle="Constructions sur sol d'autrui" Lib_court="Construct° sol d'autrui (mise à dispo)" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2175" Libelle="Installations, matériel et outillage techniques" Lib_court="Instal., mat. technique (mise à dispo)" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2176" Libelle="Collections et oeuvres d'art" Lib_court="Collections et oeuvres d'art" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2178" Libelle="Autres immobilisations corporelles reçues au titre d'une mise à disposition" Lib_court="Autres immo. corporelles (mise à dispo)" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+        </Compte>
+        <Compte Code="218" Libelle="Autres immobilisations corporelles" Lib_court="Autres immobilisations corporelles">
+          <Compte Code="2181" Libelle="Installations générales, agencements et aménagements divers" Lib_court="Installat° générales, agencements" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2182" Libelle="Matériel de transport" Lib_court="Matériel de transport" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2183" Libelle="Matériel de bureau et matériel informatique" Lib_court="Matériel de bureau et informatique" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2184" Libelle="Mobilier" Lib_court="Mobilier" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2185" Libelle="Cheptel" Lib_court="Cheptel" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+          <Compte Code="2188" Libelle="Autres immobilisations corporelles" Lib_court="Autres immobilisations corporelles" DEquip="1" DR="21" DOES="040" DOIS="041" REquip="1" RR="21" ROES="040" ROIS="041"/>
+        </Compte>
+      </Compte>
+      <Compte Code="22" Libelle="Immobilisations reçues en affectation" Lib_court="Immobilisations reçues en affectation" RegrTotalise="1">
+        <Compte Code="221" Libelle="Terrains" Lib_court="Terrains (affectation)" DEquip="1" DR="22" DOES="040" DOIS="041" REquip="1" RR="22" ROES="040" ROIS="041"/>
+        <Compte Code="222" Libelle="Agencements et aménagements de terrains" Lib_court="Aménagements de terrains (affectation)" DEquip="1" DR="22" DOES="040" DOIS="041" REquip="1" RR="22" ROES="040" ROIS="041"/>
+        <Compte Code="223" Libelle="Constructions" Lib_court="Constructions (affectation)" DEquip="1" DR="22" DOES="040" DOIS="041" REquip="1" RR="22" ROES="040" ROIS="041"/>
+        <Compte Code="224" Libelle="Constructions sur sol d'autrui" Lib_court="Constructions sol d'autrui (affectation)" DEquip="1" DR="22" DOES="040" DOIS="041" REquip="1" RR="22" ROES="040" ROIS="041"/>
+        <Compte Code="225" Libelle="Installations, matériel et outillage techniques" Lib_court="Installat°, matériel (affectation)" DEquip="1" DR="22" DOES="040" DOIS="041" REquip="1" RR="22" ROES="040" ROIS="041"/>
+        <Compte Code="226" Libelle="Collections et oeuvres d'art" Lib_court="Collections, oeuvres d'art (affectation)" DEquip="1" DR="22" DOES="040" DOIS="041" REquip="1" RR="22" ROES="040" ROIS="041"/>
+        <Compte Code="228" Libelle="Autres immobilisations corporelles" Lib_court="Autres immos corporelles (affectation)" DEquip="1" DR="22" DOES="040" DOIS="041" REquip="1" RR="22" ROES="040" ROIS="041"/>
+        <Compte Code="229" Libelle="Droits de l'affectant" Lib_court="Droits de l'affectant" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="23" Libelle="Immobilisations en cours" Lib_court="Immobilisations en cours" RegrTotalise="1">
+        <Compte Code="231" Libelle="Immobilisations corporelles en cours" Lib_court="Immobilisations corporelles en cours">
+          <Compte Code="2312" Libelle="Terrains" Lib_court="Terrains" DEquip="1" DR="23" DOES="040" DOIS="041" REquip="1" RR="23" ROES="040" ROIS="041"/>
+          <Compte Code="2313" Libelle="Constructions" Lib_court="Constructions" DEquip="1" DR="23" DOES="040" DOIS="041" REquip="1" RR="23" ROES="040" ROIS="041"/>
+          <Compte Code="2314" Libelle="Constructions sur sol d'autrui" Lib_court="Constructions sur sol d'autrui" DEquip="1" DR="23" DOES="040" DOIS="041" REquip="1" RR="23" ROES="040" ROIS="041"/>
+          <Compte Code="2315" Libelle="Installations, matériel et outillage techniques" Lib_court="Instal., matériel, outillage techniques" DEquip="1" DR="23" DOES="040" DOIS="041" REquip="1" RR="23" ROES="040" ROIS="041"/>
+          <Compte Code="2316" Libelle="Restauration des collections et oeuvres d'art" Lib_court="Restaurat° collections et oeuvres d'art" DEquip="1" DR="23" DOES="040" DOIS="041" REquip="1" RR="23" ROES="040" ROIS="041"/>
+          <Compte Code="2317" Libelle="Immobilisations corporelles reçues au titre d'une mise à disposition" Lib_court="Immo. corporelles reçues mise à dispo." DEquip="1" DR="23" DOES="040" DOIS="041" REquip="1" RR="23" ROES="040" ROIS="041"/>
+          <Compte Code="2318" Libelle="Autres immobilisations corporelles en cours" Lib_court="Autres immo. corporelles en cours" DEquip="1" DR="23" DOES="040" DOIS="041" REquip="1" RR="23" ROES="040" ROIS="041"/>
+        </Compte>
+        <Compte Code="232" Libelle="Immobilisations incorporelles en cours" Lib_court="Immobilisations incorporelles en cours" DEquip="1" DR="23" DOES="040" DOIS="041" REquip="1" RR="23" ROES="040" ROIS="041"/>
+        <Compte Code="237" Libelle="Avances versées sur commandes d'immobilisations incorporelles" Lib_court="Avances versées commandes immo. corpo." DEquip="1" DR="23" DOES="040" DOIS="041" REquip="1" RR="23" ROES="040" ROIS="041"/>
+        <Compte Code="238" Libelle="Avances versées sur commandes d'immobilisations corporelles" Lib_court="Avances versées commandes immo. incorp." DEquip="1" DR="23" DOES="040" DOIS="041" REquip="1" RR="23" ROES="040" ROIS="041"/>
+      </Compte>
+      <Compte Code="24" Libelle="Immobilisations affectées" Lib_court="Immo. affectées, concédées, affermées">
+        <Compte Code="248" Libelle="Immobilisations mises en affectation" Lib_court="Autres immos mises en affectation" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="249" Libelle="Droits du remettant" Lib_court="Droits du remettant" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="26" Libelle="Participations et créances rattachées à des participations" Lib_court="Participations et créances rattachées" RegrTotalise="1">
+        <Compte Code="261" Libelle="Titres de participation" Lib_court="Titres de participation" DEquip="0" DR="26" DOES="040" DOIS="041" REquip="0" RR="26" ROES="040" ROIS="041"/>
+        <Compte Code="266" Libelle="Autres formes de participation" Lib_court="Autres formes de participation" DEquip="0" DR="26" DOES="040" DOIS="041" REquip="0" RR="26" ROES="040" ROIS="041"/>
+      </Compte>
+      <Compte Code="27" Libelle="Autres immobilisations financières" Lib_court="Autres immobilisations financières" RegrTotalise="1">
+        <Compte Code="271" Libelle="Titres immobilisés (droits de propriété)" Lib_court="Titres immobilisés (droits de propriété)" DEquip="0" DR="27" DOES="040" DOIS="041" REquip="0" RR="27" ROES="040" ROIS="041"/>
+        <Compte Code="272" Libelle="Titres immobilisés (droits de créance)" Lib_court="Titres immobilisés (droits de créance)" DEquip="0" DR="27" DOES="040" DOIS="041" REquip="0" RR="27" ROES="040" ROIS="041"/>
+        <Compte Code="273" Libelle="Comptes de placement (long terme)" Lib_court="Comptes de placement (long terme)">
+          <Compte Code="2731" Libelle="Comptes de placement rémunérés" Lib_court="Comptes de placement rémunérés" DEquip="0" DR="27" DOES="040" DOIS="041" REquip="0" RR="27" ROES="040" ROIS="041"/>
+        </Compte>
+        <Compte Code="274" Libelle="Prêts" Lib_court="Prêts" DEquip="0" DR="27" DOES="040" DOIS="041" REquip="0" RR="27" ROES="040" ROIS="041"/>
+        <Compte Code="275" Libelle="Dépôts et cautionnements versés" Lib_court="Dépôts et cautionnements versés" DEquip="0" DR="27" DOES="040" DOIS="041" REquip="0" RR="27" ROES="040" ROIS="041"/>
+        <Compte Code="276" Libelle="Autres créances immobilisées" Lib_court="Autres créances immobilisées">
+          <Compte Code="2761" Libelle="Créances pour avances en garanties d'emprunt" Lib_court="Créances avances en garanties d'emprunt" DEquip="0" DR="27" DOES="040" DOIS="041" REquip="0" RR="27" ROES="040" ROIS="041"/>
+          <Compte Code="2762" Libelle="Créances sur transfert de droits à déduction de" Lib_court="Créances transfert droit déduct° TVA" DEquip="0" DR="27" DOES="040" DOIS="041" REquip="0" RR="27" ROES="040" ROIS="041"/>
+          <Compte Code="2763" Libelle="Créances sur des collectivités et établissements publics" Lib_court="Créances collectivités et établ. publics" DEquip="0" DR="27" DOES="040" DOIS="041" REquip="0" RR="27" ROES="040" ROIS="041"/>
+          <Compte Code="2764" Libelle="Créances sur des particuliers et autres personnes de droit privé" Lib_court="Créances sur personnes de droit privé" DEquip="0" DR="27" DOES="040" DOIS="041" REquip="0" RR="27" ROES="040" ROIS="041"/>
+          <Compte Code="2766" Libelle="Créances pour locations-acquisitions" Lib_court="Créances pour locations-acquisitions" DEquip="0" DR="27" DOES="040" DOIS="041" REquip="0" RR="27" ROES="040" ROIS="041"/>
+          <Compte Code="2768" Libelle="Intérêts courus" Lib_court="Intérêts courus">
+            <Compte Code="27682" Libelle="Intérêts courus sur titres immobilisés (droits de créance)" Lib_court="Intérêts courus sur titres immobilisés" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="27684" Libelle="Intérêts courus sur prêts" Lib_court="Intérêts courus sur prêts" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="27688" Libelle="Intérêts courus sur créances diverses" Lib_court="Intérêts courus sur créances diverses" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="279" Libelle="Versements restant à effectuer sur titres immobilisés non libérés" Lib_court="Versements à effectuer titre non libéré" DEquip="0" DR="27" DOES="040" DOIS="041" REquip="0" RR="27" ROES="040" ROIS="041"/>
+      </Compte>
+      <Compte Code="28" Libelle="Amortissements des immobilisations" Lib_court="Amortissement des immobilisations" RegrTotalise="1">
+        <Compte Code="280" Libelle="Amortissements des immobilisations incorporelles" Lib_court="Amort. immobilisations incorporelles">
+          <Compte Code="2803" Libelle="Frais d'études, de recherche et de développement et frais d'insertion" Lib_court="Frais d'études, recherche et dévelop." DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          <Compte Code="2804" Libelle="Subventions d'équipement versées" Lib_court="Subventions d'équipement versées">
+            <Compte Code="28041" Libelle="Subventions d'équipement aux organismes publics" Lib_court="Subv. équip. aux organismes publics">
+              <Compte Code="280411" Libelle="Biens mobiliers, matériel et études" Lib_court="Subv. Public : Bien mobilier, matériel" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+              <Compte Code="280412" Libelle="Bâtiments et installations" Lib_court="Subv. Public : Bâtiments, installations" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+              <Compte Code="280413" Libelle="Projets d'infrastructures d'intérêt national" Lib_court="Subv. Public : Projet infrastructure" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            </Compte>
+            <Compte Code="28042" Libelle="Subventions d'équipement aux personnes de droit privé" Lib_court="Subvent° équip. personnes droit privé">
+              <Compte Code="280421" Libelle="Biens mobiliers, matériel et études" Lib_court="Subv. Privé : Bien mobilier, matériel" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+              <Compte Code="280422" Libelle="Bâtiments et installations" Lib_court="Subv. Privé : Bâtiments, installations" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+              <Compte Code="280423" Libelle="Projets d'infrastructures d'intérêt national" Lib_court="Subv. Privé : Projet infrastructure" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            </Compte>
+            <Compte Code="28044" Libelle="Subventions d'équipement en nature" Lib_court="Subventions d'équipement en nature">
+              <Compte Code="280441" Libelle="Organismes publics" Lib_court="Subv. nature Organismes publics">
+                <Compte Code="2804411" Libelle="Biens mobiliers, matériel et études" Lib_court="Sub nat org pub - Biens mob, mat, études" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+                <Compte Code="2804412" Libelle="Bâtiments et installations" Lib_court="Sub nat org pub - Bâtiments, installat°" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+                <Compte Code="2804413" Libelle="Projets d'infrastructures d'intérêt national" Lib_court="Sub nat org pub-Proj infrastruct int nat" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+              </Compte>
+              <Compte Code="280442" Libelle="Personnes de droit privé" Lib_court="Subv. nature Personnes de droit privé">
+                <Compte Code="2804421" Libelle="Biens mobiliers, matériel et études" Lib_court="Sub nat privé - Biens mob, mat, études" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+                <Compte Code="2804422" Libelle="Bâtiments et installations" Lib_court="Sub nat privé - Bâtiments et installat°" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+                <Compte Code="2804423" Libelle="Projets d'infrastructures d'intérêt national" Lib_court="Sub nat privé - Proj infrastruct int nat" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+              </Compte>
+            </Compte>
+          </Compte>
+          <Compte Code="2805" Libelle="Concessions et droits similaires, brevets, licences, logiciels, droits et valeurs similaires" Lib_court="Licences, logiciels, droits similaires" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          <Compte Code="2808" Libelle="Autres immobilisations incorporelles" Lib_court="Autres immobilisations incorporelles">
+            <Compte Code="28087" Libelle="Immobilisations incorporelles reçues au titre d'une mise à disposition" Lib_court="Immo. incorporelles reçues mise à dispo." DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28088" Libelle="Autres immobilisations incorporelles" Lib_court="Autres immobilisations incorporelles" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="281" Libelle="Amortissements des immobilisations corporelles" Lib_court="Amortissement immos corporelles">
+          <Compte Code="2812" Libelle="Agencements et aménagements de terrains" Lib_court="Agencements et aménagements de terrains">
+            <Compte Code="28121" Libelle="Plantations d'arbres et d'arbustes" Lib_court="Plantations d'arbres et d'arbustes" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28128" Libelle="Autres agencements et aménagements de terrains" Lib_court="Autres aménagements de terrains" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2813" Libelle="Constructions" Lib_court="Constructions">
+            <Compte Code="28131" Libelle="Bâtiments publics" Lib_court="Bâtiments publics" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28132" Libelle="Immeubles de rapport" Lib_court="Immeubles de rapport" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28135" Libelle="Installations générales, agencements, aménagements des constructions" Lib_court="Installations générales, agencements ..." DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28138" Libelle="Autres constructions" Lib_court="Autres constructions" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2814" Libelle="Constructions sur sol d'autrui" Lib_court="Constructions sur sol d'autrui">
+            <Compte Code="28141" Libelle="Bâtiments publics" Lib_court="Construct° sol autrui - Bâtiment public" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28142" Libelle="Immeubles de rapport" Lib_court="Construct° sol autrui - Immeuble rapport" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28145" Libelle="Installation générales, agencements et aménagements" Lib_court="Construct° sol autrui - Installat° géné." DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28148" Libelle="Autres constructions sur sol d'autrui" Lib_court="Autres constructions sur sol d'autrui" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2815" Libelle="Installations techniques, matériel et outillage techniques" Lib_court="Installat° techniques, matériel, outil.">
+            <Compte Code="28155" Libelle="Réseaux informatiques" Lib_court="Réseaux informatiques" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28158" Libelle="Autres installations, matériel et outillage techniques" Lib_court="Autres installat°, matériel et outillage" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2817" Libelle="Immobilisations corporelles reçues au titre d'une mise à disposition" Lib_court="Immo. corporelles reçues mises à dispo.">
+            <Compte Code="28171" Libelle="Terrains" Lib_court="Terrains (m.à dispo)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28172" Libelle="Agencements et aménagements de terrains" Lib_court="Aménagements de terrains (m. à dispo)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28173" Libelle="Constructions" Lib_court="Constructions (m. à dispo)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28174" Libelle="Constructions sur sol d'autrui" Lib_court="Construct° sol d'autrui (m. à dispo)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28175" Libelle="Installations, matériel et outillage techniques" Lib_court="Instal., matériel, outil. (m. à dispo)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28178" Libelle="Autres immobilisations corporelles reçues au titre d'une mise à disposition" Lib_court="Autres immo. corporelles (m. à dispo)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2818" Libelle="Autres immobilisations corporelles" Lib_court="Amort. autres immo. corporelles">
+            <Compte Code="28181" Libelle="Installations générales, agencements, aménagements divers" Lib_court="Installations générales, aménagt divers" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28182" Libelle="Matériel de transport" Lib_court="Matériel de transport" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28183" Libelle="Matériel de bureau et informatique" Lib_court="Matériel de bureau et informatique" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28184" Libelle="Mobilier" Lib_court="Mobilier" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28185" Libelle="Cheptel" Lib_court="Cheptel" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            <Compte Code="28188" Libelle="Autres immobilisations corporelles" Lib_court="Autres immo. corporelles" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="282" Libelle="Amortissements des immobilisations reçues en affectation" Lib_court="Amort. immo. reçues en affectation">
+          <Compte Code="2822" Libelle="Agencements et aménagements de terrains" Lib_court="Aménagements de terrains (affectation)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          <Compte Code="2823" Libelle="Constructions" Lib_court="Constructions (affectation)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          <Compte Code="2824" Libelle="Constructions sur sol d'autrui" Lib_court="Construct° sol d'autrui (affectation)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          <Compte Code="2825" Libelle="Installations, matériel et outillage techniques" Lib_court="Instal., matériel, outil. (affectat°)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          <Compte Code="2828" Libelle="Autres immobilisations corporelles" Lib_court="Autres instal., matériel (affectation)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="29" Libelle="Provisions pour dépréciation des immobilisations" Lib_court="Prov. pour dépréciat° immobilisations" RegrTotalise="1">
+        <Compte Code="290" Libelle="Provisions pour dépréciation des immobilisations incorporelles" Lib_court="Prov. dépréc. Immo. Incorporelles">
+          <Compte Code="2905" Libelle="Marques, procédés, droits et valeurs similaires" Lib_court="Prov. dépréc. marques, droits simil.">
+            <Compte Code="29051" Libelle="Marques, procédés, droits et valeurs similaires" Lib_court="Prov. dépréc. marques, droits simil." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29052" Libelle="Marques, procédés, droits et valeurs similaires" Lib_court="Prov. dépréc. marques, droits simil." DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2908" Libelle="Autres immobilisations incorporelles" Lib_court="Prov. dépréc. autres immo. Incorporelles">
+            <Compte Code="29081" Libelle="Autres immobilisations incorporelles" Lib_court="Prov. dépréc. autres immo. Incorporelles" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29082" Libelle="Autres immobilisations incorporelles" Lib_court="Prov. dépréc. autres immo. Incorporelles" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="291" Libelle="Provisions pour dépréciation des immobilisations corporelles" Lib_court="Prov. dépréc. immo. corporelles">
+          <Compte Code="2911" Libelle="Terrains" Lib_court="Prov. dépréc. terrains (hors gisement)">
+            <Compte Code="29111" Libelle="Terrains" Lib_court="Prov. dépréc. terrains (hors gisement)" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29112" Libelle="Terrains" Lib_court="Prov. dépréc. terrains (hors gisement)" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2913" Libelle="Constructions" Lib_court="Prov. dépréc. constructions">
+            <Compte Code="29131" Libelle="Constructions" Lib_court="Prov. dépréc. constructions" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29132" Libelle="Constructions" Lib_court="Prov. dépréc. constructions" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2914" Libelle="Constructions sur sol d'autrui" Lib_court="Prov. dépréc. construct° sol d'autrui">
+            <Compte Code="29141" Libelle="Constructions sur sol d'autrui" Lib_court="Prov. dépréc. construct° sol d'autrui" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29142" Libelle="Constructions sur sol d'autrui" Lib_court="Prov. dépréc. construct° sol d'autrui" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="293" Libelle="Provisions pour dépréciation des immobilisations en cours" Lib_court="Prov. dépréciation immo. en cours">
+          <Compte Code="2931" Libelle="Immobilisations corporelles en cours" Lib_court="Prov. dépréc. immo. corpor. en cours">
+            <Compte Code="29311" Libelle="Immobilisations corporelles en cours" Lib_court="Prov. dépréc. immo. corpor. en cours" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29312" Libelle="Immobilisations corporelles en cours" Lib_court="Prov. dépréc. immo. corpor. en cours" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2932" Libelle="Immobilisations incorporelles en cours" Lib_court="Prov. dépréc. immo. incorp. en cours">
+            <Compte Code="29321" Libelle="Immobilisations incorporelles en cours" Lib_court="Prov. dépréc. immo. incorp. en cours" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29322" Libelle="Immobilisations incorporelles en cours" Lib_court="Prov. dépréc. immo. incorp. en cours" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="296" Libelle="Provisions pour dépréciation des participations et créances rattachées à des participations" Lib_court="Prov. dépréc. participat° et créances">
+          <Compte Code="2961" Libelle="Titres de participation" Lib_court="Prov. dépréc. titres de participation">
+            <Compte Code="29611" Libelle="Titres de participation" Lib_court="Prov. dépréc. titres de participation" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29612" Libelle="Titres de participation" Lib_court="Prov. dépréc. titres de participation" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2966" Libelle="Autres formes de participation" Lib_court="Prov. dépréc. autres formes participat°">
+            <Compte Code="29661" Libelle="Autres formes de participation" Lib_court="Prov. dépréc. autres formes participat°" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29662" Libelle="Autres formes de participation" Lib_court="Prov. dépréc. autres formes participat°" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="297" Libelle="Provisions pour dépréciation des autres immobilisations financières" Lib_court="Prov. dépréc. autres immos financières">
+          <Compte Code="2971" Libelle="Titres immobilisés - Droit de propriété" Lib_court="Prov. dépréc. titres - Droit propriété">
+            <Compte Code="29711" Libelle="Titres immobilisés - Droit de propriété" Lib_court="Prov. dépréc. titres - Droit propriété" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29712" Libelle="Titres immobilisés - Droit de propriété" Lib_court="Prov. dépréc. titres - Droit propriété" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2972" Libelle="Titres immobilisés - Droit de créance" Lib_court="Prov. dépréc. titres - Droit créance">
+            <Compte Code="29721" Libelle="Titres immobilisés - Droit de créance" Lib_court="Prov. dépréc. titres - Droit créance" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29722" Libelle="Titres immobilisés - Droit de créance" Lib_court="Prov. dépréc. titres - Droit créance" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2974" Libelle="Prêts" Lib_court="Prov. dépréc. Prêts">
+            <Compte Code="29741" Libelle="Prêts" Lib_court="Prov. dépréc. Prêts" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29742" Libelle="Prêts" Lib_court="Prov. dépréc. Prêts" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2975" Libelle="Dépôts et cautionnements versés" Lib_court="Prov. dépréc. Dépôts, cautionnts versés">
+            <Compte Code="29751" Libelle="Dépôts et cautionnements versés" Lib_court="Prov. dépréc. Dépôts, cautionnts versés" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="29752" Libelle="Dépôts et cautionnements versés" Lib_court="Prov. dépréc. Dépôts, cautionnts versés" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="2976" Libelle="Autres créances immobilisées" Lib_court="Prov. dépréc. autres créances immobil.">
+            <Compte Code="29761" Libelle="Créances pour avances en garantie d'emprunt" Lib_court="Prov. dépréc. avances garantie emprunt">
+              <Compte Code="297611" Libelle="Créances pour avances en garantie d'emprunt" Lib_court="Prov. dépréc. avances garantie emprunt" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+              <Compte Code="297612" Libelle="Créances pour avances en garantie d'emprunt" Lib_court="Prov. dépréc. avances garantie emprunt" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            </Compte>
+            <Compte Code="29768" Libelle="Autres créances immobilisées" Lib_court="Prov. dépréc. autres créances immobil.">
+              <Compte Code="297681" Libelle="Autres créances immobilisées" Lib_court="Prov. dépréc. autres créances immobil." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+              <Compte Code="297682" Libelle="Autres créances immobilisées" Lib_court="Prov. dépréc. autres créances immobil." DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+            </Compte>
+          </Compte>
+        </Compte>
+      </Compte>
+      <Compte Code="31" Libelle="Matières premières (et fournitures)" Lib_court="Matières premières (et fournitures)">
+        <Compte Code="311" Libelle="Matières premières et fournitures autres que terrains" Lib_court="Mat. Premières, fournitures hors terrain" DEquip="0" DR="010" DOES="040" DOIS="" REquip="0" RR="010" ROES="040" ROIS=""/>
+      </Compte>
+      <Compte Code="32" Libelle="Autres approvisionnements" Lib_court="Autres approvisionnements">
+        <Compte Code="321" Libelle="Matières consommables" Lib_court="Matières consommables" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="322" Libelle="Fournitures consommables autres qu'alimentation" Lib_court="Fournitures consommables hors alimentat°">
+          <Compte Code="3221" Libelle="Combustibles et carburants" Lib_court="Combustibles et carburants" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="3222" Libelle="Produits d'entretien" Lib_court="Produits d'entretien" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="3223" Libelle="Fournitures des ateliers" Lib_court="Fourniture des ateliers" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="3224" Libelle="Fournitures administratives" Lib_court="Fournitures administratives" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="3225" Libelle="Livres, disques, cassettes (bibliothèques, médiathèques)" Lib_court="Livres, disques, cassettes (médiathèque)" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="3226" Libelle="Vêtements de travail" Lib_court="Vêtements de travail" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="3227" Libelle="Fournitures éducatives et de loisirs" Lib_court="Fournitures éducatives et de loisirs" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="3228" Libelle="Autres fournitures consommables" Lib_court="Autres fournitures consommables" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="323" Libelle="Alimentation" Lib_court="Alimentation" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="33" Libelle="En-cours de production de biens" Lib_court="En-cours de production de biens" DEquip="0" DR="010" DOES="040" DOIS="" REquip="0" RR="010" ROES="040" ROIS=""/>
+      <Compte Code="34" Libelle="En-cours de production de services" Lib_court="En-cours de production de services" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+      <Compte Code="35" Libelle="Stocks de produits" Lib_court="Stocks de produits">
+        <Compte Code="351" Libelle="Produits intermédiaires" Lib_court="Produits intermédiaires" DEquip="0" DR="010" DOES="040" DOIS="" REquip="0" RR="010" ROES="040" ROIS=""/>
+        <Compte Code="355" Libelle="Produits finis" Lib_court="Produits finis" DEquip="0" DR="010" DOES="040" DOIS="" REquip="0" RR="010" ROES="040" ROIS=""/>
+        <Compte Code="358" Libelle="Produits résiduels" Lib_court="Produits résiduels" DEquip="0" DR="010" DOES="040" DOIS="" REquip="0" RR="010" ROES="040" ROIS=""/>
+      </Compte>
+      <Compte Code="39" Libelle="Provisions pour dépréciation des stocks et en-cours" Lib_court="Prov. dépréciat° des stocks et en-cours" RegrTotalise="1">
+        <Compte Code="391" Libelle="Provisions pour dépréciation des matières premières (et fournitures)" Lib_court="Prov. dépréc. matières premières">
+          <Compte Code="3911" Libelle="Provisions pour dépréciation des matières premières (et fournitures)" Lib_court="Prov. dépréc. des matières premières" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="3912" Libelle="Provisions pour dépréciation des matières premières (et fournitures)" Lib_court="Prov. dépréc. des matières premières" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+        </Compte>
+        <Compte Code="392" Libelle="Provisions pour dépréciation des autres approvisionnements" Lib_court="Prov. dépréc. autres approvisionnements" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="393" Libelle="Provisions pour dépréciation des en-cours de production de biens" Lib_court="Prov. dépréc. encours product° biens">
+          <Compte Code="3931" Libelle="Provisions pour dépréciation des en-cours de production de biens" Lib_court="Prov. dépréc. en-cours product° biens" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="3932" Libelle="Provisions pour dépréciation des en-cours de production de biens" Lib_court="Prov. dépréc. encours product° biens" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+        </Compte>
+        <Compte Code="394" Libelle="Provisions pour dépréciation des en-cours de production de services" Lib_court="Prov. dépréc. encours product° services">
+          <Compte Code="3941" Libelle="Provisions pour dépréciation des en-cours de production de services" Lib_court="Prov. dépréc. encours product° services" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="3942" Libelle="Provisions pour dépréciation des en-cours de production de services" Lib_court="Prov. dépréc. encours product° services" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+        </Compte>
+        <Compte Code="395" Libelle="Provisions pour dépréciation des stocks de produits" Lib_court="Prov. dépréc. des stocks de produits">
+          <Compte Code="3951" Libelle="Provisions pour dépréciation des stocks de produits" Lib_court="Prov. dépréc. des stocks de produits" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="3952" Libelle="Provisions pour dépréciation des stocks de produits" Lib_court="Prov. dépréc. des stocks de produits" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="40" Libelle="Fournisseurs et comptes rattachés" Lib_court="Fournisseurs et comptes rattachés">
+        <Compte Code="401" Libelle="Fournisseurs" Lib_court="Fournisseurs">
+          <Compte Code="4011" Libelle="Fournisseurs" Lib_court="Fournisseurs" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4017" Libelle="Fournisseurs - Retenues de garantie, oppositions et pénalités de retard d'exécution des marchés" Lib_court="Fournisseurs - Retenues de garantie, opp">
+            <Compte Code="40171" Libelle="Fournisseurs - Retenues de garantie" Lib_court="Fournisseurs - Retenues de garantie" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="40172" Libelle="Fournisseurs - Cessions, oppositions" Lib_court="Fournisseurs - Cess°, opposit°" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="40173" Libelle="Fournisseurs - Pénalités de retard d'exécution des marchés" Lib_court="Fournisseurs - Pénalités retard exécut°" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="403" Libelle="Fournisseurs - Lettres-change relevé (L.C.R.)" Lib_court="Fournisseurs - Lettres-change relevé" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="404" Libelle="Fournisseurs d'immobilisations" Lib_court="Fournisseurs d'immobilisations">
+          <Compte Code="4041" Libelle="Fournisseurs d'immobilisations" Lib_court="Fournisseurs d'immobilisations" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4047" Libelle="Fournisseurs d'immobilisations - Retenues de garantie, oppositions et pénalités de retard d'exécution des marchés" Lib_court="Fournisseurs d'immobilisations - Retenue">
+            <Compte Code="40471" Libelle="Fournisseurs d'immobilisations - Retenues de garantie" Lib_court="Fournisseurs d'immobilisations - Retenue" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="40472" Libelle="Fournisseurs d'immobilisations - Cessions, oppositions" Lib_court="Fourn. d'immo. - Cess° Opposit°" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="40473" Libelle="Fournisseurs d'immobilisations - Pénalités de retard d'exécution des marchés" Lib_court="Fournisseurs d'immobilisations - Pénalit" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="405" Libelle="Fournisseurs d'immobilisations - Lettres-change relevé (L.C.R.)" Lib_court="Fournisseurs d'immobilisations - Lettres" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="407" Libelle="Différences de conversion - Fournisseurs" Lib_court="Différences de conversion - Fournisseurs">
+          <Compte Code="4071" Libelle="Différences de conversion - Fournisseurs" Lib_court="Différences de conversion - Fournisseurs" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4074" Libelle="Différences de conversion - Fournisseurs d'immobilisations" Lib_court="Différences de conversion - Fournisseurs" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="408" Libelle="Fournisseurs - Factures non parvenues" Lib_court="Fournisseurs - Factures non parvenues" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="409" Libelle="Fournisseurs débiteurs" Lib_court="Fournisseurs débiteurs">
+          <Compte Code="4091" Libelle="Avances versées sur commandes" Lib_court="Avances versées sur commandes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4093" Libelle="Mandat &#x96; Avance de fonds ou remboursement de débours" Lib_court="Mandat &#x96; Avance ou rembours. débours" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4097" Libelle="Fournisseurs - Autres avoirs" Lib_court="Fournisseurs - Autres avoirs">
+            <Compte Code="40971" Libelle="Fournisseurs - Autres avoirs - Amiable" Lib_court="Fournisseurs - Autres avoirs - Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="40976" Libelle="Fournisseurs - Autres avoirs - Contentieux" Lib_court="Fournisseurs -Autres avoirs -Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4098" Libelle="Rabais, remises, ristournes à obtenir et autres avoirs non encore reçus" Lib_court="Rabais, remises, ristournes à obtenir et" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="41" Libelle="Redevables et comptes rattachés" Lib_court="Redevables et comptes rattachés">
+        <Compte Code="411" Libelle="Redevables" Lib_court="Redevables">
+          <Compte Code="4111" Libelle="Redevables - Amiable" Lib_court="Redevables - Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4116" Libelle="Redevables - Contentieux" Lib_court="Redevables - Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="412" Libelle="Acquéreurs de terrains aménagés stockés" Lib_court="Acquéreurs de terrains aménagés stockés">
+          <Compte Code="4121" Libelle="Acquéreurs de terrains aménagés stockés - Amiable" Lib_court="Acquéreurs terrain aménag.stocké-Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4126" Libelle="Acquéreurs de terrains aménagés stockés - Contentieux" Lib_court="Acq. terrains aménag.stockés-Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="414" Libelle="Locataires - Acquéreurs et locataires" Lib_court="Locataires - Acquéreurs et locataires">
+          <Compte Code="4141" Libelle="Locataires - Acquéreurs et locataires - Amiable" Lib_court="Locataires-Acquéreurs,locataires-Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4146" Libelle="Locataires - Acquéreurs et locataires - Contentieux" Lib_court="Locat.-Acquéreurs et locat.-Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="415" Libelle="Traites de coupe de bois (régime forestier)" Lib_court="Traites coupe de bois régime forestier">
+          <Compte Code="4151" Libelle="Traites de coupe de bois (régime forestier) - Amiable" Lib_court="Traites de coupe de bois - Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4156" Libelle="Traites de coupe de bois (régime forestier) - Contentieux" Lib_court="Traites de coupe de bois - Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="416" Libelle="Clients - Créances douteuses et irrécouvrables" Lib_court="Clients-Créances douteuses et irrécouvr.">
+          <Compte Code="4161" Libelle="Créances douteuses" Lib_court="Créances douteuses" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4162" Libelle="Créances irrécouvrables admises par le juge des comptes" Lib_court="Créances irrécouv. par le juge des cptes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="417" Libelle="Différences de conversion - Redevables" Lib_court="Différences de conversion - Redevables" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="419" Libelle="Avances et acomptes reçus" Lib_court="Avances et acomptes reçus" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="42" Libelle="Personnel et comptes rattachés" Lib_court="Personnel et comptes rattachés">
+        <Compte Code="421" Libelle="Personnel - Rémunérations dues" Lib_court="Personnel - Rémunérations dues" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="425" Libelle="Personnel - Avances et acomptes" Lib_court="Personnel - Avances et acomptes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="427" Libelle="Personnel - Oppositions" Lib_court="Personnel - Oppositions" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="428" Libelle="Personnel - Charges à payer et produits à recevoir" Lib_court="Personnel - Charges à payer et produits">
+          <Compte Code="4282" Libelle="Dettes provisionnées pour congés à payer" Lib_court="Dettes provisionnées pour congés à payer" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4286" Libelle="Autres charges à payer" Lib_court="Autres charges à payer" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4287" Libelle="Produits à recevoir" Lib_court="Produits à recevoir" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="429" Libelle="Déficits et débets des comptables et régisseurs" Lib_court="Déficits et débets des comptables et rég" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="43" Libelle="Sécurité sociale et autres organismes sociaux" Lib_court="Sécurité sociale et autres organismes so">
+        <Compte Code="431" Libelle="Sécurité sociale" Lib_court="Sécurité sociale" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="437" Libelle="Autres organismes sociaux" Lib_court="Autres organismes sociaux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="438" Libelle="Organismes sociaux - Charges à payer et produits à recevoir" Lib_court="Organismes sociaux - Charges à payer et">
+          <Compte Code="4386" Libelle="Autres charges à payer" Lib_court="Autres charges à payer" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4387" Libelle="Produits à recevoir" Lib_court="Produits à recevoir" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="44" Libelle="Etat et autres collectivités publiques" Lib_court="Etat et autres collectivités publiques">
+        <Compte Code="441" Libelle="Etat et autres collectivités publiques - Subventions à recevoir" Lib_court="Etat et autres collectivités publiques -">
+          <Compte Code="4411" Libelle="Etat et autres collectivités publiques - subventions à recevoir - amiable" Lib_court="Etat,autres coll-subv à recevoir-amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4416" Libelle="Etat et autres collectivités publiques - subventions à recevoir - contentieux" Lib_court="Etat, coll. -subv à recevoir-contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="442" Libelle="Etat - Impôts et taxes recouvrables sur des tiers" Lib_court="Etat - Impôts et taxes recouvrables sur">
+          <Compte Code="4421" Libelle="Prélèvement à la source - Impôt sur le revenu" Lib_court="Prélèvement à la source - Impôt revenu" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4428" Libelle="Autres" Lib_court="Autres" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="443" Libelle="Opérations particulières avec l'Etat et les collectivités publiques" Lib_court="Opérations particulières avec l'Etat et">
+          <Compte Code="4431" Libelle="Etat" Lib_court="Etat">
+            <Compte Code="44311" Libelle="Dépenses" Lib_court="Dépenses" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44312" Libelle="Recettes - Amiable" Lib_court="Recettes - Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44316" Libelle="Recettes - Contentieux" Lib_court="Recettes - Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4432" Libelle="Régions" Lib_court="Régions">
+            <Compte Code="44321" Libelle="Dépenses" Lib_court="Dépenses" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44322" Libelle="Recettes - Amiable" Lib_court="Recettes - Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44326" Libelle="Recettes - Contentieux" Lib_court="Recettes - Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4433" Libelle="Départements" Lib_court="Départements">
+            <Compte Code="44331" Libelle="Dépenses" Lib_court="Dépenses" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44332" Libelle="Recettes - Amiable" Lib_court="Recettes - Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44336" Libelle="Recettes - Contentieux" Lib_court="Recettes - Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4434" Libelle="Communes" Lib_court="Communes">
+            <Compte Code="44341" Libelle="Dépenses" Lib_court="Dépenses" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44342" Libelle="Recettes - Amiable" Lib_court="Recettes - Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44346" Libelle="Recettes - Contentieux" Lib_court="Recettes - Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4435" Libelle="Groupements de collectivités et collectivités à statut particulier" Lib_court="Group. coll et coll. statut particulier">
+            <Compte Code="44351" Libelle="Dépenses" Lib_court="Dépenses" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44352" Libelle="Recettes - Amiable" Lib_court="Recettes - Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44356" Libelle="Recettes - Contentieux" Lib_court="Recettes - Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4438" Libelle="Autres services et organismes publics" Lib_court="Autres services et organismes publics">
+            <Compte Code="44381" Libelle="Dépenses" Lib_court="Dépenses" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44382" Libelle="Recettes - Amiable" Lib_court="Recettes - Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44386" Libelle="Recettes - Contentieux" Lib_court="Recettes - Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="445" Libelle="Etat - Taxes sur le chiffre d'affaires" Lib_court="Etat - Taxes sur le chiffre d'affaires">
+          <Compte Code="4452" Libelle=" due intracommunautaire" Lib_court=" due intracommunautaire" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4455" Libelle="Taxes sur le chiffre d'affaires à décaisser" Lib_court="Taxes sur le chiffre d'affaires à décais">
+            <Compte Code="44551" Libelle=" à décaisser" Lib_court=" à décaisser" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44558" Libelle="Taxes assimilées à la TVA" Lib_court="Taxes assimilées à la TVA" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4456" Libelle="Taxes sur le chiffre d'affaires déductibles" Lib_court="Taxes sur le chiffre d'affaires déductib">
+            <Compte Code="44562" Libelle=" sur immobilisations" Lib_court=" sur immobilisations" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44566" Libelle=" sur autres biens et services" Lib_court=" sur autres biens et services" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44567" Libelle="Crédit de  à reporter" Lib_court="Crédit de  à reporter" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44568" Libelle="Taxes assimilées à la TVA" Lib_court="Taxes assimilées à la TVA" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4457" Libelle="Taxes sur le chiffre d'affaires collectées" Lib_court="Taxes sur le chiffre d'affaires collecté">
+            <Compte Code="44571" Libelle=" collectée" Lib_court=" collectée" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44578" Libelle="Taxes assimilées à la TVA" Lib_court="Taxes assimilées à la TVA" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4458" Libelle="Taxes sur le chiffre d'affaires à régulariser ou en attente" Lib_court="Taxes sur le chiffre d'affaires à régula">
+            <Compte Code="44581" Libelle="Acomptes - Régime simplifié d'imposition" Lib_court="Acomptes - Régime simplifié d'imposition" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44583" Libelle="Remboursement de taxes sur le chiffre d'affaires demandé" Lib_court="Remboursement de taxes sur le chiffre d'" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44585" Libelle=" à régulariser - Retenue de garantie" Lib_court=" à régulariser - Retenue de garant" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="44588" Libelle="Autres taxes sur le chiffre d'affaires à régulariser ou en attente" Lib_court="Autres taxes sur le chiffre d'affaires à">
+              <Compte Code="445884" Libelle="TVA déduite sur avances versées - Régime des encaissements" Lib_court="TVA déduite/av.versées-Régime encaiss." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+              <Compte Code="445885" Libelle="TVA décaissée sur avances reçues - Régime des encaissements" Lib_court="TVA décaissée/av.versées-Régime encaiss." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+              <Compte Code="445886" Libelle="TVA à déduire lors du paiement - Régime des encaissements" Lib_court="TVA déduire au paiement-Régime encaiss." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+              <Compte Code="445888" Libelle="Autres taxes sur le chiffre d'affaires à régulariser ou en attente" Lib_court="Autres taxes sur le chiffre d'affaires à" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            </Compte>
+          </Compte>
+        </Compte>
+        <Compte Code="447" Libelle="Autres impôts, taxes et versements assimilés" Lib_court="Autres impôts, taxes et versements assim" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="448" Libelle="Etat et autres organismes publics - Charges à payer et produits à recevoir" Lib_court="Etat et org-Ch à payer, prod à recevoir" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS="">
+          <Compte Code="4486" Libelle="Autres charges à payer" Lib_court="Autres charges à payer" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4487" Libelle="Produits à recevoir" Lib_court="Produits à recevoir" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="45" Libelle="Comptabilité distincte rattachée" Lib_court="Comptabilité distincte rattachée">
+        <Compte Code="451" Libelle="Comptes de rattachement avec ... (à subdiviser par budgets annexes)" Lib_court="Comptes de rattachement avec ... (à subd" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="452" Libelle="Compte de rattachement avec la commune" Lib_court="Compte rattachement commune" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="455" Libelle="Recettes sur rôle pour le compte de tiers" Lib_court="Recettes / rôle pour le compte de tiers">
+          <Compte Code="4551" Libelle="Redevables sur rôle pour le compte de tiers" Lib_court="Redevables / rôle pour compte de tiers" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4557" Libelle="Produits sur rôle pour le compte de tiers" Lib_court="Produits / rôle pour le compte de tiers" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4558" Libelle="TVA sur rôle pour le compte de tiers" Lib_court="TVA sur rôle pour le compte de tiers">
+            <Compte Code="45581" Libelle="TVA sur rôle pour le compte de tiers - Prise en compte" Lib_court="TVA/rôle pour cpte tiers-Prise en compte" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="45582" Libelle="TVA sur rôle pour le compte de tiers - Encaissements" Lib_court="TVA/rôle pour cpte tiers - Encaissements" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4559" Libelle="Versements sur rôle pour le compte de tiers" Lib_court="Versements / rôle pour compte de tiers">
+            <Compte Code="45591" Libelle="TVA sur rôle pour le compte de tiers - Produits" Lib_court="TVA / rôle pour cpte de tiers - Produits" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="45592" Libelle="TVA sur rôle pour le compte de tiers - TVA" Lib_court="TVA / rôle pour le compte de tiers - TVA" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+        </Compte>
+      </Compte>
+      <Compte Code="46" Libelle="Débiteurs et créditeurs divers" Lib_court="Débiteurs et créditeurs divers">
+        <Compte Code="461" Libelle="Dons et legs en instance" Lib_court="Dons et legs en instance" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="462" Libelle="Créances sur cessions d'immobilisations" Lib_court="Créances sur cessions d'immobilisations">
+          <Compte Code="4621" Libelle="Créances sur cessions d'immobilisations - Amiable" Lib_court="Créances cessions immos - Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4626" Libelle="Créances sur cessions d'immobilisations - Contentieux" Lib_court="Créances cessions immos - Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="463" Libelle="Emprunts souscrits dans le public gérés par le centre d'action sociale" Lib_court="Emprunts souscrits dans le public gérés">
+          <Compte Code="4631" Libelle="Souscriptions reçues" Lib_court="Souscriptions reçues" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4632" Libelle="Intérêts à payer" Lib_court="Intérêts à payer" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4633" Libelle="Titres amortis (ou capital) à rembourser" Lib_court="Titres amortis (ou capital) à rembourser" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="464" Libelle="Encaissements pour le compte de tiers (hors rôles)" Lib_court="Encaiss. pour cpte de tiers (hors rôles)">
+          <Compte Code="4645" Libelle="Fonds des bénéficiaires d'une MASP" Lib_court="Fonds des bénéficiaires d'une MASP" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4648" Libelle="Autres encaissements pour le compte de tiers" Lib_court="Autres encaissements pour le compte de t" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="465" Libelle="Avances en garantie d'emprunt" Lib_court="Avances en garantie d'emprunt" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="466" Libelle="Excédents de versement" Lib_court="Excédents de versement" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="467" Libelle="Autres comptes débiteurs ou créditeurs" Lib_court="Autres comptes débiteurs ou créditeurs">
+          <Compte Code="4671" Libelle="Autres comptes créditeurs" Lib_court="Autres comptes créditeurs">
+            <Compte Code="46711" Libelle="Autres comptes créditeurs" Lib_court="Autres comptes créditeurs" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="46717" Libelle="Autres comptes créditeurs - Cessions, oppositions " Lib_court="Autres cptes créditeurs-Cessions, oppos." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4672" Libelle="Autres comptes débiteurs" Lib_court="Autres comptes débiteurs">
+            <Compte Code="46721" Libelle="Débiteurs divers - Amiable" Lib_court="Débiteurs divers - Amiable" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="46726" Libelle="Débiteurs divers - Contentieux" Lib_court="Débiteurs divers - Contentieux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4675" Libelle="Mandataires &#x96; Opérations déléguées - Recettes" Lib_court="Mandataires &#x96; Opérat° délég. - Recettes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4677" Libelle="Différences de conversion - Débiteurs ou créditeurs divers" Lib_court="Différences de conversion - Débiteurs ou">
+            <Compte Code="46771" Libelle="Différences de conversion - Créditeurs divers" Lib_court="Différences de conversion - Créditeurs d" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="46772" Libelle="Différences de conversion - Débiteurs divers" Lib_court="Différences de conversion - Débiteurs di" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+        </Compte>
+        <Compte Code="468" Libelle="Divers - Charges à payer et produits à recevoir" Lib_court="Divers - Charges à payer et produits à r">
+          <Compte Code="4686" Libelle="Charges à payer" Lib_court="Charges à payer" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4687" Libelle="Produits à recevoir" Lib_court="Produits à recevoir" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="47" Libelle="Comptes transitoires ou d'attente" Lib_court="Comptes transitoires ou d'attente">
+        <Compte Code="471" Libelle="Recettes à classer ou à régulariser" Lib_court="Recettes à classer ou à régulariser">
+          <Compte Code="4711" Libelle="Versements des régisseurs" Lib_court="Versements des régisseurs" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4712" Libelle="Virements réimputés" Lib_court="Virements réimputés" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4713" Libelle="Recettes perçues avant émission des titres" Lib_court="Recettes perçues avant émission des titr">
+            <Compte Code="47133" Libelle="Fonds d'emprunt" Lib_court="Fonds d'emprunt" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="47134" Libelle="Subventions" Lib_court="Subventions" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="47138" Libelle="Autres" Lib_court="Autres" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4714" Libelle="Recettes à réimputer" Lib_court="Recettes à réimputer">
+            <Compte Code="47141" Libelle="Recettes perçues en excédent à réimputer" Lib_court="Recettes perçues en excédent à réimputer">
+              <Compte Code="471411" Libelle="Excédents à réimputer - personnes physiques" Lib_court="Excédents à réimputer - pers. physiques" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+              <Compte Code="471412" Libelle="Excédents à réimputer - personnes morales" Lib_court="Excédents à réimputer - pers. morales" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            </Compte>
+            <Compte Code="47142" Libelle="Frais de saisie perçus avant prise en charge" Lib_court="Frais saisie perçu avant prise en charge" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="47143" Libelle="Flux d'encaissement à réimputer" Lib_court="Flux d'encaissement à réimputer" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4715" Libelle="Recettes à ventiler - Carte multiservices" Lib_court="Recettes à ventiler - Carte multiservice" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4716" Libelle="Versements des mandataires" Lib_court="Versements des mandataires" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4717" Libelle="Recettes relevé banque de France et DFT" Lib_court="Recettes relevé banque de France et DFT">
+            <Compte Code="47171" Libelle="Recettes relevé banque de France - Hors Héra" Lib_court="Recettes relevé BDF - Hors Héra" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="47172" Libelle="Recettes relevé banque de France - Héra" Lib_court="Recettes relevé BDF - Héra" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="47173" Libelle="Recettes relevé DFT - Hors Héra" Lib_court="Recettes relevé DFT - Hors Héra" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="47174" Libelle="Recettes relevé DFT - Héra" Lib_court="Recettes relevé DFT - Héra" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4718" Libelle="Autres recettes à régulariser" Lib_court="Autres recettes à régulariser" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="472" Libelle="Dépenses à classer ou à régulariser" Lib_court="Dépenses à classer ou à régulariser">
+          <Compte Code="4721" Libelle="Dépenses réglées sans mandatement préalable" Lib_court="Dépenses réglées sans mandatement préala">
+            <Compte Code="47211" Libelle="Remboursement d'annuités d'emprunt" Lib_court="Remboursement d'annuités d'emprunt" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="47218" Libelle="Autres dépenses" Lib_court="Autres dépenses" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4722" Libelle="Commissions bancaires en instance de mandatement" Lib_court="Com bancaires en instance de mandatement" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4725" Libelle="Secours d'urgence" Lib_court="Secours d'urgence" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4727" Libelle="Avances pour achats de valeurs mobilières" Lib_court="Avances pour achats de valeurs mobilière" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4728" Libelle="Autres dépenses à régulariser" Lib_court="Autres dépenses à régulariser" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="475" Libelle="Recettes sur rôle" Lib_court="Recettes sur rôle">
+          <Compte Code="4751" Libelle="Redevables sur rôle" Lib_court="Redevables sur rôle" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4757" Libelle="Produits sur rôle" Lib_court="Produits sur rôle" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4758" Libelle="TVA sur rôle" Lib_court="TVA sur rôle" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4759" Libelle="Versement du tiers en charge du rôle" Lib_court="Versement du tiers en charge du rôle" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="476" Libelle="Différences de conversion - Actif" Lib_court="Différences de conversion - Actif">
+          <Compte Code="4761" Libelle="Diminution des créances" Lib_court="Diminution des créances">
+            <Compte Code="47611" Libelle="Diminution des prêts" Lib_court="Diminution des prêts" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="47612" Libelle="Diminution d'autres créances" Lib_court="Diminution d'autres créances" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4762" Libelle="Augmentation des dettes" Lib_court="Augmentation des dettes">
+            <Compte Code="47621" Libelle="Augmentation d'emprunts et dettes assimilées" Lib_court="Augmentation d'emprunts et dettes assimi" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="47622" Libelle="Augmentation d'autres dettes" Lib_court="Augmentation d'autres dettes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4768" Libelle="Différences compensées par couverture de change" Lib_court="Différences compensées par couverture de" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="477" Libelle="Différences de conversion - Passif" Lib_court="Différences de conversion - Passif">
+          <Compte Code="4771" Libelle="Augmentation des créances" Lib_court="Augmentation des créances">
+            <Compte Code="47711" Libelle="Augmentation des prêts" Lib_court="Augmentation des prêts" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="47712" Libelle="Augmentation d'autres créances" Lib_court="Augmentation d'autres créances" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4772" Libelle="Diminution des dettes" Lib_court="Diminution des dettes">
+            <Compte Code="47721" Libelle="Diminution d'emprunts et dettes assimilées" Lib_court="Diminution d'emprunts et dettes assimilé" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="47722" Libelle="Diminution d'autres dettes" Lib_court="Diminution d'autres dettes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="4778" Libelle="Différences compensées par couverture de change" Lib_court="Différences compensées par couverture de" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="478" Libelle="Autres comptes transitoires" Lib_court="Autres comptes transitoires">
+          <Compte Code="4781" Libelle="Frais de poursuite rattachés" Lib_court="Frais de poursuite rattachés" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4784" Libelle="Arrondis sur déclaration de TVA" Lib_court="Arrondis sur déclaration de TVA" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4788" Libelle="Autres comptes transitoires" Lib_court="Autres comptes transitoires" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="48" Libelle="Comptes de régularisation" Lib_court="Comptes de régularisation">
+        <Compte Code="481" Libelle="Charges à répartir sur plusieurs exercices" Lib_court="Charges à rép. sur plusieurs exercices" RegrTotalise="1">
+          <Compte Code="4812" Libelle="Frais d'acquisition des immobilisations" Lib_court="Frais d'acquisition des immobilisations" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          <Compte Code="4815" Libelle="Charges liées à la crise sanitaire Covid-19" Lib_court="Charges liées à crise sanitaire Covid-19" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          <Compte Code="4816" Libelle="Frais d'émission des emprunts" Lib_court="Frais d'émission des emprunts" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          <Compte Code="4817" Libelle="Pénalités de renégociation de la dette" Lib_court="Pénalités de renégociation de la dette" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          <Compte Code="4818" Libelle="Charges à étaler" Lib_court="Charges à étaler" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+        </Compte>
+        <Compte Code="486" Libelle="Charges constatées d'avance" Lib_court="Charges constatées d'avance" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="487" Libelle="Produits constatés d'avance" Lib_court="Produits constatés d'avance" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="49" Libelle="Provisions pour dépréciation des comptes de tiers" Lib_court="Prov. dépréc. comptes de tiers" RegrTotalise="1">
+        <Compte Code="491" Libelle="Provisions pour dépréciation des comptes de redevables" Lib_court="Prov. dépréc. comptes redevables">
+          <Compte Code="4911" Libelle="Provisions pour dépréciation des comptes de redevables" Lib_court="Prov. dépréc. comptes redevables" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4912" Libelle="Provisions pour dépréciation des comptes de redevables" Lib_court="Prov. dépréc. comptes redevables" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+        </Compte>
+        <Compte Code="496" Libelle="Provisions pour dépréciation des comptes de débiteurs divers" Lib_court="Prov. dépréc. comptes débiteurs divers">
+          <Compte Code="4961" Libelle="Provisions pour dépréciation des comptes de débiteurs divers" Lib_court="Prov. dépréc. comptes débiteurs divers" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="4962" Libelle="Provisions pour dépréciation des comptes de débiteurs divers" Lib_court="Prov. dépréc. comptes débiteurs divers" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="50" Libelle="Valeurs mobilières de placement" Lib_court="Valeurs mobilières de placement">
+        <Compte Code="506" Libelle="Obligations" Lib_court="Obligations" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="507" Libelle="Bons du Trésor" Lib_court="Bons du Trésor" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="508" Libelle="Autres valeurs mobilières et créances assimilées" Lib_court="Autres valeurs mobilières et créances as" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="51" Libelle="Trésor, établissements financiers et assimilés" Lib_court="Trésor, établissements financiers et ass">
+        <Compte Code="511" Libelle="Valeurs à l'encaissement" Lib_court="Valeurs à l'encaissement">
+          <Compte Code="5113" Libelle="Titres spéciaux de paiement et assimilés à l'encaissement" Lib_court="Titres spéciaux de paiement et assimilés" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5115" Libelle="Cartes bancaires à l'encaissement" Lib_court="Cartes bancaires à l'encaissement" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5116" Libelle="TIP à l'encaissement" Lib_court="TIP à l'encaissement" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5117" Libelle="Valeurs impayées" Lib_court="Valeurs impayées">
+            <Compte Code="51172" Libelle="Chèques impayés" Lib_court="Chèques impayés" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="51175" Libelle="Cartes bancaires impayées" Lib_court="Cartes bancaires impayées" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="51176" Libelle="TIP impayés" Lib_court="TIP impayés" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="51178" Libelle="Autres valeurs impayées" Lib_court="Autres valeurs impayées" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="5118" Libelle="Autres valeurs à l'encaissement" Lib_court="Autres valeurs à l'encaissement" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="515" Libelle="Compte au Trésor" Lib_court="Compte au Trésor" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="516" Libelle="Comptes de placements (court terme)" Lib_court="Comptes de placements (court terme)">
+          <Compte Code="5161" Libelle="Comptes de placements rémunérés" Lib_court="Comptes de placements rémunérés" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5162" Libelle="Comptes à terme" Lib_court="Comptes à terme" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="518" Libelle="Intérêts courus" Lib_court="Intérêts courus">
+          <Compte Code="5186" Libelle="Intérêts courus à payer" Lib_court="Intérêts courus à payer" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5187" Libelle="Intérêts courus à recevoir" Lib_court="Intérêts courus à recevoir" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="519" Libelle="Concours financiers à court terme" Lib_court="Concours financiers à court terme">
+          <Compte Code="5191" Libelle="Avances du Trésor" Lib_court="Avances du Trésor" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5192" Libelle="Avances de trésorerie" Lib_court="Avances de trésorerie" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5193" Libelle="Lignes de crédit de trésorerie" Lib_court="Lignes de crédit de trésorerie">
+            <Compte Code="51931" Libelle="Lignes de crédit de trésorerie" Lib_court="Lignes de crédit de trésorerie" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="51932" Libelle="Lignes de crédit de trésorerie liées à un emprunt" Lib_court="Lignes de crédit de trésorerie liées à u" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="5198" Libelle="Autres crédits de trésorerie" Lib_court="Autres crédits de trésorerie" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="54" Libelle="Régies d'avance et accréditifs" Lib_court="Régies d'avance et accréditifs">
+        <Compte Code="541" Libelle="Disponibilités chez les régisseurs" Lib_court="Disponibilités chez les régisseurs">
+          <Compte Code="5411" Libelle="Régisseurs d'avances (avances)" Lib_court="Régisseurs d'avances (avances)" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5412" Libelle="Régisseurs de recettes (fonds de caisse)" Lib_court="Régisseurs de recettes (fonds de caisse)" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="542" Libelle="Disponibilités chez d'autres tiers" Lib_court="Disponibilités chez d'autres tiers">
+          <Compte Code="5421" Libelle="Administrateurs de legs" Lib_court="Administrateurs de legs" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5428" Libelle="Disponibilités chez d'autres tiers" Lib_court="Disponibilités chez d'autres tiers" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="58" Libelle="Virements internes" Lib_court="Virements internes">
+        <Compte Code="580" Libelle="Opérations d'ordre budgétaire" Lib_court="Opérations d'ordre budgétaire" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="584" Libelle="Encaissements par lecture optique" Lib_court="Encaissements par lecture optique" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="586" Libelle="Opérations financières entre le budget principal et ses budgets comptablement rattachés" Lib_court="Op. fin. budg. princ. et budg. rattachés" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="587" Libelle="Comptes pivots" Lib_court="Comptes pivots">
+          <Compte Code="5871" Libelle="Compte pivot - Encaissement régie à ventiler" Lib_court="Compte pivot - Encaiss. régie à ventiler" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5872" Libelle="Compte pivot - Admission en non valeur" Lib_court="Compte pivot - Admission en non valeur" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="588" Libelle="Autres virements internes" Lib_court="Autres virements internes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="589" Libelle="Comptes techniques" Lib_court="Comptes techniques">
+          <Compte Code="5891" Libelle="Reprise des balances d'entrée" Lib_court="Reprise des balances d'entrée" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5892" Libelle="Migration" Lib_court="Migration" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5893" Libelle="Migration des rôles" Lib_court="Migration des rôles" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="5894" Libelle="Ventilation comptes budgétaires" Lib_court="Ventilation comptes budgétaires" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="59" Libelle="Provisions pour dépréciation des comptes financiers" Lib_court="Prov. dépréc. comptes financiers" RegrTotalise="1">
+        <Compte Code="590" Libelle="Provisions pour dépréciation des valeurs mobilières de placement" Lib_court="Prov. dépréc. valeurs mobilières placemt">
+          <Compte Code="5906" Libelle="Obligations" Lib_court="Prov. dépréc. Obligations">
+            <Compte Code="59061" Libelle="Obligations" Lib_court="Prov. dépréc. Obligations" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="59062" Libelle="Obligations" Lib_court="Prov. dépréc. Obligations" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+          <Compte Code="5908" Libelle="Autres valeurs mobilières et créances assimilées" Lib_court="Prov. dépréc. Autres valeurs mobilières">
+            <Compte Code="59081" Libelle="Autres valeurs mobilières et créances assimilées" Lib_court="Prov. dépréc. Autres valeurs mobilières" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="59082" Libelle="Autres valeurs mobilières et créances assimilées" Lib_court="Prov. dépréc. Autres valeurs mobilières" DEquip="0" DR="" DOES="040" DOIS="" REquip="0" RR="" ROES="040" ROIS=""/>
+          </Compte>
+        </Compte>
+      </Compte>
+      <Compte Code="60" Libelle="Achats et variation des stocks" Lib_court="Achats et variation des stocks" RegrTotalise="1">
+        <Compte Code="601" Libelle="Achats stockés - Matières premières (et fournitures)" Lib_court="Achats stockés - Matières premières" DEquip="0" DR="011" DOES="042" DOIS="043" REquip="0" RR="013" ROES="042" ROIS="043"/>
+        <Compte Code="602" Libelle="Achats stockés - Autres approvisionnements" Lib_court="Achats stockés - Autres approvisionnemts">
+          <Compte Code="6021" Libelle="Matières consommables" Lib_court="Matières consommables" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6022" Libelle="Fournitures consommables autres qu'alimentation" Lib_court="Fournitures consommables hors alimentat°">
+            <Compte Code="60221" Libelle="Combustibles et carburants" Lib_court="Combustibles et carburants" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60222" Libelle="Produits d'entretien" Lib_court="Produits d'entretien" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60223" Libelle="Fournitures des ateliers" Lib_court="Fournitures des ateliers" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60224" Libelle="Fournitures administratives" Lib_court="Fournitures administratives" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60225" Libelle="Livres, disques, cassettes (bibliothèques, médiathèques)" Lib_court="Livres, disques, cassettes (médiathèque)" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60226" Libelle="Vêtements de travail" Lib_court="Vêtements de travail" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60227" Libelle="Fournitures éducatives et de loisirs" Lib_court="Fournitures scolaires" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60228" Libelle="Autres fournitures consommables" Lib_court="Autres fournitures consommables" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6023" Libelle="Alimentation" Lib_court="Alimentation" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="603" Libelle="Variation des stocks (approvisionnements et marchandises)" Lib_court="Variation des stocks">
+          <Compte Code="6031" Libelle="Variation des stocks de matières premières (et fournitures)" Lib_court="Variation stocks mat. premières" DEquip="0" DR="" DOES="042" DOIS="043" REquip="0" RR="" ROES="042" ROIS="043"/>
+          <Compte Code="6032" Libelle="Variation des stocks des autres approvisionnements" Lib_court="Variat° stocks autres approvisionnements" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="013" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="604" Libelle="Achats d'études, prestations de services" Lib_court="Achats d'études, prestations de services" DEquip="0" DR="011" DOES="" DOIS="043" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="605" Libelle="Achats de matériel, équipements et travaux" Lib_court="Achats matériel, équipements et travaux" DEquip="0" DR="011" DOES="" DOIS="043" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="606" Libelle="Achats non stockés de matières et fournitures" Lib_court="Achats non stockés de matières">
+          <Compte Code="6061" Libelle="Fournitures non stockables" Lib_court="Fournitures non stockables">
+            <Compte Code="60611" Libelle="Eau et assainissement" Lib_court="Eau et assainissement" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60612" Libelle="Energie - Electricité" Lib_court="Energie - Electricité" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60613" Libelle="Chauffage" Lib_court="Chauffage urbain" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60618" Libelle="Autres fournitures non stockables" Lib_court="Autres fournitures non stockables" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6062" Libelle="Fournitures non stockées" Lib_court="Fournitures non stockées">
+            <Compte Code="60621" Libelle="Combustibles" Lib_court="Combustibles" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60622" Libelle="Carburants" Lib_court="Carburants" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60623" Libelle="Alimentation" Lib_court="Alimentation" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60628" Libelle="Autres fournitures non stockées" Lib_court="Autres fournitures non stockées" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6063" Libelle="Fournitures d'entretien et de petit équipement" Lib_court="Fournitures entretien, petit équipement">
+            <Compte Code="60631" Libelle="Fournitures d'entretien" Lib_court="Fournitures d'entretien" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60632" Libelle="Fournitures de petit équipement" Lib_court="Fournitures de petit équipement" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="60636" Libelle="Vêtements de travail" Lib_court="Vêtements de travail" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6064" Libelle="Fournitures administratives" Lib_court="Fournitures administratives" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6065" Libelle="Livres, disques, cassettes, ... (bibliothèques et médiathèques)" Lib_court="Livres, disques, ... (médiathèque)" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6067" Libelle="Fournitures scolaires" Lib_court="Fournitures scolaires" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6068" Libelle="Autres matières et fournitures" Lib_court="Autres matières et fournitures" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="609" Libelle="Rabais, remises et ristournes obtenus sur achats" Lib_court="RRR obtenus sur achats" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="013" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="61" Libelle="Services extérieurs" Lib_court="Services extérieurs">
+        <Compte Code="611" Libelle="Contrats de prestations de services" Lib_court="Contrats de prestations de services" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="612" Libelle="Redevances de crédit-bail" Lib_court="Redevances de crédit-bail">
+          <Compte Code="6122" Libelle="Crédit-bail mobilier" Lib_court="Crédit-bail mobilier" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6125" Libelle="Crédit-bail immobilier" Lib_court="Crédit-bail immobilier" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="613" Libelle="Locations" Lib_court="Locations">
+          <Compte Code="6132" Libelle="Locations immobilières" Lib_court="Locations immobilières" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6135" Libelle="Locations mobilières" Lib_court="Locations mobilières" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="614" Libelle="Charges locatives et de copropriété" Lib_court="Charges locatives et de copropriété" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="615" Libelle="Entretien et réparations" Lib_court="Entretien et réparations">
+          <Compte Code="6152" Libelle="Entretien et réparations sur biens immobiliers" Lib_court="Entretien et réparat° biens immobiliers">
+            <Compte Code="61521" Libelle="Terrains" Lib_court="Entretien terrains" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="61522" Libelle="Bâtiments" Lib_court="Entretien bâtiments">
+              <Compte Code="615221" Libelle="Bâtiments publics" Lib_court="Entretien, réparations bâtiments publics" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+              <Compte Code="615228" Libelle="Autres bâtiments" Lib_court="Entretien, réparations autres bâtiments" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            </Compte>
+            <Compte Code="61523" Libelle="Voies et réseaux" Lib_court="Entretien voies et réseaux">
+              <Compte Code="615231" Libelle="Voiries" Lib_court="Entretien, réparations voiries" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+              <Compte Code="615232" Libelle="Réseaux" Lib_court="Entretien, réparations réseaux" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            </Compte>
+            <Compte Code="61524" Libelle="Bois et forêts" Lib_court="Entretien bois et forêts" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6155" Libelle="Entretien et réparations sur biens mobiliers" Lib_court="Entretien et réparations biens mobiliers">
+            <Compte Code="61551" Libelle="Matériel roulant" Lib_court="Entretien matériel roulant" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="61558" Libelle="Autres biens mobiliers" Lib_court="Entretien autres biens mobiliers" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6156" Libelle="Maintenance" Lib_court="Maintenance" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="616" Libelle="Primes d'assurances" Lib_court="Primes d'assurances">
+          <Compte Code="6161" Libelle="Multirisques" Lib_court="Multirisques" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6162" Libelle="Assurance obligatoire dommage - construction" Lib_court="Assur. obligatoire dommage-construction" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6168" Libelle="Autres" Lib_court="Autres primes d'assurance" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="617" Libelle="Etudes et recherches" Lib_court="Etudes et recherches" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="618" Libelle="Divers" Lib_court="Divers">
+          <Compte Code="6182" Libelle="Documentation générale et technique" Lib_court="Documentation générale et technique" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6184" Libelle="Versements à des organismes de formation" Lib_court="Versements à des organismes de formation" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6185" Libelle="Frais de colloques et de séminaires" Lib_court="Frais de colloques et de séminaires" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6188" Libelle="Autres frais divers" Lib_court="Autres frais divers" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="619" Libelle="Rabais, remises et ristournes obtenus sur services extérieurs" Lib_court="RRR obtenus sur services extérieurs" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="013" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="62" Libelle="Autres services extérieurs" Lib_court="Autres services extérieurs">
+        <Compte Code="621" Libelle="Personnel extérieur au service" Lib_court="Personnel extérieur au service">
+          <Compte Code="6215" Libelle="Personnel affecté par la collectivité de rattachement" Lib_court="Personnel affecté par CL de rattachement" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6218" Libelle="Autre personnel extérieur" Lib_court="Autre personnel extérieur" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="622" Libelle="Rémunérations d'intermédiaires et honoraires" Lib_court="Rémunérations intermédiaires, honoraires">
+          <Compte Code="6225" Libelle="Indemnités au comptable et aux régisseurs" Lib_court="Indemnités aux comptable et régisseurs" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6226" Libelle="Honoraires" Lib_court="Honoraires" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6227" Libelle="Frais d'actes et de contentieux" Lib_court="Frais d'actes et de contentieux" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6228" Libelle="Divers" Lib_court="Divers" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="623" Libelle="Publicité, publications, relations publiques" Lib_court="Publicité, publicat°, relat° publiques">
+          <Compte Code="6231" Libelle="Annonces et insertions" Lib_court="Annonces et insertions" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6232" Libelle="Fêtes et cérémonies" Lib_court="Fêtes et cérémonies" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6233" Libelle="Foires et expositions" Lib_court="Foires et expositions" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6236" Libelle="Catalogues et imprimés" Lib_court="Catalogues et imprimés" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6237" Libelle="Publications" Lib_court="Publications" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6238" Libelle="Divers" Lib_court="Divers" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="624" Libelle="Transports de biens et transports collectifs" Lib_court="Transports biens, transports collectifs">
+          <Compte Code="6241" Libelle="Transports de biens" Lib_court="Transports de biens" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6244" Libelle="Transports administratifs" Lib_court="Transports administratifs" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6247" Libelle="Transports collectifs" Lib_court="Transports collectifs" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6248" Libelle="Divers" Lib_court="Divers" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="625" Libelle="Déplacements, missions et réceptions" Lib_court="Déplacements, missions et réceptions">
+          <Compte Code="6251" Libelle="Voyages et déplacements" Lib_court="Voyages et déplacements" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6255" Libelle="Frais de déménagement" Lib_court="Frais de déménagement" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6256" Libelle="Missions" Lib_court="Missions" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6257" Libelle="Réceptions" Lib_court="Réceptions" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="626" Libelle="Frais postaux et frais de télécommunications" Lib_court="Frais postaux et frais télécommunicat°">
+          <Compte Code="6261" Libelle="Frais d'affranchissement" Lib_court="Frais d'affranchissement" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6262" Libelle="Frais de télécommunications" Lib_court="Frais de télécommunications" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="627" Libelle="Services bancaires et assimilés" Lib_court="Services bancaires et assimilés" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="628" Libelle="Divers" Lib_court="Divers">
+          <Compte Code="6281" Libelle="Concours divers (cotisations)" Lib_court="Concours divers (cotisations)" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6282" Libelle="Frais de gardiennage" Lib_court="Frais de gardiennage" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6283" Libelle="Frais de nettoyage des locaux" Lib_court="Frais de nettoyage des locaux" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6287" Libelle="Remboursements de frais" Lib_court="Remboursements de frais">
+            <Compte Code="62871" Libelle="à la collectivité de rattachement" Lib_court="Remb. frais à la collectivité rattach." DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="62872" Libelle="au budget annexe" Lib_court="Remb. frais au budget annexe" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="62878" Libelle="à d'autres organismes" Lib_court="Remb. frais à d'autres organismes" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6288" Libelle="Autres" Lib_court="Autres services extérieurs" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="629" Libelle="Rabais, remises et ristournes obtenus sur autres services extérieurs" Lib_court="RRR obtenus / autres services extérieurs" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="013" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="63" Libelle="Impôts, taxes et versements assimilés" Lib_court="Impôts, taxes et versements assimilés">
+        <Compte Code="631" Libelle="Impôts, taxes et versements assimilés sur rémunérations (administration des impôts)" Lib_court="Impôts, taxes, versement (Admin. Impôts)" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="633" Libelle="Impôts, taxes et versements assimilés sur rémunérations (autres organismes)" Lib_court="Impôts, taxes, versements (autre orga.)">
+          <Compte Code="6331" Libelle="Versement mobilité" Lib_court="Versement mobilité" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6332" Libelle="Cotisations versées au F.N.A.L." Lib_court="Cotisations versées au F.N.A.L." DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6333" Libelle="Participation des employeurs à la formation professionnelle continue" Lib_court="Particip. employeurs format° prof. cont." DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6336" Libelle="Cotisations au centre national et aux centres de gestion de la fonction publique territoriale" Lib_court="Cotisations CNFPT et CDGFPT" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6338" Libelle="Autres impôts, taxes et versements assimilés sur rémunérations" Lib_court="Autres impôts, taxes sur rémunérations" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="635" Libelle="Autres impôts, taxes et versements assimilés (administration des impôts)" Lib_court="Autres impôts, taxes (Admin Impôts)">
+          <Compte Code="6351" Libelle="Impôts directs" Lib_court="Impôts directs">
+            <Compte Code="63512" Libelle="Taxes foncières" Lib_court="Taxes foncières" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="63513" Libelle="Autres impôts locaux" Lib_court="Autres impôts locaux" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6353" Libelle="Impôts indirects" Lib_court="Impôts indirects" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6354" Libelle="Droits d'enregistrement et de timbre" Lib_court="Droits d'enregistrement et de timbre" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6355" Libelle="Taxes et impôts sur les véhicules" Lib_court="Taxes et impôts sur les véhicules" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6358" Libelle="Autres droits" Lib_court="Autres droits" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="637" Libelle="Autres impôts, taxes et versements assimilés (autres organismes)" Lib_court="Autres impôts, taxes (autres organismes)" DEquip="0" DR="011" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="64" Libelle="Charges de personnel" Lib_court="Charges de personnel">
+        <Compte Code="641" Libelle="Rémunérations du personnel" Lib_court="Rémunérations du personnel">
+          <Compte Code="6411" Libelle="Personnel titulaire" Lib_court="Personnel titulaire">
+            <Compte Code="64111" Libelle="Rémunération principale" Lib_court="Rémunération principale titulaires" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64112" Libelle="NBI, supplément familial de traitement et indemnité de résidence" Lib_court="NBI, SFT, indemnité résidence" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64114" Libelle="Personnel titulaire &#x96; Indemnité inflation" Lib_court="Personnel titulaire &#x96; Indemnité inflat°" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64116" Libelle="Indemnités de préavis et de licenciement" Lib_court="Indemnités préavis, licenciement titul." DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64118" Libelle="Autres indemnités" Lib_court="Autres indemnités titulaires" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6413" Libelle="Personnel non titulaire" Lib_court="Personnel non titulaire">
+            <Compte Code="64131" Libelle="Rémunérations" Lib_court="Rémunérations non tit." DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64134" Libelle="Personnel non titulaire - Indemnité inflation" Lib_court="Personnel non tit. - Indemnité inflat°" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64136" Libelle="Indemnités de préavis et de licenciement" Lib_court="Indemnités préavis licenciement non tit." DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64138" Libelle="Autres indemnités" Lib_court="Autres indemnités non tit." DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6416" Libelle="Emplois d'insertion" Lib_court="Emplois d'insertion">
+            <Compte Code="64161" Libelle="Emplois jeunes" Lib_court="Emplois jeunes" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64162" Libelle="Emplois d'avenir" Lib_court="Emplois d'avenir" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64164" Libelle="Emplois d&#x92;insertion &#x96; indemnité inflation" Lib_court="Emplois d&#x92;insertion &#x96; indemnité inflat°" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64168" Libelle="Autres emplois d'insertion" Lib_court="Autres emplois d'insertion" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6417" Libelle="Rémunérations des apprentis" Lib_court="Rémunérations des apprentis" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS="" Supprime="1" SupprimeDepuis="2021-11-25T14:00:00">
+            <Compte Code="64171" Libelle="Apprentis - rémunérations" Lib_court="Apprentis - rémunérations" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64172" Libelle="Apprentis &#x96; indemnité inflation" Lib_court="Apprentis &#x96; indemnité inflation" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6419" Libelle="Remboursements sur rémunérations du personnel" Lib_court="Remboursements rémunérations personnel" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="013" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="645" Libelle="Charges de sécurité sociale et de prévoyance" Lib_court="Charges sécurité sociale et prévoyance">
+          <Compte Code="6451" Libelle="Cotisations à l'U.R.S.S.A.F." Lib_court="Cotisations à l'U.R.S.S.A.F." DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6453" Libelle="Cotisations aux caisses de retraites" Lib_court="Cotisations aux caisses de retraites" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6454" Libelle="Cotisations aux A.S.S.E.D.I.C." Lib_court="Cotisations aux A.S.S.E.D.I.C." DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6455" Libelle="Cotisations pour assurance du personnel" Lib_court="Cotisations pour assurance du personnel" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6456" Libelle="Versement au F.N.C. du supplément familial" Lib_court="Versement au F.N.C. supplément familial" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6457" Libelle="Cotisations sociales liées à l'apprentissage" Lib_court="Cotis. sociales liées à l'apprentissage" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6458" Libelle="Cotisations aux autres organismes sociaux" Lib_court="Cotis. aux autres organismes sociaux" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6459" Libelle="Remboursement sur charges de sécurité sociale et de prévoyance" Lib_court="Rembourst charges SS et prévoyance" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="013" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="647" Libelle="Autres charges sociales" Lib_court="Autres charges sociales">
+          <Compte Code="6471" Libelle="Prestations versées pour le compte du F.N.A.L." Lib_court="Prestat° versées pour le compte du FNAL." DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6472" Libelle="Prestations familiales directes" Lib_court="Prestations familiales directes" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6473" Libelle="Allocations de chômage" Lib_court="Allocations de chômage">
+            <Compte Code="64731" Libelle="Allocations de chômage versées directement" Lib_court="Allocations chômage versées directement" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="64732" Libelle="Allocations de chômage versées aux A.S.S.E.D.I.C." Lib_court="Alloc. chômage versées aux ASSEDIC" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6474" Libelle="Versement aux autres oeuvres sociales" Lib_court="Versement aux autres oeuvres sociales" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6475" Libelle="Médecine du travail, pharmacie" Lib_court="Médecine du travail, pharmacie" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6478" Libelle="Autres charges sociales diverses" Lib_court="Autres charges sociales diverses" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6479" Libelle="Remboursements sur autres charges sociales" Lib_court="Rembourst sur autres charges sociales" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="013" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="648" Libelle="Autres charges de personnel" Lib_court="Autres charges de personnel">
+          <Compte Code="6483" Libelle="Cessation progressive d'activité" Lib_court="Cessation progressive d'activité">
+            <Compte Code="64831" Libelle="Indemnités aux agents" Lib_court="Indemnités aux agents" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6488" Libelle="Autres charges" Lib_court="Autres charges" DEquip="0" DR="012" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="65" Libelle="Autres charges de gestion courante" Lib_court="Autres charges de gestion courante">
+        <Compte Code="651" Libelle="Redevances pour concessions, brevets, licences, procédés, droits et valeurs similaires" Lib_court="Redevances pour licences, logiciels, ...">
+          <Compte Code="6512" Libelle="Droits d'utilisation &#x96; informatique en nuage " Lib_court="Droits d'utilisat° &#x96; informatique nuage" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6518" Libelle="Autres" Lib_court="Autres" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="652" Libelle="Déficit des budgets annexes à caractère administratif" Lib_court="Déficit ou excédent des budgets annexes" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="653" Libelle="Indemnités, frais de mission et de formation du président et des membres du conseil d'administration" Lib_court="Indemnités, frais et format° élus">
+          <Compte Code="6531" Libelle="Indemnités" Lib_court="Indemnités" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6532" Libelle="Frais de mission" Lib_court="Frais de mission" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6533" Libelle="Cotisations de retraite" Lib_court="Cotisations de retraite" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6534" Libelle="Cotisations de sécurité sociale - part patronale" Lib_court="Cotis. de sécurité sociale - part patron" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6535" Libelle="Formation" Lib_court="Formation" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="654" Libelle="Pertes sur créances irrécouvrables" Lib_court="Pertes sur créances irrécouvrables">
+          <Compte Code="6541" Libelle="Créances admises en non-valeur" Lib_court="Créances admises en non-valeur" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6542" Libelle="Créances éteintes" Lib_court="Créances éteintes" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="655" Libelle="Contingents et participations obligatoires" Lib_court="Contingents et participat° obligatoires">
+          <Compte Code="6555" Libelle="Contributions au C.N.F.P.T. (personnel privé d'emploi)" Lib_court="Contrib. CNFPT (personnel privé emploi)" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6558" Libelle="Autres contributions obligatoires" Lib_court="Autres contributions obligatoires" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="656" Libelle="Secours" Lib_court="Secours">
+          <Compte Code="6561" Libelle="Secours d'urgence" Lib_court="Secours d'urgence" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6562" Libelle="Aides" Lib_court="Aides" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6568" Libelle="Autres secours" Lib_court="Autres secours" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="657" Libelle="Subventions de fonctionnement versées" Lib_court="Subventions de fonctionnement versées">
+          <Compte Code="6573" Libelle="Subventions de fonctionnement aux organismes publics" Lib_court="Subv. fonct. Organismes publics" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6574" Libelle="Subventions de fonctionnement aux associations et autres personnes de droit privé" Lib_court="Subv. fonct. Assoc., personnes privées" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="658" Libelle="Charges diverses de la gestion courante" Lib_court="Charges diverses de gestion courante" DEquip="0" DR="65" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="66" Libelle="Charges financières" Lib_court="Charges financières" RegrTotalise="1">
+        <Compte Code="661" Libelle="Charges d'intérêts" Lib_court="Charges d'intérêts">
+          <Compte Code="6611" Libelle="Intérêts des emprunts et dettes" Lib_court="Intérêts des emprunts et dettes">
+            <Compte Code="66111" Libelle="Intérêts réglés à l'échéance" Lib_court="Intérêts réglés à l'échéance" DEquip="0" DR="66" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+            <Compte Code="66112" Libelle="Intérêts - Rattachement des ICNE" Lib_court="Intérêts - Rattachement des ICNE" DEquip="0" DR="66" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="6615" Libelle="Intérêts des comptes courants et de dépôts créditeurs" Lib_court="Intérêts comptes courants et de dépôts" DEquip="0" DR="66" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6616" Libelle="Intérêts bancaires et sur opérations de financement (escompte, )" Lib_court="Intérêts bancaires, opérat° financement" DEquip="0" DR="66" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6618" Libelle="Intérêts des autres dettes" Lib_court="Intérêts des autres dettes" DEquip="0" DR="66" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="666" Libelle="Pertes de change" Lib_court="Pertes de change" DEquip="0" DR="66" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="667" Libelle="Charges nettes sur cessions de valeurs mobilières de placement" Lib_court="Charges nettes cessions valeurs mobil." DEquip="0" DR="66" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="668" Libelle="Autres charges financières" Lib_court="Autres charges financières">
+          <Compte Code="6681" Libelle="Indemnité pour remboursement anticipé d'emprunt à risque" Lib_court="Indemnité rbt anticipé emprunt à risque" DEquip="0" DR="66" DOES="042" DOIS="043" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6682" Libelle="Indemnité de réaménagement d'emprunt (pour ordre)" Lib_court="Indemnité de réaménagement d'emprunt" DEquip="0" DR="66" DOES="042" DOIS="043" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6688" Libelle="Autres" Lib_court="Autres" DEquip="0" DR="66" DOES="042" DOIS="043" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="67" Libelle="Charges exceptionnelles" Lib_court="Charges exceptionnelles" RegrTotalise="1">
+        <Compte Code="671" Libelle="Charges exceptionnelles sur opérations de gestion" Lib_court="Charges exceptionnelles opérat° gestion">
+          <Compte Code="6711" Libelle="Intérêts moratoires et pénalités sur marchés" Lib_court="Intérêts moratoires, pénalités / marché" DEquip="0" DR="67" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6712" Libelle="Amendes fiscales et pénales" Lib_court="Amendes fiscales et pénales" DEquip="0" DR="67" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6715" Libelle="Subventions de fonctionnement aux budgets annexes" Lib_court="Subv. Fonct. aux budgets annexes" DEquip="0" DR="67" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6718" Libelle="Autres charges exceptionnelles sur opérations de gestion" Lib_court="Autres charges exceptionnelles gestion" DEquip="0" DR="67" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="673" Libelle="Titres annulés (sur exercices antérieurs)" Lib_court="Titres annulés (exercices antérieurs)" DEquip="0" DR="67" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="674" Libelle="Subventions de fonctionnement exceptionnelles" Lib_court="Subv. fonctionnement exceptionnelles" DEquip="0" DR="67" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="675" Libelle="Valeurs comptables des immobilisations cédées" Lib_court="Valeurs comptables immos cédées" DEquip="0" DR="" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="676" Libelle="Différences sur réalisations (positives) transférées en investissement" Lib_court="Différences sur réalisations (positives)">
+          <Compte Code="6761" Libelle="Différences sur réalisations (positives) transférées en investissement" Lib_court="Différences sur réalisations (positives)" DEquip="0" DR="" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="678" Libelle="Autres charges exceptionnelles" Lib_court="Autres charges exceptionnelles" DEquip="0" DR="67" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="68" Libelle="Dotations aux amortissements et provisions" Lib_court="Dot. aux amortissements et provisions" RegrTotalise="1">
+        <Compte Code="681" Libelle="Dotations aux amortissements et aux provisions - Charges de fonctionnement courant" Lib_court="Dot. amort. Charges fonct. courant">
+          <Compte Code="6811" Libelle="Dotations aux amortissements des immobilisations incorporelles et corporelles" Lib_court="Dot. amort. Immos incorporelles et corpo" DEquip="0" DR="" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6812" Libelle="Dotations aux amortissements des charges de fonctionnement à répartir" Lib_court="Dot. amort. et prov. Charges à répartir" DEquip="0" DR="" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6815" Libelle="Dotations aux provisions pour risques et charges de fonctionnement" Lib_court="Dot. prov. pour risques fonct. courant" DEquip="0" DR="68" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6816" Libelle="Dotations aux provisions pour dépréciation des immobilisations incorporelles et corporelles" Lib_court="Dot. prov. Dépr. Immos corpo. et incorp." DEquip="0" DR="68" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6817" Libelle="Dotations aux provisions pour dépréciation des actifs circulants" Lib_court="Dot. prov. dépréc. actifs circulants" DEquip="0" DR="68" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="686" Libelle="Dotations aux amortissements et aux provisions - Charges financières" Lib_court="Dot. amort. et prov. Charges financières">
+          <Compte Code="6861" Libelle="Dotations aux amortissements des primes de remboursement des obligations" Lib_court="Dot. amort. Primes rembourst obligation" DEquip="0" DR="" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6862" Libelle="Dotations aux amortissements des charges financières à répartir" Lib_court="Dot. amort. charges financ. à répartir" DEquip="0" DR="" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6865" Libelle="Dotations aux provisions pour risques et charges financiers" Lib_court="Dot. prov. risques et charges financiers" DEquip="0" DR="68" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6866" Libelle="Dotations aux provisions pour dépréciation des éléments financiers" Lib_court="Dot. prov. dépréc. éléments financiers" DEquip="0" DR="68" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="687" Libelle="Dotations aux amortissements et aux provisions - Charges exceptionnelles" Lib_court="Dot. amort. et prov. charges exception.">
+          <Compte Code="6871" Libelle="Dotations aux amortissements exceptionnels des immobilisations" Lib_court="Dot. amort. exceptionnels immos" DEquip="0" DR="" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6875" Libelle="Dotations aux provisions pour risques et charges exceptionnels" Lib_court="Dot. prov. risques et charges exception." DEquip="0" DR="68" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="6876" Libelle="Dotations aux provisions pour dépréciations exceptionnelles" Lib_court="Dot. prov. dépréc. exceptionnelles" DEquip="0" DR="68" DOES="042" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="70" Libelle="Produits des services, du domaine et ventes diverses" Lib_court="Produits services, du domaine, ventes">
+        <Compte Code="701" Libelle="Ventes de produits finis" Lib_court="Ventes de produits finis" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+        <Compte Code="702" Libelle="Ventes de récoltes et de produits forestiers" Lib_court="Ventes récoltes et produits forestiers" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+        <Compte Code="703" Libelle="Redevances et recettes d'utilisation du domaine" Lib_court="Redevances utilisation du domaine">
+          <Compte Code="7031" Libelle="Concessions et redevances funéraires" Lib_court="Concessions et redevances funéraires" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+          <Compte Code="7035" Libelle="Locations de droits de chasse et de pêche" Lib_court="Locations de droits de chasse et pêche" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+          <Compte Code="7038" Libelle="Autres redevances et recettes d'utilisation du domaine" Lib_court="Autres redevances et recettes domaine" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="704" Libelle="Travaux" Lib_court="Travaux" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+        <Compte Code="705" Libelle="Etudes" Lib_court="Etudes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+        <Compte Code="706" Libelle="Prestations de services" Lib_court="Prestations de services" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+        <Compte Code="708" Libelle="Autres produits" Lib_court="Autres produits">
+          <Compte Code="7081" Libelle="Produits des services exploités dans l'intérêt du personnel" Lib_court="Services exploités intérêt du personnel" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+          <Compte Code="7082" Libelle="Commissions" Lib_court="Commissions" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+          <Compte Code="7083" Libelle="Locations diverses (autres qu'immeubles)" Lib_court="Locations diverses (autres qu'immeubles)" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+          <Compte Code="7084" Libelle="Mise à disposition de personnel facturée" Lib_court="Mise à disposition de personnel facturée">
+            <Compte Code="70841" Libelle="aux budgets annexes" Lib_court="Mise à dispo personnel budges annexes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+            <Compte Code="70848" Libelle="aux autres organismes" Lib_court="Mise à dispo personnel autres organismes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="7087" Libelle="Remboursement de frais" Lib_court="Remboursement de frais">
+            <Compte Code="70871" Libelle="par la collectivité de rattachement" Lib_court="Remb. frais par collectivité rattach." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+            <Compte Code="70872" Libelle="par un budget annexe" Lib_court="Remboursement frais par budget annexe" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+            <Compte Code="70878" Libelle="par d'autres redevables" Lib_court="Remb. frais par d'autres redevables" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="7088" Libelle="Autres produits d'activités annexes" Lib_court="Autres produits d'activités annexes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="70" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="71" Libelle="Production stockée (ou déstockage)" Lib_court="Production stockée (ou déstockage)" RegrTotalise="1">
+        <Compte Code="713" Libelle="Variation des stocks (en-cours de production, produits)" Lib_court="Variat° stocks (en-cours de product°)">
+          <Compte Code="7133" Libelle="Variation des en-cours de production de biens" Lib_court="Variat° en-cours de production biens" DEquip="0" DR="" DOES="042" DOIS="043" REquip="0" RR="" ROES="042" ROIS="043"/>
+          <Compte Code="7134" Libelle="Variation des en-cours de production de services" Lib_court="Variat° en-cours production services" DEquip="0" DR="" DOES="042" DOIS="043" REquip="0" RR="" ROES="042" ROIS="043"/>
+          <Compte Code="7135" Libelle="Variation des stocks de produits" Lib_court="Variation des stocks de produits" DEquip="0" DR="" DOES="042" DOIS="043" REquip="0" RR="" ROES="042" ROIS="043"/>
+        </Compte>
+      </Compte>
+      <Compte Code="72" Libelle="Production immobilisée" Lib_court="Production immobilisée" RegrTotalise="1">
+        <Compte Code="721" Libelle="Immobilisations incorporelles" Lib_court="Immobilisations incorporelles" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="042" ROIS=""/>
+        <Compte Code="722" Libelle="Immobilisations corporelles" Lib_court="Immobilisations corporelles" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="042" ROIS=""/>
+      </Compte>
+      <Compte Code="73" Libelle="Impôts et taxes" Lib_court="Impôts et taxes">
+        <Compte Code="736" Libelle="Impôts et taxes spécifiques liés aux activités de services" Lib_court="Impôts et taxes / activités services">
+          <Compte Code="7363" Libelle="Impôt sur les spectacles" Lib_court="Impôt sur les spectacles" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="73" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="74" Libelle="Dotations et participations" Lib_court="Dotations et participations">
+        <Compte Code="744" Libelle="FCTVA" Lib_court="FCTVA" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="74" ROES="" ROIS=""/>
+        <Compte Code="747" Libelle="Participations" Lib_court="Participations">
+          <Compte Code="7471" Libelle="Etat" Lib_court="Participat° Etat">
+            <Compte Code="74711" Libelle="Emploi jeunes" Lib_court="Participat° Etat emploi jeunes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="74" ROES="" ROIS=""/>
+            <Compte Code="74712" Libelle="Emplois d'avenir" Lib_court="Emplois d'avenir" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="74" ROES="" ROIS=""/>
+            <Compte Code="74718" Libelle="Autres" Lib_court="Autres participations Etat" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="74" ROES="" ROIS=""/>
+          </Compte>
+          <Compte Code="7472" Libelle="Régions" Lib_court="Participat° Régions" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="74" ROES="" ROIS=""/>
+          <Compte Code="7473" Libelle="Départements" Lib_court="Participat° Départements" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="74" ROES="" ROIS=""/>
+          <Compte Code="7474" Libelle="Communes" Lib_court="Participat° Communes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="74" ROES="" ROIS=""/>
+          <Compte Code="7475" Libelle="Groupements de collectivités et collectivités à statut particulier" Lib_court="Group. coll et coll. statut particulier" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="74" ROES="" ROIS=""/>
+          <Compte Code="7477" Libelle="Autres établissements publics locaux" Lib_court="Participat° Budget communautaire et FS" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="74" ROES="" ROIS=""/>
+          <Compte Code="7478" Libelle="Autres organismes" Lib_court="Participat° Autres organismes" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="74" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="748" Libelle="Autres attributions et participations" Lib_court="Autres attributions et participations" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="74" ROES="" ROIS=""/>
+      </Compte>
+      <Compte Code="75" Libelle="Autres produits de gestion courante" Lib_court="Autres produits de gestion courante" RegrTotalise="1">
+        <Compte Code="751" Libelle="Redevances pour concessions, brevets, licences, marques, procédés, logiciels, droits et valeurs similaires" Lib_court="Redevances pour licences, logiciels, ..." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="75" ROES="" ROIS=""/>
+        <Compte Code="752" Libelle="Revenus des immeubles" Lib_court="Revenus des immeubles" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="75" ROES="042" ROIS=""/>
+        <Compte Code="755" Libelle="Excédents reversés par les budgets annexes à caractère administratif" Lib_court="Excédents reversés budgets annexes adm." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="75" ROES="" ROIS=""/>
+        <Compte Code="758" Libelle="Produits divers de gestion courante" Lib_court="Produits divers de gestion courante" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="75" ROES="042" ROIS=""/>
+      </Compte>
+      <Compte Code="76" Libelle="Produits financiers" Lib_court="Produits financiers" RegrTotalise="1">
+        <Compte Code="761" Libelle="Produits de participations" Lib_court="Produits de participations" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="76" ROES="" ROIS=""/>
+        <Compte Code="762" Libelle="Produits des autres immobilisations financières" Lib_court="Produits autres immo. financières">
+          <Compte Code="7621" Libelle="Produits des autres immobilisations financières - encaissés à l'échéance" Lib_court="Prod. Immo. Fin. - encaissés à échéance" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="76" ROES="042" ROIS=""/>
+          <Compte Code="7622" Libelle="Produits des autres immobilisations financières - rattachement des ICNE" Lib_court="Prod. Immo. Fin. - rattachement des ICNE" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="76" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="764" Libelle="Revenus des valeurs mobilières de placement" Lib_court="Revenus valeurs mobilières de placement" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="76" ROES="" ROIS=""/>
+        <Compte Code="765" Libelle="Escomptes obtenus" Lib_court="Escomptes obtenus" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="76" ROES="" ROIS=""/>
+        <Compte Code="766" Libelle="Gains de change" Lib_court="Gains de change" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="76" ROES="042" ROIS=""/>
+        <Compte Code="767" Libelle="Produits nets sur cession de valeurs mobilières de placement" Lib_court="Produits nets cession V.M.P." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="76" ROES="" ROIS=""/>
+        <Compte Code="768" Libelle="Autres produits financiers" Lib_court="Autres produits financiers" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="76" ROES="042" ROIS=""/>
+      </Compte>
+      <Compte Code="77" Libelle="Produits exceptionnels" Lib_court="Produits exceptionnels" RegrTotalise="1">
+        <Compte Code="771" Libelle="Produits exceptionnels sur opérations de gestion" Lib_court="Produits exception. / opérations gestion">
+          <Compte Code="7711" Libelle="Dédits et pénalités perçus" Lib_court="Dédits et pénalités perçus" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="77" ROES="" ROIS=""/>
+          <Compte Code="7713" Libelle="Libéralités reçues" Lib_court="Libéralités reçues" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="77" ROES="" ROIS=""/>
+          <Compte Code="7714" Libelle="Recouvrement sur créances admises en non valeur" Lib_court="Recouvrt créances admises en non valeur" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="77" ROES="" ROIS=""/>
+          <Compte Code="7718" Libelle="Autres produits exceptionnels sur opérations de gestion" Lib_court="Autres produits except. opérat° gestion" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="77" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="773" Libelle="Mandats annulés (sur exercices antérieurs) ou atteints par la déchéance quadriennale" Lib_court="Mandats annulés (exercices antérieurs)" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="77" ROES="042" ROIS=""/>
+        <Compte Code="774" Libelle="Subventions exceptionnelles" Lib_court="Subventions exceptionnelles" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="77" ROES="" ROIS=""/>
+        <Compte Code="775" Libelle="Produits des cessions d'immobilisations" Lib_court="Produits des cessions d'immobilisations" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="77" ROES="" ROIS=""/>
+        <Compte Code="776" Libelle="Différences sur réalisations (négatives) reprises au compte de résultat" Lib_court="Différences sur réalisations (négatives)">
+          <Compte Code="7761" Libelle="Différences sur réalisations (positives) transférées en investissement" Lib_court="Diff / réal (+) transférées en invest." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="042" ROIS=""/>
+          <Compte Code="7768" Libelle="Neutralisation des amortissements des subventions d'équipement versées" Lib_court="Neutral. amort. subv. équip. versées" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="77" ROES="042" ROIS=""/>
+        </Compte>
+        <Compte Code="777" Libelle="Quote-part des subventions d'investissement transférée au compte de résultat" Lib_court="Quote-part subv inv. transf cpte résult" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="042" ROIS=""/>
+        <Compte Code="778" Libelle="Autres produits exceptionnels" Lib_court="Autres produits exceptionnels">
+          <Compte Code="7785" Libelle="Excédent d'investissement transféré au compte de résultat" Lib_court="Excédent invest. transféré cpte résultat" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="042" ROIS=""/>
+          <Compte Code="7788" Libelle="Produits exceptionnels divers" Lib_court="Produits exceptionnels divers" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="77" ROES="042" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="78" Libelle="Reprises sur amortissements et provisions" Lib_court="Reprise sur amortissements et provisions" RegrTotalise="1">
+        <Compte Code="781" Libelle="Reprises sur amortissements et provisions - Produits de fonctionnement courant" Lib_court="Rep. amort. produits fonct. courant">
+          <Compte Code="7811" Libelle="Reprises sur amortissements des immobilisations incorporelles et corporelles" Lib_court="Rep. amort. immos corpo. et incorp." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="042" ROIS=""/>
+          <Compte Code="7815" Libelle="Reprises sur provisions pour risques et charges de fonctionnement courant" Lib_court="Rep. prov. charges fonctionnt courant" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="78" ROES="042" ROIS=""/>
+          <Compte Code="7816" Libelle="Reprises sur provisions pour dépréciation des immobilisations incorporelles et corporelles" Lib_court="Rep. prov. dépr. immos corpo. et incorp." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="78" ROES="042" ROIS=""/>
+          <Compte Code="7817" Libelle="Reprises sur provisions pour dépréciation des actifs circulants" Lib_court="Rep. prov. dépréc. actifs circulants" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="78" ROES="042" ROIS=""/>
+        </Compte>
+        <Compte Code="786" Libelle="Reprises sur provisions - Produits financiers" Lib_court="Rep. prov. - Produits financiers">
+          <Compte Code="7865" Libelle="Reprises sur provisions pour risques et charges financiers" Lib_court="Rep. prov. Risques, charges financiers" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="78" ROES="042" ROIS=""/>
+          <Compte Code="7866" Libelle="Reprises sur provisions pour dépréciation des éléments financiers" Lib_court="Rep. Prov. dépréc. éléments financiers" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="78" ROES="042" ROIS=""/>
+        </Compte>
+        <Compte Code="787" Libelle="Reprises sur provisions - Produits exceptionnels" Lib_court="Rep. prov. - Produits exceptionnels">
+          <Compte Code="7875" Libelle="Reprises sur provisions pour risques et charges exceptionnels" Lib_court="Rep. prov. risques et charges exception." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="78" ROES="042" ROIS=""/>
+          <Compte Code="7876" Libelle="Reprises sur provisions pour dépréciations exceptionnelles" Lib_court="Rep. prov. dépréc. exceptionnelles" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="78" ROES="042" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="79" Libelle="Transferts de charges" Lib_court="Transferts de charges" RegrTotalise="1">
+        <Compte Code="791" Libelle="Transferts de charges de gestion courante" Lib_court="Transferts charges de gestion courante" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="042" ROIS="043"/>
+        <Compte Code="796" Libelle="Transferts de charges financières" Lib_court="Transferts charges financières" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="042" ROIS="043"/>
+        <Compte Code="797" Libelle="Transferts de charges exceptionnelles" Lib_court="Transferts charges exceptionnelles" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="042" ROIS="043"/>
+      </Compte>
+      <Compte Code="80" Libelle="Engagements hors bilan" Lib_court="Engagements hors bilan">
+        <Compte Code="801" Libelle="Engagements donnés par le centre d'action sociale" Lib_court="Engagements donnés">
+          <Compte Code="8015" Libelle="Engagements sur garanties d'emprunts" Lib_court="Engagements sur garanties d'emprunts" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="8016" Libelle="Redevances de crédit-bail restant à courir" Lib_court="Redevances crédit-bail restant à courir" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="8017" Libelle="Subventions à verser par annuités (annuités restant à courir)" Lib_court="Subv à verser (annuités restantes)" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="8018" Libelle="Autres engagements donnés" Lib_court="Autres engagements donnés" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+        <Compte Code="802" Libelle="Engagements reçus par le centre d'action sociale" Lib_court="Engagements reçus">
+          <Compte Code="8026" Libelle="Redevances de crédit-bail restant à recevoir" Lib_court="Redevances crédit-bail à recevoir" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="8027" Libelle="Subventions à recevoir par annuités (annuités restant à recevoir)" Lib_court="Subvent° à recevoir (annuités restantes)" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+          <Compte Code="8028" Libelle="Autres engagements reçus" Lib_court="Autres engagements reçus" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        </Compte>
+      </Compte>
+      <Compte Code="86" Libelle="Valeurs inactives" Lib_court="Valeurs inactives">
+        <Compte Code="861" Libelle="Comptes de position : titres et valeurs en portefeuille" Lib_court="Cptes posit° : titres, valeurs portef." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="862" Libelle="Comptes de position : titres et valeurs chez les correspondants" Lib_court="Cptes posit° : titres, valeurs corres." DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+        <Compte Code="863" Libelle="Comptes de prise en charge" Lib_court="Comptes de prise en charge" DEquip="0" DR="" DOES="" DOIS="" REquip="0" RR="" ROES="" ROIS=""/>
+      </Compte>
+    </Comptes>
+  </Nature>
+  <Fonction>
+    <Chapitres/>
+    <Comptes/>
+    <RefFonctionnelles/>
+  </Fonction>
+</Nomenclature>

@@ -1,8 +1,6 @@
 # set base image (host OS)
 FROM python:3.9.13-alpine
 
-RUN apk add --no-cache xmlstarlet
-
 WORKDIR /appli
 
 COPY requirements.txt .
@@ -11,8 +9,7 @@ RUN apk add --no-cache build-base \
   && apk del --no-cache build-base
 
 #COPY uwsgi/ ./uwsgi/
-COPY shared/ ./shared/
-RUN chmod u+x /appli/shared/totem/totem2csv/totem2csv.sh
+COPY plans-de-comptes/ ./plans-de-comptes/
 COPY app/ ./app/
 COPY manage.py ./
 
