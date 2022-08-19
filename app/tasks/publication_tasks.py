@@ -1,5 +1,6 @@
 from datetime import timedelta
 import urllib
+import more_itertools
 from zipfile import ZipFile
 from sqlalchemy.exc import IntegrityError
 from app import celeryapp
@@ -266,10 +267,12 @@ def depublier_acte_task(idPublication):
 @celery.task(name='gestion_activation_open_data_task')
 def gestion_activation_open_data(siren, opendata_active):
     solr = solr_connexion()
-    result = solr.search(q='siren : ' + str(siren))
-    for doc_res in result.docs:
-        doc_res['opendata_active'][0] = opendata_active
-    solr.add(result.docs)
+    results = solr.search(q='siren : ' + str(siren), fl='*', sort='id ASC', cursorMark="*")
+    chunks = more_itertools.chunked(results, 1000)
+
+    for docs in chunks:
+        for doc in docs: doc["opendata_active"][0] = opendata_active
+        solr.add(docs, fieldUpdates={"opendata_active": "set"})
 
     return {'status': 'OK', 'message': 'mise à jour du flag opendata_active dans solr',
             'siren': siren, 'opendata_active': opendata_active}
