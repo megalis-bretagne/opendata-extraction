@@ -58,11 +58,12 @@ class StatsNonPublie(Resource):
         from app.tasks.utils import get_or_create_workdir, query_result_to_csv
         from app import db
         try:
-            request = text("""select t0.siren, nbPublié, nbNonPublié, nbNonPublié *100 / (nbPublié+nbNonPublié) as tauxDeNonPublié
-                            from (select distinct(siren) from publication) t0
-                                     left join (select siren, count(*) as nbPublié from publication where etat = 1 group by siren) t1 on t0.siren = t1.siren
-                                     left join (select siren, count(*) as nbNonPublié from publication where etat = 0 or 2 group by siren) t2 on t0.siren = t2.siren
-                            order by tauxDeNonPublié desc;""")
+            request = text("""select siren, nbPublié, nbNonPublié, nbNonPublié*100 / (nbPublié + nbNonPublié) as tauxDeNonPublié
+                              from 
+                              (select distinct(t0.siren), IFNULL(t1.publié, 0) as nbPublié, IFNULL(t2.nonPublié, 0) as nbNonPublié from publication t0
+                                  left join (select siren, count(*) as publié from publication where etat =  1 group by siren) t1 on t0.siren = t1.siren
+                                  left join (select siren, count(*) as nonPublié from publication where etat <> 1 group by siren) t2 on t0.siren = t2.siren) t3
+                              order by tauxDeNonPublié desc;""")
 
             with db.engine.connect() as con:
                 result = con.execute(request)
