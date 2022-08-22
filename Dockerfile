@@ -1,19 +1,15 @@
 # set base image (host OS)
-FROM python:3.9.13-buster
+FROM python:3.9.13-alpine
 
-RUN apt-get update
-RUN apt-get install -y xmlstarlet
-
-# set the working directory in the container
 WORKDIR /appli
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN apk add --no-cache build-base \
+  && pip install -r requirements.txt \
+  && apk del --no-cache build-base
 
 #COPY uwsgi/ ./uwsgi/
-COPY tests/ ./tests/
-COPY shared/ ./shared/
-RUN chmod u+x /appli/shared/totem/totem2csv/totem2csv.sh
+COPY plans-de-comptes/ ./plans-de-comptes/
 COPY app/ ./app/
 COPY manage.py ./
 

@@ -1,5 +1,7 @@
+from pathlib import Path
 from flask import send_from_directory
 from flask_restx import Namespace, Resource, abort
+import tempfile
 
 api = Namespace(name='scdl', description='budget et deliberation au format scdl')
 
@@ -11,11 +13,16 @@ class ScdlBudgetCtrl(Resource):
     def get(self, siren, annee):
         from app.tasks.datagouv_tasks import generation_budget
         from app.tasks.utils import get_or_create_workdir
-        try:
-            return send_from_directory(get_or_create_workdir(), filename=generation_budget(siren, annee),
-                                       as_attachment=True)
-        except FileNotFoundError:
-            abort(404)
+
+        workdir = get_or_create_workdir()
+
+        with tempfile.TemporaryDirectory(dir = workdir) as tmp_dir:
+            try:
+                csv_filepath = generation_budget(Path(tmp_dir), siren, annee)
+                return send_from_directory(tmp_dir, filename=csv_filepath.name,
+                                        as_attachment=True)
+            except FileNotFoundError:
+                abort(404)
 
 
 @api.route('/budget/<int:annee>')
@@ -25,11 +32,16 @@ class ScdlBudgetAllCtrl(Resource):
     def get(self, annee):
         from app.tasks.datagouv_tasks import generation_budget
         from app.tasks.utils import get_or_create_workdir
-        try:
-            return send_from_directory(get_or_create_workdir(), filename=generation_budget('*', annee),
-                                       as_attachment=True)
-        except FileNotFoundError:
-            abort(404)
+
+        workdir = get_or_create_workdir()
+
+        with tempfile.TemporaryDirectory(dir = workdir) as tmp_dir:
+            try:
+                csv_filepath = generation_budget(Path(tmp_dir), "*", annee)
+                return send_from_directory(tmp_dir, filename=csv_filepath.name,
+                                        as_attachment=True)
+            except FileNotFoundError:
+                abort(404)
 
 
 @api.route('/deliberation/<int:siren>/<int:annee>')

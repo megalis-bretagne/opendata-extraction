@@ -1,33 +1,44 @@
+from pathlib import Path
+import tempfile
 import time
 
 from app import celeryapp
 from app.models.parametrage_model import Parametrage
 from app.service.udata.DatasetService import DatasetService
 from app.service.udata.OrganizationService import OrganizationService
-from app.tasks import generation_budget, generation_deliberation, generation_decp, get_or_create_workdir, SDMException
+from app.tasks import generation_deliberation, generation_decp, get_or_create_workdir, SDMException
+from app.tasks.datagouv_tasks import generation_budget
 
 celery = celeryapp.celery
 
 
 @celery.task(name='publication_udata_budget')
 def publication_udata_budget(siren, annee):
-    dataset_service = DatasetService()
-    organization_service = OrganizationService()
-    filename = generation_budget(siren, annee)
-    organization = organization_service.get(siren)
-    dataset_budget = organization_service.get_dataset_budget(organization['id'])
-    if dataset_budget is None:
-        dataset_budget = dataset_service.create_dataset_budget(organization)
-    if is_scdl_empty(get_or_create_workdir() + filename):
-        dataset_service.delete_resource(dataset_budget, filename)
-        return {'status': 'OK', 'message': 'budget vide', 'siren': str(siren),
+    
+    workdir = get_or_create_workdir()
+
+    with tempfile.TemporaryDirectory(dir = workdir) as tmp_dir:
+        tmp_dir_path = Path(tmp_dir)
+
+        dataset_service = DatasetService()
+        organization_service = OrganizationService()
+        csv_filepath = generation_budget(tmp_dir_path, siren, annee)
+        csv_filename = csv_filepath.name
+        organization = organization_service.get(siren)
+        dataset_budget = organization_service.get_dataset_budget(organization['id'])
+
+        if dataset_budget is None:
+            dataset_budget = dataset_service.create_dataset_budget(organization)
+        if is_scdl_empty(csv_filepath):
+            dataset_service.delete_resource(dataset_budget, csv_filename)
+            return {'status': 'OK', 'message': 'budget vide', 'siren': str(siren),
+                    'annee': str(annee)}
+        resultat = dataset_service.add_resource_budget(dataset_budget, file_path=csv_filepath)
+        if resultat is None:
+            return {'status': 'KO', 'message': 'generation et publication budget', 'siren': str(siren),
+                    'annee': str(annee)}
+        return {'status': 'OK', 'message': 'generation et publication budget', 'siren': str(siren),
                 'annee': str(annee)}
-    resultat = dataset_service.add_resource_budget(dataset_budget, filename)
-    if resultat is None:
-        return {'status': 'KO', 'message': 'generation et publication budget', 'siren': str(siren),
-                'annee': str(annee)}
-    return {'status': 'OK', 'message': 'generation et publication budget', 'siren': str(siren),
-            'annee': str(annee)}
 
 
 @celery.task(name='publication_udata_deliberation')

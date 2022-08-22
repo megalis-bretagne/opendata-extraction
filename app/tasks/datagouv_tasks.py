@@ -1,7 +1,9 @@
 import json
 import logging
-import os
+from pathlib import Path
+import tempfile
 import time
+from typing import Optional
 import urllib.parse
 
 import requests
@@ -11,6 +13,10 @@ from app import celeryapp
 from app.models.parametrage_model import Parametrage
 from app.models.publication_model import Publication
 from app.tasks import solr_connexion, clear_wordir, get_or_create_workdir
+
+from app.shared.constants import PLANS_DE_COMPTES_PATH
+from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
+from yatotem2scdl.conversion import Options
 
 celery = celeryapp.celery
 
@@ -27,77 +33,61 @@ def generation_and_publication_scdl(type, param_annee):
         filename = generation_deliberation("*", annee, 'opendata_active')
         publication_datagouv_scdl(annee, get_or_create_workdir() + filename, type)
     elif type == '5':
-        filename = generation_budget("*", annee, 'opendata_active')
-        publication_datagouv_scdl(annee, get_or_create_workdir() + filename, type)
+        _genere_budget_et_publie_datagouv("*", annee, 'opendata_active')
 
     return {'status': 'OK', 'message': 'generation et publication scdl', 'annee': str(annee), 'type': str(type)}
 
+def _genere_budget_et_publie_datagouv(siren: str, annee: str, flag_active: str):
 
-def generation_budget(siren, annee, flag_active=None):
-    clear_wordir()
-    ANNEE = str(annee)
-    SIREN = str(siren)
+    workdir = get_or_create_workdir()
 
-    TYPE = '5'
-    # connexion solr
+    with tempfile.TemporaryDirectory(dir = workdir) as tmp_dir:
+        csv_filepath = generation_budget(
+            Path(tmp_dir), 
+            siren, annee, flag_active)
+        publication_datagouv_scdl(annee, csv_filepath, '5')
+
+def generation_budget(root_dir: Path, siren, annee, flag_active=None) -> Path:
+
+    annee = str(annee)
+    siren = str(siren)
+    type = '5'
+
     solr = solr_connexion()
+    query = _solr_request_pour_budget(type, annee, siren, flag_active)
+    query_params = {
+        "fl": "siren,documentidentifier,classification_code,classification_nom,description,"
+        "filepath,documenttype,date,est_publie,date_budget,publication_id",
+    }
 
-    start = 0
-    rows = 100
+    csv_filename = (
+        f"BUDGET-{annee}.csv" if siren == "*" else f"BUDGET-{siren}-{annee}.csv"
+    )
+    csv_filepath = Path(root_dir) / csv_filename
+    convertisseur = make_or_get_budget_convertisseur()
+    with open(csv_filepath, 'a', newline='') as csv_file:
+        entetes = convertisseur.budget_scdl_entetes()
+        csv_file.write(entetes + "\n")
 
-    # construction de la requete solr
-    query = 'typology: 99_BU AND est_publie: True AND documenttype:' + str(TYPE) + ' AND date_budget:' + str(ANNEE)
-    if str(siren) == '*':
-        filename = 'BUDGET-' + ANNEE + '.csv'
-    else:
-        filename = 'BUDGET-' + SIREN + '-' + ANNEE + '.csv'
-        query = query + ' AND siren:' + str(siren)
-
-    if flag_active is not None:
-        query = query + ' AND ' + flag_active + ': True '
-
-    # generation de l'url du fichier scdl
-    csv_file_path = get_or_create_workdir() + filename
-
-    # On recherche dans apache solr les documents pour un SIREN et un TYPE (deliberation, budget ...) et on fitre sur l'année passée en parametre ANNEE
-    result = \
-        solr.search(q=query,
-                    **{
-                        'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
-                              'filepath,documenttype,date,est_publie,date_budget,publication_id',
-                        'start': start,
-                        'rows': rows
-                    })
-    # Ecriture du fichier scdl
-    header = "BGT_NATDEC,BGT_ANNEE,BGT_SIRET,BGT_NOM,BGT_CONTNAT,BGT_CONTNAT_LABEL,BGT_NATURE,BGT_NATURE_LABEL,BGT_FONCTION,BGT_FONCTION_LABEL,BGT_OPERATION,BGT_SECTION,BGT_OPBUDG,BGT_CODRD,BGT_MTREAL,BGT_MTBUDGPREC,BGT_MTRARPREC,BGT_MTPROPNOUV,BGT_MTPREV,BGT_CREDOUV,BGT_MTRAR3112,BGT_ARTSPE"
-    f = open(csv_file_path, 'w')
-    f.write(header + '\n')
-    f.close()
-
-    while len(result.docs) > 0:
-        # pour tous les fichiers budget qu'on retrouve dans la bdd
-        for doc_res in result.docs:
+        for doc_res in solr.search(q=query, sort="publication_id DESC,id ASC", cursorMark="*", **query_params):
             url = str(doc_res['filepath'][0])
             try:
                 # on récupère la publication à publier en BDD
                 publication = Publication.query.filter(Publication.id == doc_res['publication_id']).one()
                 for acte in publication.actes:
-                    totem2_csv_and_concat_scdl(acte.path, csv_file_path)
+                    options = Options(inclure_header_csv=False, lineterminator='\n')
+                    convertisseur.totem_budget_vers_scdl(acte.path, PLANS_DE_COMPTES_PATH, output=csv_file, options=options)
             except Exception:
-                print("fichier ignore :" + url)
-                logging.exception("exeption dans totem2csvAndConcatscdl")
-        start = start + rows
-        result = \
-            solr.search(
-                q=query,
-                **{
-                    'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
-                          'filepath,documenttype,date,est_publie,date_budget,publication_id',
-                    'start': start,
-                    'rows': rows
-                })
-    return filename
+                logging.exception(f"Fichier ignoré: {url}")
+    return csv_filepath
 
+def _solr_request_pour_budget(type: str, annee: str, siren: str, flag_active: Optional[str]) -> str:
+    query = f"typology: 99_BU AND est_publie: True AND documenttype: {type} AND date_budget: {annee}"
+    if siren != "*":
+        query = f"{query} AND siren: {siren}"
+    if flag_active is not None:
+        query = f"{query} AND {flag_active} : True"
+    return query
 
 def generation_acte(siren, annee):
     # on clear le workdir
@@ -282,39 +272,6 @@ def generation_deliberation(siren, annee, flag_active=None):
             logging.exception("on ignore la ligne" + ligne)
     f.close()
     return filename
-
-
-def totem2_csv_and_concat_scdl(totemfile, csv_budget_scdl):
-    # on appelle de code récupéré ici
-    # https://gitlab.com/datafin/totem.git
-
-    if os.path.exists("/tmp/totem.xml"):
-        os.remove("/tmp/totem.xml")
-    if os.path.exists("/tmp/totem.csv"):
-        os.remove("/tmp/totem.csv")
-
-    bash_command = "shared/totem/totem2csv/totem2csv.sh %s %s" % (totemfile, "output_prefix")
-    import subprocess
-    logging.info("bash_command: %s", bash_command)
-    process = subprocess.Popen(["bash", "-c", bash_command], stdout=subprocess.PIPE)
-    output, error = process.communicate()
-    logging.info(output)
-    if error is not None:
-        raise error
-
-    try:
-        logging.info("concaténation du totem csv dans scdl %s", csv_budget_scdl)
-        scdl_budget = open(csv_budget_scdl, 'a')
-        with open('/tmp/totem.csv') as infile:
-            for line in infile:
-                scdl_budget.write(line)
-        scdl_budget.close()
-    except Exception as e:
-        logging.exception("Error occured while concat scdl budget")
-        raise e
-
-    return 0
-
 
 def api_url(path):
     API = current_app.config['API_DATAGOUV']

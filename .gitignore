@@ -197,3 +197,6 @@ venv.bak/
 app/local_settings.py
 app/keycloak.json
 TESTS/
+
+#
+tests/data/solr/volumes
