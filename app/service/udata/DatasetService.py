@@ -1,5 +1,6 @@
 import array
 import json
+from pathlib import Path
 
 import requests
 from flask import current_app
@@ -104,20 +105,31 @@ class DatasetService(metaclass=Singleton):
             "marches-publics"
         ]
         return self.__create_dataset(organization['id'], description, title, 'decp', array_tags)
+    
 
     def __add_resource(self, dataset: dict, filename: str, schema: dict):
+        filepath = Path(get_or_create_workdir()) / filename
+        return self.__add_resource_fp(
+            dataset=dataset,
+            filepath=filepath,
+            schema=schema
+        )
+
+    def __add_resource_fp(self, dataset: dict, filepath: Path, schema: dict):
         """ Ajout une resource sur le dataset. Maj si fichier déja présent sur la resource """
+
+        file_name = filepath.name
 
         if dataset is None:
             return None
         id_dataset = dataset['id']
         for resource in dataset['resources']:
-            if resource['title'].casefold() == filename.casefold():
+            if resource['title'].casefold() == file_name.casefold():
                 # Maj resource
                 id_resource = resource['id']
                 url = self.API + "/1" + self.DATASETS_ENDPOINT + '{}/resources/{}/upload/'.format(id_dataset, id_resource)
                 response = requests.post(url, files={
-                    'file': open(get_or_create_workdir() + filename, 'rb'),
+                    'file': open(filepath, 'rb'),
                 }, headers=self.HEADERS)
                 if response.status_code != 200:
                     return None
@@ -127,7 +139,7 @@ class DatasetService(metaclass=Singleton):
         # Création ressource
         url = self.API + "/1" + self.DATASETS_ENDPOINT + '{}/upload/'.format(id_dataset)
         response = requests.post(url, files={
-            'file': open(get_or_create_workdir() + filename, 'rb'),
+            'file': open(filepath, 'rb'),
         }, headers=self.HEADERS)
 
         if response.status_code != 201:
@@ -138,7 +150,7 @@ class DatasetService(metaclass=Singleton):
         # Mise à jour des métadonnées d’une ressource
         url = self.API + "/1" + self.DATASETS_ENDPOINT + '{}/resources/{}/'.format(id_dataset, resource['id'])
         requests.put(url, json={
-            'format': filename.split(".")[-1],
+            'format': file_name.split(".")[-1],
             'schema': schema,
         }, headers=self.HEADERS)
 
@@ -147,8 +159,8 @@ class DatasetService(metaclass=Singleton):
         else:
             return resource
 
-    def add_resource_budget(self, dataset: dict, filename: str):
-        return self.__add_resource(dataset, filename, {'name': 'scdl/budget', 'version': '0.8.1'})
+    def add_resource_budget(self, dataset: dict, file_path: Path):
+        return self.__add_resource_fp(dataset, file_path, {'name': 'scdl/budget', 'version': '0.8.1'})
 
     def add_resource_deliberation(self, dataset: dict, filename: str):
         return self.__add_resource(dataset, filename, {'name': 'scdl/deliberations'})

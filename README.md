@@ -11,3 +11,13 @@ En fonction du mode de lancement l'application:
 
 
 La documentation est disponible ici : https://opendata-megalis.readthedocs.io/fr/latest/
+
+## Variables d'environnement
+
+### Envoyer les logs au format GELF
+
+| Nom de la variable | Exemple         | Description |
+| ------------------ | --------------- | ----------- |
+| GELF_HOST          | logstash.domain |             |
+| GELF_PORT          | 12201           |             |
+| GELF_PROTO         | UDP             |             |

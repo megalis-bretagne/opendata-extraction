@@ -7,7 +7,7 @@ The code has been organized into the following sub-directories:
     # Sub-directories
     commands     # Commands made available to manage.py
     models       # Database Models
-    shared       # external code
+    plans-de-comtpes # Contient les plans de compte pour la transformation totem 2 scdl
     tasks        # celery task
     controller   # REST api endpoint
 
