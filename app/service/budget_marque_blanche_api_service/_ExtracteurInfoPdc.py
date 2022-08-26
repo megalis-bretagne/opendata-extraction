@@ -2,20 +2,18 @@
 from dataclasses import dataclass
 import logging
 from pathlib import Path
-from xml.etree.ElementTree import ElementTree
+from lxml.etree import ElementTree
 
 from lxml import etree
 
-from .data_structures import RefFonctionnelleBudgetMarqueBlancheApi
+from .data_structures import (
+    CompteNatureMarqueBlancheApi, 
+    ElementPlanDeCompte, 
+    RefFonctionnelleBudgetMarqueBlancheApi
+)
 
 @dataclass()
 class _Chapitre():
-    code: str
-    libelle: str
-    libelle_court: str
-
-@dataclass()
-class _Compte():
     code: str
     libelle: str
     libelle_court: str
@@ -39,7 +37,7 @@ class _ExtracteurInfoPdc():
         fonctions = self.data["Chapitres"]["Fonction"]
         return self._to_dict(fonctions)
 
-    def extraire_comptes_nature(self) -> dict[str, _Compte]:
+    def extraire_comptes_nature(self) -> dict[str, CompteNatureMarqueBlancheApi]:
         if not self._processed:
             self._process()
         comptes = self.data["Comptes"]["Nature"]
@@ -71,18 +69,20 @@ class _ExtracteurInfoPdc():
             self.data["Chapitres"][s] = chapitres
         
         comptes = []
-        _xpath_nature_compte = ".//Nature/Comptes//Compte"
+        tagname = "Compte"
+        _xpath_nature_compte = f".//Nature/Comptes//{tagname}"
         nature_compte_trees = self.tree.findall(_xpath_nature_compte)
         for nature_compte_tree in nature_compte_trees:
-            compte = self._extract_nature_compte(nature_compte_tree)
+            compte = self._extract_element_pdc(nature_compte_tree, tagname)
             comptes.append(compte)
         self.data["Comptes"]["Nature"] = comptes
 
         reffoncs = []
-        _xpath_nature_compte = ".//Fonction/RefFonctionnelles//RefFonc"
+        tagname = "RefFonc"
+        _xpath_nature_compte = f".//Fonction/RefFonctionnelles//{tagname}"
         nature_compte_trees = self.tree.findall(_xpath_nature_compte)
         for nature_compte_tree in nature_compte_trees:
-            reffonc = self._extract_reffonc(nature_compte_tree)
+            reffonc = self._extract_element_pdc(nature_compte_tree, tagname)
             reffoncs.append(reffonc)
         self.data["RefFonctionnelles"] = reffoncs
 
@@ -94,16 +94,16 @@ class _ExtracteurInfoPdc():
         libelle_court = chapitre.attrib.get("Lib_court") # type: ignore
         return _Chapitre(code, libelle, libelle_court)
 
-    def _extract_nature_compte(self, compte: ElementTree) -> _Compte:
-        code = compte.attrib.get("Code") # type: ignore
-        libelle = compte.attrib.get("Libelle") # type: ignore
-        libelle_court = compte.attrib.get("Lib_court") # type: ignore
-        return _Compte(code, libelle, libelle_court)
+    def _extract_element_pdc(self, elmt: ElementTree, tagname: str) -> ElementPlanDeCompte:
+        code = elmt.attrib.get("Code") # type: ignore
+        libelle = elmt.attrib.get("Libelle") # type: ignore
+        parent = elmt.getparent()
 
-    def _extract_reffonc(self, reffonc: ElementTree) -> RefFonctionnelleBudgetMarqueBlancheApi:
-        code = reffonc.attrib.get("Code") # type: ignore
-        libelle = reffonc.attrib.get("Libelle") # type: ignore
-        return RefFonctionnelleBudgetMarqueBlancheApi(code, libelle)
+        parent_code = None
+        if parent is not None and parent.tag == tagname:
+            parent_code = parent.attrib.get("Code")
+        
+        return ElementPlanDeCompte(code, libelle, parent_code)
     
     def _to_dict(self, structure_with_code):
         return { x.code: x for x in structure_with_code }

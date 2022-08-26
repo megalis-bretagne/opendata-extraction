@@ -21,13 +21,26 @@ _TotemAndMetadata = NamedTuple(
     ],
 )
 
-
 @dataclass()
-class RefFonctionnelleBudgetMarqueBlancheApi:
-    """Reférence fonctionnelle du plan de compte"""
-
+class ElementPlanDeCompte:
     code: str
     libelle: str
+    parent_code: Optional[str]
+
+@dataclass()
+class RefFonctionnelleBudgetMarqueBlancheApi(ElementPlanDeCompte):
+    """Reférence fonctionnelle du plan de compte"""
+
+@dataclass()
+class CompteNatureMarqueBlancheApi(ElementPlanDeCompte):
+    """Comptes natures du plan de compte"""
+
+@dataclass()
+class GetInfoPlanDeComptesBudgetMarqueBlancheApi:
+    """Réponse API. Voir documentation API"""
+
+    references_fonctionnelles: dict[str, RefFonctionnelleBudgetMarqueBlancheApi]
+    comptes_nature: dict[str, CompteNatureMarqueBlancheApi]
 
 
 @dataclass()
@@ -48,5 +61,4 @@ class GetBudgetMarqueBlancheApiResponse:
     siren: str
     siret_siege: str
     denomination_siege: str
-    references_fonctionnelles: dict[str, RefFonctionnelleBudgetMarqueBlancheApi]
     lignes: list[LigneBudgetMarqueBlancheApi]

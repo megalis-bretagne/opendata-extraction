@@ -12,6 +12,7 @@ from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
 
 from .data_structures import (
     GetBudgetMarqueBlancheApiResponse,
+    GetInfoPlanDeComptesBudgetMarqueBlancheApi,
     LigneBudgetMarqueBlancheApi,
     _TotemAndMetadata,
     _EtabInfo,
@@ -28,6 +29,7 @@ from .functions import (
     _wrap_in_budget_marque_blanche_api_ex,
     _to_scdl_csv_reader,
     extraire_siren,
+    _extraire_pdc_unique
 )
 
 from ._ExtracteurInfoPdc import _ExtracteurInfoPdc
@@ -48,16 +50,32 @@ class BudgetMarqueBlancheApiService:
         )
         answer = list(map(lambda s: s[0], dates))
         return answer
+    
+    @_wrap_in_budget_marque_blanche_api_ex
+    def retrieve_pdc_info(
+        self,
+        siren: int,
+        annee: int,
+    ):
+        (_, siret_siege) = self._infos_etab(str(siren))
+        totems_and_metadata = self._liste_totem_with_metadata(
+            siret_siege,
+            annee,
+        )
+        ls_metadata = [x.metadata for x in totems_and_metadata]
+        
+        plan_de_comptes = _extraire_pdc_unique(ls_metadata)
+
+        extracteur = _ExtracteurInfoPdc(plan_de_comptes)
+        references_fonctionnelles = extracteur.extraire_references_fonctionnelles()
+        comptes_nature = extracteur.extraire_comptes_nature()
+        return GetInfoPlanDeComptesBudgetMarqueBlancheApi(references_fonctionnelles, comptes_nature)
 
     @_wrap_in_budget_marque_blanche_api_ex
     def retrieve_info_budget(
         self, 
-        etape_str: str, annee: int, siren: int,
+        siren: int, annee: int,etape_str: str,
     ) -> GetBudgetMarqueBlancheApiResponse:
-        def _extrait_pdc_unique(totems_and_metadata):
-            pdc = {x.metadata.plan_de_compte for x in totems_and_metadata}
-            assert len(pdc) <= 1, "On ne devrait retrouver qu'un seul plan de compte pour ces informations budget"
-            return pdc.pop()
 
         etape = _etape_from_str(etape_str)
         (denomination, siret_siege) = self._infos_etab(str(siren))
@@ -69,10 +87,6 @@ class BudgetMarqueBlancheApiService:
         )
         if not totems_and_metadata:
             raise AucuneDonneeBudgetError()
-
-        plan_de_comptes = _extrait_pdc_unique(totems_and_metadata)
-        extracteur = _ExtracteurInfoPdc(plan_de_comptes)
-        references_fonctionnelles = extracteur.extraire_references_fonctionnelles()
 
         msg = f"On retient {len(totems_and_metadata)} documents budgetaire pour la requête"
         self.__logger.info(msg)
@@ -101,7 +115,6 @@ class BudgetMarqueBlancheApiService:
             siren=str(siren),
             siret_siege=str(siret_siege),
             denomination_siege=denomination,
-            references_fonctionnelles=references_fonctionnelles,
             lignes=lignes,
         )
 
@@ -146,7 +159,9 @@ class BudgetMarqueBlancheApiService:
             raise NotImplementedError("")
 
     def _liste_totem_with_metadata(
-        self, siret: int, annee: int, etape: EtapeBudgetaire
+        self, 
+        siret: int, annee: int, 
+        etape: EtapeBudgetaire = None,
     ) -> list[_TotemAndMetadata]:
 
         siret = int(siret)
@@ -167,7 +182,7 @@ class BudgetMarqueBlancheApiService:
                     f"On exclut {xml_fp} puisque {annee} != {metadata.annee_exercice}"
                 )
                 return True
-            if etape != metadata.etape_budgetaire:
+            if etape and etape != metadata.etape_budgetaire:
                 self.__logger.info(
                     f"On exclut {xml_fp} puisque {etape} != {metadata.etape_budgetaire}"
                 )

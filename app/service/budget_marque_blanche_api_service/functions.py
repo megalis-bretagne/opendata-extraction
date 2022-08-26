@@ -3,15 +3,20 @@ import csv
 import logging
 from pathlib import Path
 from typing import Union
+
 from .data_structures import EtapeBudgetaire, _EtabInfo
+
 from .exceptions import (
     BudgetMarqueBlancheApiException,
     EtapeInvalideError,
     ImpossibleDextraireEtabInfoError,
 )
 
-from yatotem2scdl.conversion import ConvertisseurTotemBudget, Options
-from yatotem2scdl.exceptions import EtapeBudgetaireInconnueErreur
+from yatotem2scdl import (
+    TotemBudgetMetadata,
+    ConvertisseurTotemBudget, Options,
+    EtapeBudgetaireInconnueErreur
+)
 
 from app.shared.constants import PLANS_DE_COMPTES_PATH
 
@@ -40,6 +45,10 @@ def _to_scdl_csv_reader(convertisseur: ConvertisseurTotemBudget, xml_fp: Path):
     scdl = _read_scdl_as_str(xml_fp)
     return csv.DictReader(scdl.splitlines(), entetes_seq)
 
+def _extraire_pdc_unique(ls_totem_metadata: list[TotemBudgetMetadata]):
+    pdc = { metadata.plan_de_compte for metadata in ls_totem_metadata }
+    assert len(pdc) <= 1, "On ne devrait retrouver qu'un seul plan de compte pour ces informations budget"
+    return pdc.pop()
 
 def _infos_etab(siren: str, logger: logging.Logger) -> _EtabInfo:
     def _requete_infos_etab(siren: str) -> _EtabInfo:
