@@ -17,7 +17,10 @@ api_ligne_budget = api.model(
     "Ligne budgetaire",
     {
         "fonction_code": fields.String(
-            description="Code de la fonction de la ligne.", required=False
+            description="Code de la fonction de la ligne.", required=False,
+        ),
+        "compte_nature_code": fields.String(
+            description="Code de la nature de la ligne.", required=True,
         ),
         "recette": fields.Boolean(
             description="Si la ligne représente une recette. Si non, elle représente une dépense",

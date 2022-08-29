@@ -128,15 +128,20 @@ class BudgetMarqueBlancheApiService:
             col_codrd = ligne["BGT_CODRD"]
             col_fonction = ligne["BGT_FONCTION"]
 
+            col_nature = ligne["BGT_NATURE"]
+
             montant = self._retrieve_montant_de_ligne_scdl(ligne, etape)
 
             if not col_codrd:
                 raise _ImpossibleParserLigne("Le SCDL contient un CODRD non renseigné")
+            if not col_nature:
+                self.__logger.warning(f"La nature de la ligne budgétaire n'est pas renseignée.")
 
             recette = col_codrd == "recette"
 
             return LigneBudgetMarqueBlancheApi(
                 fonction_code=col_fonction,
+                compte_nature_code=col_nature,
                 recette=recette,
                 montant=float(montant),
             )

@@ -48,6 +48,7 @@ class LigneBudgetMarqueBlancheApi:
     """Ligne budget provenant de la marque blanche. Voir documentation API"""
 
     fonction_code: Optional[str]
+    compte_nature_code: str
     recette: bool
     montant: float
 
