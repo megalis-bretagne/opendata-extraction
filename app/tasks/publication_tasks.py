@@ -274,6 +274,9 @@ def gestion_activation_open_data(siren, opendata_active):
         for doc in docs: doc["opendata_active"][0] = opendata_active
         solr.add(docs, fieldUpdates={"opendata_active": "set"})
 
+    if opendata_active:
+        __reindexer_publications_publiees_de_siren(siren)
+
     return {'status': 'OK', 'message': 'mise à jour du flag opendata_active dans solr',
             'siren': siren, 'opendata_active': opendata_active}
 
@@ -289,20 +292,6 @@ def republier_all_acte_task(etat):
         # db_sess.commit()
         publier_acte_task.delay(publication.id, True)
     return {'status': 'OK', 'message': 'republier_all_acte_task '}
-
-
-# @celery.task(name='indexer_publication_task')
-# def indexer_publication_task(idPublication):
-#     """Permet d'indexer un publication dans sol
-#
-#     Parameters:
-#     idPublication (int): identifiant de la
-#
-#     Returns:
-#     int:Returning value
-#
-#    """
-
 
 # FONCTION
 def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_tx=''):
@@ -666,3 +655,12 @@ def __get_date_buget(xml_file: str):
     tree = etree.parse(xml_file)
     annee = tree.findall('/nms:Budget/nms:BlocBudget/nms:Exer', namespaces)[0].attrib.get('V')
     return annee
+
+
+def __reindexer_publications_publiees_de_siren(siren: str):
+    result = Publication.query.filter(
+        Publication.siren == siren, 
+        Publication.etat == 1, # 1 => publie
+    )
+    for publication in result:
+        publier_acte_task.delay(publication.id, reindexationSolr=True)
