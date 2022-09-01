@@ -44,11 +44,11 @@ class BudgetMarqueBlancheApiService:
     def annees_disponibles(self, siren: int) -> list[str]:
         dates = (
             Publication.query.with_entities(Publication.date_budget)
-            .filter_by(siren=siren)
+            .filter_by(siren=siren, acte_nature=5) # acte nature = 5 => budget
             .distinct()
             .all()
         )
-        answer = list(map(lambda s: s[0], dates))
+        answer = [x[0] for x in dates if x[0]]
         return answer
     
     @_wrap_in_budget_marque_blanche_api_ex
