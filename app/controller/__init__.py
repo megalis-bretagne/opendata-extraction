@@ -29,9 +29,9 @@ api = Api(version="1.0", title="API Open DATA",
 
 api.add_namespace(decpApi)
 api.add_namespace(scdlApi)
+api.add_namespace(statsApi)
 api.add_namespace(healthApi)
 api.add_namespace(publicationApi)
 api.add_namespace(parametrageApi)
 api.add_namespace(adminApi)
-api.add_namespace(statsApi)
 api.add_namespace(budgetMarqueBlancheApi)

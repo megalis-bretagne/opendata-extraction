@@ -4,15 +4,16 @@ from flask_restx import Namespace, Resource
 
 api = Namespace(name='health',description='Les publications sont une réprésentation des actes reçus depuis Pastell')
 
-
-@api.route('')
+@api.route('',doc={
+    "description": "healthcheck des API opendata"})
 class HealthCtrl(Resource):
     @api.response(200, 'Success')
     def get(self):
         return jsonify({"statut": 'ok'})
 
 
-@api.route('/solr')
+@api.route('/solr',doc={
+    "description": "healthcheck du moteur de recherche sorl"})
 class HealthSolrCtrl(Resource):
     @api.response(200, 'Success')
     def get(self):
@@ -33,7 +34,8 @@ class HealthSolrCtrl(Resource):
 
                 })
 
-@api.route('/apiInsee')
+@api.route('/apiInsee',doc={
+    "description": "healthcheck des api insee (siren)"})
 class HealthInseeCtrl(Resource):
     @api.response(200, 'Success')
     def get(self):
