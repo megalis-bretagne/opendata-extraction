@@ -16,5 +16,6 @@ COPY manage.py ./
 EXPOSE 80
 
 #ENTRYPOINT ["python", "/appli/manage.py", "runserver"," -h 0.0.0.0", "-p 80"]
-CMD ["python", "/appli/manage.py", "runserver","-h", "0.0.0.0","-p","80"]
+#CMD ["python", "/appli/manage.py", "runserver","-h", "0.0.0.0","-p","80"]
 #CMD [ "python", "/appli/manage.py runserver -h 0.0.0.0 -p 80" ]
+CMD ["waitress-serve","--host 127.0.0.1", "--port 127.0.0.1","--call app:create_app"]
