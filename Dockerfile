@@ -18,4 +18,4 @@ EXPOSE 80
 #ENTRYPOINT ["python", "/appli/manage.py", "runserver"," -h 0.0.0.0", "-p 80"]
 #CMD ["python", "/appli/manage.py", "runserver","-h", "0.0.0.0","-p","80"]
 #CMD [ "python", "/appli/manage.py runserver -h 0.0.0.0 -p 80" ]
-CMD ["waitress-serve","--host=127.0.0.1", "--port=5000","app:create_app"]
+CMD ["waitress-serve","--host=127.0.0.1", "--port=80","app:create_app"]
