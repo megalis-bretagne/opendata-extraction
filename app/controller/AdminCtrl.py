@@ -133,46 +133,6 @@ class AdminPublicationDecp(Resource):
             {"statut": "demande de generation et publication du decp pour l'année courante (taches asynchrone)"})
 
 
-@api.route('/pastell/creation/all')
-class AdminPastellAllCtrl(Resource):
-    @api.response(200, 'Success')
-    @oidc.accept_token(require_token=True, scopes_required=['openid'])
-    @isAdmin
-    def post(self):
-        from app.tasks.pastell_tasks import creation_et_association_all
-        creation_et_association_all.delay()
-        return jsonify(
-            {"statut": "demande de generation et publication du decp de l'année courante (taches asynchrone)"})
-
-
-
-@api.route('/pastell/creation/all-new')
-class AdminPastellAllNewCtrl(Resource):
-    @api.response(200, 'Success')
-    @oidc.accept_token(require_token=True, scopes_required=['openid'])
-    @isAdmin
-    def post(self):
-        from app.tasks.pastell_tasks import creation_et_association_new_all_task
-        creation_et_association_new_all_task.delay()
-        return jsonify(
-            {"statut": "demande de generation et publication du decp de l'année courante (taches asynchrone)"})
-
-@api.route('/pastell/creation/ged-megalis-opendata-new')
-class AdminPastellGedPastellNewCtrl(Resource):
-    @api.expect(arguments_pastell_controller)
-    @api.response(200, 'Success')
-    @oidc.accept_token(require_token=True, scopes_required=['openid'])
-    @isAdmin
-    def post(self):
-        from app.tasks.pastell_tasks import creation_et_association_connecteur_transformateur_task
-        from app.tasks.pastell_tasks import creation_et_association_connecteur_ged_megalis_opendata_task
-        args = arguments_pastell_controller.parse_args()
-        id_e = args['id_e']
-        creation_et_association_connecteur_ged_megalis_opendata_task.delay(id_e)
-        creation_et_association_connecteur_transformateur_task.delay(id_e)
-        return jsonify(
-            {"statut": "id_e:" +id_e + '- demande de creation et association du connecteur GED pastell et transfo réalisée (taches asynchrone)'})
-
 
 @api.route('/publier/udata/decp')
 class AdminUdataDecpCtrl(Resource):
@@ -249,26 +209,6 @@ class AdminUdataPublicationDecpHisto(Resource):
             "statut": "demande de generation et publication du decp des années historique à partir de 2014 vers udata (taches asynchrone)"})
 
 
-
-@api.route('/pastell/creation/ged-megalis-opendata')
-class AdminPastellGedPastellCtrl(Resource):
-    @api.expect(arguments_pastell_controller)
-    @api.response(200, 'Success')
-    @oidc.accept_token(require_token=True, scopes_required=['openid'])
-    @isAdmin
-    def post(self):
-        from app.tasks.pastell_tasks import creation_et_association_connecteur_ged_pastell_budget_task
-        from app.tasks.pastell_tasks import creation_et_association_connecteur_ged_pastell_delib_task
-        from app.tasks.pastell_tasks import creation_et_association_connecteur_ged_pastell_AG_task
-        args = arguments_pastell_controller.parse_args()
-        id_e = args['id_e']
-        creation_et_association_connecteur_ged_pastell_AG_task.delay(id_e)
-        creation_et_association_connecteur_ged_pastell_budget_task.delay(id_e)
-        creation_et_association_connecteur_ged_pastell_delib_task.delay(id_e)
-        return jsonify(
-            {"statut": "id_e:" +id_e + '- demande de creation et association du connecteur GED pastell réalisée (taches asynchrone)'})
-
-
 @api.route('/publication/republier/all/<int:etat>')
 @api.doc(params={'etat': '1 =publie, 0=non, 2=en-cours, 3=en-erreur'})
 class PublicationRepublierCtrl(Resource):
@@ -280,21 +220,6 @@ class PublicationRepublierCtrl(Resource):
         republier_all_acte_task.delay(etat)
         return jsonify(
             {"statut": "ETAT:" +str(etat)+ '- demande de republication prise en compte (taches asynchrone)'})
-
-
-@api.route('/pastell/creation/ged_sftp-opendata')
-class AdminPastellGedSdtpCtrl(Resource):
-    @api.expect(arguments_pastell_controller)
-    @api.response(200, 'Success')
-    @oidc.accept_token(require_token=True, scopes_required=['openid'])
-    @isAdmin
-    def post(self):
-        from app.tasks.pastell_tasks import creation_et_association_connecteur_ged_sftp_task
-        args = arguments_pastell_controller.parse_args()
-        id_e = args['id_e']
-        creation_et_association_connecteur_ged_sftp_task.delay(id_e)
-        return jsonify(
-            {"statut": "id_e:" + id_e + '- demande de creation et association du connecteur GED SFTP réalisée (taches asynchrone)'})
 
 
 @api.route('/parametrage/valorisation')
