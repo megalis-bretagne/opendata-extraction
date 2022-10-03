@@ -429,3 +429,7 @@ class InfoEtablissement:
                 self.categorieEntreprise = resultApi['activite_principale']
             if resultApi['annee_categorie_entreprise'] != None:
                 self.anneeCategorieEntreprise = resultApi['annee_categorie_entreprise']
+
+
+class PastellApiException(Exception):
+    pass
