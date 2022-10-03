@@ -4,6 +4,7 @@ import requests
 from flask import current_app
 from requests.auth import HTTPBasicAuth
 from app import celeryapp
+from app.tasks import PastellApiException
 
 celery = celeryapp.celery
 
@@ -37,6 +38,55 @@ def mise_en_place_config_pastell(id_e):
     creation_et_association_connecteur_ged_megalis_opendata_task.delay(id_e)
     creation_et_association_connecteur_ged_pastell_AG_task.delay(id_e)
     return {'status': 'OK', 'message': 'mise_en_place_config_pastell', 'id_e': str(id_e)}
+
+@celery.task(name='routine_parametrage_pastell_task')
+def routine_parametrage_pastell():
+    """Tâche qui recherche les entites qui ont des documents open data pastell dans un état incorrect
+        preparation-send-ged_1 ou preparation-transformation
+    , cela signifie qu'il faut mettre en place le paramétrage pastell pour l'entité
+    On log si autre état trouvé
+
+    """
+    URL_API_PASTELL = current_app.config['API_PASTELL_URL']
+    API_PASTELL_VERSION = current_app.config['API_PASTELL_VERSION']
+    auth_pastell = HTTPBasicAuth(current_app.config['API_PASTELL_USER'], current_app.config['API_PASTELL_PASSWORD'])
+
+    response = requests.get(URL_API_PASTELL + API_PASTELL_VERSION + "/document/count?type=ged-megalis-opendata",
+                            auth=auth_pastell)
+
+    if response.ok:
+        res = json.loads(response.text)
+        liste_entite_a_parametre = []
+
+        for entite in res:
+            pasTrouve = True
+
+            if len(res[str(entite)]['flux']['ged-megalis-opendata']) > 0:
+
+                for etat in res[str(entite)]['flux']['ged-megalis-opendata']:
+
+                    #on ignore les docs à l'état terminé
+                    if (etat != 'termine'):
+                        if etat == 'preparation-send-ged_1':
+                            liste_entite_a_parametre.append(entite)
+                            break;
+                        elif etat == 'preparation-transformation':
+                            liste_entite_a_parametre.append(entite)
+                            break;
+                        # pour tous les autres état on log
+                        else:
+                            pasTrouve = False
+                            result = "id_e:" + str(entite) + " => "
+                            result += str(etat) + " "
+
+                if not pasTrouve:
+                    logging.info(result)
+
+        for id_e in liste_entite_a_parametre:
+            mise_en_place_config_pastell.delay(id_e)
+            return {'status': 'OK', 'message': 'routine de mise en place du paramétrage pastell effectue'}
+    else:
+        raise PastellApiException("Problème lors de l'appel à l'api /document/count de pastell")
 
 @celery.task(name='creation_et_association_connecteur_ged_pastell_AG_task')
 def creation_et_association_connecteur_ged_pastell_AG_task(id_e):

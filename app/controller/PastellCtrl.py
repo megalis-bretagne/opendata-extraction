@@ -35,3 +35,16 @@ class AdminPastellGedPastellCtrl(Resource):
         mise_en_place_config_pastell.delay(id_e)
         return jsonify(
             {"statut": "id_e:" +id_e + 'demande de mise en place du paramétrage pastell pour l\'id_e en paramètre (taches asynchrone)'})
+
+
+
+@api.route('/routine/parametrage')
+class AdminPastellRoutineCtrl(Resource):
+    @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
+    def post(self):
+        from app.tasks.pastell_tasks import routine_parametrage_pastell
+        routine_parametrage_pastell.delay()
+        return jsonify(
+            {"statut": "routine paramétrage pastell (taches asynchrone)"})
