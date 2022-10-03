@@ -293,6 +293,13 @@ def republier_all_acte_task(etat):
         publier_acte_task.delay(publication.id, True)
     return {'status': 'OK', 'message': 'republier_all_acte_task '}
 
+@celery.task(name='republier_actes_pour_siren_task')
+def republier_actes_pour_siren_task(siren, etat):
+    ls_publications = Publication.query.filter(Publication.siren == siren, Publication.etat == etat)
+    for publication in ls_publications:
+        publier_acte_task.delay(publication.id, True)
+    return {'status': 'OK', 'message': 'republier_actes_pour_siren_task'}
+
 # FONCTION
 def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_tx=''):
     # infoEtablissement = api_insee_call(publication.siren)

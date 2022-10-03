@@ -221,6 +221,18 @@ class PublicationRepublierCtrl(Resource):
         return jsonify(
             {"statut": "ETAT:" +str(etat)+ '- demande de republication prise en compte (taches asynchrone)'})
 
+@api.route('/publication/republier/<int:siren>/<int:etat>')
+@api.doc(params={'etat': '1 =publie, 0=non, 2=en-cours, 3=en-erreur'})
+class PublicationRepublierSirenCtrl(Resource):
+    @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
+    def post(self, siren, etat):
+        from app.tasks.publication_tasks import republier_actes_pour_siren_task
+        republier_actes_pour_siren_task.delay(siren, etat)
+        return jsonify(
+            {"statut": "ETAT:" +str(etat)+ ' SIREN: '+str(siren)+'- demande de republication prise en compte (taches asynchrone)'})
+
 
 @api.route('/parametrage/valorisation')
 class AdminValorisation(Resource):
