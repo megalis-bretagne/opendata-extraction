@@ -62,7 +62,7 @@ def routine_parametrage_pastell():
         liste_entite_a_parametre = []
 
         for entite in res:
-            etat_innattendu_trouve = True
+            etat_innattendu_trouve = False
 
             if len(res[str(entite)]['flux']['ged-megalis-opendata']) > 0:
 
@@ -78,11 +78,11 @@ def routine_parametrage_pastell():
                             break;
                         # pour tous les autres état on log
                         else:
-                            etat_innattendu_trouve = False
+                            etat_innattendu_trouve = True
                             result = "id_e:" + str(entite) + " => "
                             result += str(etat) + " "
 
-                if not etat_innattendu_trouve:
+                if etat_innattendu_trouve:
                     logging.info(result)
 
         for id_e in liste_entite_a_parametre:
