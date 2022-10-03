@@ -8,6 +8,7 @@ from app.tasks import PastellApiException
 
 celery = celeryapp.celery
 
+
 @celery.task(name='creation_et_association_all_task')
 def creation_et_association_all():
     URL_API_PASTELL = current_app.config['API_PASTELL_URL']
@@ -15,7 +16,7 @@ def creation_et_association_all():
 
     auth_pastell = HTTPBasicAuth(current_app.config['API_PASTELL_USER'], current_app.config['API_PASTELL_PASSWORD'])
     liste_entite_reponse = requests.get(
-        URL_API_PASTELL +API_PASTELL_VERSION + "/entite", auth=auth_pastell)
+        URL_API_PASTELL + API_PASTELL_VERSION + "/entite", auth=auth_pastell)
     if liste_entite_reponse.status_code == 200:
         liste_entite = json.loads(liste_entite_reponse.text)
 
@@ -26,10 +27,11 @@ def creation_et_association_all():
             creation_et_association_connecteur_ged_pastell_AG_task.delay(entite['id_e'])
 
         nb_entite = len(liste_entite)
-        return {'status': 'OK','message': 'creation_et_association_all_task', 'nb_id_e': str(nb_entite)}
+        return {'status': 'OK', 'message': 'creation_et_association_all_task', 'nb_id_e': str(nb_entite)}
 
     else:
-        return {'status': 'KO','message': 'creation_et_association_all_task'}
+        return {'status': 'KO', 'message': 'creation_et_association_all_task'}
+
 
 @celery.task(name='mise_en_place_config_pastell_task')
 def mise_en_place_config_pastell(id_e):
@@ -38,6 +40,7 @@ def mise_en_place_config_pastell(id_e):
     creation_et_association_connecteur_ged_megalis_opendata_task.delay(id_e)
     creation_et_association_connecteur_ged_pastell_AG_task.delay(id_e)
     return {'status': 'OK', 'message': 'mise_en_place_config_pastell', 'id_e': str(id_e)}
+
 
 @celery.task(name='routine_parametrage_pastell_task')
 def routine_parametrage_pastell():
@@ -59,13 +62,13 @@ def routine_parametrage_pastell():
         liste_entite_a_parametre = []
 
         for entite in res:
-            pasTrouve = True
+            etat_innattendu_trouve = True
 
             if len(res[str(entite)]['flux']['ged-megalis-opendata']) > 0:
 
                 for etat in res[str(entite)]['flux']['ged-megalis-opendata']:
 
-                    #on ignore les docs à l'état terminé
+                    # on ignore les docs à l'état terminé
                     if (etat != 'termine'):
                         if etat == 'preparation-send-ged_1':
                             liste_entite_a_parametre.append(entite)
@@ -75,25 +78,28 @@ def routine_parametrage_pastell():
                             break;
                         # pour tous les autres état on log
                         else:
-                            pasTrouve = False
+                            etat_innattendu_trouve = False
                             result = "id_e:" + str(entite) + " => "
                             result += str(etat) + " "
 
-                if not pasTrouve:
+                if not etat_innattendu_trouve:
                     logging.info(result)
 
         for id_e in liste_entite_a_parametre:
             mise_en_place_config_pastell.delay(id_e)
-            return {'status': 'OK', 'message': 'routine de mise en place du paramétrage pastell effectue'}
+
+        return {'status': 'OK', 'nombre': str(len(liste_entite_a_parametre)),
+                'message': 'routine de mise en place du paramétrage pastell effectue'}
     else:
         raise PastellApiException("Problème lors de l'appel à l'api /document/count de pastell")
+
 
 @celery.task(name='creation_et_association_connecteur_ged_pastell_AG_task')
 def creation_et_association_connecteur_ged_pastell_AG_task(id_e):
     URL_API_PASTELL = current_app.config['API_PASTELL_URL']
     API_PASTELL_VERSION = current_app.config['API_PASTELL_VERSION']
 
-    ID_E_PASTELL =id_e
+    ID_E_PASTELL = id_e
 
     # ETAPE 1: Creation du connecteur sans sa configuration
     auth_pastell = HTTPBasicAuth(current_app.config['API_PASTELL_USER'], current_app.config['API_PASTELL_PASSWORD'])
@@ -105,7 +111,8 @@ def creation_et_association_connecteur_ged_pastell_AG_task(id_e):
         "type": 'GED',
         "id_verrou": ""
     }
-    response = requests.post(URL_API_PASTELL +API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/connecteur/", data, auth=auth_pastell)
+    response = requests.post(URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/connecteur/", data,
+                             auth=auth_pastell)
     if response.ok:
         # ETAPE 2: configuration du connecteur précédemment créé
         res = json.loads(response.text)
@@ -119,7 +126,8 @@ def creation_et_association_connecteur_ged_pastell_AG_task(id_e):
             "pastell_action": 'orientation'
         }
         responseConnecteur = requests.patch(
-            URL_API_PASTELL +API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/connecteur/" + res['id_ce'] + '/content/', data=data_detail,
+            URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/connecteur/" + res[
+                'id_ce'] + '/content/', data=data_detail,
             auth=auth_pastell)
 
         if responseConnecteur.ok:
@@ -130,7 +138,8 @@ def creation_et_association_connecteur_ged_pastell_AG_task(id_e):
             # Association actes-generique
             ID_FLUX = "actes-generique"
             responseAssociation = requests.post(
-                URL_API_PASTELL +API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/flux/" + ID_FLUX + '/connecteur/' + res[
+                URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/flux/" + ID_FLUX + '/connecteur/' +
+                res[
                     'id_ce'] + '/',
                 data=resquest, auth=auth_pastell)
             if responseAssociation.ok:
@@ -148,12 +157,13 @@ def creation_et_association_connecteur_ged_pastell_AG_task(id_e):
     return {'status': 'KO', 'message': 'Association connecteur ged_pastell KO', 'id_e': str(id_e),
             'ID_FLUX': str(ID_FLUX)}
 
+
 @celery.task(name='creation_et_association_connecteur_ged_sftp_task')
 def creation_et_association_connecteur_ged_sftp_task(id_e):
     URL_API_PASTELL = current_app.config['API_PASTELL_URL']
     API_PASTELL_VERSION = current_app.config['API_PASTELL_VERSION']
 
-    ID_E_PASTELL =id_e
+    ID_E_PASTELL = id_e
 
     # ETAPE 1: Creation du connecteur sans sa configuration
     auth_pastell = HTTPBasicAuth(current_app.config['API_PASTELL_USER'], current_app.config['API_PASTELL_PASSWORD'])
@@ -165,7 +175,8 @@ def creation_et_association_connecteur_ged_sftp_task(id_e):
         "type": 'GED',
         "id_verrou": ""
     }
-    response = requests.post(URL_API_PASTELL +API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/connecteur/", data, auth=auth_pastell)
+    response = requests.post(URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/connecteur/", data,
+                             auth=auth_pastell)
     if response.ok:
 
         # ETAPE 2: configuration du connecteur précédemment créé
@@ -190,11 +201,12 @@ def creation_et_association_connecteur_ged_sftp_task(id_e):
             "depot_sftp_login": current_app.config['DEPOT_USERNAME'],
             "depot_sftp_password": current_app.config['DEPOT_PASSWORD'],
             "depot_sftp_fingerprint": current_app.config['DEPOT_FINGERPRINT'],
-            "depot_sftp_directory": '/data/partage/opendata'+ current_app.config['DIRECTORY_TO_WATCH'],
+            "depot_sftp_directory": '/data/partage/opendata' + current_app.config['DIRECTORY_TO_WATCH'],
             "depot_sftp_rename_suffix": ''
         }
         responseConnecteur = requests.patch(
-            URL_API_PASTELL +API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/connecteur/" + res['id_ce'] + '/content/', data=data_detail,
+            URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/connecteur/" + res[
+                'id_ce'] + '/content/', data=data_detail,
             auth=auth_pastell)
 
         if responseConnecteur.ok:
@@ -204,11 +216,12 @@ def creation_et_association_connecteur_ged_sftp_task(id_e):
             }
             ID_FLUX = 'ged-megalis-opendata'
             responseAssociation = requests.post(
-                URL_API_PASTELL +API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/flux/" + ID_FLUX + '/connecteur/' + res[
+                URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/flux/" + ID_FLUX + '/connecteur/' +
+                res[
                     'id_ce'] + '/',
                 data=resquest, auth=auth_pastell)
             if responseAssociation.ok:
-                logging.info('Association connecteur ged_sftp ok type_flux:%s, id_e:%s',ID_FLUX,ID_E_PASTELL)
+                logging.info('Association connecteur ged_sftp ok type_flux:%s, id_e:%s', ID_FLUX, ID_E_PASTELL)
 
                 return {'status': 'OK', 'message': 'Association connecteur ged_sftp ok', 'id_e': str(id_e),
                         'ID_FLUX': str(ID_FLUX)}
@@ -223,13 +236,13 @@ def creation_et_association_connecteur_ged_sftp_task(id_e):
     return {'status': 'KO', 'message': 'Association connecteur ged_sftp KO', 'id_e': str(id_e),
             'ID_FLUX': str(ID_FLUX)}
 
+
 @celery.task(name='creation_et_association_connecteur_transformateur_task')
 def creation_et_association_connecteur_transformateur_task(id_e):
-
     URL_API_PASTELL = current_app.config['API_PASTELL_URL']
     API_PASTELL_VERSION = current_app.config['API_PASTELL_VERSION']
 
-    ID_E_PASTELL =id_e
+    ID_E_PASTELL = id_e
 
     # ETAPE 1: Creation du connecteur sans sa configuration
     auth_pastell = HTTPBasicAuth(current_app.config['API_PASTELL_USER'], current_app.config['API_PASTELL_PASSWORD'])
@@ -277,12 +290,13 @@ def creation_et_association_connecteur_transformateur_task(id_e):
     return {'status': 'KO', 'message': 'Association connecteur transformation KO', 'id_e': str(id_e),
             'ID_FLUX': str(ID_FLUX)}
 
+
 @celery.task(name='creation_et_association_connecteur_ged_megalis_opendata_task')
 def creation_et_association_connecteur_ged_megalis_opendata_task(id_e):
     URL_API_PASTELL = current_app.config['API_PASTELL_URL']
     API_PASTELL_VERSION = current_app.config['API_PASTELL_VERSION']
 
-    ID_E_PASTELL =id_e
+    ID_E_PASTELL = id_e
 
     # ETAPE 1: Creation du connecteur sans sa configuration
     auth_pastell = HTTPBasicAuth(current_app.config['API_PASTELL_USER'], current_app.config['API_PASTELL_PASSWORD'])
@@ -349,11 +363,15 @@ def creation_et_association_connecteur_ged_megalis_opendata_task(id_e):
                 data=resquest, auth=auth_pastell)
 
             if responseAssociationDelib.ok and responseAssociationAutres.ok and responseAssociationReglementaires.ok and responseAssociationArretes.ok:
-                logging.info('Association connecteur ged_megalis_opendata ok type_flux:%s, id_e:%s', ID_FLUX, ID_E_PASTELL)
+                logging.info('Association connecteur ged_megalis_opendata ok type_flux:%s, id_e:%s', ID_FLUX,
+                             ID_E_PASTELL)
                 return {'status': 'OK', 'message': 'Association connecteur ged_megalis_opendata ok', 'id_e': str(id_e),
                         'ID_FLUX': str(ID_FLUX)}
             else:
-                logging.error('Association connecteur ged_megalis_opendata KO erreur:%s', str(responseAssociationDelib.ok) + ' - ' + str(responseAssociationAutres.ok)+ ' - ' + str(responseAssociationReglementaires.ok)+ ' - ' + str(responseAssociationArretes.ok))
+                logging.error('Association connecteur ged_megalis_opendata KO erreur:%s',
+                              str(responseAssociationDelib.ok) + ' - ' + str(
+                                  responseAssociationAutres.ok) + ' - ' + str(
+                                  responseAssociationReglementaires.ok) + ' - ' + str(responseAssociationArretes.ok))
 
         else:
             logging.error('Creation config connecteur  ged_megalis_opendata  KO erreur:%s', responseConnecteur.text)
