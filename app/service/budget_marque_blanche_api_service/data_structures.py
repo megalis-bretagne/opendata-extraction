@@ -2,16 +2,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import NamedTuple, Optional
 
+from app.shared.client_api_sirene import Etablissement
+
 from yatotem2scdl.conversion import TotemBudgetMetadata, EtapeBudgetaire
-
-
-_EtabInfo = NamedTuple(
-    "_EtabInfo",
-    [
-        ("denomination", str),
-        ("siret_siege", int),
-    ],
-)
 
 _TotemAndMetadata = NamedTuple(
     "_TotemAndMetadata",
@@ -21,18 +14,52 @@ _TotemAndMetadata = NamedTuple(
     ],
 )
 
+#
+# API budget disponibles
+#
 @dataclass()
-class ElementPlanDeCompte:
+class InfosEtablissement:
+    """Information sur un établissement donnée"""
+    denomination: str
+    siret: str
+    enseigne: Optional[str]
+    est_siege: str
+
+    @staticmethod
+    def from_api_sirene_etablissement(etablissement: Etablissement):
+        return InfosEtablissement(
+            denomination=etablissement.denomination_unite_legale,
+            siret=etablissement.siret,
+            enseigne=etablissement.enseigne,
+            est_siege=etablissement.est_siege
+        )
+
+# année - siret - etapes
+RessourcesBudgetairesDisponibles = dict[str, dict[str, set[EtapeBudgetaire]]]
+
+@dataclass()
+class InfoBudgetDisponiblesApi:
+    """Informations sur les ressources budget disponibles pour un siren donné"""
+    siren: str
+    ressources_disponibles: RessourcesBudgetairesDisponibles
+    infos_etablissements: dict[str, InfosEtablissement] # siret - infos
+
+#
+# PDC et info budget
+#
+@dataclass()
+class ElementNomenclaturePdc:
+    """Element de nomenclature d'un PDC"""
     code: str
     libelle: str
     parent_code: Optional[str]
 
 @dataclass()
-class RefFonctionnelleBudgetMarqueBlancheApi(ElementPlanDeCompte):
+class RefFonctionnelleBudgetMarqueBlancheApi(ElementNomenclaturePdc):
     """Reférence fonctionnelle du plan de compte"""
 
 @dataclass()
-class CompteNatureMarqueBlancheApi(ElementPlanDeCompte):
+class CompteNatureMarqueBlancheApi(ElementNomenclaturePdc):
     """Comptes natures du plan de compte"""
 
 @dataclass()
@@ -60,6 +87,6 @@ class GetBudgetMarqueBlancheApiResponse:
     etape: EtapeBudgetaire
     annee: int
     siren: str
-    siret_siege: str
+    siret: str
     denomination_siege: str
     lignes: list[LigneBudgetMarqueBlancheApi]

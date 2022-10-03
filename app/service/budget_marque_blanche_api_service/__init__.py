@@ -1,6 +1,7 @@
 from .data_structures import (
     LigneBudgetMarqueBlancheApi,
     GetBudgetMarqueBlancheApiResponse,
+    RessourcesBudgetairesDisponibles,
 )
 
 from .exceptions import (

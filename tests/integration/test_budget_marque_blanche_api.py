@@ -5,9 +5,9 @@ class TestBudgetMarqueBlancheApi:
     un_siren = "215600461"
     un_faux_siren = "999999991"
 
-    def test_budget_annee_disponible(self, client):
+    def test_budget_ressources_disponibles(self, client):
 
-        response = client.get(f"{self.api_prefix}/{self.un_siren}/annees_disponibles")
+        response = client.get(f"{self.api_prefix}/disponibles/{self.un_siren}")
         assert response.status_code == 200
     
     @pytest.mark.skip("Pourra réactiver lorsque l'on saura monter un vrai environement")
