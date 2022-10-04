@@ -48,3 +48,17 @@ class AdminPastellRoutineCtrl(Resource):
         routine_parametrage_pastell.delay()
         return jsonify(
             {"statut": "routine paramétrage pastell (taches asynchrone)"})
+
+
+@api.route('/deblocage')
+class AdminPastellDeblocageCtrl(Resource):
+    @api.response(200, 'Success')
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    @isAdmin
+    def post(self):
+        from app.tasks.pastell_tasks import deblocage_ged_pastell
+        args = arguments_pastell_controller.parse_args()
+        id_e = args['id_e']
+        deblocage_ged_pastell.delay(id_e)
+        return jsonify(
+            {"statut": "id_e:" +id_e + 'demande de deblocage_ged_pastell pour l\'id_e en paramètre (taches asynchrone)'})
