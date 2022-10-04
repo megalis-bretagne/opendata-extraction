@@ -59,7 +59,8 @@ def routine_parametrage_pastell():
 
     if response.ok:
         res = json.loads(response.text)
-        liste_entite_a_parametre = []
+        liste_entite_preparation_send = []
+        liste_entite_transformation = []
 
         for entite in res:
             etat_innattendu_trouve = False
@@ -71,10 +72,10 @@ def routine_parametrage_pastell():
                     # on ignore les docs à l'état terminé
                     if (etat != 'termine'):
                         if etat == 'preparation-send-ged_1':
-                            liste_entite_a_parametre.append(entite)
+                            liste_entite_preparation_send.append(entite)
                             break;
                         elif etat == 'preparation-transformation':
-                            liste_entite_a_parametre.append(entite)
+                            liste_entite_transformation.append(entite)
                             break;
                         # pour tous les autres état on log
                         else:
@@ -85,13 +86,47 @@ def routine_parametrage_pastell():
                 if etat_innattendu_trouve:
                     logging.info(result)
 
-        for id_e in liste_entite_a_parametre:
+        for id_e in liste_entite_preparation_send:
             mise_en_place_config_pastell.delay(id_e)
+            deblocage_ged_pastell.delay(id_e, "preparation-send-ged_1")
 
-        return {'status': 'OK', 'nombre': str(len(liste_entite_a_parametre)),
+        for id_e in liste_entite_transformation:
+            mise_en_place_config_pastell.delay(id_e)
+            deblocage_ged_pastell.delay(id_e, "preparation-transformation")
+
+        return {'status': 'OK', 'nombre': str(len(liste_entite_preparation_send) + len(liste_entite_transformation)),
                 'message': 'routine de mise en place du paramétrage pastell effectue'}
     else:
         raise PastellApiException("Problème lors de l'appel à l'api /document/count de pastell")
+
+
+@celery.task(name='deblocage_ged_pastell_task')
+def deblocage_ged_pastell(id_e, last_etat):
+    if last_etat == 'preparation-send-ged_1':
+        ACTION = 'send-ged_1'
+    elif last_etat == 'preparation-transformation':
+        ACTION = 'transformation'
+    else:
+        return {'status': 'OK', 'message': 'action non gere', 'action': str(last_etat)}
+
+    URL_API_PASTELL = current_app.config['API_PASTELL_URL']
+    API_PASTELL_VERSION = current_app.config['API_PASTELL_VERSION']
+    auth_pastell = HTTPBasicAuth(current_app.config['API_PASTELL_USER'], current_app.config['API_PASTELL_PASSWORD'])
+    ID_E_PASTELL = id_e
+
+    response = requests.get(
+        URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL + "/document?&type=ged-megalis-opendata&lastetat=" + last_etat,
+        auth=auth_pastell)
+
+    if response.ok:
+        res = json.loads(response.text)
+        for doc in res:
+            requests.post(URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + id_e + "/document/" + doc['id_d'] +
+                          '/action/' + ACTION, auth=auth_pastell)
+    else:
+        raise PastellApiException("Problème lors de l'appel à l'api /document/count de pastell")
+
+    return {'status': 'OK', 'id_e': str(id_e), 'message': 'deblocage pastell effectue'}
 
 
 @celery.task(name='creation_et_association_connecteur_ged_pastell_AG_task')
