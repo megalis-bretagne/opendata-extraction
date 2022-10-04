@@ -8,7 +8,8 @@ from app.controller.AdminCtrl import api as adminApi
 from app.controller.DecpApi import api as decpApi
 from app.controller.ScdlApi import api as scdlApi
 from app.controller.StatsApi import api as statsApi
-
+from app.controller.BudgetMarqueBlancheApi import api as budgetMarqueBlancheApi
+from app.controller.PastellCtrl import api as pastellCtrl
 # Fix of returning swagger.json on HTTP
 @property
 def specs_url(self):
@@ -28,8 +29,11 @@ api = Api(version="1.0", title="API Open DATA",
 
 api.add_namespace(decpApi)
 api.add_namespace(scdlApi)
+api.add_namespace(statsApi)
 api.add_namespace(healthApi)
 api.add_namespace(publicationApi)
 api.add_namespace(parametrageApi)
 api.add_namespace(adminApi)
-api.add_namespace(statsApi)
+api.add_namespace(pastellCtrl)
+api.add_namespace(budgetMarqueBlancheApi)
+

@@ -1,12 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="runserver ( webapp)" type="PythonConfigurationType" factoryName="Python">
-    <module name="extraction-data-new" />
+    <module name="extraction-open-data" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
-    <option name="SDK_HOME" value="D:\sources\CSM\extraction-data-new\venv\Scripts\python.exe" />
+    <option name="SDK_HOME" value="D:\sources\CSM\opendata\extraction-open-data\venv\Scripts\python.exe" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
