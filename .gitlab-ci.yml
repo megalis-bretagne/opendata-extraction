@@ -9,6 +9,11 @@ before_script:
   - export no_proxy=sib.fr
   - apk update && apk add sshpass openssh-client bash
 
+stages:
+  - build
+  - test
+  - deploy
+
 build:
   extends: .build
 
