@@ -1,4 +1,4 @@
-black
+black<=21.12b0 # conflit avec flask 1 dans requirements.txt
 mypy
 pylint
 pytest==7.1.2
