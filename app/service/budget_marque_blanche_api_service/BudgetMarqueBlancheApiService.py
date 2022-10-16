@@ -34,6 +34,7 @@ from .functions import (
     _wrap_in_budget_marque_blanche_api_ex,
     _to_scdl_csv_reader,
     _extraire_pdc_unique,
+    extraire_siren,
 )
 
 from ._ExtracteurInfoPdc import _ExtracteurInfoPdc
@@ -48,6 +49,11 @@ class BudgetMarqueBlancheApiService:
     def ressources_budgetaires_disponibles(
         self, siren: str
     ) -> InfoBudgetDisponiblesApi:
+
+        self.__logger.info(
+            (f"Récupération des ressources budgetaires disponibles pour le siren {siren}"),
+        )
+
         all_totems_and_metadata = self._liste_totem_with_metadata(siren)
         ressources: RessourcesBudgetairesDisponibles = {}
 
@@ -75,13 +81,19 @@ class BudgetMarqueBlancheApiService:
     @_wrap_in_budget_marque_blanche_api_ex
     def retrieve_pdc_info(
         self,
-        siren: str,
         annee: int,
+        siret: str,
     ):
-        (_, siret) = self._api_sirene_etablissement_siege(str(siren))
+
+        siren = str(extraire_siren(siret))
+
+        self.__logger.info(
+            (f"Récupération du plan de compte pour le siret {siret}"),
+            (f"et l'année {annee}."),
+        )
 
         all_totems_and_metadata = self._liste_totem_with_metadata(siren)
-        pred = self._budget_metadata_predicate(siret, annee)
+        pred = self._budget_metadata_predicate(annee, siret)
         totems_and_metadata = [x for x in all_totems_and_metadata if pred(x.metadata)]
 
         ls_metadata = [x.metadata for x in totems_and_metadata]
@@ -97,17 +109,19 @@ class BudgetMarqueBlancheApiService:
 
     @_wrap_in_budget_marque_blanche_api_ex
     def retrieve_budget_info(
-        self,
-        siren: str,
-        annee: int,
-        etape_str: str,
+        self, annee: int, siret: str, etape_str: str
     ) -> GetBudgetMarqueBlancheApiResponse:
 
         etape = _etape_from_str(etape_str)
-        (denomination, siret) = self._api_sirene_etablissement_siege(siren)
+        siren = str(extraire_siren(siret))
+
+        self.__logger.info(
+            (f"Récupération des données budgetaires pour le siret {siret}"),
+            (f" l'année {annee} et l'étape {etape}"),
+        )
 
         all_totem_with_metadata = self._liste_totem_with_metadata(siren)
-        pred = self._budget_metadata_predicate(siret, annee, etape)
+        pred = self._budget_metadata_predicate(annee, siret, etape)
         totems_and_metadata = [x for x in all_totem_with_metadata if pred(x.metadata)]
 
         if not totems_and_metadata:
@@ -139,9 +153,7 @@ class BudgetMarqueBlancheApiService:
         return GetBudgetMarqueBlancheApiResponse(
             etape=etape,
             annee=annee,
-            siren=str(siren),
             siret=str(siret),
-            denomination_siege=denomination,
             lignes=lignes,
         )
 
@@ -249,8 +261,8 @@ class BudgetMarqueBlancheApiService:
 
     def _budget_metadata_predicate(
         self,
-        siret: str,
         annee: int,
+        siret: str,
         etape: EtapeBudgetaire = None,
     ) -> Callable[[TotemBudgetMetadata], bool]:
         def predicate(metadata: TotemBudgetMetadata):

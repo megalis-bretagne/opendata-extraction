@@ -149,12 +149,8 @@ api_get_donnees_response = api.model(
     {
         "etape": etape_model,
         "annee": fields.Integer(description="Année de l'exerice.", required=True),
-        "siren": fields.Integer(description="Numéro SIREN", required=False),
         "siret": fields.Integer(
             description="Numéro SIRET de l'établissement", required=False
-        ),
-        "denomination_siege": fields.String(
-            description="Dénomination de l'unité légale.", required=True
         ),
         "lignes": fields.List(fields.Nested(api_ligne_budget)),
     },
@@ -179,29 +175,30 @@ def handle_ise_errors(error):
     logging.exception(error)
     return {"message": error.api_message}, 500
 
-@api.route("/<int:siren>/<int:annee>/<string:etape>")
+@api.route("/donnees_budgetaires/<int:annee>/<int:siret>/<string:etape>")
 class DonneesBudgetCtrl(Resource):
     @api.marshal_with(api_get_donnees_response, code=200)
     def get(
         self,
-        siren: int,
+        siret: int,
         annee: int,
         etape: str,
     ) -> api_service.GetBudgetMarqueBlancheApiResponse:
-        response = _API_SERVICE.retrieve_budget_info(siren, annee, etape)
+        response = _API_SERVICE.retrieve_budget_info(annee, siret, etape)
         return response
 
-@api.route("/<int:siren>/<int:annee>/pdc")
+
+@api.route("/plans_de_comptes/<int:annee>/<int:siret>")
 class PlanDeComptesCtrl(Resource):
     @api.marshal_with(api_get_pdc_info_response, code=200)
     def get(
         self,
-        siren: int, annee: int
+        siret: int, annee: int
         ):
-        response = _API_SERVICE.retrieve_pdc_info(siren, annee)
+        response = _API_SERVICE.retrieve_pdc_info(annee, siret)
         return response
 
-@api.route("/disponibles/<int:siren>")
+@api.route("/donnees_budgetaires_disponibles/<int:siren>")
 class RessourcesDisponiblesCtrl(Resource):
     @api.marshal_with(api_ressources_budgetaires_disponibles, code=200)
     def get(

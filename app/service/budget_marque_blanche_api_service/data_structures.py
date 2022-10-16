@@ -86,7 +86,5 @@ class GetBudgetMarqueBlancheApiResponse:
 
     etape: EtapeBudgetaire
     annee: int
-    siren: str
     siret: str
-    denomination_siege: str
     lignes: list[LigneBudgetMarqueBlancheApi]
