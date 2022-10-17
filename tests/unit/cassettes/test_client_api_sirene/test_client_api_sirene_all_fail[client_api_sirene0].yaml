@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: grant_type=client_credentials
+    headers:
+      Authorization:
+      - Basic Y2xlZiBpbnZhbGlkZTpzZWNyZXQgaW52YWxpZGU=
+      Connection:
+      - close
+      Content-Length:
+      - '29'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Host:
+      - api.insee.fr
+      User-Agent:
+      - Python-urllib/3.9
+    method: POST
+    uri: https://api.insee.fr/token
+  response:
+    body:
+      string: '{"error_description":"A valid OAuth client could not be found for client_id:clef
+        invalide","error":"invalid_client"}'
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 07 Oct 2022 12:43:12 GMT
+      Set-Cookie:
+      - INSEE=rd4o00000000000000000000ffff0ac348b0o9443; expires=Fri, 07-Oct-2022
+        13:03:12 GMT; path=/; Httponly; Secure
+      - pdapimgateway=rd4o00000000000000000000ffff0ac348aco8280; expires=Fri, 07-Oct-2022
+        13:03:12 GMT; path=/; Httponly; Secure
+      Strict-Transport-Security:
+      - max-age=100000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

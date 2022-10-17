@@ -11,6 +11,8 @@ from app import db
 from app.models.publication_model import Publication, Acte, PieceJointe
 from lxml import etree
 
+from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
+
 celery = celeryapp.celery
 
 # TASKS
@@ -60,12 +62,17 @@ def creation_publication_task(zip_path):
     if parametrage is None:
         db_sess = db.session
         try:
-            etab = api_insee_call(newPublication.siren)
             nic = "00000"
             denomination = ""
-            if etab is not None:
-                nic = etab.nic
-                denomination = etab.denominationUniteLegale
+
+            try:
+                etab_siege = etablissement_siege_pour_siren(newPublication.siren)
+                nic = etab_siege.nic
+                denomination = etab_siege.denomination_unite_legale
+            except Exception as err:
+                logging.warning(f"Impossible de récupérer l'établissement siège. Le paramétrage sera incomplet")
+                logging.warning("Exception:")
+                logging.exception(err)
 
             new_parametrage = Parametrage(created_at=datetime.now(),
                                           modified_at=datetime.now(),
@@ -302,8 +309,6 @@ def republier_actes_pour_siren_task(siren, etat):
 
 # FONCTION
 def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_tx=''):
-    # infoEtablissement = api_insee_call(publication.siren)
-
     # Pour tous les actes ( documents lié à la publication)
     for acte in publication.actes:
 
