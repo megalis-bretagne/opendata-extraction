@@ -2,7 +2,8 @@ from celery.exceptions import Ignore
 
 from app import celeryapp, db
 from app.models.parametrage_model import Parametrage
-from app.tasks import api_insee_call
+
+from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
 
 celery = celeryapp.celery
 
@@ -16,11 +17,14 @@ def valorisation_nic_denomination(self, siren):
     parametrage = Parametrage.query.filter(Parametrage.siren == siren).first()
     if parametrage is None:
         return {'status': 'Ok', 'message': 'Pas de parametrage existant'}
-    etablissement = api_insee_call(siren)
-    if etablissement is None:
-        raise InseeFailure('L\'établisement ' + siren + ' n\'existe pas ou api entreprise est injoignable')
-    parametrage.nic = etablissement.nic
-    parametrage.denomination = etablissement.denominationUniteLegale
+
+    try:
+        siege_etab = etablissement_siege_pour_siren(siren)
+        parametrage.nic = siege_etab.nic
+        parametrage.denomination = siege_etab.denomination_unite_legale
+    except Exception as e:
+        raise InseeFailure('L\'établisement ' + siren + ' n\'existe pas ou api entreprise est injoignable') from e
+
     db_sess = db.session
     db_sess.add(parametrage)
     db_sess.commit()

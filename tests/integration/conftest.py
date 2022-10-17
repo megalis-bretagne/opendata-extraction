@@ -80,15 +80,14 @@ def solr(request) -> DockerContainer:
 
 
 @pytest.fixture(scope="class")
-def app(redis, mariadb, solr):
+def app(request, redis, mariadb, solr):
     """ Makes the 'app' parameter available to test functions. """
 
     redis_port = redis.get_exposed_port(6379)
     mariadb_port = mariadb.get_exposed_port(3306)
     solr_port = solr.get_exposed_port(8983)
 
-    # Initialize the Flask-App with test-specific settings
-    the_app = create_app(dict(
+    config_settings = dict(
         TESTING=True,  # Propagate exceptions
         LOGIN_DISABLED=False,  # Enable @register_required
         MAIL_SUPPRESS_SEND=True,  # Disable Flask-Mail send
@@ -108,7 +107,15 @@ def app(redis, mariadb, solr):
 
         SECRET_KEY = "test-secret-key",
         CELERY_CRON={},
-    ))
+    )
+
+    actual_config_settings = config_settings
+    if hasattr(request, "param"):
+        test_defined_config_settings = request.param # paramètres de l'application défini au sein du test
+        actual_config_settings = config_settings | test_defined_config_settings
+
+    # Initialize the Flask-App with test-specific settings
+    the_app = create_app(actual_config_settings)
 
     # Setup an application context (since the tests run outside of the webserver context)
     the_app.app_context().push()

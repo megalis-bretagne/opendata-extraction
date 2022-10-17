@@ -1,0 +1,89 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://entreprise.data.gouv.fr/api/sirene/v3/unites_legales/243500733
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 16 Oct 2022 10:34:56 GMT
+      ETag:
+      - W/"af1411f4380239d3e8984e273a10f53a"
+      Server:
+      - nginx + Phusion Passenger(R) 6.0.15
+      Status:
+      - 200 OK
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      - max-age=63072000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.15
+      X-Request-Id:
+      - f990b8a9-287f-4236-9cc7-d402ec5713bc
+      X-Runtime:
+      - '0.034599'
+    status:
+      code: 200
+      message: OK
+version: 1

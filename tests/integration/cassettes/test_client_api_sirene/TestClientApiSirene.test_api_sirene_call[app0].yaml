@@ -1,0 +1,78 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://entreprise.data.gouv.fr/api/sirene/v3/unites_legales/253514491
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Oct 2022 12:43:46 GMT
+      ETag:
+      - W/"494fec21202d7f32789c6d169bfe5440"
+      Server:
+      - nginx + Phusion Passenger(R) 6.0.15
+      Status:
+      - 200 OK
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      - max-age=63072000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.15
+      X-Request-Id:
+      - 08dfbf03-47b9-4bbb-bdae-3d6d267b3af0
+      X-Runtime:
+      - '0.015217'
+    status:
+      code: 200
+      message: OK
+version: 1

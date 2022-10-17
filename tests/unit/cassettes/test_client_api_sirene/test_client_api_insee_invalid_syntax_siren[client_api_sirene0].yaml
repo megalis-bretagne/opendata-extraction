@@ -1,0 +1,104 @@
+interactions:
+- request:
+    body: grant_type=client_credentials
+    headers:
+      Authorization:
+      - Basic xxx
+      Connection:
+      - close
+      Content-Length:
+      - '29'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Host:
+      - api.insee.fr
+      User-Agent:
+      - Python-urllib/3.9
+    method: POST
+    uri: https://api.insee.fr/token
+  response:
+    body:
+      string: '{"access_token":"86150027-cb2e-3936-aaca-7b61b7211163","scope":"am_application_scope
+        default","token_type":"Bearer","expires_in":430346}'
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - close
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 07 Oct 2022 12:43:12 GMT
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - INSEE=rd4o00000000000000000000ffff0ac348b0o9443; expires=Fri, 07-Oct-2022
+        13:03:13 GMT; path=/; Httponly; Secure
+      - pdapimgateway=rd4o00000000000000000000ffff0ac348aco8280; expires=Fri, 07-Oct-2022
+        13:03:13 GMT; path=/; Httponly; Secure
+      Strict-Transport-Security:
+      - max-age=100000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: q=siren%3A253514490_invalid+AND+etablissementSiege%3ATrue
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - Bearer 86150027-cb2e-3936-aaca-7b61b7211163
+      Connection:
+      - close
+      Content-Length:
+      - '57'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Host:
+      - api.insee.fr
+      User-Agent:
+      - Python-urllib/3.9
+    method: POST
+    uri: https://api.insee.fr/entreprises/sirene/V3/siret
+  response:
+    body:
+      string: "{\"header\":{\"statut\":404,\"message\":\"Aucun \xE9l\xE9ment trouv\xE9
+        pour q=siren:253514490_invalid AND etablissementSiege:True\"}}"
+    headers:
+      Access-Control-Allow-Headers:
+      - authorization,Access-Control-Allow-Origin,Content-Type,SOAPAction
+      Access-Control-Allow-Methods:
+      - POST,GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Fri, 07 Oct 2022 12:43:12 GMT
+      Set-Cookie:
+      - INSEE=rd4o00000000000000000000ffff0ac34809o80; expires=Fri, 07-Oct-2022 13:03:13
+        GMT; path=/; Httponly; Secure
+      - pdapimgateway=rd4o00000000000000000000ffff0ac348ado8280; expires=Fri, 07-Oct-2022
+        13:03:13 GMT; path=/; Httponly; Secure
+      Strict-Transport-Security:
+      - max-age=100000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 404
+      message: ''
+version: 1

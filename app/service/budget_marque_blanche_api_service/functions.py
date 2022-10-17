@@ -52,19 +52,14 @@ def _extraire_pdc_unique(ls_totem_metadata: list[TotemBudgetMetadata]):
 
 def _infos_etab(siren: str, logger: logging.Logger) -> _EtabInfo:
     def _requete_infos_etab(siren: str) -> _EtabInfo:
-        from app.tasks.utils import api_insee_call
+        from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
 
         try:
-            etablissement = api_insee_call(siren)
-            assert not (
-                etablissement is None
-                or etablissement.denominationUniteLegale is None
-                or etablissement.siret is None
-            ), f"Le siren {siren} n'a aucun siège social"
+            etablissement = etablissement_siege_pour_siren(siren)
 
             logger.debug(f"Voici l'établissement {etablissement}")
             return _EtabInfo(
-                denomination=etablissement.denominationUniteLegale,
+                denomination=etablissement.denomination_unite_legale,
                 siret_siege=int(etablissement.siret),
             )
         except Exception as err:
