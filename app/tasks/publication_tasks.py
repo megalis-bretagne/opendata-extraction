@@ -450,6 +450,7 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
         data["literal.date_de_publication"] = date_publication.strftime("%Y-%m-%dT%H:%M:%SZ")
 
     data["literal.description"] = publication.objet
+    data["literal.nature_autre_detail"] = publication.nature_autre_detail
     data["literal.documentidentifier"] = publication.numero_de_lacte
     data["literal.documenttype"] = publication.acte_nature
     data["literal.classification"] = publication.classification_code + " " + publication.classification_nom,
@@ -594,6 +595,11 @@ class MetadataPastell:
             self.envoi_depot = metajson['envoi_depot']
         else:
             self.envoi_depot = 'checked'
+
+        if 'nature_autre_detail' in metajson:
+            self.nature_autre_detail = metajson['nature_autre_detail']
+        else:
+            self.nature_autre_detail = ''
 
         # liste de fichier arrete
         self.liste_arrete = metajson['arrete']

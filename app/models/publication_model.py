@@ -27,6 +27,7 @@ class Publication(db.Model):
     created_at: str = db.Column(db.DateTime(), nullable=False)
     modified_at: str = db.Column(db.DateTime(), nullable=False)
     date_publication: str = db.Column(db.DateTime(), nullable=True)
+    nature_autre_detail: str = db.Column(db.String(255), nullable=True)
     actes = relationship("Acte", lazy="joined")
     pieces_jointe = relationship("PieceJointe", lazy="joined")
 
@@ -46,6 +47,7 @@ class Publication(db.Model):
             'classification_code': self.classification_code,
             'classification_nom': self.classification_nom,
             'acte_nature': self.acte_nature,
+            'nature_autre_detail' : self.nature_autre_detail,
             'actes': [item.serialize for item in self.actes],
             'pieces_jointe': [item.serialize for item in self.pieces_jointe]
         }

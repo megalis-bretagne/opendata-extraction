@@ -116,7 +116,7 @@ def generation_acte(siren, annee):
         solr.search(q=query,
                     **{
                         'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
-                              'filepath,documenttype,date,est_publie,date_de_publication,documenttype',
+                              'filepath,documenttype,date,est_publie,date_de_publication,documenttype,nature_autre_detail',
                         'start': start,
                         'rows': rows,
                         'fq': 'date:[' + ANNEE + '-01-01T00:00:00Z TO ' + ANNEE + '-12-31T23:59:59Z]'
@@ -137,6 +137,11 @@ def generation_acte(siren, annee):
             PUBLICATION_DATE=str(doc_res['date_de_publication'][0].split("T", 1)[0])
             NATURE_ACTE = str(doc_res['documenttype'][0])
 
+            if 'nature_autre_detail' in doc_res:
+                NATURE_ACTE_AUTRE_DETAIL = str(doc_res['nature_autre_detail'][0])
+            else:
+                NATURE_ACTE_AUTRE_DETAIL = ''
+
             BUDGET_ANNEE = ''
             BUDGET_NOM = ''
             PREF_ID = ''
@@ -154,7 +159,7 @@ def generation_acte(siren, annee):
             line = '"' + COLL_NOM + '"' + ';' + '"' + COLL_SIRET + '"' + ';' + '"' + DELIB_ID + '"' + ';' + '"' + DELIB_DATE + '"' + ';' + '"' + DELIB_MATIERE_CODE + '"' + ';' \
                    + '"' + DELIB_MATIERE_NOM + '"' + ';' + '"' + DELIB_OBJET + '"' + ';' + '"' + BUDGET_ANNEE + '"' + ';' + '"' + BUDGET_NOM + '"' + ';' + '"' + PREF_ID + '"' + \
                    ';' + '"' + PREF_DATE + '"' + ';' + '"' + VOTE_EFFECTIF + '"' + ';' + '"' + VOTE_REEL + '"' + ';' + '"' + VOTE_POUR + '"' + ';' + '"' + VOTE_CONTRE + '"' + ';' \
-                   + '"' + VOTE_ABSTENTION + '"' + ';' + '"' + DELIB_URL + '"' + ';' +  PUBLICATION_DATE + '"' + ';' + NATURE_ACTE + '"' +'\n'
+                   + '"' + VOTE_ABSTENTION + '"' + ';' + '"' + DELIB_URL + '"' + ';' +  PUBLICATION_DATE + '"' + ';' + NATURE_ACTE + '"'+ ';' + NATURE_ACTE_AUTRE_DETAIL + '"' +'\n'
             lignes.append(line)
         start = start + rows
         result = \
