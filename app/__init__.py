@@ -15,7 +15,8 @@ oidc = OpenIDConnect()
 
 # Instantiate Flask extensions
 from app import celeryapp
-from app.controller import api
+from app.controller import api_v1_bp
+from app.controller.BudgetMarqueBlancheApi import budgets_api_bp
 
 from app.shared.logger_utils import create_or_get_gelf_loghandler
 
@@ -31,7 +32,10 @@ def create_app(extra_config_settings={},oidcEnable=True):
     # Instantiate Flask
     app = Flask(__name__)
 
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    CORS(app, resources={
+        r"/api/*": {"origins": "*"},
+        r"/budgets/api/*": {"origins": "*"}
+    })
 
     # Load common settings
     app.config.from_object('app.settings')
@@ -52,7 +56,8 @@ def create_app(extra_config_settings={},oidcEnable=True):
     celeryapp.celery = celery
 
     # flask_restx
-    api.init_app(app)
+    app.register_blueprint(api_v1_bp, url_prefix='/')
+    app.register_blueprint(budgets_api_bp, url_prefix='/budgets')
 
     #init OIDC client
     if oidcEnable:

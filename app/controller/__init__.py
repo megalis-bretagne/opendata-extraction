@@ -1,4 +1,5 @@
 from flask import url_for
+from flask import Blueprint
 
 from flask_restx import Api
 from app.controller.PublicationCtrl import api as publicationApi
@@ -8,7 +9,6 @@ from app.controller.AdminCtrl import api as adminApi
 from app.controller.DecpApi import api as decpApi
 from app.controller.ScdlApi import api as scdlApi
 from app.controller.StatsApi import api as statsApi
-from app.controller.BudgetMarqueBlancheApi import api as budgetMarqueBlancheApi
 from app.controller.PastellCtrl import api as pastellCtrl
 # Fix of returning swagger.json on HTTP
 @property
@@ -23,9 +23,11 @@ def specs_url(self):
 
 Api.specs_url = specs_url
 
-api = Api(version="1.0", title="API Open DATA",
+api_v1_bp = Blueprint("OpenDataAPI", __name__)
+api = Api(api_v1_bp, version="1.0", title="API Open DATA",
           description="API de mise à disposition des données ouvertes de Megalis Bretagne",
           prefix="/api/v1", doc='/doc/')
+
 
 api.add_namespace(decpApi)
 api.add_namespace(scdlApi)
@@ -35,5 +37,4 @@ api.add_namespace(publicationApi)
 api.add_namespace(parametrageApi)
 api.add_namespace(adminApi)
 api.add_namespace(pastellCtrl)
-api.add_namespace(budgetMarqueBlancheApi)
 
