@@ -166,14 +166,14 @@ def generation_acte(siren, annee):
             solr.search(q=query,
                         **{
                             'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
-                                  'filepath,documenttype,date,est_publie,date_de_publication,documenttype',
+                                  'filepath,documenttype,date,est_publie,date_de_publication,documenttype,nature_autre_detail',
                             'start': start,
                             'rows': rows,
                             'fq': 'date:[' + ANNEE + '-01-01T00:00:00Z TO ' + ANNEE + '-12-31T23:59:59Z]'
                         })
 
     # Ecriture du fichier scdl
-    header = "COLL_NOM;COLL_SIRET;DELIB_ID;DELIB_DATE;DELIB_MATIERE_CODE;DELIB_MATIERE_NOM;DELIB_OBJET;BUDGET_ANNEE;BUDGET_NOM;PREF_ID;PREF_DATE;VOTE_EFFECTIF;VOTE_REEL;VOTE_POUR;VOTE_CONTRE;VOTE_ABSTENTION;DELIB_URL;PUBLICATION_DATE;NATURE_ACTE"
+    header = "COLL_NOM;COLL_SIRET;DELIB_ID;DELIB_DATE;DELIB_MATIERE_CODE;DELIB_MATIERE_NOM;DELIB_OBJET;BUDGET_ANNEE;BUDGET_NOM;PREF_ID;PREF_DATE;VOTE_EFFECTIF;VOTE_REEL;VOTE_POUR;VOTE_CONTRE;VOTE_ABSTENTION;DELIB_URL;PUBLICATION_DATE;NATURE_ACTE;NATURE_ACTE_AUTRE_DETAIL"
     f = open(csv_file_path, 'w')
     f.write(header + '\n')
     for ligne in lignes:
