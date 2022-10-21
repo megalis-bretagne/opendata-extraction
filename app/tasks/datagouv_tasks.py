@@ -37,18 +37,18 @@ def generation_and_publication_scdl(type, param_annee):
 
     return {'status': 'OK', 'message': 'generation et publication scdl', 'annee': str(annee), 'type': str(type)}
 
-def _genere_budget_et_publie_datagouv(siren: str, annee: str, flag_active: str):
 
+def _genere_budget_et_publie_datagouv(siren: str, annee: str, flag_active: str):
     workdir = get_or_create_workdir()
 
-    with tempfile.TemporaryDirectory(dir = workdir) as tmp_dir:
+    with tempfile.TemporaryDirectory(dir=workdir) as tmp_dir:
         csv_filepath = generation_budget(
-            Path(tmp_dir), 
+            Path(tmp_dir),
             siren, annee, flag_active)
         publication_datagouv_scdl(annee, csv_filepath, '5')
 
-def generation_budget(root_dir: Path, siren, annee, flag_active=None) -> Path:
 
+def generation_budget(root_dir: Path, siren, annee, flag_active=None) -> Path:
     annee = str(annee)
     siren = str(siren)
     type = '5'
@@ -57,7 +57,7 @@ def generation_budget(root_dir: Path, siren, annee, flag_active=None) -> Path:
     query = _solr_request_pour_budget(type, annee, siren, flag_active)
     query_params = {
         "fl": "siren,documentidentifier,classification_code,classification_nom,description,"
-        "filepath,documenttype,date,est_publie,date_budget,publication_id",
+              "filepath,documenttype,date,est_publie,date_budget,publication_id",
     }
 
     csv_filename = (
@@ -76,10 +76,12 @@ def generation_budget(root_dir: Path, siren, annee, flag_active=None) -> Path:
                 publication = Publication.query.filter(Publication.id == doc_res['publication_id']).one()
                 for acte in publication.actes:
                     options = Options(inclure_header_csv=False, lineterminator='\n')
-                    convertisseur.totem_budget_vers_scdl(acte.path, PLANS_DE_COMPTES_PATH, output=csv_file, options=options)
+                    convertisseur.totem_budget_vers_scdl(acte.path, PLANS_DE_COMPTES_PATH, output=csv_file,
+                                                         options=options)
             except Exception:
                 logging.exception(f"Fichier ignoré: {url}")
     return csv_filepath
+
 
 def _solr_request_pour_budget(type: str, annee: str, siren: str, flag_active: Optional[str]) -> str:
     query = f"typology: 99_BU AND est_publie: True AND documenttype: {type} AND date_budget: {annee}"
@@ -88,6 +90,7 @@ def _solr_request_pour_budget(type: str, annee: str, siren: str, flag_active: Op
     if flag_active is not None:
         query = f"{query} AND {flag_active} : True"
     return query
+
 
 def generation_acte(siren, annee):
     # on clear le workdir
@@ -134,7 +137,7 @@ def generation_acte(siren, annee):
             DELIB_MATIERE_CODE = str(doc_res['classification_code'])
             DELIB_MATIERE_NOM = str(doc_res['classification_nom'])
 
-            PUBLICATION_DATE=str(doc_res['date_de_publication'][0].split("T", 1)[0])
+            PUBLICATION_DATE = str(doc_res['date_de_publication'][0].split("T", 1)[0])
             NATURE_ACTE = str(doc_res['documenttype'][0])
 
             if 'nature_autre_detail' in doc_res:
@@ -152,14 +155,14 @@ def generation_acte(siren, annee):
             VOTE_CONTRE = ''
             VOTE_ABSTENTION = ''
             if doc_res['est_publie'][0]:
-                DELIB_URL = urllib.parse.quote(str(doc_res['filepath'][0]),safe="https://")
+                DELIB_URL = urllib.parse.quote(str(doc_res['filepath'][0]), safe="https://")
             else:
                 DELIB_URL = ''
 
             line = '"' + COLL_NOM + '"' + ';' + '"' + COLL_SIRET + '"' + ';' + '"' + DELIB_ID + '"' + ';' + '"' + DELIB_DATE + '"' + ';' + '"' + DELIB_MATIERE_CODE + '"' + ';' \
                    + '"' + DELIB_MATIERE_NOM + '"' + ';' + '"' + DELIB_OBJET + '"' + ';' + '"' + BUDGET_ANNEE + '"' + ';' + '"' + BUDGET_NOM + '"' + ';' + '"' + PREF_ID + '"' + \
                    ';' + '"' + PREF_DATE + '"' + ';' + '"' + VOTE_EFFECTIF + '"' + ';' + '"' + VOTE_REEL + '"' + ';' + '"' + VOTE_POUR + '"' + ';' + '"' + VOTE_CONTRE + '"' + ';' \
-                   + '"' + VOTE_ABSTENTION + '"' + ';' + '"' + DELIB_URL + '"' + ';' +  PUBLICATION_DATE + '"' + ';' + NATURE_ACTE + '"'+ ';' + NATURE_ACTE_AUTRE_DETAIL + '"' +'\n'
+                   + '"' + VOTE_ABSTENTION + '"' + ';' + '"' + DELIB_URL + '"' + ';' + PUBLICATION_DATE + '"' + ';' + NATURE_ACTE + '"' + ';' + '"' + NATURE_ACTE_AUTRE_DETAIL + '"' + '\n'
             lignes.append(line)
         start = start + rows
         result = \
@@ -183,7 +186,6 @@ def generation_acte(siren, annee):
             logging.exception("on ignore la ligne" + ligne)
     f.close()
     return filename
-
 
 
 def generation_deliberation(siren, annee, flag_active=None):
@@ -246,7 +248,7 @@ def generation_deliberation(siren, annee, flag_active=None):
             VOTE_CONTRE = ''
             VOTE_ABSTENTION = ''
             if doc_res['est_publie'][0]:
-                DELIB_URL = urllib.parse.quote(str(doc_res['filepath'][0]),safe="https://")
+                DELIB_URL = urllib.parse.quote(str(doc_res['filepath'][0]), safe="https://")
             else:
                 DELIB_URL = ''
 
@@ -277,6 +279,7 @@ def generation_deliberation(siren, annee, flag_active=None):
             logging.exception("on ignore la ligne" + ligne)
     f.close()
     return filename
+
 
 def api_url(path):
     API = current_app.config['API_DATAGOUV']
