@@ -1,13 +1,15 @@
 import logging
-from flask import Blueprint
-from flask_restx import Api, Resource, fields
+from flask_restx import Namespace, Resource, fields
 import app.service.budget_marque_blanche_api_service as api_service
 
 _API_SERVICE = api_service.BudgetMarqueBlancheApiService()
 
-budgets_api_bp = Blueprint("budgets", __name__)
-budgets_api = Api(
-    budgets_api_bp, doc="/doc", title="API marque blanche budgets", prefix="/api/v1"
+budgets_api_ns = Namespace(
+    name="budgets",
+    description=(
+        "API de consultation des données de budgets pour la marque blanche. "
+        "<b>C'est une API privée pour le frontend et elle peut changer à tout moment</b>"
+    )
 )
 
 etape_model = fields.String(
@@ -26,7 +28,7 @@ etape_model = fields.String(
 #
 _ls_etapes_wildcard = fields.Wildcard(fields.List(etape_model))
 disp_nested_nic_x_etape = fields.Nested(
-    budgets_api.model(
+    budgets_api_ns.model(
         "_dict_nic_etapes",
         {"*": _ls_etapes_wildcard},
     )
@@ -34,10 +36,10 @@ disp_nested_nic_x_etape = fields.Nested(
 
 _nic_etapes_wildcard = fields.Wildcard(disp_nested_nic_x_etape)
 disp_nested_annee_x_nic = fields.Nested(
-    budgets_api.model("_dict_annee_nics", {"*": _nic_etapes_wildcard})
+    budgets_api_ns.model("_dict_annee_nics", {"*": _nic_etapes_wildcard})
 )
 
-_infos_etablissement_model = budgets_api.model(
+_infos_etablissement_model = budgets_api_ns.model(
     "InfosEtablissement",
     {
         "denomination": fields.String(
@@ -56,16 +58,16 @@ _infos_etablissement_model = budgets_api.model(
 _nested_infos_etablissement = fields.Nested(_infos_etablissement_model, skip_none=True)
 _denomination_entites_wildcard = fields.Wildcard(_nested_infos_etablissement)
 
-api_ressources_budgetaires_disponibles = budgets_api.model(
+api_ressources_budgetaires_disponibles = budgets_api_ns.model(
     "Ressources budgetaires disponibles pour un siren donnée",
     {
         "siren": fields.String(description="Siren concerné", required=True),
         "ressources_disponibles": fields.Nested(
-            budgets_api.model("nic_annee", {"*": _nic_etapes_wildcard}),
+            budgets_api_ns.model("nic_annee", {"*": _nic_etapes_wildcard}),
             skip_none=True,
         ),
         "infos_etablissements": fields.Nested(
-            budgets_api.model(
+            budgets_api_ns.model(
                 "_dict_denomination_entites", {"*": _denomination_entites_wildcard}
             ),
             skip_none=True,
@@ -76,7 +78,7 @@ api_ressources_budgetaires_disponibles = budgets_api.model(
 #
 # Ressources budgetaires itself
 #
-api_ligne_budget = budgets_api.model(
+api_ligne_budget = budgets_api_ns.model(
     "Ligne budgetaire",
     {
         "fonction_code": fields.String(
@@ -97,7 +99,7 @@ api_ligne_budget = budgets_api.model(
     },
 )
 
-api_element_nomenclature_pdc = budgets_api.model(
+api_element_nomenclature_pdc = budgets_api_ns.model(
     "Element de nomenclature d'un plan de compte",
     {
         "code": fields.String(
@@ -123,11 +125,11 @@ comptes_nature_wildcard = fields.Wildcard(
     fields.Nested(api_element_nomenclature_pdc, skip_none=True), required=False
 )
 
-api_get_pdc_info_response = budgets_api.model(
+api_get_pdc_info_response = budgets_api_ns.model(
     "Information plan de comptes",
     {
         "references_fonctionnelles": fields.Nested(
-            budgets_api.model(
+            budgets_api_ns.model(
                 "_dict_code_references_fonctionnelles",
                 {"*": ref_fonc_wildcard},
             ),
@@ -136,7 +138,7 @@ api_get_pdc_info_response = budgets_api.model(
             skip_none=True,
         ),
         "comptes_nature": fields.Nested(
-            budgets_api.model(
+            budgets_api_ns.model(
                 "_dict_code_comptes_nature",
                 {"*": comptes_nature_wildcard},
             ),
@@ -147,7 +149,7 @@ api_get_pdc_info_response = budgets_api.model(
     },
 )
 
-api_get_donnees_response = budgets_api.model(
+api_get_donnees_response = budgets_api_ns.model(
     "Données de document budgetaire",
     {
         "etape": etape_model,
@@ -160,29 +162,29 @@ api_get_donnees_response = budgets_api.model(
 )
 
 
-@budgets_api.errorhandler(api_service.EtapeInvalideError)
+@budgets_api_ns.errorhandler(api_service.EtapeInvalideError)
 def handle_bad_request_errors(error):
     logging.exception(error)
     return {"message": error.api_message}, 400
 
 
-@budgets_api.errorhandler(api_service.AucuneDonneeBudgetError)
+@budgets_api_ns.errorhandler(api_service.AucuneDonneeBudgetError)
 def handle_not_found(error):
     logging.exception(error)
     return {"message": error.api_message}, 404
 
 
-@budgets_api.errorhandler(api_service.BudgetMarqueBlancheApiException)
-@budgets_api.errorhandler(api_service.ImpossibleDextraireEtabInfoError)
-@budgets_api.errorhandler(api_service.ImpossibleDexploiterBudgetError)
+@budgets_api_ns.errorhandler(api_service.BudgetMarqueBlancheApiException)
+@budgets_api_ns.errorhandler(api_service.ImpossibleDextraireEtabInfoError)
+@budgets_api_ns.errorhandler(api_service.ImpossibleDexploiterBudgetError)
 def handle_ise_errors(error):
     logging.exception(error)
     return {"message": error.api_message}, 500
 
 
-@budgets_api.route("/donnees_budgetaires/<int:annee>/<int:siret>/<string:etape>")
+@budgets_api_ns.route("/donnees_budgetaires/<int:annee>/<int:siret>/<string:etape>")
 class DonneesBudgetCtrl(Resource):
-    @budgets_api.marshal_with(api_get_donnees_response, code=200)
+    @budgets_api_ns.marshal_with(api_get_donnees_response, code=200)
     def get(
         self,
         siret: int,
@@ -193,17 +195,17 @@ class DonneesBudgetCtrl(Resource):
         return response
 
 
-@budgets_api.route("/plans_de_comptes/<int:annee>/<int:siret>")
+@budgets_api_ns.route("/plans_de_comptes/<int:annee>/<int:siret>")
 class PlanDeComptesCtrl(Resource):
-    @budgets_api.marshal_with(api_get_pdc_info_response, code=200)
+    @budgets_api_ns.marshal_with(api_get_pdc_info_response, code=200)
     def get(self, siret: int, annee: int):
         response = _API_SERVICE.retrieve_pdc_info(annee, siret)
         return response
 
 
-@budgets_api.route("/donnees_budgetaires_disponibles/<int:siren>")
+@budgets_api_ns.route("/donnees_budgetaires_disponibles/<int:siren>")
 class RessourcesDisponiblesCtrl(Resource):
-    @budgets_api.marshal_with(api_ressources_budgetaires_disponibles, code=200)
+    @budgets_api_ns.marshal_with(api_ressources_budgetaires_disponibles, code=200)
     def get(
         self,
         siren: int,
