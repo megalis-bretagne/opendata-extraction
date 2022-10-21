@@ -8,7 +8,7 @@ from lxml import etree
 
 from .data_structures import (
     CompteNatureMarqueBlancheApi, 
-    ElementPlanDeCompte, 
+    ElementNomenclaturePdc, 
     RefFonctionnelleBudgetMarqueBlancheApi
 )
 
@@ -94,7 +94,7 @@ class _ExtracteurInfoPdc():
         libelle_court = chapitre.attrib.get("Lib_court") # type: ignore
         return _Chapitre(code, libelle, libelle_court)
 
-    def _extract_element_pdc(self, elmt: ElementTree, tagname: str) -> ElementPlanDeCompte:
+    def _extract_element_pdc(self, elmt: ElementTree, tagname: str) -> ElementNomenclaturePdc:
         code = elmt.attrib.get("Code") # type: ignore
         libelle = elmt.attrib.get("Libelle") # type: ignore
         parent = elmt.getparent()
@@ -103,7 +103,7 @@ class _ExtracteurInfoPdc():
         if parent is not None and parent.tag == tagname:
             parent_code = parent.attrib.get("Code")
         
-        return ElementPlanDeCompte(code, libelle, parent_code)
+        return ElementNomenclaturePdc(code, libelle, parent_code)
     
     def _to_dict(self, structure_with_code):
         return { x.code: x for x in structure_with_code }

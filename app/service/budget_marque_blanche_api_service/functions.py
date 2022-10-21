@@ -4,7 +4,9 @@ import logging
 from pathlib import Path
 from typing import Union
 
-from .data_structures import EtapeBudgetaire, _EtabInfo
+from .data_structures import EtapeBudgetaire
+
+from app.shared.client_api_sirene import Etablissement
 
 from .exceptions import (
     BudgetMarqueBlancheApiException,
@@ -50,25 +52,29 @@ def _extraire_pdc_unique(ls_totem_metadata: list[TotemBudgetMetadata]):
     assert len(pdc) <= 1, "On ne devrait retrouver qu'un seul plan de compte pour ces informations budget"
     return pdc.pop()
 
-def _infos_etab(siren: str, logger: logging.Logger) -> _EtabInfo:
-    def _requete_infos_etab(siren: str) -> _EtabInfo:
-        from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
+def _api_sirene_etablissement_siege(siren: str, logger: logging.Logger) -> Etablissement:
 
-        try:
-            etablissement = etablissement_siege_pour_siren(siren)
+    from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
 
-            logger.debug(f"Voici l'établissement {etablissement}")
-            return _EtabInfo(
-                denomination=etablissement.denomination_unite_legale,
-                siret_siege=int(etablissement.siret),
-            )
-        except Exception as err:
-            raise ImpossibleDextraireEtabInfoError(siren) from err
+    try:
+        etablissement = etablissement_siege_pour_siren(siren)
+        logger.debug(f"Voici l'établissement {etablissement}")
+        return etablissement
 
-    etab_info = _requete_infos_etab(siren)
-    logger.debug(f"Etab info: {etab_info}")
-    return etab_info
+    except Exception as err:
+        raise ImpossibleDextraireEtabInfoError(siren) from err
 
+def _api_sirene_etablissements(siren: str, logger: logging.Logger) -> list[Etablissement]:
+
+    from app.shared.client_api_sirene.flask_functions import etablissements_pour_siren
+
+    try:
+        etablissements = etablissements_pour_siren(siren)
+        logger.debug(f"Voici les établissements pour le siren {etablissements}")
+        return etablissements
+
+    except Exception as err:
+        raise ImpossibleDextraireEtabInfoError(siren) from err
 
 def _wrap_in_budget_marque_blanche_api_ex(func):
     def inner(*args, **kwargs):
