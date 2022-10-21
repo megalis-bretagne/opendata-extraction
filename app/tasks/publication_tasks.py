@@ -514,6 +514,9 @@ def init_publication(metadataPastell):
     elif newPublication.acte_nature == "6":
         dossier = newPublication.siren + os.path.sep + "Autres"
         urlPub = newPublication.siren + '/' + "Autres"
+    elif newPublication.acte_nature == "7":
+        dossier = newPublication.siren + os.path.sep + "Hors_prefecture"
+        urlPub = newPublication.siren + '/' + "Hors_prefecture"
 
     contient_acte_tamponne = False
     for acte_tamponne in metadataPastell.liste_acte_tamponne:
