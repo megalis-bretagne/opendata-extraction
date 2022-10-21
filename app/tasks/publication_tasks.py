@@ -365,7 +365,10 @@ def lien_symbolique(publication):
         dossier = publication.siren + os.path.sep + "Contrats_conventions_avenants"
     elif publication.acte_nature == "5":
         dossier = publication.siren + os.path.sep + "Budget"
-    elif publication.acte_nature == "6":
+    elif publication.acte_nature == "7":
+        dossier = publication.siren + os.path.sep + "Hors_prefecture"
+    else:
+        #cas par defaut et acte_nature=6
         dossier = publication.siren + os.path.sep + "Autres"
 
     if publication.date_budget:
@@ -410,7 +413,11 @@ def traiter_actes(publication, acte, isPj):
     elif publication.acte_nature == "5":
         dossier = publication.siren + os.path.sep + "Budget"
         typology = "99_BU"
-    elif publication.acte_nature == "6":
+    elif publication.acte_nature == "7":
+        dossier = publication.siren + os.path.sep + "Hors_prefecture"
+        typology = "99_HP"
+    else:
+        # cas par defaut et acte_nature=6
         dossier = publication.siren + os.path.sep + "Autres"
         typology = "99_AU"
 
@@ -511,12 +518,13 @@ def init_publication(metadataPastell):
     elif newPublication.acte_nature == "5":
         dossier = newPublication.siren + os.path.sep + "Budget"
         urlPub = newPublication.siren + '/' + "Budget"
-    elif newPublication.acte_nature == "6":
-        dossier = newPublication.siren + os.path.sep + "Autres"
-        urlPub = newPublication.siren + '/' + "Autres"
     elif newPublication.acte_nature == "7":
         dossier = newPublication.siren + os.path.sep + "Hors_prefecture"
         urlPub = newPublication.siren + '/' + "Hors_prefecture"
+    else:
+        #cas par defaut et acte_nature=6
+        dossier = newPublication.siren + os.path.sep + "Autres"
+        urlPub = newPublication.siren + '/' + "Autres"
 
     contient_acte_tamponne = False
     for acte_tamponne in metadataPastell.liste_acte_tamponne:
@@ -631,7 +639,7 @@ class MetadataPastell:
         if 'publication_open_data' in metajson:
             if len(metajson['publication_open_data']) == 0:
                 # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
-                if self.acte_nature == '1' or self.acte_nature == '2' or self.acte_nature == '5':
+                if self.acte_nature == '1' or self.acte_nature == '2' or self.acte_nature == '5'  or self.acte_nature == '7':
                     # délib, actes réglementaires et budget oui par defaut
                     self.publication_open_data = '3'
                 elif self.acte_nature == '3' or self.acte_nature == '6':
