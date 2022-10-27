@@ -66,7 +66,7 @@ _nested_infos_etablissement = fields.Nested(_infos_etablissement_model, skip_non
 _denomination_entites_wildcard = fields.Wildcard(_nested_infos_etablissement)
 
 api_ressources_budgetaires_disponibles = budgets_api_ns.model(
-    "Ressources budgetaires disponibles pour un siren donnée",
+    "RessourcesDisponibles",
     {
         "siren": fields.String(description="Siren concerné", required=True),
         "ressources_disponibles": fields.Nested(
@@ -86,7 +86,7 @@ api_ressources_budgetaires_disponibles = budgets_api_ns.model(
 # Ressources budgetaires itself
 #
 api_ligne_budget = budgets_api_ns.model(
-    "Ligne budgetaire",
+    "LigneBudgetaire",
     {
         "fonction_code": fields.String(
             description="Code de la fonction de la ligne.",
@@ -107,7 +107,7 @@ api_ligne_budget = budgets_api_ns.model(
 )
 
 api_element_nomenclature_pdc = budgets_api_ns.model(
-    "Element de nomenclature d'un plan de compte",
+    "ElementNomenclaturePdc",
     {
         "code": fields.String(
             description="Code de l'élément de nomenclature",
@@ -133,7 +133,7 @@ comptes_nature_wildcard = fields.Wildcard(
 )
 
 api_get_pdc_info_response = budgets_api_ns.model(
-    "Information plan de comptes",
+    "InformationPdc",
     {
         "references_fonctionnelles": fields.Nested(
             budgets_api_ns.model(
@@ -157,7 +157,7 @@ api_get_pdc_info_response = budgets_api_ns.model(
 )
 
 api_get_donnees_response = budgets_api_ns.model(
-    "Données de document budgetaire",
+    "DonneesBudget",
     {
         "etape": etape_model,
         "annee": fields.Integer(description="Année de l'exerice.", required=True),
