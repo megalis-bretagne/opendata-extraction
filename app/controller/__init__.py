@@ -10,7 +10,6 @@ from app.controller.DecpApi import api as decpApi
 from app.controller.ScdlApi import api as scdlApi
 from app.controller.StatsApi import api as statsApi
 from app.controller.PastellCtrl import api as pastellCtrl
-from app.controller.BudgetMarqueBlancheApi import budgets_api_ns
 
 # Fix of returning swagger.json on HTTP
 @property
@@ -55,4 +54,3 @@ private_api.add_namespace(publicationApi)
 private_api.add_namespace(parametrageApi)
 private_api.add_namespace(adminApi)
 private_api.add_namespace(pastellCtrl)
-private_api.add_namespace(budgets_api_ns)
