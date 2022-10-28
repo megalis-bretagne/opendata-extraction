@@ -1,16 +1,23 @@
 import logging
-from flask_restx import Namespace, Resource, fields
+from flask import Blueprint
+from flask_restx import Api, Namespace, Resource, fields
 import app.service.budget_marque_blanche_api_service as api_service
 
 _API_SERVICE = api_service.BudgetMarqueBlancheApiService()
 
+budgets_api_bp = Blueprint("mq_budgets", __name__)
+budgets_api = Api(
+    budgets_api_bp, doc="/doc", title="API marque blanche budgets", prefix="/v1"
+)
 budgets_api_ns = Namespace(
     name="budgets",
+    path="/",
     description=(
         "API de consultation des données de budgets pour la marque blanche. "
         "<b>C'est une API privée pour le frontend et elle peut changer à tout moment</b>"
-    )
+    ),
 )
+budgets_api.add_namespace(budgets_api_ns)
 
 etape_model = fields.String(
     description="Etape budgetaire",
@@ -59,7 +66,7 @@ _nested_infos_etablissement = fields.Nested(_infos_etablissement_model, skip_non
 _denomination_entites_wildcard = fields.Wildcard(_nested_infos_etablissement)
 
 api_ressources_budgetaires_disponibles = budgets_api_ns.model(
-    "Ressources budgetaires disponibles pour un siren donnée",
+    "RessourcesDisponibles",
     {
         "siren": fields.String(description="Siren concerné", required=True),
         "ressources_disponibles": fields.Nested(
@@ -79,7 +86,7 @@ api_ressources_budgetaires_disponibles = budgets_api_ns.model(
 # Ressources budgetaires itself
 #
 api_ligne_budget = budgets_api_ns.model(
-    "Ligne budgetaire",
+    "LigneBudgetaire",
     {
         "fonction_code": fields.String(
             description="Code de la fonction de la ligne.",
@@ -100,7 +107,7 @@ api_ligne_budget = budgets_api_ns.model(
 )
 
 api_element_nomenclature_pdc = budgets_api_ns.model(
-    "Element de nomenclature d'un plan de compte",
+    "ElementNomenclaturePdc",
     {
         "code": fields.String(
             description="Code de l'élément de nomenclature",
@@ -126,7 +133,7 @@ comptes_nature_wildcard = fields.Wildcard(
 )
 
 api_get_pdc_info_response = budgets_api_ns.model(
-    "Information plan de comptes",
+    "InformationPdc",
     {
         "references_fonctionnelles": fields.Nested(
             budgets_api_ns.model(
@@ -150,7 +157,7 @@ api_get_pdc_info_response = budgets_api_ns.model(
 )
 
 api_get_donnees_response = budgets_api_ns.model(
-    "Données de document budgetaire",
+    "DonneesBudget",
     {
         "etape": etape_model,
         "annee": fields.Integer(description="Année de l'exerice.", required=True),
