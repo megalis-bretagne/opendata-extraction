@@ -496,7 +496,8 @@ def init_publication(metadataPastell):
         classification_code=metadataPastell.classification_code,
         classification_nom=metadataPastell.classification_nom,
         acte_nature=metadataPastell.acte_nature,
-        envoi_depot=metadataPastell.envoi_depot
+        envoi_depot=metadataPastell.envoi_depot,
+        nature_autre_detail=metadataPastell.nature_autre_detail
     )
     db_sess.add(newPublication)
     db_sess.commit()
