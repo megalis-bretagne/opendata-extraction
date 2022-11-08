@@ -295,9 +295,12 @@ def creation_et_association_connecteur_transformateur_task(id_e):
 
         # ETAPE 2: configuration du connecteur précédemment créé
         res = json.loads(response.text)
-        file = {'file_content': open("app/definition.json", "rb")}
+
+        data_detail = {'file_name': 'definition.json'}
+        file = {
+            'file_content': open("app/definition.json", "rb")}
         responseConnecteur = requests.post(URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + ID_E_PASTELL +
-                                           "/connecteur/" + res['id_ce'] + '/file/definition',
+                                           "/connecteur/" + res['id_ce'] + '/file/definition', data=data_detail,
                                            auth=auth_pastell,
                                            files=file)
         if responseConnecteur.ok:

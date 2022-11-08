@@ -12,6 +12,16 @@ En fonction du mode de lancement l'application:
 
 La documentation est disponible ici : https://opendata-megalis.readthedocs.io/fr/latest/
 
+## APIs
+
+Plusieurs APIs sont disponibles (mode runserver)
+
+| Emplacement         | documentation        | Description                                                              |
+| ------------------- | -------------------- | ------------------------------------------------------------------------ |
+| /api/v1             | /doc                 | API publique exposant les statiques, le format SCDL, les données DECP... |
+| /private_api/v1     | /private_api/doc     | API privée d'administration de la plateforme                             |
+| /mq_apis/budgets/v1 | /mq_apis/budgets/doc | API privée pour le frontend marque blanche budgets                       |
+
 ## Variables d'environnement
 
 ### Envoyer les logs au format GELF

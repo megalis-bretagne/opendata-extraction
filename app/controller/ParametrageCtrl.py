@@ -69,16 +69,19 @@ class ParametrageCtrl(Resource):
     def post(self, siren):
         from app.models.parametrage_model import Parametrage
         from app.tasks.publication_tasks import gestion_activation_open_data
-        from app.tasks.utils import api_insee_call
+        from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
         from app import db
         args = arguments_parametrage_controller.parse_args()
-        etablissement = api_insee_call(siren)
-        if etablissement is None:
+
+        try:
+            etablissement = etablissement_siege_pour_siren(siren)
+        except Exception:
             api.abort(400, 'etablissement not found in URL_API_ENNTREPRISE')
+
         try:
             parametrage = Parametrage.query.filter(Parametrage.siren == siren).one()
             parametrage.nic = etablissement.nic
-            parametrage.denomination = etablissement.denominationUniteLegale
+            parametrage.denomination = etablissement.denomination_unite_legale
             parametrage.open_data_active = args['open_data_active'] or False
             parametrage.publication_data_gouv_active = args['publication_data_gouv_active'] or False
             # parametrage.publication_udata_active = args['publication_udata_active']
@@ -102,7 +105,7 @@ class ParametrageCtrl(Resource):
                                           modified_at=datetime.now(),
                                           siren=siren,
                                           nic=etablissement.nic,
-                                          denomination=etablissement.denominationUniteLegale,
+                                          denomination=etablissement.denomination_unite_legale,
                                           open_data_active=args['open_data_active'] or False,
                                           publication_data_gouv_active=args['publication_data_gouv_active'] or False,
                                           # publication_udata_active=args['publication_udata_active'],

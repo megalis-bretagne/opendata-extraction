@@ -1,0 +1,1 @@
+ALTER TABLE publication ADD COLUMN nature_autre_detail varchar(255);

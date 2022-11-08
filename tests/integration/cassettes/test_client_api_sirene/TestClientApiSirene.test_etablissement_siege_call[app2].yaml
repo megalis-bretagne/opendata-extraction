@@ -1,0 +1,123 @@
+interactions:
+- request:
+    body: grant_type=client_credentials
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '29'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Host:
+      - api.insee.fr
+      User-Agent:
+      - Python-urllib/3.9
+    method: POST
+    uri: https://api.insee.fr/token
+  response:
+    body:
+      string: '{"error_description":"A valid OAuth client could not be found for client_id:clef
+        invalide","error":"invalid_client"}'
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 16 Oct 2022 11:17:42 GMT
+      Set-Cookie:
+      - INSEE=rd4o00000000000000000000ffff0ac348b0o9443; expires=Sun, 16-Oct-2022
+        11:37:42 GMT; path=/; Httponly; Secure
+      - pdapimgateway=rd4o00000000000000000000ffff0ac348aco8280; expires=Sun, 16-Oct-2022
+        11:37:42 GMT; path=/; Httponly; Secure
+      Strict-Transport-Security:
+      - max-age=100000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 401
+      message: Unauthorized
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://entreprise.data.gouv.fr/api/sirene/v3/unites_legales/253514491
+  response:
+    body:
+      string: !!binary |
+        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
+        AA==
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 16 Oct 2022 11:17:42 GMT
+      ETag:
+      - W/"494fec21202d7f32789c6d169bfe5440"
+      Server:
+      - nginx + Phusion Passenger(R) 6.0.15
+      Status:
+      - 200 OK
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      - max-age=63072000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.15
+      X-Request-Id:
+      - 6e29b10c-080e-4bcf-9924-3c500332d7d9
+      X-Runtime:
+      - '0.025025'
+    status:
+      code: 200
+      message: OK
+version: 1
