@@ -3,7 +3,7 @@ import json
 from flask import Blueprint, jsonify
 from flask_restx import Api, Namespace, Resource, fields, reqparse
 
-from app.models.search_solr_model import Acte,Page
+from app.models.search_solr_model import Acte, Page
 
 actes_api_bp = Blueprint("mq_actes", __name__)
 actes_api = Api(
@@ -51,8 +51,8 @@ acte = actes_api.model(
 
 page = actes_api.model('page', {
     'nb_resultats': fields.Integer,
-    'debut' : fields.Integer,
-    'resultats' : fields.List(fields.Nested(Acte)),
+    'debut': fields.Integer,
+    'resultats': fields.List(fields.Nested(Acte)),
 
 })
 
@@ -75,33 +75,78 @@ class PublicationSearchCtrl(Resource):
         from app.tasks.utils import solr_connexion
         solr = solr_connexion()
 
-        # Setup a Solr instance. The trailing slash is optional.
-        # solr = pysolr.Solr('http://localhost:8983/solr/core_0/', search_handler='/autocomplete', use_qt_param=False)
-        results = solr.search('piscine', **{
+        args = searchParams.parse_args()
+        query = args['query']
+
+
+        if args['debut'] == None:
+            #valeur par defaut
+            debut = 0
+        else:
+            debut=args['debut']
+
+        if args['lignes'] == None:
+            # valeur par defaut
+            lignes = 10
+        else:
+            lignes=args['lignes']
+
+        if args['date_debut'] == None:
+            date_debut='*'
+        else:
+            #add to fq
+            date_debut = args['date_debut']
+
+        if args['date_fin'] == None:
+            date_fin='NOW'
+        else:
+            #add to fq
+            date_fin = args['date_debut']
+
+        filterQuery = 'NOT typology:PJ AND est_publie:true'
+
+        filterQuery = filterQuery + ' date:['+ date_debut +' TO '+ date_fin +']'
+
+        if args['date_fin'] is not None:
+            #add to fq
+            date_fin=args['date_fin']
+            filterQuery = filterQuery + ' date < '+ date_fin
+
+        classifications = args['classifications']
+        types_actes = args['types_actes']
+
+
+
+        results = solr.search(q=query, **{
             'defType': 'edismax',
-            'fq': 'NOT typology:PJ AND est_publie:true',
-            'qf': 'documentidentifier^10 description^5 _text_^2 classification_nom '
+            'fq': filterQuery,
+            'qf': 'documentidentifier^10 description^5 _text_^2 classification_nom',
+            'rows': lignes,
+            'start': debut
 
         })
 
-        liste_acte =[]
+        liste_acte = []
         for doc in results.docs:
-            _hash = doc['hash']
-            _publication_id = doc['publication_id']
+            _hash = doc['hash'][0]
+            _publication_id = doc['publication_id'][0]
             _id = doc['id']
             _type = doc['documenttype'][0]
-             'type_autre_detail' in doc _type_autre_detail = doc['type_autre_detail']
-            _classification_code = doc['classification_code ']
-            _classification_libelle = doc['classification_libell']
-            _objet = doc['objet']
-            _id_publication = doc['id_publication']
-            _date_acte = doc['date_acte']
-            _date_publication = doc['date_publication']
-            _url = doc['url']
-            _typologie = doc['typologie']
-            _content_type = doc['content_type']
-            _blockchain_transaction_hash = doc['blockchain_transaction_hash']
-            _blockchain_url = doc['blockchain_url']
+            _classification_code = doc['classification_code']
+            _classification_libelle = doc['classification_nom']
+            _objet = doc['description'][0]
+            _id_publication = doc['publication_id'][0]
+            _date_acte = doc['date'][0]
+            _date_publication = doc['date_de_publication'][0]
+            _url = doc['filepath'][0]
+            _typologie = doc['typology'][0]
+            _content_type = doc['content_type'][0]
+
+            _type_autre_detail = doc['type_autre_detail'] if 'type_autre_detail' in doc else ""
+            _blockchain_transaction_hash = doc[
+                'blockchain_transaction_hash'] if 'blockchain_transaction_hash' in doc else ""
+            _blockchain_url = doc['blockchain_url'] if 'blockchain_url' in doc else ""
+
             # _annexes: list[Annexe]
             # _resultat_recherche: bool
 
@@ -110,11 +155,9 @@ class PublicationSearchCtrl(Resource):
                          classification_libelle=_classification_libelle, objet=_objet, id_publication=_id_publication,
                          date_acte=_date_acte, date_publication=_date_publication, url=_url, typologie=_typologie,
                          content_type=_content_type, blockchain_transaction_hash=_blockchain_transaction_hash,
-                         blockchain_url=_blockchain_url,resultat_recherche=False,annexes=[])
+                         blockchain_url=_blockchain_url, resultat_recherche=False, annexes=[])
 
             liste_acte.append(_acte)
 
-
-        reponse = Page(nb_resultats=results.hits,debut=1,resultats=liste_acte)
+        reponse = Page(nb_resultats=results.hits, debut=1, resultats=liste_acte)
         return jsonify(reponse.serialize)
-
