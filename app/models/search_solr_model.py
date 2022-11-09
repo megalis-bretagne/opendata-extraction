@@ -8,7 +8,7 @@ class Annexe:
     id: str
     url: str
     hash: str
-    name: str
+    resultat_recherche: bool
 
     @property
     def serialize(self):
@@ -16,20 +16,21 @@ class Annexe:
             'id': self.id,
             'url': self.url,
             'hash': self.hash,
-            'name': self.name
+            'resultat_recherche': self.resultat_recherche
         }
+
 
 @dataclass()
 class Acte:
     """Information sur un établissement donnée"""
-    hash:str
-    publication_id :str
-    id :str
-    type:str
-    type_autre_detail :str
-    classification_code :str
+    hash: str
+    publication_id: str
+    id: str
+    type: str
+    type_autre_detail: str
+    classification_code: str
     classification_libelle: str
-    objet :str
+    objet: str
     id_publication: str
     date_acte: str
     date_publication: str
@@ -38,8 +39,8 @@ class Acte:
     content_type: str
     blockchain_transaction_hash: str
     blockchain_url: str
-    resultat_recherche:Optional[bool]
-    annexes:Optional[list[Annexe]]
+    resultat_recherche: Optional[bool]
+    annexes: Optional[list[Annexe]]
 
     @property
     def serialize(self):
@@ -57,7 +58,7 @@ class Acte:
             'date_publication': self.date_publication,
             'url': self.url,
             'typologie': self.typologie,
-            'content_type' : self.content_type,
+            'content_type': self.content_type,
             'blockchain_transaction_hash': self.blockchain_transaction_hash,
             'blockchain_url': self.blockchain_url,
             'resultat_recherche': self.resultat_recherche,
@@ -65,13 +66,12 @@ class Acte:
         }
 
 
-
 @dataclass()
 class Page:
     """Information sur un établissement donnée"""
-    nb_resultats:int
-    debut :int
-    resultats:list[Acte]
+    nb_resultats: int
+    debut: int
+    resultats: list[Acte]
 
     @property
     def serialize(self):

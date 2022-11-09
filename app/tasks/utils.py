@@ -26,6 +26,7 @@ def solr_connexion():
     solr_address = current_app.config['URL_SOLR'] + "{}".format(current_app.config['INDEX_DELIB_SOLR'])
     solr = pysolr.Solr(solr_address, always_commit=True, timeout=120,
                        auth=(current_app.config['USER_SOLR'], current_app.config['PASSWORD_SOLR']))
+    solr.log.setLevel('WARN')
     # # Do a health check.
     solr.ping()
     return solr
