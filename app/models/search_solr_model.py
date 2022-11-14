@@ -71,6 +71,7 @@ class Page:
     """Information sur un établissement donnée"""
     nb_resultats: int
     debut: int
+    pageSuivante :str
     resultats: list[Acte]
 
     @property
@@ -79,4 +80,5 @@ class Page:
             'nb_resultats': self.nb_resultats,
             'debut': self.debut,
             'resultats': [item.serialize for item in self.resultats],
+            'pageSuivante' :self.pageSuivante
         }
