@@ -24,6 +24,7 @@ class Annexe:
 class Acte:
     """Information sur un établissement donnée"""
     hash: str
+    siren: str
     publication_id: str
     id: str
     type: str
@@ -46,6 +47,7 @@ class Acte:
     def serialize(self):
         return {
             'hash': self.hash,
+            'siren' : self.siren,
             'publication_id': self.publication_id,
             'id': self.id,
             'type': self.type,

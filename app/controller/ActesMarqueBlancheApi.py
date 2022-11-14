@@ -17,51 +17,15 @@ actes_api_ns = Namespace(
 )
 actes_api.add_namespace(actes_api_ns)
 
-annexe = actes_api.model('annexe', {
-    'id': fields.Integer,
-    'url': fields.String,
-    'hash': fields.String,
-    'name': fields.String
-})
-
-acte = actes_api.model(
-    'acte', {
-        'hash': fields.String,
-        'publication_id': fields.Integer,
-        'id': fields.String,
-        'type': fields.String,
-        'type_autre_detail': fields.String,
-        'classification_code': fields.String,
-        'classification_libelle': fields.String,
-        'objet': fields.DateTime,
-        'id_publication': fields.String,
-        'date_acte': fields.String,
-        'date_publication': fields.String,
-        'url': fields.String,
-        'typologie': fields.String,
-        'content_type': fields.String,
-        'blockchain_transaction_hash': fields.String,
-        'blockchain_url': fields.String,
-        'annexes': fields.List(fields.Nested(annexe)),
-        'resultat_recherche': fields.Boolean,
-
-    })
-
-page = actes_api.model('page', {
-    'nb_resultats': fields.Integer,
-    'debut': fields.Integer,
-    'resultats': fields.List(fields.Nested(Acte)),
-
-})
-
 searchParams = reqparse.RequestParser()
 searchParams.add_argument('query', help='filtre de recherche sur le numéro d\'acte')
-searchParams.add_argument('date_debut', help='date au format iso')
-searchParams.add_argument('date_fin', help='date au format iso')
-searchParams.add_argument('classifications', help='asc ou desc (desc par defaut)')
-searchParams.add_argument('types_actes', help='asc ou desc (desc par defaut)')
+searchParams.add_argument('siren', help='filtre de recherche sur le siren')
+searchParams.add_argument('date_debut', help='filtre de recherche sur la date de l\'acte au format iso')
+searchParams.add_argument('date_fin', help='filtre de recherche sur la date de l\'acte au format iso')
+searchParams.add_argument('classifications', help='filtre de recherche sur la classification')
+searchParams.add_argument('types_actes', help='filtre de recherche sur la nature de l\'acte')
+searchParams.add_argument('lignes', help='nombre de ligne à retourner')
 searchParams.add_argument('pageSuivante', help='page suivante')
-searchParams.add_argument('lignes', help='asc ou desc (desc par defaut)')
 
 
 @actes_api_ns.route('/search')
@@ -72,24 +36,39 @@ class PublicationSearchCtrl(Resource):
         from app.tasks.utils import solr_connexion
         solr = solr_connexion()
         args = searchParams.parse_args()
-        query = args['query']
+
+        if args['query'] is not None:
+            query = args['query']
+        else:
+            query = '*:*'
+
+        filterQuery = 'est_publie:true'
+
+        if args['siren'] is not None:
+            siren = args['siren']
+            filterQuery = filterQuery + ' AND ' + siren
 
         if args['date_debut'] == None:
             date_debut = '*'
         else:
             # add to fq
             date_debut = args['date_debut']
+
         if args['date_fin'] == None:
             date_fin = 'NOW'
         else:
             # add to fq
-            date_fin = args['date_debut']
-        if args['date_fin'] is not None:
-            # add to fq
             date_fin = args['date_fin']
 
-        classifications = args['classifications']
-        types_actes = args['types_actes']
+        if args['types_actes'] is not None:
+            liste_type_acte = args['types_actes'].split(',',8)
+            for nature in liste_type_acte:
+                filterQuery = filterQuery + ' AND documenttype:' + nature
+
+        if args['classifications'] is not None:
+            liste_classification = args['classifications'].split(',')
+            for classification in liste_classification:
+                filterQuery = filterQuery + ' AND classification_code:' + classification+'*'
 
         if args['lignes'] == None:
             # valeur par defaut
@@ -102,7 +81,7 @@ class PublicationSearchCtrl(Resource):
         else:
             cursorMark = args['pageSuivante']
 
-        filterQuery = 'est_publie:true'
+
         filterQuery = filterQuery + ' AND date:[' + date_debut + ' TO ' + date_fin + ']'
 
         results = self.callSolr(filterQuery, query, cursorMark, solr)
@@ -141,6 +120,7 @@ class PublicationSearchCtrl(Resource):
                     if _typologie != 'PJ':
                         # C'est un acte ACTE
                         _hash = doc['hash'][0]
+                        _siren = doc['siren']
                         _id = doc['id']
                         _type = doc['documenttype'][0]
                         _classification_code = doc['classification_code']
@@ -157,7 +137,7 @@ class PublicationSearchCtrl(Resource):
                         _blockchain_url = doc['blockchain_url'] if 'blockchain_url' in doc else ""
                         _resultat_recherche = True
 
-                        _acte = Acte(hash=_hash, publication_id=_publication_id, id=_id, type=_type,
+                        _acte = Acte(hash=_hash,siren=_siren, publication_id=_publication_id, id=_id, type=_type,
                                      type_autre_detail=_type_autre_detail, classification_code=_classification_code,
                                      classification_libelle=_classification_libelle, objet=_objet,
                                      id_publication=_id_publication,
@@ -207,7 +187,7 @@ class PublicationSearchCtrl(Resource):
             'sort': 'score desc,id desc',
             'fl': 'hash,publication_id,id,documenttype,classification_code,classification_nom,description,'
                   'publication_id,date,date_de_publication,filepath,typology,content_type,type_autre_detail,'
-                  'blockchain_transaction_hash,blockchain_url,score'
+                  'blockchain_transaction_hash,blockchain_url,siren,score'
 
         })
         return results
@@ -234,11 +214,12 @@ class PublicationSearchCtrl(Resource):
             'fq': 'NOT typology:PJ AND est_publie:true',
             'fl': 'hash,publication_id,id,documenttype,classification_code,classification_nom,description,'
                   'publication_id,date,date_de_publication,filepath,typology,content_type,type_autre_detail,'
-                  'blockchain_transaction_hash,blockchain_url'
+                  'blockchain_transaction_hash,blockchain_url,siren,score'
         })
         for doc in result_annexes.docs:
             print("   Récupérer l'acte dans la publication: " + str(id_pub))
             _hash = doc['hash'][0]
+            _siren = doc['siren']
             _publication_id = doc['publication_id'][0]
             _id = doc['id']
             _type = doc['documenttype'][0]
@@ -257,10 +238,50 @@ class PublicationSearchCtrl(Resource):
             _blockchain_url = doc['blockchain_url'] if 'blockchain_url' in doc else ""
             _resultat_recherche = False
 
-            _acte = Acte(hash=_hash, publication_id=_publication_id, id=_id, type=_type,
+            _acte = Acte(hash=_hash,siren=_siren,publication_id=_publication_id, id=_id, type=_type,
                          type_autre_detail=_type_autre_detail, classification_code=_classification_code,
                          classification_libelle=_classification_libelle, objet=_objet, id_publication=_id_publication,
                          date_acte=_date_acte, date_publication=_date_publication, url=_url, typologie=_typologie,
                          content_type=_content_type, blockchain_transaction_hash=_blockchain_transaction_hash,
                          blockchain_url=_blockchain_url, resultat_recherche=_resultat_recherche, annexes=[])
             return _acte
+
+
+
+
+annexe = actes_api.model('annexe', {
+    'id': fields.Integer,
+    'url': fields.String,
+    'hash': fields.String,
+    'name': fields.String
+})
+
+acte = actes_api.model(
+    'acte', {
+        'hash': fields.String,
+        'publication_id': fields.Integer,
+        'id': fields.String,
+        'type': fields.String,
+        'type_autre_detail': fields.String,
+        'classification_code': fields.String,
+        'classification_libelle': fields.String,
+        'objet': fields.DateTime,
+        'id_publication': fields.String,
+        'date_acte': fields.String,
+        'date_publication': fields.String,
+        'url': fields.String,
+        'typologie': fields.String,
+        'content_type': fields.String,
+        'blockchain_transaction_hash': fields.String,
+        'blockchain_url': fields.String,
+        'annexes': fields.List(fields.Nested(annexe)),
+        'resultat_recherche': fields.Boolean,
+
+    })
+
+page = actes_api.model('page', {
+    'nb_resultats': fields.Integer,
+    'debut': fields.Integer,
+    'resultats': fields.List(fields.Nested(Acte)),
+
+})
