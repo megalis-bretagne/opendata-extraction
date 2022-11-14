@@ -60,7 +60,7 @@ searchParams.add_argument('date_debut', help='date au format iso')
 searchParams.add_argument('date_fin', help='date au format iso')
 searchParams.add_argument('classifications', help='asc ou desc (desc par defaut)')
 searchParams.add_argument('types_actes', help='asc ou desc (desc par defaut)')
-searchParams.add_argument('debut', help='asc ou desc (desc par defaut)')
+searchParams.add_argument('pageSuivante', help='page suivante')
 searchParams.add_argument('lignes', help='asc ou desc (desc par defaut)')
 
 
@@ -73,16 +73,7 @@ class PublicationSearchCtrl(Resource):
         solr = solr_connexion()
         args = searchParams.parse_args()
         query = args['query']
-        if args['debut'] == None:
-            # valeur par defaut
-            debut = 0
-        else:
-            debut = args['debut']
-        if args['lignes'] == None:
-            # valeur par defaut
-            lignes = 10
-        else:
-            lignes = args['lignes']
+
         if args['date_debut'] == None:
             date_debut = '*'
         else:
@@ -96,99 +87,136 @@ class PublicationSearchCtrl(Resource):
         if args['date_fin'] is not None:
             # add to fq
             date_fin = args['date_fin']
-            filterQuery = filterQuery + ' date < ' + date_fin
 
         classifications = args['classifications']
         types_actes = args['types_actes']
 
+        if args['lignes'] == None:
+            # valeur par defaut
+            lignes = 10
+        else:
+            lignes = args['lignes']
+        if args['pageSuivante'] == None:
+            # valeur par defaut
+            cursorMark='*'
+        else:
+            cursorMark = args['pageSuivante']
+
         filterQuery = 'est_publie:true'
-        filterQuery = filterQuery + ' date:[' + date_debut + ' TO ' + date_fin + ']'
+        filterQuery = filterQuery + ' AND date:[' + date_debut + ' TO ' + date_fin + ']'
+
+        results = self.callSolr(filterQuery, query, cursorMark, solr)
+
+        termine = True
+        dict_Acte = {}
+        liste_acte = []
+
+        if len(results.docs) > 0:
+            termine = False
+
+        while not termine:
+            print(filterQuery)
+            for doc in results.docs:
+
+                _typologie = doc['typology'][0]
+                _publication_id = doc['publication_id'][0]
+
+                if 'score' in doc:
+                    print('score= ' + str(doc['score']) + ' - ' + str(_publication_id) + ' - ' + _typologie)
+
+                if _publication_id in dict_Acte:
+                    # print('deja présent ' + str(_publication_id) + ' - ' + _typologie)
+                    if _typologie != 'PJ':
+                        dict_Acte[_publication_id].resultat_recherche = True
+                        # print('   flag acte resultat_recherche=true :' + str(_publication_id) + ' - ' + dict_Acte[_publication_id].hash)
+                    else:
+                        for annexe in dict_Acte[_publication_id].annexes:
+                            if annexe.hash == doc['hash'][0]:
+                                # print('   flag annexe resultat_recherche=true :' + str(_publication_id) + ' - ' + annexe.hash)
+                                # print('   flag annexe resultat_recherche=true :' + str(_publication_id) + ' - ' + annexe.hash)
+                                annexe.resultat_recherche = True
+                                break
+                else:
+                    # print('ADD ' + str(_publication_id) + ' - ' + _typologie)
+                    if _typologie != 'PJ':
+                        # C'est un acte ACTE
+                        _hash = doc['hash'][0]
+                        _id = doc['id']
+                        _type = doc['documenttype'][0]
+                        _classification_code = doc['classification_code']
+                        _classification_libelle = doc['classification_nom']
+                        _objet = doc['description'][0]
+                        _id_publication = doc['publication_id'][0]
+                        _date_acte = doc['date'][0]
+                        _date_publication = doc['date_de_publication'][0]
+                        _url = doc['filepath'][0]
+                        _content_type = doc['content_type'][0]
+                        _type_autre_detail = doc['type_autre_detail'] if 'type_autre_detail' in doc else ""
+                        _blockchain_transaction_hash = doc[
+                            'blockchain_transaction_hash'] if 'blockchain_transaction_hash' in doc else ""
+                        _blockchain_url = doc['blockchain_url'] if 'blockchain_url' in doc else ""
+                        _resultat_recherche = True
+
+                        _acte = Acte(hash=_hash, publication_id=_publication_id, id=_id, type=_type,
+                                     type_autre_detail=_type_autre_detail, classification_code=_classification_code,
+                                     classification_libelle=_classification_libelle, objet=_objet,
+                                     id_publication=_id_publication,
+                                     date_acte=_date_acte, date_publication=_date_publication, url=_url,
+                                     typologie=_typologie,
+                                     content_type=_content_type,
+                                     blockchain_transaction_hash=_blockchain_transaction_hash,
+                                     blockchain_url=_blockchain_url, resultat_recherche=_resultat_recherche, annexes=[])
+                        liste_acte.append(_acte)
+
+                        self.completer_annexes(_acte, solr)
+
+                    else:
+                        _publication_id = doc['publication_id'][0]
+                        _acte = self.recuperer_acte(str(_publication_id), solr)
+                        _url_annexe = doc['filepath'][0]
+                        _hash_annexe = doc['hash'][0]
+                        _id_annexe = doc['id']
+                        _annexe = Annexe(hash=_hash_annexe, url=_url_annexe, id=_id_annexe, resultat_recherche=True)
+                        try:
+                            _acte.annexes.append(_annexe)
+                        except Exception as e:
+                            print(e)
+                        liste_acte.append(_acte)
+                        self.completer_annexes(_acte, solr, _id_annexe)
+
+                    dict_Acte[_publication_id] = _acte
+
+            if (cursorMark == results.nextCursorMark):
+                termine = True
+            else:
+                if len(liste_acte) >= int(lignes):
+                    termine = True
+                cursorMark=results.nextCursorMark
+                results = self.callSolr(filterQuery, query, results.nextCursorMark, solr)
+
+        reponse = Page(nb_resultats=results.hits, debut=1, resultats=liste_acte,pageSuivante=results.nextCursorMark)
+        return jsonify(reponse.serialize)
+
+    def callSolr(self, filterQuery,query,cursorMark, solr):
         results = solr.search(q=query, **{
             'defType': 'edismax',
             'fq': filterQuery,
             'qf': 'documentidentifier^10 description^5 _text_^2 classification_nom',
-            'rows': lignes,
-            'start': debut,
+            'rows': 1,
+            'cursorMark': cursorMark,
+            'sort': 'score desc,id desc',
             'fl': 'hash,publication_id,id,documenttype,classification_code,classification_nom,description,'
                   'publication_id,date,date_de_publication,filepath,typology,content_type,type_autre_detail,'
-                  'blockchain_transaction_hash,blockchain_url'
+                  'blockchain_transaction_hash,blockchain_url,score'
 
         })
-
-        dict_Acte = {}
-        liste_acte = []
-        for doc in results.docs:
-
-            _typologie = doc['typology'][0]
-            _publication_id = doc['publication_id'][0]
-            if _publication_id in dict_Acte:
-                print('deja présent ' + str(_publication_id) + ' - ' + _typologie)
-                if _typologie != 'PJ':
-                    dict_Acte[_publication_id].resultat_recherche = True
-                    print('   flag acte resultat_recherche=true :' + str(_publication_id) + ' - ' + dict_Acte[_publication_id].hash)
-                else:
-                    for annexe in dict_Acte[_publication_id].annexes:
-                        if annexe.hash == doc['hash'][0]:
-                            print(
-                                '   flag annexe resultat_recherche=true :' + str(_publication_id) + ' - ' + annexe.hash)
-                            annexe.resultat_recherche = True
-                            break
-
-
-            else:
-                print('ADD ' + str(_publication_id) + ' - ' + _typologie)
-                if _typologie != 'PJ':
-                    # C'est un acte ACTE
-                    _hash = doc['hash'][0]
-                    _id = doc['id']
-                    _type = doc['documenttype'][0]
-                    _classification_code = doc['classification_code']
-                    _classification_libelle = doc['classification_nom']
-                    _objet = doc['description'][0]
-                    _id_publication = doc['publication_id'][0]
-                    _date_acte = doc['date'][0]
-                    _date_publication = doc['date_de_publication'][0]
-                    _url = doc['filepath'][0]
-                    _content_type = doc['content_type'][0]
-                    _type_autre_detail = doc['type_autre_detail'] if 'type_autre_detail' in doc else ""
-                    _blockchain_transaction_hash = doc[
-                        'blockchain_transaction_hash'] if 'blockchain_transaction_hash' in doc else ""
-                    _blockchain_url = doc['blockchain_url'] if 'blockchain_url' in doc else ""
-                    _resultat_recherche = True
-
-                    _acte = Acte(hash=_hash, publication_id=_publication_id, id=_id, type=_type,
-                                 type_autre_detail=_type_autre_detail, classification_code=_classification_code,
-                                 classification_libelle=_classification_libelle, objet=_objet,
-                                 id_publication=_id_publication,
-                                 date_acte=_date_acte, date_publication=_date_publication, url=_url,
-                                 typologie=_typologie,
-                                 content_type=_content_type, blockchain_transaction_hash=_blockchain_transaction_hash,
-                                 blockchain_url=_blockchain_url, resultat_recherche=_resultat_recherche, annexes=[])
-                    liste_acte.append(_acte)
-
-                    self.completer_annexes(_acte, solr)
-
-                else:
-                    _publication_id = doc['publication_id'][0]
-                    _acte = self.recuperer_acte(str(_publication_id), solr)
-                    _url_annexe = doc['filepath'][0]
-                    _hash_annexe = doc['hash'][0]
-                    _id_annexe = doc['id']
-                    _annexe = Annexe(hash=_hash_annexe, url=_url_annexe, id=_id_annexe, resultat_recherche=True)
-                    _acte.annexes.append(_annexe)
-                    liste_acte.append(_acte)
-                    self.completer_annexes(_acte, solr, _id_annexe)
-
-                dict_Acte[_publication_id] = _acte
-
-        reponse = Page(nb_resultats=results.hits, debut=1, resultats=liste_acte)
-        return jsonify(reponse.serialize)
+        return results
 
     def completer_annexes(self, acte, solr, idAnnexeAignorer=0):
         result_annexes = solr.search(q='publication_id:' + str(acte.id_publication), **{
             'rows': 100,
             'start': 0,
-            'fq': 'typology:PJ AND est_publie:true and NOT id:' + str(idAnnexeAignorer),
+            'fq': 'typology:PJ AND est_publie:true AND NOT id:' + str(idAnnexeAignorer),
             'fl': 'hash,id,documenttype,filepath'
         })
         for docA in result_annexes.docs:
