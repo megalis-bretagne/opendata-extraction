@@ -63,12 +63,12 @@ class PublicationSearchCtrl(Resource):
         if args['types_actes'] is not None:
             liste_type_acte = args['types_actes'].split(',', 8)
             for nature in liste_type_acte:
-                filterQuery = filterQuery + ' AND documenttype:' + nature
+                filterQuery = filterQuery + ' OR documenttype:' + nature
 
         if args['classifications'] is not None:
             liste_classification = args['classifications'].split(',')
             for classification in liste_classification:
-                filterQuery = filterQuery + ' AND classification_code:' + classification + '*'
+                filterQuery = filterQuery + ' OR classification_code:' + classification + '*'
 
         if args['lignes'] == None:
             # valeur par defaut
