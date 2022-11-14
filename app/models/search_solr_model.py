@@ -8,6 +8,7 @@ class Annexe:
     id: str
     url: str
     hash: str
+    content_type: str
     resultat_recherche: bool
 
     @property
@@ -47,7 +48,7 @@ class Acte:
     def serialize(self):
         return {
             'hash': self.hash,
-            'siren' : self.siren,
+            'siren': self.siren,
             'publication_id': self.publication_id,
             'id': self.id,
             'type': self.type,
@@ -72,15 +73,13 @@ class Acte:
 class Page:
     """Information sur un établissement donnée"""
     nb_resultats: int
-    debut: int
-    pageSuivante :str
+    page_suivante: str
     resultats: list[Acte]
 
     @property
     def serialize(self):
         return {
             'nb_resultats': self.nb_resultats,
-            'debut': self.debut,
             'resultats': [item.serialize for item in self.resultats],
-            'pageSuivante' :self.pageSuivante
+            'page_suivante': self.page_suivante
         }

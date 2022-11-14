@@ -17,8 +17,44 @@ actes_api_ns = Namespace(
 )
 actes_api.add_namespace(actes_api_ns)
 
+annexe = actes_api.model('annexe', {
+    'id': fields.Integer,
+    'url': fields.String,
+    'hash': fields.String,
+    'content_type': fields.String,
+    'resultat_recherche': fields.Boolean
+})
+acte = actes_api.model(
+    'acte', {
+        'hash': fields.String,
+        'siren':fields.String,
+        'publication_id': fields.Integer,
+        'id': fields.String,
+        'type': fields.String,
+        'type_autre_detail': fields.String,
+        'classification_code': fields.String,
+        'classification_libelle': fields.String,
+        'objet': fields.DateTime,
+        'id_publication': fields.String,
+        'date_acte': fields.String,
+        'date_publication': fields.String,
+        'url': fields.String,
+        'typologie': fields.String,
+        'content_type': fields.String,
+        'blockchain_transaction_hash': fields.String,
+        'blockchain_url': fields.String,
+        'resultat_recherche': fields.Boolean,
+        'annexes': fields.List(fields.Nested(annexe))
+    })
+
+page = actes_api.model('page', {
+    'nb_resultats': fields.Integer,
+    'resultats': fields.List(fields.Nested(acte)),
+    'page_suivante':fields.String
+})
+
 searchParams = reqparse.RequestParser()
-searchParams.add_argument('query', help='filtre de recherche sur le numéro d\'acte')
+searchParams.add_argument('query', help='recherche multi champs')
 searchParams.add_argument('siren', help='filtre de recherche sur le siren')
 searchParams.add_argument('date_debut', help='filtre de recherche sur la date de l\'acte au format iso')
 searchParams.add_argument('date_fin', help='filtre de recherche sur la date de l\'acte au format iso')
@@ -30,8 +66,9 @@ searchParams.add_argument('pageSuivante', help='page suivante')
 
 @actes_api_ns.route('/search')
 class PublicationSearchCtrl(Resource):
+
     @actes_api_ns.expect(searchParams)
-    # @actes_api_ns.marshal_with(page, code=200)
+    @actes_api_ns.response(200, 'Success', page)
     def get(self):
         from app.tasks.utils import solr_connexion
         solr = solr_connexion()
@@ -95,7 +132,7 @@ class PublicationSearchCtrl(Resource):
         else:
             cursorMark = args['pageSuivante']
 
-        filterQuery = filterQuery + ' AND date:[' + date_debut + ' TO ' + date_fin + ']'
+        filterQuery = filterQuery + ' AND date_de_publication:[' + date_debut + ' TO ' + date_fin + ']'
 
         results = self.callSolr(filterQuery, query, cursorMark, solr)
 
@@ -107,14 +144,13 @@ class PublicationSearchCtrl(Resource):
             termine = False
 
         while not termine:
-            print(filterQuery)
+            # print(filterQuery)
             for doc in results.docs:
 
                 _typologie = doc['typology'][0]
                 _publication_id = doc['publication_id'][0]
-
-                if 'score' in doc:
-                    print('score= ' + str(doc['score']) + ' - ' + str(_publication_id) + ' - ' + _typologie)
+                # if 'score' in doc:
+                    #print('score= ' + str(doc['score']) + ' - ' + str(_publication_id) + ' - ' + _typologie)
 
                 if _publication_id in dict_Acte:
                     # print('deja présent ' + str(_publication_id) + ' - ' + _typologie)
@@ -169,7 +205,8 @@ class PublicationSearchCtrl(Resource):
                         _url_annexe = doc['filepath'][0]
                         _hash_annexe = doc['hash'][0]
                         _id_annexe = doc['id']
-                        _annexe = Annexe(hash=_hash_annexe, url=_url_annexe, id=_id_annexe, resultat_recherche=True)
+                        _content_type_annexe = doc['content_type'][0]
+                        _annexe = Annexe(hash=_hash_annexe, url=_url_annexe, id=_id_annexe,content_type=_content_type_annexe,resultat_recherche=True)
                         try:
                             _acte.annexes.append(_annexe)
                         except Exception as e:
@@ -187,7 +224,12 @@ class PublicationSearchCtrl(Resource):
                 cursorMark = results.nextCursorMark
                 results = self.callSolr(filterQuery, query, results.nextCursorMark, solr)
 
-        reponse = Page(nb_resultats=results.hits, debut=1, resultats=liste_acte, pageSuivante=results.nextCursorMark)
+        if results.nextCursorMark == '*' or cursorMark == results.nextCursorMark:
+            _page_suivante =''
+        else:
+            _page_suivante = results.nextCursorMark
+
+        reponse = Page(nb_resultats=results.hits, resultats=liste_acte, page_suivante=_page_suivante)
         return jsonify(reponse.serialize)
 
     def callSolr(self, filterQuery, query, cursorMark, solr):
@@ -210,14 +252,15 @@ class PublicationSearchCtrl(Resource):
             'rows': 100,
             'start': 0,
             'fq': 'typology:PJ AND est_publie:true AND NOT id:' + str(idAnnexeAignorer),
-            'fl': 'hash,id,documenttype,filepath'
+            'fl': 'hash,id,documenttype,filepath,content_type'
         })
         for docA in result_annexes.docs:
-            print("   completer les annexes dans la publication: " + str(acte.id_publication))
+            # print("   completer les annexes dans la publication: " + str(acte.id_publication))
             _url_annexe = docA['filepath'][0]
             _hash_annexe = docA['hash'][0]
             _id_annexe = docA['id']
-            _annexe = Annexe(hash=_hash_annexe, url=_url_annexe, id=_id_annexe, resultat_recherche=False)
+            _content_type = doc['content_type'][0]
+            _annexe = Annexe(hash=_hash_annexe, url=_url_annexe, id=_id_annexe, resultat_recherche=False,content_type=_content_type)
             acte.annexes.append(_annexe)
 
     def recuperer_acte(self, id_pub, solr):
@@ -230,7 +273,7 @@ class PublicationSearchCtrl(Resource):
                   'blockchain_transaction_hash,blockchain_url,siren,score'
         })
         for doc in result_annexes.docs:
-            print("   Récupérer l'acte dans la publication: " + str(id_pub))
+            # print("   Récupérer l'acte dans la publication: " + str(id_pub))
             _hash = doc['hash'][0]
             _siren = doc['siren']
             _publication_id = doc['publication_id'][0]
@@ -260,39 +303,3 @@ class PublicationSearchCtrl(Resource):
             return _acte
 
 
-annexe = actes_api.model('annexe', {
-    'id': fields.Integer,
-    'url': fields.String,
-    'hash': fields.String,
-    'name': fields.String
-})
-
-acte = actes_api.model(
-    'acte', {
-        'hash': fields.String,
-        'publication_id': fields.Integer,
-        'id': fields.String,
-        'type': fields.String,
-        'type_autre_detail': fields.String,
-        'classification_code': fields.String,
-        'classification_libelle': fields.String,
-        'objet': fields.DateTime,
-        'id_publication': fields.String,
-        'date_acte': fields.String,
-        'date_publication': fields.String,
-        'url': fields.String,
-        'typologie': fields.String,
-        'content_type': fields.String,
-        'blockchain_transaction_hash': fields.String,
-        'blockchain_url': fields.String,
-        'annexes': fields.List(fields.Nested(annexe)),
-        'resultat_recherche': fields.Boolean,
-
-    })
-
-page = actes_api.model('page', {
-    'nb_resultats': fields.Integer,
-    'debut': fields.Integer,
-    'resultats': fields.List(fields.Nested(Acte)),
-
-})
