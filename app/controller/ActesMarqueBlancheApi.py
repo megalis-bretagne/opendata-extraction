@@ -66,23 +66,23 @@ class PublicationSearchCtrl(Resource):
             type_actes_filter = ''
             for nature in liste_type_acte:
                 if first:
-                    type_actes_filter = ' (documenttype:' + nature
+                    type_actes_filter = '(documenttype:' + nature
                     first = False
                 else:
                     type_actes_filter = type_actes_filter + ' OR documenttype:' + nature
-            filterQuery = filterQuery + type_actes_filter + ')'
+            filterQuery = filterQuery + ' AND ' + type_actes_filter + ')'
 
         if args['classifications'] is not None:
             liste_classification = args['classifications'].split(',', 10)
             first = True
-            classification_filter
+            classification_filter=''
             for classification in liste_classification:
                 if first:
-                    classification_filter = ' (classification_code:' + classification + '*'
+                    classification_filter = '(classification_code:' + classification + '*'
                     first = False
                 else:
                     classification_filter = classification_filter + ' OR classification_code:' + classification + '*'
-            filterQuery = filterQuery + classification_filter + ')'
+            filterQuery = filterQuery + ' AND ' + classification_filter + ')'
 
         if args['lignes'] == None:
             # valeur par defaut
