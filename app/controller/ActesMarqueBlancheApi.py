@@ -259,7 +259,7 @@ class PublicationSearchCtrl(Resource):
             _url_annexe = docA['filepath'][0]
             _hash_annexe = docA['hash'][0]
             _id_annexe = docA['id']
-            _content_type = doc['content_type'][0]
+            _content_type = docA['content_type'][0]
             _annexe = Annexe(hash=_hash_annexe, url=_url_annexe, id=_id_annexe, resultat_recherche=False,content_type=_content_type)
             acte.annexes.append(_annexe)
 
