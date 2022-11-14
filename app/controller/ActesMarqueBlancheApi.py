@@ -37,10 +37,10 @@ class PublicationSearchCtrl(Resource):
         solr = solr_connexion()
         args = searchParams.parse_args()
 
-        if args['query'] is not None:
-            query = args['query']
-        else:
+        if args['query'] is None or args['query'] == '':
             query = '*:*'
+        else:
+            query = args['query']
 
         filterQuery = 'est_publie:true'
 
@@ -61,14 +61,14 @@ class PublicationSearchCtrl(Resource):
             date_fin = args['date_fin']
 
         if args['types_actes'] is not None:
-            liste_type_acte = args['types_actes'].split(',',8)
+            liste_type_acte = args['types_actes'].split(',', 8)
             for nature in liste_type_acte:
                 filterQuery = filterQuery + ' AND documenttype:' + nature
 
         if args['classifications'] is not None:
             liste_classification = args['classifications'].split(',')
             for classification in liste_classification:
-                filterQuery = filterQuery + ' AND classification_code:' + classification+'*'
+                filterQuery = filterQuery + ' AND classification_code:' + classification + '*'
 
         if args['lignes'] == None:
             # valeur par defaut
@@ -77,10 +77,9 @@ class PublicationSearchCtrl(Resource):
             lignes = args['lignes']
         if args['pageSuivante'] == None:
             # valeur par defaut
-            cursorMark='*'
+            cursorMark = '*'
         else:
             cursorMark = args['pageSuivante']
-
 
         filterQuery = filterQuery + ' AND date:[' + date_debut + ' TO ' + date_fin + ']'
 
@@ -137,7 +136,7 @@ class PublicationSearchCtrl(Resource):
                         _blockchain_url = doc['blockchain_url'] if 'blockchain_url' in doc else ""
                         _resultat_recherche = True
 
-                        _acte = Acte(hash=_hash,siren=_siren, publication_id=_publication_id, id=_id, type=_type,
+                        _acte = Acte(hash=_hash, siren=_siren, publication_id=_publication_id, id=_id, type=_type,
                                      type_autre_detail=_type_autre_detail, classification_code=_classification_code,
                                      classification_libelle=_classification_libelle, objet=_objet,
                                      id_publication=_id_publication,
@@ -171,13 +170,13 @@ class PublicationSearchCtrl(Resource):
             else:
                 if len(liste_acte) >= int(lignes):
                     termine = True
-                cursorMark=results.nextCursorMark
+                cursorMark = results.nextCursorMark
                 results = self.callSolr(filterQuery, query, results.nextCursorMark, solr)
 
-        reponse = Page(nb_resultats=results.hits, debut=1, resultats=liste_acte,pageSuivante=results.nextCursorMark)
+        reponse = Page(nb_resultats=results.hits, debut=1, resultats=liste_acte, pageSuivante=results.nextCursorMark)
         return jsonify(reponse.serialize)
 
-    def callSolr(self, filterQuery,query,cursorMark, solr):
+    def callSolr(self, filterQuery, query, cursorMark, solr):
         results = solr.search(q=query, **{
             'defType': 'edismax',
             'fq': filterQuery,
@@ -238,15 +237,13 @@ class PublicationSearchCtrl(Resource):
             _blockchain_url = doc['blockchain_url'] if 'blockchain_url' in doc else ""
             _resultat_recherche = False
 
-            _acte = Acte(hash=_hash,siren=_siren,publication_id=_publication_id, id=_id, type=_type,
+            _acte = Acte(hash=_hash, siren=_siren, publication_id=_publication_id, id=_id, type=_type,
                          type_autre_detail=_type_autre_detail, classification_code=_classification_code,
                          classification_libelle=_classification_libelle, objet=_objet, id_publication=_id_publication,
                          date_acte=_date_acte, date_publication=_date_publication, url=_url, typologie=_typologie,
                          content_type=_content_type, blockchain_transaction_hash=_blockchain_transaction_hash,
                          blockchain_url=_blockchain_url, resultat_recherche=_resultat_recherche, annexes=[])
             return _acte
-
-
 
 
 annexe = actes_api.model('annexe', {
