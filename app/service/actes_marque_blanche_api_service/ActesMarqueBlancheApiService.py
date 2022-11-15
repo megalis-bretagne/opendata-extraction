@@ -166,7 +166,7 @@ class ActesMarqueBlancheApiService:
 
         if args['siren'] is not None:
             siren = args['siren']
-            filterQuery = filterQuery + ' AND ' + siren
+            filterQuery = filterQuery + ' AND siren:' + siren
 
         if args['types_actes'] is not None:
             liste_type_acte = args['types_actes'].split(',', 8)
