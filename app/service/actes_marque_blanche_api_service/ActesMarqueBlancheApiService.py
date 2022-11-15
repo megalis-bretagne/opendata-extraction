@@ -125,18 +125,31 @@ class ActesMarqueBlancheApiService:
     def callSolr(self, filterQuery, query, cursorMark, solr):
 
         try:
-            results = solr.search(q=query, **{
-                'defType': 'edismax',
-                'fq': filterQuery,
-                'qf': 'documentidentifier^10 description^5 _text_^2 classification_nom',
-                'rows': 1,
-                'cursorMark': cursorMark,
-                'sort': 'score desc,id desc',
-                'fl': 'hash,publication_id,id,documenttype,classification_code,classification_nom,description,'
-                      'publication_id,date,date_de_publication,filepath,typology,content_type,type_autre_detail,'
-                      'blockchain_transaction_hash,blockchain_url,siren,score'
+            if query == '*:*':
+                results = solr.search(q=query, **{
+                    'fq': filterQuery,
+                    'rows': 1,
+                    'cursorMark': cursorMark,
+                    'sort': 'date_de_publication desc,id desc',
+                    'fl': 'hash,publication_id,id,documenttype,classification_code,classification_nom,description,'
+                          'publication_id,date,date_de_publication,filepath,typology,content_type,type_autre_detail,'
+                          'blockchain_transaction_hash,blockchain_url,siren,score'
 
-            })
+                })
+            else:
+                results = solr.search(q=query, **{
+                    'defType': 'edismax',
+                    'fq': filterQuery,
+                    'qf': 'documentidentifier^10 description^5 _text_^2 classification_nom',
+                    'rows': 1,
+                    'cursorMark': cursorMark,
+                    'sort': 'score desc,id desc',
+                    'fl': 'hash,publication_id,id,documenttype,classification_code,classification_nom,description,'
+                          'publication_id,date,date_de_publication,filepath,typology,content_type,type_autre_detail,'
+                          'blockchain_transaction_hash,blockchain_url,siren,score'
+
+                })
+
             return results
         except SolrError as err:
             logging.exception(err)
