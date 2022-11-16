@@ -63,7 +63,7 @@ searchParams.add_argument('date_fin', help='filtre de recherche sur la date de l
 searchParams.add_argument('classifications', help='filtre de recherche sur la classification')
 searchParams.add_argument('types_actes', help='filtre de recherche sur la nature de l\'acte')
 searchParams.add_argument('lignes', help='nombre de ligne à retourner')
-searchParams.add_argument('pageSuivante', help='page suivante')
+searchParams.add_argument('page_suivante', help='page suivante')
 
 
 @actes_api_ns.errorhandler(api_service.SolrMarqueBlancheError)

@@ -211,11 +211,11 @@ class ActesMarqueBlancheApiService:
         else:
             lignes = args['lignes']
 
-        if args['pageSuivante'] == None:
+        if args['page_suivante'] == None:
             # valeur par defaut
             cursorMark = '*'
         else:
-            cursorMark = args['pageSuivante']
+            cursorMark = args['page_suivante']
 
         return filterQuery, query, lignes, cursorMark
 
