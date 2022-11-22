@@ -200,3 +200,9 @@ TESTS/
 
 #
 tests/data/solr/volumes
+
+# dev env linux
+.envrc
+.http
+.tool-versions
+.vscode/
