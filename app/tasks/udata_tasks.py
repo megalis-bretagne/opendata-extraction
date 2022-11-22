@@ -1,5 +1,4 @@
 from pathlib import Path
-import tempfile
 import time
 
 from app import celeryapp
@@ -9,15 +8,15 @@ from app.service.udata.OrganizationService import OrganizationService
 from app.tasks import generation_deliberation, generation_decp, get_or_create_workdir, SDMException
 from app.tasks.datagouv_tasks import generation_budget
 
+import app.shared.workdir_utils as workdir_utils
+
 celery = celeryapp.celery
 
 
 @celery.task(name='publication_udata_budget')
 def publication_udata_budget(siren, annee):
     
-    workdir = get_or_create_workdir()
-
-    with tempfile.TemporaryDirectory(dir = workdir) as tmp_dir:
+    with workdir_utils.temporary_workdir() as tmp_dir:
         tmp_dir_path = Path(tmp_dir)
 
         dataset_service = DatasetService()

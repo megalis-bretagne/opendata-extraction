@@ -1,7 +1,8 @@
 from pathlib import Path
 from flask import send_from_directory
 from flask_restx import Namespace, Resource, abort
-import tempfile
+
+import app.shared.workdir_utils as workdir_utils
 
 api = Namespace(name='scdl',
                 description="API pour exporter au format SCDL les délibérations, budgets et toutes la nature d'actes"
@@ -14,11 +15,8 @@ class ScdlBudgetCtrl(Resource):
     @api.produces(["application/octet-stream"])
     def get(self, siren, annee):
         from app.tasks.datagouv_tasks import generation_budget
-        from app.tasks.utils import get_or_create_workdir
 
-        workdir = get_or_create_workdir()
-
-        with tempfile.TemporaryDirectory(dir=workdir) as tmp_dir:
+        with workdir_utils.temporary_workdir() as tmp_dir:
             try:
                 csv_filepath = generation_budget(Path(tmp_dir), siren, annee)
                 return send_from_directory(tmp_dir, filename=csv_filepath.name,
@@ -34,11 +32,8 @@ class ScdlBudgetAllCtrl(Resource):
     @api.produces(["application/octet-stream"])
     def get(self, annee):
         from app.tasks.datagouv_tasks import generation_budget
-        from app.tasks.utils import get_or_create_workdir
 
-        workdir = get_or_create_workdir()
-
-        with tempfile.TemporaryDirectory(dir=workdir) as tmp_dir:
+        with workdir_utils.temporary_workdir() as tmp_dir:
             try:
                 csv_filepath = generation_budget(Path(tmp_dir), "*", annee)
                 return send_from_directory(tmp_dir, filename=csv_filepath.name,

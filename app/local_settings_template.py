@@ -61,6 +61,7 @@ INDEX_DELIB_SOLR='sorl_core'
 
 #watcher
 WORKDIR = 'C:\\toWatch\\workdir\\'
+TEMP_WORKDIR_PARENT = 'C:\\toWatch\\temp_workdirs\\' # XXX: WORKDIR et TEMP_WORKDIR_PARENT doivent être deux branches bien distinctes!
 DIRECTORY_TO_WATCH='D:\\toWatch\\in\\'
 DIRECTORY_TO_WATCH_ARCHIVE='D:\\toWatch\\archive'
 DIRECTORY_TO_PUBLICATION='D:\\toWatch\\publication'

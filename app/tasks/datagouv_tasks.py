@@ -1,7 +1,6 @@
 import json
 import logging
 from pathlib import Path
-import tempfile
 import time
 from typing import Optional
 import urllib.parse
@@ -16,7 +15,9 @@ from app.tasks import solr_connexion, clear_wordir, get_or_create_workdir
 
 from app.shared.constants import PLANS_DE_COMPTES_PATH
 from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
+import app.shared.workdir_utils as workdir_utils
 from yatotem2scdl.conversion import Options
+
 
 celery = celeryapp.celery
 
@@ -39,9 +40,7 @@ def generation_and_publication_scdl(type, param_annee):
 
 
 def _genere_budget_et_publie_datagouv(siren: str, annee: str, flag_active: str):
-    workdir = get_or_create_workdir()
-
-    with tempfile.TemporaryDirectory(dir=workdir) as tmp_dir:
+    with workdir_utils.temporary_workdir() as tmp_dir:
         csv_filepath = generation_budget(
             Path(tmp_dir),
             siren, annee, flag_active)
