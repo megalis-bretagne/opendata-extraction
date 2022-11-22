@@ -2,8 +2,10 @@ import json
 import logging
 from pathlib import Path
 import time
-from typing import Optional
+from typing import Generator, Optional
 import urllib.parse
+
+from contextlib import contextmanager
 
 import requests
 from flask import current_app
@@ -11,7 +13,9 @@ from flask import current_app
 from app import celeryapp
 from app.models.parametrage_model import Parametrage
 from app.models.publication_model import Publication
-from app.tasks import solr_connexion, clear_wordir, get_or_create_workdir
+from app.tasks import solr_connexion
+
+import app.shared.workdir_utils as workdir_utils
 
 from app.shared.constants import PLANS_DE_COMPTES_PATH
 from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
@@ -31,23 +35,36 @@ def generation_and_publication_scdl(type, param_annee):
         annee = param_annee
 
     if type == '1':
-        filename = generation_deliberation("*", annee, 'opendata_active')
-        publication_datagouv_scdl(annee, get_or_create_workdir() + filename, type)
+        _genere_delib_et_publie_datagouv("*", annee, 'opendata_active')
+
     elif type == '5':
         _genere_budget_et_publie_datagouv("*", annee, 'opendata_active')
 
     return {'status': 'OK', 'message': 'generation et publication scdl', 'annee': str(annee), 'type': str(type)}
 
+def _genere_delib_et_publie_datagouv(siren: str, annee: str, flag_active: str):
+    with generated_scdl_deliberation(siren = siren, annee = annee, flag_active=flag_active) as csv_filepath:
+        publication_datagouv_scdl(annee, csv_filepath, '1')
 
 def _genere_budget_et_publie_datagouv(siren: str, annee: str, flag_active: str):
-    with workdir_utils.temporary_workdir() as tmp_dir:
-        csv_filepath = generation_budget(
-            Path(tmp_dir),
-            siren, annee, flag_active)
+    with generated_scdl_budget(siren=siren, annee=annee, flag_active=flag_active) as csv_filepath:
         publication_datagouv_scdl(annee, csv_filepath, '5')
 
+@contextmanager
+def generated_scdl_budget(siren, annee, flag_active=None) -> Generator[Path, None, None]:
+    with workdir_utils.temporary_workdir() as tmp_dir:
+        tmp_path = Path(tmp_dir)
+        yield generation_scdl_budget(tmp_path, siren=siren, annee=annee, flag_active=flag_active)
 
-def generation_budget(root_dir: Path, siren, annee, flag_active=None) -> Path:
+def generation_scdl_budget(root_path: Path, siren, annee, flag_active=None) -> Path:
+    """Genère le SCDL budget pour le siren et l'année donnée
+
+    Args:
+        root_path (Path): chemin du dossier parent dans lequel sera stocké le scdl
+
+    Returns:
+        Path: Chemin complet de l'emplacement du SCDL
+    """
     annee = str(annee)
     siren = str(siren)
     type = '5'
@@ -62,7 +79,7 @@ def generation_budget(root_dir: Path, siren, annee, flag_active=None) -> Path:
     csv_filename = (
         f"BUDGET-{annee}.csv" if siren == "*" else f"BUDGET-{siren}-{annee}.csv"
     )
-    csv_filepath = Path(root_dir) / csv_filename
+    csv_filepath = Path(root_path) / csv_filename
     convertisseur = make_or_get_budget_convertisseur()
     with open(csv_filepath, 'a', newline='') as csv_file:
         entetes = convertisseur.budget_scdl_entetes()
@@ -90,10 +107,23 @@ def _solr_request_pour_budget(type: str, annee: str, siren: str, flag_active: Op
         query = f"{query} AND {flag_active} : True"
     return query
 
+@contextmanager
+def generated_scdl_acte(siren, annee) -> Generator[Path, None, None]:
+    with workdir_utils.temporary_workdir() as tmp_dir:
+        tmp_path = Path(tmp_dir)
+        yield generation_scdl_acte(tmp_path, siren = siren, annee = annee)
 
-def generation_acte(siren, annee):
-    # on clear le workdir
-    clear_wordir()
+
+def generation_scdl_acte(root_path: Path, siren, annee) -> Path:
+    """Genère le SCDL de l'acte pour le siren et l'année donnée
+
+    Args:
+        root_path (Path): chemin du dossier parent dans lequel sera stocké le scdl
+
+
+    Returns:
+        Path: Chemin complet de l'emplacement du SCDL
+    """
     ANNEE = str(annee)
     SIREN = str(siren)
 
@@ -105,13 +135,13 @@ def generation_acte(siren, annee):
     # construction de la requete solr
     query = '-typology: PJ AND est_publie: true'
     if str(siren) == '*':
-        filename = 'ACTES-' + ANNEE + '.csv'
+        csv_filename = 'ACTES-' + ANNEE + '.csv'
     else:
-        filename = 'ACTES-' + SIREN + '-' + ANNEE + '.csv'
+        csv_filename = 'ACTES-' + SIREN + '-' + ANNEE + '.csv'
         query = query + ' AND siren: ' + SIREN
 
     # generation de l'url du fichier scdl
-    csv_file_path = get_or_create_workdir() + filename
+    csv_filepath = Path(root_path) / csv_filename
 
     # On recherche dans apache solr les documents pour un publie qui ne sont pas des annexes et on fitre sur l'année passée en parametre ANNEE et le siren si present
     result = \
@@ -176,7 +206,7 @@ def generation_acte(siren, annee):
 
     # Ecriture du fichier scdl
     header = "COLL_NOM;COLL_SIRET;DELIB_ID;DELIB_DATE;DELIB_MATIERE_CODE;DELIB_MATIERE_NOM;DELIB_OBJET;BUDGET_ANNEE;BUDGET_NOM;PREF_ID;PREF_DATE;VOTE_EFFECTIF;VOTE_REEL;VOTE_POUR;VOTE_CONTRE;VOTE_ABSTENTION;DELIB_URL;PUBLICATION_DATE;NATURE_ACTE;NATURE_ACTE_AUTRE_DETAIL"
-    f = open(csv_file_path, 'w')
+    f = open(csv_filepath, 'w')
     f.write(header + '\n')
     for ligne in lignes:
         try:
@@ -184,12 +214,28 @@ def generation_acte(siren, annee):
         except Exception:
             logging.exception("on ignore la ligne" + ligne)
     f.close()
-    return filename
+    return csv_filepath
 
+@contextmanager
+def generated_scdl_deliberation(siren, annee, flag_active=None) -> Generator[Path, None, None]:
+    with workdir_utils.temporary_workdir() as tmp_dir:
+        tmp_path = Path(tmp_dir)
+        yield generation_scdl_deliberation(
+                root_path=tmp_path, 
+                siren = siren, annee= annee, 
+                flag_active= flag_active
+        )
 
-def generation_deliberation(siren, annee, flag_active=None):
-    # on clear le workdir
-    clear_wordir()
+def generation_scdl_deliberation(root_path: Path, siren, annee, flag_active=None) -> Path:
+    """Génère le SCDL deliberations pour le siren et l'année donnée
+
+    Args:
+        root_path (Path): chemin du dossier parent dans lequel sera stocké le scdl
+
+    Returns:
+        Path: Chemin complet de l'emplacement du SCDL
+    """
+
     ANNEE = str(annee)
     SIREN = str(siren)
 
@@ -203,16 +249,16 @@ def generation_deliberation(siren, annee, flag_active=None):
     # construction de la requete solr
     query = 'typology: 99_DE AND documenttype:' + str(TYPE)
     if str(siren) == '*':
-        filename = 'DELIBERATION-' + ANNEE + '.csv'
+        csv_filename = 'DELIBERATION-' + ANNEE + '.csv'
     else:
-        filename = 'DELIBERATION-' + SIREN + '-' + ANNEE + '.csv'
+        csv_filename = 'DELIBERATION-' + SIREN + '-' + ANNEE + '.csv'
         query = query + ' AND siren: ' + SIREN
 
     if flag_active is not None:
         query = query + ' AND ' + flag_active + ': True '
 
     # generation de l'url du fichier scdl
-    csv_file_path = get_or_create_workdir() + filename
+    csv_filepath = Path(root_path) / csv_filename
 
     # On recherche dans apache solr les documents pour un SIREN et un TYPE (deliberation, budget ...) et on fitre sur l'année passée en parametre ANNEE
     result = \
@@ -269,7 +315,7 @@ def generation_deliberation(siren, annee, flag_active=None):
 
     # Ecriture du fichier scdl
     header = "COLL_NOM;COLL_SIRET;DELIB_ID;DELIB_DATE;DELIB_MATIERE_CODE;DELIB_MATIERE_NOM;DELIB_OBJET;BUDGET_ANNEE;BUDGET_NOM;PREF_ID;PREF_DATE;VOTE_EFFECTIF;VOTE_REEL;VOTE_POUR;VOTE_CONTRE;VOTE_ABSTENTION;DELIB_URL"
-    f = open(csv_file_path, 'w')
+    f = open(csv_filepath, 'w')
     f.write(header + '\n')
     for ligne in lignes:
         try:
@@ -277,7 +323,7 @@ def generation_deliberation(siren, annee, flag_active=None):
         except Exception:
             logging.exception("on ignore la ligne" + ligne)
     f.close()
-    return filename
+    return csv_filepath
 
 
 def api_url(path):

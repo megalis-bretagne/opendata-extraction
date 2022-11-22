@@ -17,6 +17,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Technique: refactoring des tâches de generation decp et scdl pour utiliser des repertoires temporaires
 
 ## [2.0.10] - 2022-11-22
 
