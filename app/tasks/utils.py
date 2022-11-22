@@ -112,7 +112,12 @@ def clear_wordir():
     WORKDIR = get_or_create_workdir()
     filelist = [f for f in os.listdir(WORKDIR)]
     for f in filelist:
-        os.remove(os.path.join(WORKDIR, f))
+        try:
+            workdir_f = os.path.join(WORKDIR, f)
+            os.remove(workdir_f)
+        except Exception as err:
+            logging.warning(f"Echec lors de la suppression de {workdir_f}:")
+            logging.exception(err)
     return WORKDIR
 
 
