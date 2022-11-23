@@ -51,7 +51,7 @@ class BudgetMarqueBlancheApiService:
     ) -> InfoBudgetDisponiblesApi:
 
         self.__logger.info(
-            (f"Récupération des ressources budgetaires disponibles pour le siren {siren}"),
+            f"Récupération des ressources budgetaires disponibles pour le siren {siren}"
         )
 
         all_totems_and_metadata = self._liste_totem_with_metadata(siren)
@@ -88,8 +88,7 @@ class BudgetMarqueBlancheApiService:
         siren = str(extraire_siren(siret))
 
         self.__logger.info(
-            (f"Récupération du plan de compte pour le siret {siret}"),
-            (f"et l'année {annee}."),
+            f"Récupération du plan de compte pour le siret {siret} et l'année {annee}."
         )
 
         all_totems_and_metadata = self._liste_totem_with_metadata(siren)
@@ -116,8 +115,8 @@ class BudgetMarqueBlancheApiService:
         siren = str(extraire_siren(siret))
 
         self.__logger.info(
-            (f"Récupération des données budgetaires pour le siret {siret}"),
-            (f" l'année {annee} et l'étape {etape}"),
+            f"Récupération des données budgetaires pour le siret {siret}"
+            f" l'année {annee} et l'étape {etape}"
         )
 
         all_totem_with_metadata = self._liste_totem_with_metadata(siren)
@@ -269,17 +268,17 @@ class BudgetMarqueBlancheApiService:
             _siret = int(siret) if siret is not None else siret
 
             if _siret and _siret != metadata.id_etablissement:
-                self.__logger.info(
+                self.__logger.debug(
                     f"On exclut {metadata} car {_siret} != {metadata.id_etablissement}"
                 )
                 return False
             if annee and annee != metadata.annee_exercice:
-                self.__logger.info(
+                self.__logger.debug(
                     f"On exclut {metadata} car {annee} != {metadata.annee_exercice}"
                 )
                 return False
             if etape and etape != metadata.etape_budgetaire:
-                self.__logger.info(
+                self.__logger.debug(
                     f"On exclut {metadata} car {etape} != {metadata.etape_budgetaire}"
                 )
                 return False
