@@ -18,7 +18,7 @@ def publication_udata_budget(siren, annee):
     organization = organization_service.get(siren)
     dataset_budget = organization_service.get_dataset_budget(organization['id'])
 
-    with generated_scdl_budget(siren=siren, annee=annee) as csv_filepath:
+    with generated_scdl_budget(siren=siren, annee=annee, flag_active='opendata_active') as csv_filepath:
         if dataset_budget is None:
             dataset_budget = dataset_service.create_dataset_budget(organization)
         if is_scdl_empty(csv_filepath):
@@ -42,7 +42,7 @@ def publication_udata_deliberation(siren, annee):
     organization = organization_service.get(siren)
     dataset_deliberation = organization_service.get_dataset_deliberation(organization['id'])
 
-    with generated_scdl_deliberation(siren = siren, annee = annee) as scdl_delib_filepath:
+    with generated_scdl_deliberation(siren = siren, annee = annee, flag_active='opendata_active') as scdl_delib_filepath:
         if dataset_deliberation is None:
             dataset_deliberation = dataset_service.create_dataset_deliberation(organization)
         if is_scdl_empty(scdl_delib_filepath):
