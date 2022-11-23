@@ -1,11 +1,13 @@
-from pathlib import Path
-from flask import send_from_directory
-from flask_restx import Namespace, Resource, abort
-import tempfile
+from flask import send_file
+from flask_restx import Namespace, Resource
 
 api = Namespace(name='scdl',
                 description="API pour exporter au format SCDL les délibérations, budgets et toutes la nature d'actes"
                 )
+
+@api.errorhandler(FileNotFoundError)
+def handle_not_found(_):
+    return 'Not found', 404
 
 @api.route('/budget/<int:siren>/<int:annee>', doc={
     "description": "export les budgets au <a href=\"https://scdl.opendatafrance.net/docs/schemas/budget.html\">format SCDL</a> pour le siren et l'année présent dans l'url"})
@@ -13,18 +15,10 @@ class ScdlBudgetCtrl(Resource):
     @api.response(200, 'Success')
     @api.produces(["application/octet-stream"])
     def get(self, siren, annee):
-        from app.tasks.datagouv_tasks import generation_budget
-        from app.tasks.utils import get_or_create_workdir
+        from app.tasks.datagouv_tasks import generated_scdl_budget
 
-        workdir = get_or_create_workdir()
-
-        with tempfile.TemporaryDirectory(dir=workdir) as tmp_dir:
-            try:
-                csv_filepath = generation_budget(Path(tmp_dir), siren, annee)
-                return send_from_directory(tmp_dir, filename=csv_filepath.name,
-                                           as_attachment=True)
-            except FileNotFoundError:
-                abort(404)
+        with generated_scdl_budget(siren=siren, annee=annee) as csv_filepath:
+            return send_file(csv_filepath, as_attachment=True)
 
 
 @api.route('/budget/<int:annee>',doc={
@@ -33,18 +27,10 @@ class ScdlBudgetAllCtrl(Resource):
     @api.response(200, 'Success')
     @api.produces(["application/octet-stream"])
     def get(self, annee):
-        from app.tasks.datagouv_tasks import generation_budget
-        from app.tasks.utils import get_or_create_workdir
+        from app.tasks.datagouv_tasks import generated_scdl_budget
 
-        workdir = get_or_create_workdir()
-
-        with tempfile.TemporaryDirectory(dir=workdir) as tmp_dir:
-            try:
-                csv_filepath = generation_budget(Path(tmp_dir), "*", annee)
-                return send_from_directory(tmp_dir, filename=csv_filepath.name,
-                                           as_attachment=True)
-            except FileNotFoundError:
-                abort(404)
+        with generated_scdl_budget(siren="*", annee=annee) as csv_filepath:
+            return send_file(csv_filepath, as_attachment=True)
 
 
 @api.route('/deliberation/<int:siren>/<int:annee>',doc={
@@ -53,13 +39,10 @@ class ScdlDeliberationCtrl(Resource):
     @api.response(200, 'Success')
     @api.produces(["application/octet-stream"])
     def get(self, siren, annee):
-        from app.tasks.datagouv_tasks import generation_deliberation
-        from app.tasks.utils import get_or_create_workdir
-        try:
-            return send_from_directory(get_or_create_workdir(), filename=generation_deliberation(siren, annee),
-                                       as_attachment=True)
-        except FileNotFoundError:
-            abort(404)
+        from app.tasks.datagouv_tasks import generated_scdl_deliberation
+
+        with generated_scdl_deliberation(siren = siren, annee = annee) as csv_filepath:
+            return send_file(csv_filepath, as_attachment=True)
 
 
 @api.route('/deliberation/<int:annee>',doc={
@@ -68,13 +51,10 @@ class ScdlDeliberationAllCtrl(Resource):
     @api.response(200, 'Success')
     @api.produces(["application/octet-stream"])
     def get(self, annee):
-        from app.tasks.datagouv_tasks import generation_deliberation
-        from app.tasks.utils import get_or_create_workdir
-        try:
-            return send_from_directory(get_or_create_workdir(), filename=generation_deliberation('*', annee),
-                                       as_attachment=True)
-        except FileNotFoundError:
-            abort(404)
+        from app.tasks.datagouv_tasks import generated_scdl_deliberation
+
+        with generated_scdl_deliberation(siren = "*", annee=annee) as csv_filepath:
+            return send_file(csv_filepath, as_attachment=True)
 
 
 @api.route('/actes/<int:siren>/<int:annee>',doc={
@@ -83,13 +63,10 @@ class ScdlActeCtrl(Resource):
     @api.response(200, 'Success')
     @api.produces(["application/octet-stream"])
     def get(self, siren, annee):
-        from app.tasks.datagouv_tasks import generation_acte
-        from app.tasks.utils import get_or_create_workdir
-        try:
-            return send_from_directory(get_or_create_workdir(), filename=generation_acte(siren, annee),
-                                       as_attachment=True)
-        except FileNotFoundError:
-            abort(404)
+        from app.tasks.datagouv_tasks import generated_scdl_acte
+
+        with generated_scdl_acte(siren = siren, annee= annee) as csv_filepath:
+            return send_file(csv_filepath, as_attachment=True)
 
 # On supprime cette api car pas suffisanment performante, on pourra la réactiver lorqu'on utilisera directement la bdd MariaDb pour générer les SCDL (plus solr)
 # @api.route('/actes/<int:annee>')

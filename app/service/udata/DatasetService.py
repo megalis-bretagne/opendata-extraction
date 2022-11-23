@@ -6,8 +6,6 @@ import requests
 from flask import current_app
 
 from app.service.Singleton import Singleton
-from app.tasks import get_or_create_workdir
-
 
 class DatasetService(metaclass=Singleton):
     """ Service dataset pour udata """
@@ -19,6 +17,9 @@ class DatasetService(metaclass=Singleton):
             'X-API-KEY': current_app.config['API_KEY_UDATA']
         }
         self.API = current_app.config['API_UDATA']
+
+    def __do_filename_match_title(self, title: str, filename: str):
+        return title.casefold() == filename.casefold()
 
     def __create_dataset(self, id_organization: str, description: str, title: str, type_extraction: str,
                          array_tags: array) -> dict or None:
@@ -106,15 +107,6 @@ class DatasetService(metaclass=Singleton):
         ]
         return self.__create_dataset(organization['id'], description, title, 'decp', array_tags)
     
-
-    def __add_resource(self, dataset: dict, filename: str, schema: dict):
-        filepath = Path(get_or_create_workdir()) / filename
-        return self.__add_resource_fp(
-            dataset=dataset,
-            filepath=filepath,
-            schema=schema
-        )
-
     def __add_resource_fp(self, dataset: dict, filepath: Path, schema: dict):
         """ Ajout une resource sur le dataset. Maj si fichier déja présent sur la resource """
 
@@ -124,7 +116,7 @@ class DatasetService(metaclass=Singleton):
             return None
         id_dataset = dataset['id']
         for resource in dataset['resources']:
-            if resource['title'].casefold() == file_name.casefold():
+            if self.__do_filename_match_title(resource['title'], filename=file_name):
                 # Maj resource
                 id_resource = resource['id']
                 url = self.API + "/1" + self.DATASETS_ENDPOINT + '{}/resources/{}/upload/'.format(id_dataset, id_resource)
@@ -162,17 +154,21 @@ class DatasetService(metaclass=Singleton):
     def add_resource_budget(self, dataset: dict, file_path: Path):
         return self.__add_resource_fp(dataset, file_path, {'name': 'scdl/budget', 'version': '0.8.1'})
 
-    def add_resource_deliberation(self, dataset: dict, filename: str):
-        return self.__add_resource(dataset, filename, {'name': 'scdl/deliberations'})
+    def add_resource_deliberation(self, dataset: dict, file_path: Path):
+        return self.__add_resource_fp(dataset, file_path, {'name': 'scdl/deliberations'})
 
-    def add_resource_decp(self, dataset: dict, filename: str):
-        return self.__add_resource(dataset, filename, {'name': '139bercy/format-commande-publique'})
+    def add_resource_decp(self, dataset: dict, file_path: Path):
+        return self.__add_resource_fp(dataset, file_path, {'name': '139bercy/format-commande-publique'})
 
-    def delete_resource(self, dataset: dict, filename: str):
+    def delete_resource_from_fp(self, dataset: dict, file_path: Path):
+        file_name = file_path.name
+        self.__delete_resource(dataset=dataset, filename=file_name)
+
+    def __delete_resource(self, dataset: dict, filename: str):
         if dataset is None:
             return
         for resource in dataset['resources']:
-            if resource['title'] == filename:
+            if self.__do_filename_match_title(resource['title'], filename=filename):
                 requests.delete(
                     self.API + "/1" + self.DATASETS_ENDPOINT + dataset['id'] + "/resources/" + resource['id'] + "/",
                     headers=self.HEADERS)

@@ -1,7 +1,7 @@
 import io
 
-from flask_restx import Namespace, Resource, abort, reqparse, inputs
-from flask import send_from_directory, make_response, jsonify
+from flask_restx import Namespace, Resource, reqparse
+from flask import make_response, jsonify
 
 import csv
 api = Namespace(name='stats', description='Statistiques de la plateforme')
