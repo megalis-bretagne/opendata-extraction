@@ -21,6 +21,7 @@ Plusieurs APIs sont disponibles (mode runserver)
 | /api/v1             | /doc                 | API publique exposant les statiques, le format SCDL, les données DECP... |
 | /private_api/v1     | /private_api/doc     | API privée d'administration de la plateforme                             |
 | /mq_apis/budgets/v1 | /mq_apis/budgets/doc | API privée pour le frontend marque blanche budgets                       |
+| /mq_apis/actes/v1   | /mq_apis/actes/doc   | API privée pour le frontend marque blanche délibérations                 |
 
 ## Variables d'environnement
 
