@@ -11,6 +11,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Configuration: `LOG_LEVEL`
 - Configuration: `TEMP_WORKDIR_PARENT`
 - Technique: module `app.shared.workdir_utils`
+- API MQ budgets: support initial pour les BP et DM
 
 ### Changed
 

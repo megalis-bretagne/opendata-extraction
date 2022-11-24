@@ -126,8 +126,15 @@ class BudgetMarqueBlancheApiService:
         if not totems_and_metadata:
             raise AucuneDonneeBudgetError()
 
-        msg = f"On retient {len(totems_and_metadata)} documents budgetaire pour la requête"
+        nb_documents_budgetaires = len(totems_and_metadata)
+        msg = f"On retient {nb_documents_budgetaires} documents budgetaire pour la requête"
         self.__logger.info(msg)
+
+        if EtapeBudgetaire.PRIMITIF == etape \
+            or EtapeBudgetaire.COMPTE_ADMIN == etape \
+            and nb_documents_budgetaires > 1:
+            msg = f"On ne devrait avoir qu'un seul document pour l'étape budgetaire primitive."
+            self.__logger.warning(msg)
 
         lignes: list[LigneBudgetMarqueBlancheApi] = []
         nb_ignorees: int = 0
@@ -201,10 +208,23 @@ class BudgetMarqueBlancheApiService:
         # Ce qui équivaut à un montant de 0
         #
         col_mtreal = ligne["BGT_MTREAL"]
+        col_mtprev = ligne["BGT_MTPREV"]
+        col_mtpropnouv = ligne["BGT_MTPROPNOUV"]
+
         if etape == EtapeBudgetaire.COMPTE_ADMIN:
             return float(col_mtreal) if col_mtreal else 0
+
+        if etape == EtapeBudgetaire.PRIMITIF:
+            if not col_mtprev:
+                self.__logger.warn("Colonne MTPREV vide pour budget primitif")
+                return 0
+            return float(col_mtprev)
+        
+        if etape == EtapeBudgetaire.DECISION_MODIF:
+            return float(col_mtpropnouv) if col_mtpropnouv else 0
+
         else:
-            # TODO: récupération du montant pour les autres étapes
+            # XXX: On ne devrait pas reçevoir d'erreurs pour les autres étapes
             raise NotImplementedError("")
 
     def _extraire_infos_etab_siret(
