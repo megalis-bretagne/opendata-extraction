@@ -239,6 +239,7 @@ class BudgetMarqueBlancheApiService:
                 Publication.acte_nature == 5,
                 Publication.etat == 1,
                 Publication.date_budget != None,
+                Publication.est_supprime == False,
             )
             .join(Acte, Acte.publication_id == Publication.id)
             .all()
