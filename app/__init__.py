@@ -19,16 +19,12 @@ from app.controller import api_v1_bp
 from app.controller import private_api_v1_bp
 from app.controller.BudgetMarqueBlancheApi import budgets_api_bp
 from app.controller.ActesMarqueBlancheApi import actes_api_bp
-from app.shared.logger_utils import create_or_get_gelf_loghandler
+
+import app.shared.logger_utils as logger_utils
 
 def create_app(extra_config_settings={},oidcEnable=True):
     """Create a Flask application.
     """
-
-    # Logging
-    gelf_log_handler = create_or_get_gelf_loghandler()
-    if gelf_log_handler:
-        logging.getLogger().addHandler(gelf_log_handler)
 
     # Instantiate Flask
     app = Flask(__name__)
@@ -46,6 +42,14 @@ def create_app(extra_config_settings={},oidcEnable=True):
     # Load extra settings from extra_config_settings param
     app.config.update(extra_config_settings)
 
+    # Log level
+    log_level_name = app.config.get("LOG_LEVEL", "WARN")
+    logger_utils.setup_loggerlevel_from_levelname(log_level_name, logging.getLogger())
+
+    # GELF logging
+    gelf_log_handler = logger_utils.create_or_get_gelf_loghandler()
+    if gelf_log_handler:
+        logging.getLogger().addHandler(gelf_log_handler)
 
     # Setup Flask-SQLAlchemy
     db.init_app(app)

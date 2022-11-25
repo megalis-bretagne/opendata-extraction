@@ -8,6 +8,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added 
 
+- Configuration: `LOG_LEVEL`
 - Configuration: `TEMP_WORKDIR_PARENT`
 - Technique: module `app.shared.workdir_utils`
 

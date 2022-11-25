@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 #from flask_debugtoolbar import DebugToolbarExtension
 
-from app.shared.logger_utils import create_or_get_gelf_loghandler
+from app.shared.logger_utils.gelf_logger_utils import create_or_get_gelf_loghandler
 
 CELERY_TASK_LIST = [
     'app.tasks',
