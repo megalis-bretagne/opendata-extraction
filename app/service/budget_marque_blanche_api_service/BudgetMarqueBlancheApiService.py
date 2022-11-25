@@ -145,8 +145,7 @@ class BudgetMarqueBlancheApiService:
         msg = f"On retient {nb_documents_budgetaires} documents budgetaire pour la requête"
         self.__logger.info(msg)
 
-        if EtapeBudgetaire.PRIMITIF == etape \
-            or EtapeBudgetaire.COMPTE_ADMIN == etape \
+        if (EtapeBudgetaire.PRIMITIF == etape or EtapeBudgetaire.COMPTE_ADMIN == etape) \
             and nb_documents_budgetaires > 1:
             msg = f"On ne devrait avoir qu'un seul document pour l'étape budgetaire primitive."
             self.__logger.warning(msg)
