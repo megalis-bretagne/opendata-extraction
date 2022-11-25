@@ -43,6 +43,7 @@ def create_app(extra_config_settings={},oidcEnable=True):
     app.config.update(extra_config_settings)
 
     # Log level
+    logging.basicConfig()
     log_level_name = app.config.get("LOG_LEVEL", "WARN")
     logger_utils.setup_loggerlevel_from_levelname(log_level_name, logging.getLogger())
 
