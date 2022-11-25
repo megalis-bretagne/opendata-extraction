@@ -2,9 +2,9 @@ import io
 import csv
 import logging
 from pathlib import Path
-from typing import Union
+from typing import Callable, Union
 
-from .data_structures import EtapeBudgetaire
+from .data_structures import EtapeBudgetaire, GetBudgetMarqueBlancheApiResponse, LigneBudgetMarqueBlancheApi
 
 from app.shared.client_api_sirene import Etablissement
 
@@ -85,6 +85,21 @@ def _wrap_in_budget_marque_blanche_api_ex(func):
         except Exception as err:
             raise BudgetMarqueBlancheApiException("Erreur inconnue") from err
 
+    return inner
+
+def _prune_montant_a_zero(func: Callable[..., GetBudgetMarqueBlancheApiResponse]):
+    def filter_fn(ligne: LigneBudgetMarqueBlancheApi):
+        return ligne.montant and ligne.montant != 0
+
+    def inner(*args, **kwargs) -> GetBudgetMarqueBlancheApiResponse:
+        answer = func(*args, **kwargs)
+        
+        lignes = answer.lignes
+        pruned = list(filter(filter_fn, lignes))
+        answer.lignes = pruned
+
+        return answer
+    
     return inner
 
 

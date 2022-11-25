@@ -34,6 +34,7 @@ from .functions import (
     _wrap_in_budget_marque_blanche_api_ex,
     _to_scdl_csv_reader,
     _extraire_pdc_unique,
+    _prune_montant_a_zero,
     extraire_siren,
 )
 
@@ -107,6 +108,7 @@ class BudgetMarqueBlancheApiService:
         )
 
     @_wrap_in_budget_marque_blanche_api_ex
+    @_prune_montant_a_zero
     def retrieve_budget_info(
         self, annee: int, siret: str, etape_str: str
     ) -> GetBudgetMarqueBlancheApiResponse:
