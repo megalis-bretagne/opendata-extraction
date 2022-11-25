@@ -55,22 +55,35 @@ class BudgetMarqueBlancheApiService:
             f"Récupération des ressources budgetaires disponibles pour le siren {siren}"
         )
 
+        infos_etablissements = self._extraire_infos_etab_siret(siren)
+        _infos_etab_sirets = { siret for siret in infos_etablissements.keys() }
+
         all_totems_and_metadata = self._liste_totem_with_metadata(siren)
         ressources: RessourcesBudgetairesDisponibles = {}
 
-        _lst_siret = []
+        _resources_sirets = set()
         for totem_and_metadata in all_totems_and_metadata:
             metadata = totem_and_metadata.metadata
             annee = str(metadata.annee_exercice)
             siret = str(metadata.id_etablissement)
             etape = metadata.etape_budgetaire
 
+            if not siret in _infos_etab_sirets:
+                self.__logger.debug(
+                        f"Des données budgetaires existent pour le siret {siret} "
+                        f"mais aucune données concernant l'établissement (probablement non diffusible), "
+                        f"nous ne remontons donc pas les données budgetaires."
+                )
+                continue
+
             disp_annee = ressources.setdefault(annee, {})
             disp_nic = disp_annee.setdefault(siret, set())
             disp_nic.add(etape)
-            _lst_siret.append(siret)
+            _resources_sirets.add(siret)
 
-        infos_etablissements = self._extraire_infos_etab_siret(siren, _lst_siret)
+        to_remove = _infos_etab_sirets.difference(_resources_sirets)
+        for siret in to_remove:
+            del infos_etablissements[siret]
 
         answer = InfoBudgetDisponiblesApi(
             str(siren),
@@ -229,16 +242,13 @@ class BudgetMarqueBlancheApiService:
             # XXX: On ne devrait pas reçevoir d'erreurs pour les autres étapes
             raise NotImplementedError("")
 
-    def _extraire_infos_etab_siret(
-        self, siren: str, sirets: list[str]
-    ) -> dict[str, InfosEtablissement]:
+    def _extraire_infos_etab_siret(self, siren: str) -> dict[str, InfosEtablissement]:
         """Extraction des informations d'établissement pour les sirets"""
 
         etablissements = self._api_sirene_etablissements(siren)
         infos_etablissements = {
             e.siret: InfosEtablissement.from_api_sirene_etablissement(e)
             for e in etablissements
-            if e.siret in sirets
         }
         return infos_etablissements
 
