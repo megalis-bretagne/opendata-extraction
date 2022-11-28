@@ -85,6 +85,9 @@ class BudgetMarqueBlancheApiService:
         for siret in to_remove:
             del infos_etablissements[siret]
 
+        if len(ressources) == 0:
+            raise AucuneDonneeBudgetError()
+
         answer = InfoBudgetDisponiblesApi(
             str(siren),
             ressources,
