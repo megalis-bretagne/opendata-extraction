@@ -224,6 +224,7 @@ class BudgetMarqueBlancheApiService:
         col_mtreal = ligne["BGT_MTREAL"]
         col_mtprev = ligne["BGT_MTPREV"]
         col_mtpropnouv = ligne["BGT_MTPROPNOUV"]
+        col_mtrarprec = ligne["BGT_MTRARPREC"]
 
         if etape == EtapeBudgetaire.COMPTE_ADMIN:
             return float(col_mtreal) if col_mtreal else 0
@@ -235,7 +236,9 @@ class BudgetMarqueBlancheApiService:
             return float(col_mtprev)
         
         if etape == EtapeBudgetaire.DECISION_MODIF:
-            return float(col_mtpropnouv) if col_mtpropnouv else 0
+            propnouv = float(col_mtpropnouv) if col_mtpropnouv else 0
+            mtrarprec = float(col_mtrarprec) if col_mtrarprec else 0
+            return propnouv + mtrarprec
 
         else:
             # XXX: On ne devrait pas reçevoir d'erreurs pour les autres étapes
