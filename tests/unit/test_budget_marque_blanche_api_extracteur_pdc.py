@@ -1,6 +1,6 @@
 from pathlib import Path
 import pytest
-from app.service.budget_marque_blanche_api_service._ExtracteurInfoPdc import _ExtracteurInfoPdc
+from app.service.mq_budget_api_service._ExtracteurInfoPdc import _ExtracteurInfoPdc
 
 
 @pytest.fixture

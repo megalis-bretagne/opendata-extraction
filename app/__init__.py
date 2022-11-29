@@ -16,7 +16,7 @@ oidc = OpenIDConnect()
 from app import celeryapp
 from app.controller import api_v1_bp
 from app.controller import private_api_v1_bp
-from app.controller.BudgetMarqueBlancheApi import budgets_api_bp
+from app.controller.mq_budget_api import budgets_api_bp
 from app.controller.ActesMarqueBlancheApi import actes_api_bp
 
 import app.shared.logger_utils as logger_utils
