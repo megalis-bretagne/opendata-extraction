@@ -3,10 +3,9 @@
 import logging
 
 from flask import Flask
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
-migrate = Migrate()
+
+from app.models.flask_sqlalchemy import db
+from app.models.flask_migrate import migrate
 
 from flask_cors import CORS
 from flask_oidc import OpenIDConnect
