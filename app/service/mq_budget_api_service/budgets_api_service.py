@@ -12,7 +12,7 @@ from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
 
 from app.shared.client_api_sirene import Etablissement
 
-from .data_structures import (
+from .budgets_data_structures import (
     GetBudgetMarqueBlancheApiResponse,
     GetInfoPlanDeComptesBudgetMarqueBlancheApi,
     InfoBudgetDisponiblesApi,
@@ -21,13 +21,13 @@ from .data_structures import (
     _TotemAndMetadata,
     RessourcesBudgetairesDisponibles,
 )
-from .exceptions import (
+from .budgets_exceptions import (
     _ImpossibleParserLigne,
     AucuneDonneeBudgetError,
     ImpossibleDexploiterBudgetError,
 )
 
-from .functions import (
+from .budgets_functions import (
     _etape_from_str,
     _api_sirene_etablissement_siege,
     _api_sirene_etablissements,
@@ -41,7 +41,7 @@ from .functions import (
 from ._ExtracteurInfoPdc import _ExtracteurInfoPdc
 
 
-class BudgetMarqueBlancheApiService:
+class BudgetsApiService:
     def __init__(self):
         self.__logger = logging.getLogger(self.__class__.__name__)
         self.convertisseur = make_or_get_budget_convertisseur()

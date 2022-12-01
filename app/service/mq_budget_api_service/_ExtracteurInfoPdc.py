@@ -6,7 +6,7 @@ from lxml.etree import ElementTree
 
 from lxml import etree
 
-from .data_structures import (
+from .budgets_data_structures import (
     CompteNatureMarqueBlancheApi, 
     ElementNomenclaturePdc, 
     RefFonctionnelleBudgetMarqueBlancheApi

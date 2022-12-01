@@ -13,6 +13,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Technique: module `app.shared.workdir_utils`
 - Technique: mise en place du dossier [./migrations/](./migrations/) en vue d'une utilisation de flask-migrate (pas encore utilisé en prod).
 - API MQ budgets: support initial pour les BP et DM
+- API MQ budgets: changement de titres pour les visualisations
 
 ### Changed
 

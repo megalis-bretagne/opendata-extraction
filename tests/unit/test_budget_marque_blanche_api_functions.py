@@ -1,6 +1,6 @@
 
 import pytest
-from app.service.mq_budget_api_service.functions import extraire_siren
+from app.service.mq_budget_api_service.budgets_functions import extraire_siren
 
 def test_siren_integer():
     siren = extraire_siren(21560094100011)
