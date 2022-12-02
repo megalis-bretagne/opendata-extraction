@@ -23,26 +23,28 @@ class DefaultVisualisationLocalisation:
         self, annee: Annee, siret: Siret, etape: str, graphe_id=VisualisationGrapheId
     ) -> None:
 
-        EtapeBudgetaire.from_str(etape)  # Pour la gestion d'erreurs
+        # Pour la gestion d'erreurs
+        normalized_etape = EtapeBudgetaire.from_str(etape).to_scdl_compatible_str()
+
         self.annee = annee
         self.siret = siret
-        self.etape = etape
+        self.etape = normalized_etape
         self.graphe_id = graphe_id
 
     def etape_budgetaire(self):
         return EtapeBudgetaire.from_str(self.etape)
 
     def to_model_str(self) -> str:
-        return f"1-{self.annee}-{self.siret}-{self.etape}-{self.graphe_id}"
+        return f"1@{self.annee}@{self.siret}@{self.etape}@{self.graphe_id}"
 
     @staticmethod
     def from_model_str(model: str):
 
-        if not model.startswith("1-"):
+        if not model.startswith("1@"):
             raise DefaultVisualisationLocalisationParsingError(model)
 
         try:
-            splitted = model.split("-")
+            splitted = model.split("@")
 
             annee: Annee = int(splitted[1])
             siret: Siret = splitted[2]
@@ -53,6 +55,14 @@ class DefaultVisualisationLocalisation:
 
         except Exception as err:
             raise DefaultVisualisationLocalisationParsingError(model) from err
+
+    @staticmethod
+    def to_localisation_begin_str(
+        annee: Annee,
+        siret: Siret,
+        etape: EtapeBudgetaire,
+    ):
+        return f"1@{annee}@{siret}@{etape}"
 
 
 @dataclass
