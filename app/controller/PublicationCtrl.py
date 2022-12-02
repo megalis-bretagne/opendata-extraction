@@ -37,6 +37,21 @@ model_publication = api.model(
         'pieces_jointe': fields.List(fields.Nested(model_piece_jointe)),
     })
 
+model_publication_light = api.model(
+    'publication', {
+        'id': fields.Integer,
+        'numero_de_lacte': fields.String,
+        'siren': fields.String,
+        'date_de_lacte': fields.DateTime,
+        'create_at': fields.DateTime,
+        'est_supprime': fields.Boolean,
+        'nb_pj': fields.Integer
+
+    })
+model_publication_light_list = api.model('PublicationLightList', {
+    'publicationsLight': fields.List(fields.Nested(model_publication_light))
+})
+
 model_publication_list = api.model('PublicationList', {
     'publications': fields.List(fields.Nested(model_publication))
 })
@@ -48,13 +63,13 @@ arguments_publication_modifier_controller = reqparse.RequestParser()
 arguments_publication_modifier_controller.add_argument('objet', help="objet de l\'acte")
 
 publicationParams_search_controller = reqparse.RequestParser()
-publicationParams_search_controller.add_argument('filter', help='filtre de recherche sur le numéro d\'acte')
+publicationParams_search_controller.add_argument('filter', help='filtre de recherche sur le numéro d\'acte ou bien l\'objet')
 publicationParams_search_controller.add_argument('sortDirection', help='asc ou desc (desc par defaut)')
 publicationParams_search_controller.add_argument('sortField',
                                                  help='champ de tri (numero_de_lacte,publication_open_data,'
                                                       'date_de_lacte,acte_nature,etat,id par defaut')
 publicationParams_search_controller.add_argument('pageIndex', help='index de la page, commence par 0')
-publicationParams_search_controller.add_argument('pageSize', help='taille de la page')
+publicationParams_search_controller.add_argument('pageSize', type=int, help='taille de la page')
 publicationParams_search_controller.add_argument('siren', help='siren de l\'organisme')
 publicationParams_search_controller.add_argument('etat',
                                                  help='etat de la publication (1: publie, 0:non, 2:en-cours,'
@@ -62,10 +77,21 @@ publicationParams_search_controller.add_argument('etat',
 publicationParams_search_controller.add_argument('est_masque',
                                                  help='est à publier (0:non, 1:oui)')
 
+publicationLightParams_search_controller = reqparse.RequestParser()
+publicationLightParams_search_controller.add_argument('filter', help='filtre de recherche sur le numéro d\'acte ou bien l\'objet')
+publicationLightParams_search_controller.add_argument('siren', help='siren de l\'organisme')
+publicationLightParams_search_controller.add_argument('sortDirection', help='asc ou desc (desc par defaut)')
+publicationLightParams_search_controller.add_argument('sortField',
+                                                      help='champ de tri (numero_de_lacte,publication_open_data,'
+                                                           'date_de_lacte,acte_nature,etat,id par defaut')
+publicationLightParams_search_controller.add_argument('pageIndex', help='index de la page, commence par 0',
+                                                      required=True)
+publicationLightParams_search_controller.add_argument('pageSize', help='taille de la page', required=True)
+
 
 @api.route('')
 class PublicationAllCtrl(Resource):
-    @api.response(200, 'Success', model_publication_list)
+    @api.response(200, 'Success', model_publication)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     @isAdmin
     def get(self):
@@ -316,4 +342,64 @@ class PublicationSearchCtrl(Resource):
 
         return jsonify(
             {"total": result.total, "publications": [i.serialize for i in result.items]}
+        )
+
+
+@api.route('/search/light')
+class PublicationLightSearchCtrl(Resource):
+    @api.expect(publicationLightParams_search_controller)
+    @api.response(200, 'Success', model_publication_light_list)
+    def post(self):
+        from app.models.publication_model import Publication
+        args = publicationLightParams_search_controller.parse_args()
+
+        siren = args['siren']
+        filter = args['filter']
+
+        if (args['sortDirection']) == 'asc':
+            if (args['sortField']) == 'numero_de_lacte':
+                sortField = Publication.numero_de_lacte.asc()
+            elif (args['sortField']) == 'publication_open_data':
+                sortField = Publication.publication_open_data.asc()
+            elif (args['sortField']) == 'date_de_lacte':
+                sortField = Publication.date_de_lacte.asc()
+            elif (args['sortField']) == 'acte_nature':
+                sortField = Publication.acte_nature.asc()
+            elif (args['sortField']) == 'etat':
+                sortField = Publication.etat.asc()
+            else:
+                sortField = Publication.id.asc()
+        else:
+            if (args['sortField']) == 'numero_de_lacte':
+                sortField = Publication.numero_de_lacte.desc()
+            elif (args['sortField']) == 'publication_open_data':
+                sortField = Publication.publication_open_data.desc()
+            elif (args['sortField']) == 'date_de_lacte':
+                sortField = Publication.date_de_lacte.desc()
+            elif (args['sortField']) == 'acte_nature':
+                sortField = Publication.acte_nature.desc()
+            elif (args['sortField']) == 'etat':
+                sortField = Publication.etat.desc()
+            else:
+                sortField = Publication.id.desc()
+
+        if (args['filter'] != None and args['filter'] != '' and args['siren'] != None and args['siren'] != ''):
+            searchFilter = "%{}%".format(filter)
+            result = Publication.query.filter(
+                or_(Publication.numero_de_lacte.like(searchFilter), Publication.objet.like(searchFilter)),
+                Publication.siren == siren).order_by(
+                sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
+        elif (args['filter'] != None and args['filter'] != ''):
+            searchFilter = "%{}%".format(filter)
+            result = Publication.query.filter(
+                or_(Publication.numero_de_lacte.like(searchFilter), Publication.objet.like(searchFilter))).order_by(
+                sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
+        elif (args['siren'] != None and args['siren'] != ''):
+            result = Publication.query.filter(Publication.siren == siren).order_by(
+                sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
+        else:
+            result = Publication.query.order_by(
+                sortField).paginate(int(args['pageIndex']) + 1, per_page=int(args['pageSize']))
+        return jsonify(
+            {"total": result.total, "publications": [i.serializeLight for i in result.items]}
         )

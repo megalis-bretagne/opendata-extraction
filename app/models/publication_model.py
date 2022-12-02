@@ -53,6 +53,18 @@ class Publication(db.Model):
         }
 
     @property
+    def serializeLight(self):
+        return {
+            'id': self.id,
+            'numero_de_lacte': self.numero_de_lacte,
+             'siren': self.siren,
+            'est_supprime': self.est_supprime,
+            'date_de_lacte': self.date_de_lacte,
+            'date_de_lacte': self.created_at,
+            'nb_pj': len(self.pieces_jointe)
+        }
+
+    @property
     def serialize_many2many(self):
         return [item.serialize for item in self.many2many]
 
