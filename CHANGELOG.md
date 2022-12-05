@@ -18,6 +18,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Dans `creation_publication_task`, une erreur dans l'extraction du zipfile créee aussi un fichier dans `watcher/erreurs`
+- Le watcher s'assure maintenant que les fichiers reçus soient bel et bien des fichiers zip.
 - La publication vers le catalogue regionnal prend en compte le parametre d'activation de la publication de l'opendata
 - Technique: Les dossiers temporaires utilisés dans les tâches de budget n'utilisent plus le `WORKDIR`
 
