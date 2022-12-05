@@ -59,8 +59,9 @@ class Publication(db.Model):
             'numero_de_lacte': self.numero_de_lacte,
              'siren': self.siren,
             'est_supprime': self.est_supprime,
-            'date_de_lacte': self.date_de_lacte,
-            'date_de_lacte': self.created_at,
+            'date_de_lacte': self.date_de_lacte.strftime("%Y-%m-%d"),
+            'objet':self.objet,
+            'date_creation': self.created_at.strftime("%Y-%m-%d"),
             'nb_pj': len(self.pieces_jointe)
         }
 
