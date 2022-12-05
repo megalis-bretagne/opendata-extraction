@@ -28,16 +28,16 @@ def creation_publication_task(zip_path):
     # move file to workdir
     shutil.move(PATH_FILE, WORKDIR + 'objet.zip')
 
-    # unzip file
-    with ZipFile(WORKDIR + 'objet.zip', 'r') as zipObj:
-        # Extract all the contents of zip file in different directory
-        zipObj.extractall(WORKDIR)
-
-    # lecture du fichier metadata.json
-    with open(WORKDIR + 'metadata.json') as f:
-        metadata = json.load(f)
-
     try:
+        # unzip file
+        with ZipFile(WORKDIR + 'objet.zip', 'r') as zipObj:
+            # Extract all the contents of zip file in different directory
+            zipObj.extractall(WORKDIR)
+
+        # lecture du fichier metadata.json
+        with open(WORKDIR + 'metadata.json') as f:
+            metadata = json.load(f)
+
         metadataPastell = MetadataPastell(metadata)
 
     except Exception as e:
