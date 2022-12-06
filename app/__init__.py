@@ -11,6 +11,7 @@ from flask_cors import CORS
 from flask_oidc import OpenIDConnect
 oidc = OpenIDConnect()
 
+from app.commands.watcher import watcher_cmd
 
 # Instantiate Flask extensions
 from app import celeryapp
@@ -79,6 +80,11 @@ def create_app(extra_config_settings={},oidcEnable=True):
             'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
         })
         oidc.init_app(app)
+    
+    #
+    # CLI
+    #
+    app.cli.add_command(watcher_cmd.watcher_appgroup)
 
     return app
 
