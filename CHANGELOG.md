@@ -15,6 +15,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Technique: mise en place du dossier [./migrations/](./migrations/) en vue d'une utilisation de flask-migrate (pas encore utilisé en prod).
 - API MQ budgets: support initial pour les BP et DM
 - API MQ budgets: changement de titres pour les visualisations
+- API /private_api/v1/publication/search/light: Création d'une API pour rechercher les publications, dans le but de les comparer aux documents pastell via leurs api et ainsi detecter les docs non reçu.
 
 ### Changed
 
