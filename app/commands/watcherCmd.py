@@ -9,6 +9,8 @@ from app.commands.watcher.watcher import Watcher
 class WatcherCommand(Command):
     def run(self):
 
+        logging.getLogger().setLevel(logging.INFO)
+
         dir = current_app.config['DIRECTORY_TO_WATCH']
         dir = Path(dir)
 
