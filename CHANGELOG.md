@@ -8,6 +8,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added 
 
+- BDD: Table [mq_budget_parametres_defaultvisualisation](./app/migrate/0005_create_table.sql)
 - Configuration: `LOG_LEVEL`
 - Configuration: `TEMP_WORKDIR_PARENT`
 - Technique: module `app.shared.workdir_utils`
