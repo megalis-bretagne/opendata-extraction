@@ -6,6 +6,8 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.0.11] - 2022-12-07
+
 ### Added 
 
 - BDD: Table [mq_budget_parametres_defaultvisualisation](./app/migrate/0005_create_table.sql)
