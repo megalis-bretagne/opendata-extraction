@@ -12,32 +12,32 @@ from app.models.publication_model import Publication, Acte, PieceJointe
 from lxml import etree
 
 from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
+import app.shared.workdir_utils as workdir_utils
 
 celery = celeryapp.celery
 
 # TASKS
 @celery.task(name='creation_publication_task')
 def creation_publication_task(zip_path):
-    clear_wordir()
     # on archive le fichier reçu depuis pastell (zip
     shutil.copy(zip_path, current_app.config['DIRECTORY_TO_WATCH_ARCHIVE'])
 
     PATH_FILE = zip_path
-    WORKDIR = clear_wordir()
+    WORKDIR = workdir_utils.clear_persistent_workdir()
 
     # move file to workdir
     shutil.move(PATH_FILE, WORKDIR + 'objet.zip')
 
-    # unzip file
-    with ZipFile(WORKDIR + 'objet.zip', 'r') as zipObj:
-        # Extract all the contents of zip file in different directory
-        zipObj.extractall(WORKDIR)
-
-    # lecture du fichier metadata.json
-    with open(WORKDIR + 'metadata.json') as f:
-        metadata = json.load(f)
-
     try:
+        # unzip file
+        with ZipFile(WORKDIR + 'objet.zip', 'r') as zipObj:
+            # Extract all the contents of zip file in different directory
+            zipObj.extractall(WORKDIR)
+
+        # lecture du fichier metadata.json
+        with open(WORKDIR + 'metadata.json') as f:
+            metadata = json.load(f)
+
         metadataPastell = MetadataPastell(metadata)
 
     except Exception as e:
@@ -469,7 +469,7 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
 
 
 def init_publication(metadataPastell):
-    WORKDIR = get_or_create_workdir()
+    WORKDIR = workdir_utils.get_or_create_persistent_workdir()
     # publication open data oui par défaut 0:oui / 1:non / 2:Ne sais pas
     pub_open_data = '0'
     date_budget = None

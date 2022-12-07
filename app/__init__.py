@@ -3,32 +3,28 @@
 import logging
 
 from flask import Flask
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
-migrate = Migrate()
+
+from app.models.flask_sqlalchemy import db
+from app.models.flask_migrate import migrate
 
 from flask_cors import CORS
 from flask_oidc import OpenIDConnect
 oidc = OpenIDConnect()
 
+from app.commands.watcher import watcher_cmd
 
 # Instantiate Flask extensions
 from app import celeryapp
 from app.controller import api_v1_bp
 from app.controller import private_api_v1_bp
-from app.controller.BudgetMarqueBlancheApi import budgets_api_bp
+from app.controller.mq_budget_api import budgets_api_bp
+from app.controller.ActesMarqueBlancheApi import actes_api_bp
 
-from app.shared.logger_utils import create_or_get_gelf_loghandler
+import app.shared.logger_utils as logger_utils
 
 def create_app(extra_config_settings={},oidcEnable=True):
     """Create a Flask application.
     """
-
-    # Logging
-    gelf_log_handler = create_or_get_gelf_loghandler()
-    if gelf_log_handler:
-        logging.getLogger().addHandler(gelf_log_handler)
 
     # Instantiate Flask
     app = Flask(__name__)
@@ -36,7 +32,7 @@ def create_app(extra_config_settings={},oidcEnable=True):
     CORS(app, resources={
         r"/api/*": {"origins": "*"},
         r"/private_api/*": {"origins": "*"},
-        r"/mq_apis/*": {"origins": "*"},
+        r"/mq_apis/*": {"origins": "*"}
     })
 
     # Load common settings
@@ -46,6 +42,15 @@ def create_app(extra_config_settings={},oidcEnable=True):
     # Load extra settings from extra_config_settings param
     app.config.update(extra_config_settings)
 
+    # Log level
+    logging.basicConfig()
+    log_level_name = app.config.get("LOG_LEVEL", "WARN")
+    logger_utils.setup_loggerlevel_from_levelname(log_level_name, logging.getLogger())
+
+    # GELF logging
+    gelf_log_handler = logger_utils.create_or_get_gelf_loghandler()
+    if gelf_log_handler:
+        logging.getLogger().addHandler(gelf_log_handler)
 
     # Setup Flask-SQLAlchemy
     db.init_app(app)
@@ -61,6 +66,7 @@ def create_app(extra_config_settings={},oidcEnable=True):
     app.register_blueprint(api_v1_bp, url_prefix='/')
     app.register_blueprint(private_api_v1_bp, url_prefix='/private_api')
     app.register_blueprint(budgets_api_bp, url_prefix='/mq_apis/budgets')
+    app.register_blueprint(actes_api_bp, url_prefix='/mq_apis/actes')
 
     #init OIDC client
     if oidcEnable:
@@ -74,6 +80,11 @@ def create_app(extra_config_settings={},oidcEnable=True):
             'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
         })
         oidc.init_app(app)
+    
+    #
+    # CLI
+    #
+    app.cli.add_command(watcher_cmd.watcher_appgroup)
 
     return app
 

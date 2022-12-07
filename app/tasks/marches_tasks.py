@@ -1,13 +1,19 @@
 import calendar
 import json
+from pathlib import Path
 import time
+from typing import Generator, Union
 from xml.dom import minidom
 from xml.etree import ElementTree
+
+from contextlib import contextmanager
 
 import requests
 
 from app import celeryapp
 from app.tasks.utils import *
+
+import app.shared.workdir_utils as workdir_utils
 
 celery = celeryapp.celery
 
@@ -47,11 +53,27 @@ def generation_marche_histo(self):
         annee_a_generer += 1
     print("END " + str(annee_a_generer))
 
+@contextmanager
+def generated_decp(annee, siren) -> Generator[Union[Path, None], None, None]:
+    with workdir_utils.temporary_workdir() as tmp_dir:
+        tmp_path = Path(tmp_dir)
+        decp_path = generation_decp(root_path=tmp_path, annee=annee, siren=siren)
+        yield decp_path
+    
 
-def generation_decp(annee, siren) -> str or None:
-    """génération du fichier decp pour un siren & annee donne. Si renvoie None alors aucun fichier n'a été généré"""
-    clear_wordir()
-    # generation annee
+
+def generation_decp(root_path: Path, annee, siren) -> Union[Path, None]:
+    """Genère le fichier decp pour l'année et le siren donné
+
+    Args:
+        root_path (Path): chemin du dossier parent dans lequel sera stocké le fichier decp
+
+    Returns:
+        Path: Chemin complet de l'emplacement du XML
+    """
+    
+    # """génération du fichier decp pour un siren & annee donne. Si renvoie None alors aucun fichier n'a été généré"""
+
     ANNEE = annee
     url_jeton_sdm = current_app.config['URL_JETON_SDM']
     try:
@@ -73,20 +95,21 @@ def generation_decp(annee, siren) -> str or None:
     except Exception:
         return None
 
-    filename = f"decp-{siren}{annee}.xml"
+    decp_filename = f"decp-{siren}{annee}.xml"
+    decp_fullpath = Path(root_path) / decp_filename
     try:
-        text_file = open(get_or_create_workdir() + filename, "w")
+        text_file = open(decp_fullpath, "w")
         text_file.write(reponse_export_pivot.text)
         text_file.close()
 
     except FileNotFoundError:
         return None
 
-    return filename
+    return decp_fullpath
 
 
 def generation_and_publication_decp_pour_annee(annee):
-    clear_wordir()
+    workdir_utils.clear_persistent_workdir()
 
     ANNEE = str(annee)
     url_jeton_sdm = current_app.config['URL_JETON_SDM']
@@ -97,6 +120,8 @@ def generation_and_publication_decp_pour_annee(annee):
     }
 
     try:
+        decp_xml_fullpath = workdir_utils.get_or_create_persistent_workdir() + 'decp-' + str(ANNEE) + '.xml'
+
         response = requests.get(url_jeton_sdm);
         doc = minidom.parseString(response.text)
         jeton = doc.getElementsByTagName("ticket")[0].firstChild.data
@@ -135,7 +160,7 @@ def generation_and_publication_decp_pour_annee(annee):
             month = month + 1
 
         # Ecriture du fichier dans dossier workdir
-        f = open(get_or_create_workdir() + 'decp-' + str(ANNEE) + ' .xml', 'w', encoding='utf8')
+        f = open(decp_xml_fullpath, 'w', encoding='utf8')
         if xml_data is not None:
             xmlstr = ElementTree.tostring(xml_data, encoding='utf8', method='xml')
             f.write(xmlstr.decode("utf8"))
@@ -157,7 +182,7 @@ def generation_and_publication_decp_pour_annee(annee):
 
                 url = api_url('/datasets/{}/resources/{}/upload/'.format(DATASET, RESOURCE_UID))
                 requests.post(url, files={
-                    'file': open(get_or_create_workdir() + 'decp-' + str(ANNEE) + ' .xml', 'rb'),
+                    'file': open(decp_xml_fullpath, 'rb'),
                 }, headers=HEADERS)
 
             else:
@@ -166,7 +191,7 @@ def generation_and_publication_decp_pour_annee(annee):
                 # Mise à jour ressource
                 url = api_url('/datasets/{}/upload/'.format(DATASET))
                 response = requests.post(url, files={
-                    'file': open(get_or_create_workdir() + 'decp-' + str(ANNEE) + ' .xml', 'rb'),
+                    'file': open(decp_xml_fullpath, 'rb'),
                 }, headers=HEADERS)
 
                 response = json.loads(response.text)

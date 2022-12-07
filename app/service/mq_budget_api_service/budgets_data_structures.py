@@ -31,7 +31,7 @@ class InfosEtablissement:
             denomination=etablissement.denomination_unite_legale,
             siret=etablissement.siret,
             enseigne=etablissement.enseigne,
-            est_siege=etablissement.est_siege
+            est_siege=str(etablissement.est_siege)
         )
 
 # année - siret - etapes

@@ -26,6 +26,7 @@ def solr_connexion():
     solr_address = current_app.config['URL_SOLR'] + "{}".format(current_app.config['INDEX_DELIB_SOLR'])
     solr = pysolr.Solr(solr_address, always_commit=True, timeout=120,
                        auth=(current_app.config['USER_SOLR'], current_app.config['PASSWORD_SOLR']))
+    solr.log.setLevel('WARN')
     # # Do a health check.
     solr.ping()
     return solr
@@ -107,39 +108,6 @@ def remove_file_sur_serveur(pathFile):
 #    scp = SCPClient(ssh.get_transport())
 #    scp.put(path, remote_path=remote_path+'/'+nouveau_nom)
 #    scp.close()
-
-def clear_wordir():
-    WORKDIR = get_or_create_workdir()
-    filelist = [f for f in os.listdir(WORKDIR)]
-    for f in filelist:
-        try:
-            workdir_f = os.path.join(WORKDIR, f)
-            os.remove(workdir_f)
-        except Exception as err:
-            logging.warning(f"Echec lors de la suppression de {workdir_f}:")
-            logging.exception(err)
-    return WORKDIR
-
-
-def get_or_create_workdir():
-    WORKDIR = current_app.config['WORKDIR']
-    # create workdir
-    try:
-        os.mkdir(WORKDIR)
-    except OSError as exc:
-        if exc.errno != errno.EEXIST:
-            raise
-        pass
-    return WORKDIR
-
-
-def query_result_to_csv(filename, result):
-    outfile = open(get_or_create_workdir() + filename, "w")
-    outcsv = csv.writer(outfile, lineterminator="\n")
-    outcsv.writerow([row[0] for row in result.cursor.description])
-    outcsv.writerows(result.cursor.fetchall())
-    outfile.close()
-
 
 def move_file(path, new_path, filename):
     # Create the directory
