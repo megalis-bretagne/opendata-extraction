@@ -55,7 +55,8 @@ api_get_pdc_info_response = budgets_api_ns.model(
 
 @budgets_api_ns.route("/plans_de_comptes/<int:annee>/<int:siret>")
 class PlanDeComptesCtrl(Resource):
-    @budgets_api_ns.marshal_with(api_get_pdc_info_response, code=200)
+    @budgets_api_ns.response(200, 'Success', model = api_get_pdc_info_response)
     def get(self, siret: int, annee: int):
-        response = _API_SERVICE.retrieve_pdc_info(annee, siret)
-        return response
+        pdc_info = _API_SERVICE.retrieve_pdc_info(annee, siret)
+        answer = pdc_info.to_api_answer()
+        return answer

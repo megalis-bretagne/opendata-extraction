@@ -56,9 +56,11 @@ api_ressources_budgetaires_disponibles = budgets_api_ns.model(
 
 @budgets_api_ns.route("/donnees_budgetaires_disponibles/<int:siren>")
 class RessourcesDisponiblesCtrl(Resource):
-    @budgets_api_ns.marshal_with(api_ressources_budgetaires_disponibles, code=200)
+    @budgets_api_ns.response(200, 'Success', model = api_ressources_budgetaires_disponibles)
     def get(
         self,
         siren: int,
     ):
-        return _API_SERVICE.ressources_budgetaires_disponibles(siren)
+        disponibles = _API_SERVICE.ressources_budgetaires_disponibles(siren)
+        answer = disponibles.to_api_answer()
+        return answer

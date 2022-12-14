@@ -42,12 +42,13 @@ api_get_donnees_response = budgets_api_ns.model(
 
 @budgets_api_ns.route("/donnees_budgetaires/<int:annee>/<int:siret>/<string:etape>")
 class DonneesBudgetCtrl(Resource):
-    @budgets_api_ns.marshal_with(api_get_donnees_response, code=200)
+    @budgets_api_ns.response(200, 'Success', model = api_get_donnees_response)
     def get(
         self,
         siret: int,
         annee: int,
         etape: str,
     ) -> service.GetBudgetMarqueBlancheApiResponse:
-        response = _API_SERVICE.retrieve_budget_info(annee, siret, etape)
-        return response
+        budget_info = _API_SERVICE.retrieve_budget_info(annee, siret, etape)
+        answer = budget_info.to_api_answer()
+        return answer
