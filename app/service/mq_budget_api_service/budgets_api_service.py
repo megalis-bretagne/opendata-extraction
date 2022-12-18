@@ -14,7 +14,6 @@ from app.shared.client_api_sirene import Etablissement
 
 from .budgets_data_structures import (
     GetBudgetMarqueBlancheApiResponse,
-    GetInfoPlanDeComptesBudgetMarqueBlancheApi,
     InfoBudgetDisponiblesApi,
     InfosEtablissement,
     LigneBudgetMarqueBlancheApi,
@@ -36,9 +35,8 @@ from .budgets_functions import (
     _extraire_pdc_unique,
     _prune_montant_a_zero,
     extraire_siren,
+    pdc_path_to_api_response,
 )
-
-from ._ExtracteurInfoPdc import _ExtracteurInfoPdc
 
 
 class BudgetsApiService:
@@ -56,7 +54,7 @@ class BudgetsApiService:
         )
 
         infos_etablissements = self._extraire_infos_etab_siret(siren)
-        _infos_etab_sirets = { siret for siret in infos_etablissements.keys() }
+        _infos_etab_sirets = {siret for siret in infos_etablissements.keys()}
 
         all_totems_and_metadata = self._liste_totem_with_metadata(siren)
         ressources: RessourcesBudgetairesDisponibles = {}
@@ -70,9 +68,9 @@ class BudgetsApiService:
 
             if not siret in _infos_etab_sirets:
                 self.__logger.debug(
-                        f"Des données budgetaires existent pour le siret {siret} "
-                        f"mais aucune données concernant l'établissement (probablement non diffusible), "
-                        f"nous ne remontons donc pas les données budgetaires."
+                    f"Des données budgetaires existent pour le siret {siret} "
+                    f"mais aucune données concernant l'établissement (probablement non diffusible), "
+                    f"nous ne remontons donc pas les données budgetaires."
                 )
                 continue
 
@@ -116,12 +114,8 @@ class BudgetsApiService:
 
         plan_de_comptes = _extraire_pdc_unique(ls_metadata)
 
-        extracteur = _ExtracteurInfoPdc(plan_de_comptes)
-        references_fonctionnelles = extracteur.extraire_references_fonctionnelles()
-        comptes_nature = extracteur.extraire_comptes_nature()
-        return GetInfoPlanDeComptesBudgetMarqueBlancheApi(
-            references_fonctionnelles, comptes_nature
-        )
+        answer = pdc_path_to_api_response(plan_de_comptes) 
+        return answer
 
     @_wrap_in_budget_marque_blanche_api_ex
     @_prune_montant_a_zero
@@ -148,8 +142,9 @@ class BudgetsApiService:
         msg = f"On retient {nb_documents_budgetaires} documents budgetaire pour la requête"
         self.__logger.info(msg)
 
-        if (EtapeBudgetaire.PRIMITIF == etape or EtapeBudgetaire.COMPTE_ADMIN == etape) \
-            and nb_documents_budgetaires > 1:
+        if (
+            EtapeBudgetaire.PRIMITIF == etape or EtapeBudgetaire.COMPTE_ADMIN == etape
+        ) and nb_documents_budgetaires > 1:
             msg = f"On ne devrait avoir qu'un seul document pour l'étape budgetaire primitive."
             self.__logger.warning(msg)
 
@@ -237,7 +232,7 @@ class BudgetsApiService:
                 self.__logger.warn("Colonne MTPREV vide pour budget primitif")
                 return 0
             return float(col_mtprev)
-        
+
         if etape == EtapeBudgetaire.DECISION_MODIF:
             propnouv = float(col_mtpropnouv) if col_mtpropnouv else 0
             mtrarprec = float(col_mtrarprec) if col_mtrarprec else 0
