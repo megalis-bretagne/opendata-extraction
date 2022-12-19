@@ -17,7 +17,8 @@ class Annexe:
             'id': self.id,
             'url': self.url,
             'hash': self.hash,
-            'resultat_recherche': self.resultat_recherche
+            'content_type': self.content_type,
+            'resultat_recherche': self.resultat_recherche,
         }
 
 

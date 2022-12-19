@@ -6,6 +6,10 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- API MQ Delibs: les annexes renvoient leurs content-type
+
 ## [2.0.11] - 2022-12-07
 
 ### Added 
