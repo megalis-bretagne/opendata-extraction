@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from app import celeryapp
 import json
 from app.models.parametrage_model import Parametrage
+from app.tasks_publication.datastructure.MetadataPastell import MetadataPastell
 from app.tasks.utils import *
 from app import db
 from app.models.publication_model import Publication, Acte, PieceJointe
@@ -593,91 +594,6 @@ def init_publication(metadataPastell):
 
     db_sess.commit()
     return newPublication
-
-
-class MetadataPastell:
-    def __init__(self, metajson):
-        self.numero_de_lacte = metajson['numero_de_lacte']
-        self.date_de_lacte = metajson['date_de_lacte']
-        self.objet = metajson['objet']
-        self.siren = metajson['siren']
-        self.acte_nature = metajson['acte_nature']
-
-        if 'envoi_depot' in metajson:
-            self.envoi_depot = metajson['envoi_depot']
-        else:
-            self.envoi_depot = 'checked'
-
-        if 'nature_autre_detail' in metajson:
-            self.nature_autre_detail = metajson['nature_autre_detail']
-        else:
-            self.nature_autre_detail = ''
-
-        # liste de fichier arrete
-        self.liste_arrete = metajson['arrete']
-        # liste de fichier arrete tamponne
-        if 'acte_tamponne' in metajson:
-            self.liste_acte_tamponne = metajson['acte_tamponne']
-        else:
-            self.liste_acte_tamponne = []
-
-        # liste de d'annexe
-        if 'autre_document_attache' in metajson:
-            self.liste_autre_document_attache = metajson['autre_document_attache']
-        else:
-            self.liste_autre_document_attache = []
-
-        if 'type_piece' in metajson:
-            self.type_piece = metajson['type_piece']
-        else:
-            self.type_piece = ''
-
-        if 'classification' in metajson:
-            self.classification = metajson['classification']
-        else:
-            self.classification = '9.2'
-
-        if 'publication_open_data' in metajson:
-            if len(metajson['publication_open_data']) == 0:
-                # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
-                if self.acte_nature == '1' or self.acte_nature == '2' or self.acte_nature == '5'  or self.acte_nature == '7':
-                    # délib, actes réglementaires et budget oui par defaut
-                    self.publication_open_data = '3'
-                elif self.acte_nature == '3' or self.acte_nature == '6':
-                    # actes individuels et autres non par defaut
-                    self.publication_open_data = '1'
-                else:
-                    # le reste à ne sais pas
-                    self.publication_open_data = '2'
-            else:
-                self.publication_open_data = metajson['publication_open_data']
-        else:
-            # valeur par défaut si dans le fichier metadata publication_open_data n'est pas présent
-            if self.acte_nature == '1' or self.acte_nature == '2' or self.acte_nature == '5':
-                # délib, actes réglementaires et budget oui par defaut
-                self.publication_open_data = '3'
-            elif self.acte_nature == '3' or self.acte_nature == '6':
-                # actes individuels et autres non par defaut
-                self.publication_open_data = '1'
-            else:
-                # le reste à ne sais pas
-                self.publication_open_data = '2'
-
-        x = self.classification.split(" ", 1)
-        # valeur par defaut
-        self.classification_code = 9.2
-        if len(x) == 2:
-            self.classification_code = x[0]
-        elif len(x) == 1:
-            self.classification_code = x[0]
-
-        classification_code_split = self.classification_code.split(".", -1)
-        if len(classification_code_split) > 2:
-            self.classification_nom = classification_actes_dict[
-                float(classification_code_split[0] + '.' + classification_code_split[1])]
-        else:
-            self.classification_nom = classification_actes_dict[float(self.classification_code)]
-
 
 def __get_date_buget(xml_file: str):
     namespaces = {'nms': 'http://www.minefi.gouv.fr/cp/demat/docbudgetaire'}
