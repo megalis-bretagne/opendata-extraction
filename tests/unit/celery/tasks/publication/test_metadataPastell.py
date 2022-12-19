@@ -20,10 +20,11 @@ def test_smoke_parse(_data):
 
 def test_sanitize_for_db(_data):
 
+    _data["objet"] = "toto"
     metadata = MetadataPastell.parse(_data)
     sanitized_for_db = metadata.sanitize_for_db()
 
-    # assert id(metadata) != id(sanitized_for_db)
+    assert id(metadata) != id(sanitized_for_db)
     serialized_metadata = pickle.dumps(metadata)
     serialized_sanitized = pickle.dumps(sanitized_for_db)
 
@@ -34,8 +35,8 @@ def test_sanitize_for_db(_data):
 @pytest.mark.parametrize(
     "testDesc",
     [
-        { "classification": "9.2", "classification_code": "9.2", "classification_nom": classification_actes_dict[9.2], "raises": False },
-        { "classification": "9.2.3 toto tata", "classification_code": "9.2.3", "classification_nom": classification_actes_dict[9.2], "raises": False },
+        { "classification": "9.2", "classification_code": "9.2", "classification_nom": classification_actes_dict["9.2"], "raises": False },
+        { "classification": "9.2.3 toto tata", "classification_code": "9.2.3", "classification_nom": classification_actes_dict["9.2"], "raises": False },
         { "classification": "10 toto tata", "classification_code": "10", "raises": True },
     ]
 )

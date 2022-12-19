@@ -39,7 +39,7 @@ def creation_publication_task(zip_path):
         with open(WORKDIR + 'metadata.json') as f:
             metadata = json.load(f)
 
-        metadataPastell = MetadataPastell(metadata)
+        metadataPastell = MetadataPastell.parse(metadata)
 
     except Exception as e:
         strDate = datetime.now().strftime('%Y-%m-%d-%H%M%S')
@@ -49,7 +49,7 @@ def creation_publication_task(zip_path):
 
     try:
         # init publication table
-        newPublication = init_publication(metadataPastell)
+        newPublication = init_publication(metadataPastell.sanitize_for_db())
     except Exception as e:
         strDate = datetime.now().strftime('%Y-%m-%d-%H%M%S')
         shutil.move(WORKDIR + 'objet.zip',
