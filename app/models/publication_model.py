@@ -15,7 +15,7 @@ class Publication(db.Model):
     publication_open_data: str = db.Column(db.String(1), nullable=False, server_default='2')
     date_de_lacte: str = db.Column(db.DateTime(), nullable=False)
     classification_code = db.Column(db.String(10), nullable=False)
-    classification_nom = db.Column(db.String(100), nullable=False)
+    classification_nom = db.Column(db.String(150), nullable=False)
     acte_nature: str = db.Column(db.String(50), nullable=False)
     envoi_depot: str = db.Column(db.String(50), nullable=False)
     # utilise pour les budget
