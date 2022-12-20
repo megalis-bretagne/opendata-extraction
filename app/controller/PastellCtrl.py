@@ -86,6 +86,11 @@ class AdminPastellRejeuDocCtrl(Resource):
         args = arguments_pastell_rejeu_controller.parse_args()
         id_d = args['id_d']
 
+        URL_API_PASTELL = current_app.config['API_PASTELL_URL']
+        API_PASTELL_VERSION = current_app.config['API_PASTELL_VERSION']
+        auth_pastell = HTTPBasicAuth(current_app.config['API_PASTELL_USER'],
+                                     current_app.config['API_PASTELL_PASSWORD'])
+
         rejeuDemande = False
         acte_declenche = False
 
@@ -104,34 +109,33 @@ class AdminPastellRejeuDocCtrl(Resource):
                 result_action=row[3]
 
                 if result_action == 'termine':
-                    rejeuDemande = True
-                    # on modidie l'etat de la derniere action dans pastell dans la table document_action termine => creation
-                    request_update = text("""UPDATE document_action set action='modification' where id_a = :y """)
-                    result_update = con_pastell.execute(request_update, y=result_id_a)
-                    result_update.close()
-                    print(f"passage à l'état creation de l'action id_a={result_id_a} pour l'id_d={result_id_d} et id_e={result_id_e}")
-
-                    #Déclenchement etape orientation
-                    URL_API_PASTELL = current_app.config['API_PASTELL_URL']
-                    API_PASTELL_VERSION = current_app.config['API_PASTELL_VERSION']
-                    auth_pastell = HTTPBasicAuth(current_app.config['API_PASTELL_USER'],
-                                                 current_app.config['API_PASTELL_PASSWORD'])
 
                     doc_detail_reponse = requests.get(
                         URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + str(result_id_e) + "/document/" +  str(result_id_d),
                         auth=auth_pastell)
                     if doc_detail_reponse.status_code == 200:
                         doc_detail = json.loads(doc_detail_reponse.text)
-                        for action_possible in doc_detail['action_possible']:
-                            # print(action_possible)
-                            if action_possible == 'orientation':
-                                orientation1_ged_reponse = requests.post(
-                                    URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + str(result_id_e)  + "/document/" +
-                                    str(result_id_d) + "/action/orientation",
-                                    auth=auth_pastell)
-                                if orientation1_ged_reponse.status_code == 201:
-                                    acte_declenche = True
-                                    break;
+
+                        if 'info' in doc_detail and 'type' in doc_detail['info'] and doc_detail['info']['type'] == 'ged-megalis-opendata':
+                            rejeuDemande = True
+                            # on modidie l'etat de la derniere action dans pastell dans la table document_action termine => creation
+                            request_update = text(
+                                """UPDATE document_action set action='modification' where id_a = :y """)
+                            result_update = con_pastell.execute(request_update, y=result_id_a)
+                            result_update.close()
+                            print(
+                                f"passage à l'état creation de l'action id_a={result_id_a} pour l'id_d={result_id_d} et id_e={result_id_e}")
+
+                            # Déclenchement etape orientation
+                            orientation1_ged_reponse = requests.post(
+                                URL_API_PASTELL + API_PASTELL_VERSION + "/entite/" + str(result_id_e)  + "/document/" +
+                                str(result_id_d) + "/action/orientation",
+                                auth=auth_pastell)
+                            if orientation1_ged_reponse.status_code == 201:
+                                acte_declenche = True
+                                break;
+                    else:
+                        motif = f"le document n'est pas de type= ged-megalis-opendata/ l'id_d={result_id_d} / id_e={result_id_e}"
                 else:
                     motif= f"pas de rejeu car l'état de la derniere action n'est pas terminée pour id_a={result_id_a} / l'id_d={result_id_d} / id_e={result_id_e}"
             result.close()
