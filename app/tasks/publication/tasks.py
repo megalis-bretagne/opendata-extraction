@@ -1,3 +1,5 @@
+from pathlib import Path
+from typing import Optional
 import urllib
 import more_itertools
 import json
@@ -11,67 +13,69 @@ from app import celeryapp
 from app import db
 
 from app.models.publication_model import Publication
-from app.models.parametrage_model import Parametrage
 
-from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
 from app.shared.datastructures import MetadataPastell
 import app.shared.workdir_utils as workdir_utils
 
 from app.tasks.utils import solr_connexion
 
-from .functions import init_publication,insert_solr,lien_symbolique,insere_nouveau_parametrage
+from .functions import ( 
+    init_publication,insert_solr,
+    lien_symbolique,
+    insere_nouveau_parametrage,
+    _archives_current,
+    _erreurs_root, 
+)
+from .inzipfileparser import InZipFileParser
 from . import logger
 
 celery = celeryapp.celery
 
 @celery.task(name='creation_publication_task')
 def creation_publication_task(zip_path):
-    # on archive le fichier reçu depuis pastell (zip
-    shutil.copy(zip_path, current_app.config['DIRECTORY_TO_WATCH_ARCHIVE'])
 
-    PATH_FILE = zip_path
-    WORKDIR = workdir_utils.clear_persistent_workdir()
+    task_id: str = celery.current_task.request.id # type: ignore 
+    in_zip_p = Path(zip_path)
+    archive_fp, erreur_fp = _archive_et_erreurs_fullpath(task_id)
 
-    # move file to workdir
-    shutil.move(PATH_FILE, WORKDIR + 'objet.zip')
+    initial_archive_fp = archive_fp
+    shutil.copy(in_zip_p, initial_archive_fp)
 
     try:
-        # unzip file
-        with ZipFile(WORKDIR + 'objet.zip', 'r') as zipObj:
-            # Extract all the contents of zip file in different directory
-            zipObj.extractall(WORKDIR)
+        parsed = InZipFileParser.from_pastell_ged(zip_path)
+        in_zip_p = parsed.path
+        id_id = parsed.id_d()
 
-        # lecture du fichier metadata.json
-        with open(WORKDIR + 'metadata.json') as f:
+        archive_fp, erreur_fp = _archive_et_erreurs_fullpath(task_id, id_id)
+        shutil.move(initial_archive_fp, archive_fp)
+
+        workdir_str = workdir_utils.clear_persistent_workdir()
+
+        workdir_p = Path(workdir_str)
+        workdir_zip_p = workdir_p / f"{id_id}-{task_id}.zip"
+
+        shutil.move(in_zip_p, workdir_zip_p)
+
+        with ZipFile(workdir_zip_p, 'r') as zipObj:
+            zipObj.extractall(workdir_p)
+
+        with (workdir_p / 'metadata.json').open('r') as f:
             metadata = json.load(f)
 
         metadataPastell = MetadataPastell.parse(metadata)
-
-    except Exception as e:
-        strDate = datetime.now().strftime('%Y-%m-%d-%H%M%S')
-        shutil.move(WORKDIR + 'objet.zip',
-                    current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_' + strDate + '.zip')
-        raise e
-
-    try:
-        # init publication table
         newPublication = init_publication(metadataPastell.sanitize_for_db())
+
     except Exception as e:
-        strDate = datetime.now().strftime('%Y-%m-%d-%H%M%S')
-        shutil.move(WORKDIR + 'objet.zip',
-                    current_app.config['DIRECTORY_TO_WATCH_ERREURS'] + '/pastell_'+metadataPastell.siren+'_' + strDate + '.zip')
+        shutil.copy(archive_fp, erreur_fp)
         raise e
 
 
-    # check and init parametrage
     insere_nouveau_parametrage(newPublication.siren)
 
-    # init des documents dans solr avec est_publie=False
     insert_solr(newPublication, est_publie=False)
 
-    # creation de la tache de publication openData et on passe l'état de la publication à en cours
-    if metadataPastell.publication_open_data == '3':
-        newPublication.etat = 2
+    if metadataPastell.publication_open_data == '3': 
+        newPublication.etat = 2 # état de la publication à 'en cours'
         db_sess = db.session
         db_sess.add(newPublication)
         task = publier_acte_task.delay(newPublication.id)
@@ -82,6 +86,16 @@ def creation_publication_task(zip_path):
                 'publication_open_data': str(metadataPastell.publication_open_data),
                 'nature': str(metadataPastell.acte_nature)}
 
+def _archive_et_erreurs_fullpath(task_id: str, id_d: Optional[str] = None):
+    archives_dir = _archives_current()
+    erreurs_dir = _erreurs_root()
+
+    if id_d is not None:
+        filename = f"{id_d}-{task_id}.zip"
+    else:
+        filename = f"{task_id}.zip"
+
+    return archives_dir / filename, erreurs_dir / filename
 
 @celery.task(name='modifier_acte_task')
 def modifier_acte_task(idPublication):

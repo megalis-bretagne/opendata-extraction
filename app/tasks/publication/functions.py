@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import pysolr
 from lxml import etree
 from datetime import datetime
@@ -341,3 +342,30 @@ def __get_date_buget(xml_file: str):
     tree = etree.parse(xml_file)
     annee = tree.findall('/nms:Budget/nms:BlocBudget/nms:Exer', namespaces)[0].attrib.get('V')
     return annee
+
+
+def _archives_root() -> Path:
+    """Retourne la racine des dossiers archive"""
+    archives_dir_str = current_app.config["DIRECTORY_TO_WATCH_ARCHIVE"]
+    return Path(archives_dir_str)
+
+
+def _archives_current() -> Path:
+    """
+    Crée et/ou retourne le dossier d'archives courant (suivant la date de reception)
+    e.g: watcher/archives/2022/12/10
+    """
+    y = datetime.now().year
+    m = datetime.now().month
+    d = datetime.now().day
+
+    p = _archives_root() / str(y) / str(m) / str(d)
+
+    os.makedirs(str(p), exist_ok=True)
+
+    return p
+
+def _erreurs_root() -> Path:
+    """Retourne le dossier watcher/erreurs"""
+    erreurs_dir_str = current_app.config['DIRECTORY_TO_WATCH_ERREURS']
+    return Path(erreurs_dir_str)
