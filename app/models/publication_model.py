@@ -40,6 +40,7 @@ class Publication(db.Model):
             'numero_de_lacte': self.numero_de_lacte,
             'objet': self.objet,
             'siren': self.siren,
+            'pastell_id_d': self.pastell_id_d,
             'publication_open_data': self.publication_open_data,
             'etat': self.etat,
             'date_budget': self.date_budget,
@@ -59,7 +60,8 @@ class Publication(db.Model):
         return {
             'id': self.id,
             'numero_de_lacte': self.numero_de_lacte,
-             'siren': self.siren,
+            'siren': self.siren,
+            'pastell_id_d': self.pastell_id_d,
             'est_supprime': self.est_supprime,
             'date_de_lacte': self.date_de_lacte.strftime("%Y-%m-%d"),
             'objet':self.objet,
