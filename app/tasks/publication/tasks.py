@@ -63,7 +63,7 @@ def creation_publication_task(zip_path):
             metadata = json.load(f)
 
         metadataPastell = MetadataPastell.parse(metadata)
-        newPublication = init_publication(metadataPastell.sanitize_for_db())
+        newPublication = init_publication(metadataPastell.sanitize_for_db(), id_id)
 
     except Exception as e:
         shutil.copy(archive_fp, erreur_fp)

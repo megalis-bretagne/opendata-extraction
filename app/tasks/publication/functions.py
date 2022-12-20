@@ -177,7 +177,7 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     data["literal.siren"] = publication.siren
 
 
-def init_publication(metadataPastell):
+def init_publication(metadataPastell, id_d: str):
     WORKDIR = workdir_utils.get_or_create_persistent_workdir()
     # publication open data oui par défaut 0:oui / 1:non / 2:Ne sais pas
     pub_open_data = '0'
@@ -206,12 +206,15 @@ def init_publication(metadataPastell):
         classification_nom=metadataPastell.classification_nom,
         acte_nature=metadataPastell.acte_nature,
         envoi_depot=metadataPastell.envoi_depot,
-        nature_autre_detail=metadataPastell.nature_autre_detail
+        nature_autre_detail=metadataPastell.nature_autre_detail,
+        pastell_id_d=id_d,
     )
     db_sess.add(newPublication)
     db_sess.commit()
 
-    annee = str(newPublication.date_de_lacte.year)
+    # XXX: retour de db, le type dt est ici une datetime
+    date_de_lacte_dt: datetime = newPublication.date_de_lacte # type: ignore 
+    annee = str(date_de_lacte_dt.year)
 
     if newPublication.acte_nature == "1":
         dossier = newPublication.siren + os.path.sep + "Deliberation"
