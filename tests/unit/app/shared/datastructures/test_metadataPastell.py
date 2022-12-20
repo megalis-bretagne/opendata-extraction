@@ -4,8 +4,8 @@ import pickle
 
 from pathlib import Path
 
-from app.tasks_publication.datastructure.MetadataPastell import MetadataPastell
-from app.tasks_publication.datastructure.MetadataPastell import classification_actes_dict
+from app.shared.datastructures import MetadataPastell
+from app.shared.datastructures.classification_actes import _classification_actes_dict
 
 
 @pytest.fixture
@@ -35,8 +35,8 @@ def test_sanitize_for_db(_data):
 @pytest.mark.parametrize(
     "testDesc",
     [
-        { "classification": "9.2", "classification_code": "9.2", "classification_nom": classification_actes_dict["9.2"], "raises": False },
-        { "classification": "9.2.3 toto tata", "classification_code": "9.2.3", "classification_nom": classification_actes_dict["9.2"], "raises": False },
+        { "classification": "9.2", "classification_code": "9.2", "classification_nom": _classification_actes_dict["9.2"], "raises": False },
+        { "classification": "9.2.3 toto tata", "classification_code": "9.2.3", "classification_nom": _classification_actes_dict["9.2"], "raises": False },
         { "classification": "10 toto tata", "classification_code": "10", "raises": True },
     ]
 )

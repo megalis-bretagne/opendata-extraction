@@ -1,3 +1,4 @@
+from typing import Optional
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from app import db
@@ -11,6 +12,7 @@ class Publication(db.Model):
     numero_de_lacte: str = db.Column(db.String(20), nullable=False)
     objet: str = db.Column(db.String(256), nullable=False)
     siren: str = db.Column(db.String(9), nullable=False)
+    pastell_id_d: Optional[str] = db.Column(db.String(20), nullable= True)
     # 3:oui (0:oui historiquement), 1:non, 2:ne sais pas
     publication_open_data: str = db.Column(db.String(1), nullable=False, server_default='2')
     date_de_lacte: str = db.Column(db.DateTime(), nullable=False)
@@ -38,6 +40,7 @@ class Publication(db.Model):
             'numero_de_lacte': self.numero_de_lacte,
             'objet': self.objet,
             'siren': self.siren,
+            'pastell_id_d': self.pastell_id_d,
             'publication_open_data': self.publication_open_data,
             'etat': self.etat,
             'date_budget': self.date_budget,
@@ -57,7 +60,8 @@ class Publication(db.Model):
         return {
             'id': self.id,
             'numero_de_lacte': self.numero_de_lacte,
-             'siren': self.siren,
+            'siren': self.siren,
+            'pastell_id_d': self.pastell_id_d,
             'est_supprime': self.est_supprime,
             'date_de_lacte': self.date_de_lacte.strftime("%Y-%m-%d"),
             'objet':self.objet,

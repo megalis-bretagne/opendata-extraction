@@ -10,6 +10,10 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - API MQ Delibs: les annexes renvoient leurs content-type
 - S'assure que le champ `objet` des metadata pastell est bien encodé en `latin-1`
+- Désormais, les archives/erreurs suivent cette nomenclature:
+  - `watcher/archives/ANNEE/MOIS/JOUR/ID_D-TASK_DI.zip`
+  - `watcher/erreurs/ID_D-TASK_DI.zip`
+- [gh-29](https://https://github.com/megalis-bretagne/opendata-extraction/issues/29) Ajout de l'ID_D dans la table de publication
 
 ## [2.0.11] - 2022-12-07
 
