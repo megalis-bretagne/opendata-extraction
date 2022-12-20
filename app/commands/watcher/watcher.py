@@ -46,7 +46,7 @@ class Handler(FileSystemEventHandler):
     @staticmethod
     def on_create(path: Path):
 
-        from app.tasks.publication_tasks import creation_publication_task
+        from app.tasks.publication import creation_publication_task
 
         logger.info(f"Reçu l'evenement de création du fichier {path}")
 

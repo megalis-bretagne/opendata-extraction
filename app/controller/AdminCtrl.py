@@ -55,7 +55,7 @@ class AdminPulicationRejeu(Resource):
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     @isAdmin
     def post(self):
-        from app.tasks.publication_tasks import creation_publication_task
+        from app.tasks.publication import creation_publication_task
         import os
         for entry in os.scandir(current_app.config['DIRECTORY_RELAUNCH']):
             if entry.name.endswith(".zip"):
@@ -216,7 +216,7 @@ class PublicationRepublierCtrl(Resource):
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     @isAdmin
     def post(self, etat):
-        from app.tasks.publication_tasks import republier_all_acte_task
+        from app.tasks.publication import republier_all_acte_task
         republier_all_acte_task.delay(etat)
         return jsonify(
             {"statut": "ETAT:" +str(etat)+ '- demande de republication prise en compte (taches asynchrone)'})
@@ -228,7 +228,7 @@ class PublicationRepublierSirenCtrl(Resource):
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     @isAdmin
     def post(self, siren, etat):
-        from app.tasks.publication_tasks import republier_actes_pour_siren_task
+        from app.tasks.publication import republier_actes_pour_siren_task
         republier_actes_pour_siren_task.delay(siren, etat)
         return jsonify(
             {"statut": "ETAT:" +str(etat)+ ' SIREN: '+str(siren)+'- demande de republication prise en compte (taches asynchrone)'})
