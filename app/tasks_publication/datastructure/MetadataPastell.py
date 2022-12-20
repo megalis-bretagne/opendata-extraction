@@ -123,7 +123,7 @@ class MetadataPastell:
 
     @staticmethod
     def parse(json):
-
+        acte_nature = json["acte_nature"]
         envoi_depot = json.get("envoi_depot", "checked")
         nature_autre_detail = json.get("nature_autre_detail", "")
         liste_arrete = json.get("arrete", [])
@@ -131,9 +131,11 @@ class MetadataPastell:
         liste_autre_document_attache = json.get("autre_document_attache", [])
         type_piece = json.get("type_piece", "")
         classification = json.get("classification", "9.2")
-        publication_open_data = json.get(
-            "publication_open_data",
-            lambda: _compute_publication_opendata(nature_autre_detail),
+        key = "publication_open_data"
+        publication_open_data = (
+            _compute_publication_opendata(acte_nature)
+            if key not in json or not json[key]
+            else json[key]
         )
 
         classification_code = classification.split(" ", 1)[0]
@@ -148,7 +150,7 @@ class MetadataPastell:
             date_de_lacte=json["date_de_lacte"],
             objet=json["objet"],
             siren=json["siren"],
-            acte_nature=json["acte_nature"],
+            acte_nature=acte_nature,
             envoi_depot=envoi_depot,
             nature_autre_detail=nature_autre_detail,
             liste_arrete=liste_arrete,

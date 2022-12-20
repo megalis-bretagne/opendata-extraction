@@ -59,17 +59,17 @@ def test_parse_classficiation(_data, testDesc):
 @pytest.mark.parametrize(
     "testDesc",
     [
-        { "publication_open_data": 'toto', "acte_nature": '1', "publication_open_data": 'toto' },
-        { "publication_open_data": '', "acte_nature": '1', "publication_open_data": '3' },
+        { "publication_open_data": 'toto', "acte_nature": '1', "result_publication_open_data": 'toto' },
+        { "publication_open_data": '', "acte_nature": '1', "result_publication_open_data": '3' },
 
-        { "acte_nature": '1', "publication_open_data": '3' },
-        { "acte_nature": '2', "publication_open_data": '3' },
-        { "acte_nature": '5', "publication_open_data": '3' },
+        { "acte_nature": '1', "result_publication_open_data": '3' },
+        { "acte_nature": '2', "result_publication_open_data": '3' },
+        { "acte_nature": '5', "result_publication_open_data": '3' },
 
-        { "acte_nature": '3', "publication_open_data": '1' },
-        { "acte_nature": '6', "publication_open_data": '1' },
+        { "acte_nature": '3', "result_publication_open_data": '1' },
+        { "acte_nature": '6', "result_publication_open_data": '1' },
 
-        { "acte_nature": 'inconnu', "publication_open_data": '2' },
+        { "acte_nature": 'inconnu', "result_publication_open_data": '2' },
     ],
 )
 def test_publication_opendata(_data, testDesc):
@@ -83,7 +83,7 @@ def test_publication_opendata(_data, testDesc):
 
     metadata = MetadataPastell.parse(_data)
 
-    assert metadata.publication_open_data == testDesc["publication_open_data"]
+    assert metadata.publication_open_data == testDesc["result_publication_open_data"]
 
 def test_parse_params(_data):
     _test_parse_param(_data, "envoi_depot", valeur_si_non_present="checked")
