@@ -117,12 +117,12 @@ class AdminPastellRejeuDocCtrl(Resource):
                         doc_detail = json.loads(doc_detail_reponse.text)
 
                         if 'info' in doc_detail and 'type' in doc_detail['info'] and doc_detail['info']['type'] == 'ged-megalis-opendata':
-                            rejeuDemande = True
                             # on modidie l'etat de la derniere action dans pastell dans la table document_action termine => creation
                             request_update = text(
                                 """UPDATE document_action set action='modification' where id_a = :y """)
                             result_update = con_pastell.execute(request_update, y=result_id_a)
                             result_update.close()
+                            rejeuDemande = True
                             print(
                                 f"passage à l'état creation de l'action id_a={result_id_a} pour l'id_d={result_id_d} et id_e={result_id_e}")
 
@@ -134,8 +134,8 @@ class AdminPastellRejeuDocCtrl(Resource):
                             if orientation1_ged_reponse.status_code == 201:
                                 acte_declenche = True
                                 break;
-                    else:
-                        motif = f"le document n'est pas de type= ged-megalis-opendata/ l'id_d={result_id_d} / id_e={result_id_e}"
+                        else:
+                            motif = f"le document n'est pas de type= ged-megalis-opendata/ l'id_d={result_id_d} / id_e={result_id_e}"
                 else:
                     motif= f"pas de rejeu car l'état de la derniere action n'est pas terminée pour id_a={result_id_a} / l'id_d={result_id_d} / id_e={result_id_e}"
             result.close()
