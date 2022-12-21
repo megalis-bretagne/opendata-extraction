@@ -50,32 +50,6 @@ def _etape_from_str(etape: str) -> EtapeBudgetaire:
         raise EtapeInvalideError(etape) from err
 
 
-def _to_scdl_csv_reader(convertisseur: ConvertisseurTotemBudget, xml_fp: Path):
-    def _read_scdl_as_str(xml_fp: Path):
-        scdl = ""
-        with io.StringIO() as string_io:
-            convertisseur.totem_budget_vers_scdl(
-                xml_fp,
-                PLANS_DE_COMPTES_PATH,
-                string_io,
-                Options(inclure_header_csv=False),
-            )
-            scdl = string_io.getvalue()
-        return scdl
-
-    entetes_seq = convertisseur.budget_scdl_entetes().split(",")
-    scdl = _read_scdl_as_str(xml_fp)
-    return csv.DictReader(scdl.splitlines(), entetes_seq)
-
-
-def _extraire_pdc_unique(ls_totem_metadata: list[TotemBudgetMetadata]):
-    pdc = {metadata.plan_de_compte for metadata in ls_totem_metadata}
-    assert (
-        len(pdc) <= 1
-    ), "On ne devrait retrouver qu'un seul plan de compte pour ces informations budget"
-    return pdc.pop()
-
-
 def _api_sirene_etablissement_siege(
     siren: str, logger: logging.Logger
 ) -> Etablissement:

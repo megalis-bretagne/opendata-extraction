@@ -29,3 +29,4 @@ from . import ResourcesBudgetairesDisponiblesApi
 from . import DonneesBudgetairesApi
 from . import PlansDeComptesApi
 from . import ParametrageApi
+from . import BudgetAdminApi

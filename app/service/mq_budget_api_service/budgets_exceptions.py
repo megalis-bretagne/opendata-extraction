@@ -22,8 +22,7 @@ class AucuneDonneeBudgetError(BudgetMarqueBlancheApiException):
         super().__init__("Aucune données budget pour cette requête")
 
 class ImpossibleDexploiterBudgetError(BudgetMarqueBlancheApiException):
-    def __init__(self, budget_fp: Path, detail: str):
-        self.budget_fp = budget_fp
+    def __init__(self, detail: str):
         self.details = detail
         api_message = (
             f"Impossible d'exploiter les données budgets pour cette requête.\n"

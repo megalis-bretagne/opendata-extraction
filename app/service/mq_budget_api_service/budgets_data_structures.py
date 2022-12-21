@@ -6,14 +6,6 @@ from app.shared.client_api_sirene import Etablissement
 
 from yatotem2scdl.conversion import TotemBudgetMetadata, EtapeBudgetaire
 
-_TotemAndMetadata = NamedTuple(
-    "_TotemAndMetadata",
-    [
-        ("xml_fp", Path),
-        ("metadata", TotemBudgetMetadata),
-    ],
-)
-
 #
 # API budget disponibles
 #
