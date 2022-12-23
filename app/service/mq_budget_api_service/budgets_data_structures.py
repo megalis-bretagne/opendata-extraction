@@ -1,10 +1,9 @@
 from dataclasses import dataclass, asdict
-from pathlib import Path
-from typing import NamedTuple, Optional
+from typing import Optional
 
 from app.shared.client_api_sirene import Etablissement
 
-from yatotem2scdl.conversion import TotemBudgetMetadata, EtapeBudgetaire
+from yatotem2scdl.conversion import EtapeBudgetaire
 
 #
 # API budget disponibles
