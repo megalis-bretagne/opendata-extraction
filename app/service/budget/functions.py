@@ -8,9 +8,11 @@ from app.shared.constants import PLANS_DE_COMPTES_PATH
 from app.models.publication_model import Publication,Acte
 
 from . import logger
+from .prometheus import LISTE_TOTEM_METADATA_HISTOGRAM
 
 from .datastructures import TotemMetadataTuple
 
+@LISTE_TOTEM_METADATA_HISTOGRAM.time()
 def _liste_totem_with_metadata(siren: str) -> list[TotemMetadataTuple]:
     """Liste les chemins des fichiers totems ainsi que leurs metadonnées associées"""
 

@@ -8,6 +8,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- Ajout de métriques prometheus.
 - BDD: Ajout d'un champ `pastell_id_d` dans la table `publication` [sql migration](./app/migrate/00007_add_pastell_id_d_column.sql)
 
 
