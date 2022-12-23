@@ -1,4 +1,5 @@
 import os
+import pytz
 from pathlib import Path
 import pysolr
 from lxml import etree
@@ -163,7 +164,8 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
         # on ajoute 10s à la date_de_publication des PJ pour pouvoir utiliser ce critère pour le tri
         if typology == "PJ":
             date_publication = date_publication + timedelta(seconds=10)
-        data["literal.date_de_publication"] = date_publication.strftime("%Y-%m-%dT%H:%M:%SZ")
+        dt_str = date_publication.astimezone(pytz.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        data["literal.date_de_publication"] = dt_str
 
     data["literal.description"] = publication.objet
     data["literal.nature_autre_detail"] = publication.nature_autre_detail
