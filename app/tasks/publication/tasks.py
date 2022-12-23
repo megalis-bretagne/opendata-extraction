@@ -66,7 +66,9 @@ def creation_publication_task(zip_path):
         newPublication = init_publication(metadataPastell.sanitize_for_db(), id_id)
 
     except Exception as e:
-        shutil.copy(archive_fp, erreur_fp)
+        if in_zip_p.is_file():
+            in_zip_p.unlink()
+        shutil.copyfile(archive_fp, erreur_fp)
         raise e
 
 
