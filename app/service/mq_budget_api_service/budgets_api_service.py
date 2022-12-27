@@ -3,6 +3,7 @@ import logging
 from typing import Optional
 
 from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
+from app.shared.performance import profiling_to,warn_when_time_above
 
 from app.service.budget import (
     EtapeBudgetaire, Totems,
@@ -39,6 +40,7 @@ class BudgetsApiService:
         self.__logger = logging.getLogger(self.__class__.__name__)
         self.convertisseur = make_or_get_budget_convertisseur()
 
+    @warn_when_time_above(5)
     @_wrap_in_budget_marque_blanche_api_ex
     def ressources_budgetaires_disponibles(
         self, siren: str
@@ -88,13 +90,13 @@ class BudgetsApiService:
         )
         return answer
 
+    @warn_when_time_above(5)
     @_wrap_in_budget_marque_blanche_api_ex
     def retrieve_pdc_info(
         self,
         annee: int,
         siret: str,
     ):
-
         siren = str(extraire_siren(siret))
 
         self.__logger.info(
@@ -108,6 +110,7 @@ class BudgetsApiService:
         answer = pdc_path_to_api_response(plan_de_comptes)
         return answer
 
+    @warn_when_time_above(5)
     @_wrap_in_budget_marque_blanche_api_ex
     @_prune_montant_a_zero
     def retrieve_budget_info(

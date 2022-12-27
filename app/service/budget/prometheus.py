@@ -36,8 +36,8 @@ READ_SCDL_AS_STR = Histogram(
 )
 
 
-CONVERTIR_XML_TO_SCDL = Histogram(
-    "convertir_xml_to_scdl",
+MAKE_SCDL_FILE_FROM_TOTEM = Histogram(
+    "_make_scdl_file_from_totem",
     "Temps passé à convertir un XML pour le transformer en SCDL",
     buckets=_buckets,
 )

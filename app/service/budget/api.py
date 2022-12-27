@@ -1,4 +1,3 @@
-import io
 import csv
 import functools
 
@@ -6,20 +5,20 @@ from pathlib import Path
 from typing import Optional
 from yatotem2scdl import EtapeBudgetaire, ConvertisseurTotemBudget, Options
 
-from app.shared.constants import PLANS_DE_COMPTES_PATH
 
 from .functions import (
     TotemMetadataTuple,
     _liste_totem_with_metadata,
     _budget_metadata_predicate,
+    make_or_get_budget_convertisseur,
+    _get_or_make_scdl_from_totem,
 )
-
-from .functions import make_or_get_budget_convertisseur
 
 
 class TotemsError(Exception):
     @staticmethod
     def wrap_fn(f):
+        @functools.wraps(f)
         def inner(*args, **kwargs):
             try:
                 return f(*args, **kwargs)
@@ -118,16 +117,8 @@ class ListedTotems:
 
 
 def _read_scdl_as_str(xml_fp: Path):
-    convertisseur = make_or_get_budget_convertisseur()
-    scdl = ""
-    with io.StringIO() as string_io:
-        convertisseur.totem_budget_vers_scdl(
-            xml_fp,
-            PLANS_DE_COMPTES_PATH,
-            string_io,
-            Options(inclure_header_csv=False),
-        )
-        scdl = string_io.getvalue()
+    scdl_fp = _get_or_make_scdl_from_totem(xml_fp)
+    scdl = scdl_fp.read_text()
     return scdl
 
 

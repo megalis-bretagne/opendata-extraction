@@ -14,6 +14,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+- API MQ budgets: La lecture de données budgetaires génère l'écriture du scdl sur disque dans `private/publications`
 - API MQ Delibs: les annexes renvoient leurs content-type
 - S'assure que le champ `objet` des metadata pastell est bien encodé en `latin-1`
 - Désormais, les archives/erreurs suivent cette nomenclature:

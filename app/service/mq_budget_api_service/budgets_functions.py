@@ -1,5 +1,3 @@
-import io
-import csv
 import logging
 import functools
 
@@ -21,14 +19,8 @@ from .budgets_exceptions import (
     ImpossibleDextraireEtabInfoError,
 )
 
-from yatotem2scdl import (
-    TotemBudgetMetadata,
-    ConvertisseurTotemBudget,
-    Options,
-    EtapeBudgetaireInconnueErreur,
-)
+from yatotem2scdl import EtapeBudgetaireInconnueErreur
 
-from app.shared.constants import PLANS_DE_COMPTES_PATH
 
 from ._ExtracteurInfoPdc import _ExtracteurInfoPdc
 
@@ -83,6 +75,7 @@ def _api_sirene_etablissements(
 
 
 def _wrap_in_budget_marque_blanche_api_ex(func):
+    @functools.wraps(func)
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
@@ -98,6 +91,7 @@ def _prune_montant_a_zero(func: Callable[..., GetBudgetMarqueBlancheApiResponse]
     def filter_fn(ligne: LigneBudgetMarqueBlancheApi):
         return ligne.montant and ligne.montant != 0
 
+    @functools.wraps(func)
     def inner(*args, **kwargs) -> GetBudgetMarqueBlancheApiResponse:
         answer = func(*args, **kwargs)
 
