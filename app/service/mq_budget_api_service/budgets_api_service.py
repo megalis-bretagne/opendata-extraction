@@ -4,12 +4,12 @@ from typing import Optional
 
 from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
 from app.shared.performance import warn_when_time_above
+from app.shared.client_api_sirene import Etablissement
 
 from app.service.budget import (
-    EtapeBudgetaire, Totems,
+    EtapeBudgetaire,
+    Totems,
 )
-
-from app.shared.client_api_sirene import Etablissement
 
 from .budgets_data_structures import (
     GetBudgetMarqueBlancheApiResponse,
@@ -125,7 +125,10 @@ class BudgetsApiService:
             f" l'année {annee} et l'étape {etape}"
         )
 
-        totems = Totems(siren).annee(annee).siret(siret).etape(etape).request()
+        totems = Totems(siren).annee(annee).siret(siret).etape(etape)
+        if EtapeBudgetaire.PRIMITIF == etape or EtapeBudgetaire.COMPTE_ADMIN == etape:
+            totems = totems.first_by_date_de_scellement_desc()
+        totems = totems.request()
 
         if not totems.liste:
             raise AucuneDonneeBudgetError()
@@ -133,12 +136,6 @@ class BudgetsApiService:
         nb_documents_budgetaires = len(totems.liste)
         msg = f"On retient {nb_documents_budgetaires} documents budgetaire pour la requête"
         self.__logger.info(msg)
-
-        if (
-            EtapeBudgetaire.PRIMITIF == etape or EtapeBudgetaire.COMPTE_ADMIN == etape
-        ) and nb_documents_budgetaires > 1:
-            msg = f"On ne devrait avoir qu'un seul document pour {annee}, {siret}, {etape_str}"
-            self.__logger.warning(msg)
 
         lignes: list[LigneBudgetMarqueBlancheApi] = []
         nb_ignorees: int = 0

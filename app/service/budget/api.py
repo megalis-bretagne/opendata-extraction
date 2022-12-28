@@ -37,6 +37,8 @@ class Totems:
         self._annee: Optional[int] = None
         self._etape: EtapeBudgetaire = None
 
+        self._first_by_date_scellement_desc = False
+
     def siren(self, siren: str):
         self._siren = siren
         return self
@@ -53,13 +55,22 @@ class Totems:
         self._etape = etape
         return self
 
+    def first_by_date_de_scellement_desc(self):
+        self._first_by_date_scellement_desc = True
+        return self
+
     @TotemsError.wrap_fn
     def request(self):
         totem_x_metadata = _liste_totem_with_metadata(self._siren)
         pred = _budget_metadata_predicate(
             annee=self._annee, siret=self._siret, etape=self._etape
         )
-        totems_and_metadata = { x for x in totem_x_metadata if pred(x.metadata) }
+        totems_and_metadata = {x for x in totem_x_metadata if pred(x.metadata)}
+
+        if self._first_by_date_scellement_desc and len(totems_and_metadata) > 0:
+            key_fn = lambda x: x.metadata.scellement.date
+            s = sorted(totems_and_metadata, key=key_fn, reverse=True)
+            totems_and_metadata = { s[0] }
 
         return ListedTotems(totems_and_metadata)
 
