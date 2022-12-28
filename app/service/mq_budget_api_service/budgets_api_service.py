@@ -3,7 +3,7 @@ import logging
 from typing import Optional
 
 from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
-from app.shared.performance import profiling_to,warn_when_time_above
+from app.shared.performance import warn_when_time_above
 
 from app.service.budget import (
     EtapeBudgetaire, Totems,
@@ -137,7 +137,7 @@ class BudgetsApiService:
         if (
             EtapeBudgetaire.PRIMITIF == etape or EtapeBudgetaire.COMPTE_ADMIN == etape
         ) and nb_documents_budgetaires > 1:
-            msg = f"On ne devrait avoir qu'un seul document pour l'étape budgetaire primitive."
+            msg = f"On ne devrait avoir qu'un seul document pour {annee}, {siret}, {etape_str}"
             self.__logger.warning(msg)
 
         lignes: list[LigneBudgetMarqueBlancheApi] = []

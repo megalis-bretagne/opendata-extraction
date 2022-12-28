@@ -59,13 +59,13 @@ class Totems:
         pred = _budget_metadata_predicate(
             annee=self._annee, siret=self._siret, etape=self._etape
         )
-        totems_and_metadata = [x for x in totem_x_metadata if pred(x.metadata)]
+        totems_and_metadata = { x for x in totem_x_metadata if pred(x.metadata) }
 
         return ListedTotems(totems_and_metadata)
 
 
 class ListedTotems:
-    def __init__(self, totem_x_metadata: list[TotemMetadataTuple]) -> None:
+    def __init__(self, totem_x_metadata: set[TotemMetadataTuple]) -> None:
         self._totem_x_metadata = totem_x_metadata
         self.convertisseur = make_or_get_budget_convertisseur()
 
