@@ -1,4 +1,4 @@
-from flask_restx import Resource,fields
+from flask_restx import Resource, fields
 
 from . import budgets_api_ns
 from . import _API_SERVICE
@@ -53,10 +53,11 @@ api_get_pdc_info_response = budgets_api_ns.model(
     },
 )
 
-@budgets_api_ns.route("/plans_de_comptes/<int:annee>/<int:siret>")
+
+@budgets_api_ns.route("/plans_de_comptes/<int:annee>/<string:nomenclature>")
 class PlanDeComptesCtrl(Resource):
-    @budgets_api_ns.response(200, 'Success', model = api_get_pdc_info_response)
-    def get(self, siret: int, annee: int):
-        pdc_info = _API_SERVICE.retrieve_pdc_info(annee, siret)
+    @budgets_api_ns.response(200, "Success", model=api_get_pdc_info_response)
+    def get(self, annee: int, nomenclature: str):
+        pdc_info = _API_SERVICE.retrieve_pdc_info_nomenclature(annee, nomenclature)
         answer = pdc_info.to_api_answer()
         return answer

@@ -96,6 +96,10 @@ class LigneBudgetMarqueBlancheApi:
     recette: bool
     montant: float
 
+@dataclass()
+class PdcInfo:
+    annee: str
+    nomenclature: str
 
 @dataclass()
 class GetBudgetMarqueBlancheApiResponse:
@@ -104,6 +108,7 @@ class GetBudgetMarqueBlancheApiResponse:
     etape: EtapeBudgetaire
     annee: int
     siret: str
+    pdc_info: PdcInfo
     lignes: list[LigneBudgetMarqueBlancheApi]
 
     def __serialize_v(self, v):

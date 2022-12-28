@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 
 from typing import Optional
 
@@ -6,12 +7,10 @@ from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
 from app.shared.performance import warn_when_time_above
 from app.shared.client_api_sirene import Etablissement
 
-from app.service.budget import (
-    EtapeBudgetaire,
-    Totems,
-)
+from app.service.budget import EtapeBudgetaire, Totems, pdc_path
 
 from .budgets_data_structures import (
+    PdcInfo,
     GetBudgetMarqueBlancheApiResponse,
     InfoBudgetDisponiblesApi,
     InfosEtablissement,
@@ -92,31 +91,19 @@ class BudgetsApiService:
 
     @warn_when_time_above(5)
     @_wrap_in_budget_marque_blanche_api_ex
-    def retrieve_pdc_info(
-        self,
-        annee: int,
-        siret: str,
-    ):
-        siren = str(extraire_siren(siret))
-
+    def retrieve_pdc_info_nomenclature(self, annee: int, nomenclature: str):
         self.__logger.info(
-            f"Récupération du plan de compte pour le siret {siret} et l'année {annee}."
+            f"Récupération du plan de compte pour l'année {annee}"
+            f" et la nomenclature {nomenclature}."
         )
-
-        totems = Totems(siren).annee(annee).siret(siret).request()
-        totems.ensure_has_unique_pdc()
-        plan_de_comptes = totems.first_pdc
-
-        answer = pdc_path_to_api_response(plan_de_comptes)
+        pdc_p = pdc_path(annee, nomenclature)
+        answer = pdc_path_to_api_response(pdc_p)
         return answer
 
     @warn_when_time_above(5)
     @_wrap_in_budget_marque_blanche_api_ex
     @_prune_montant_a_zero
-    def retrieve_budget_info(
-        self, annee: int, siret: str, etape_str: str
-    ) -> GetBudgetMarqueBlancheApiResponse:
-
+    def retrieve_budget_info(self, annee: int, siret: str, etape_str: str):
         etape = _etape_from_str(etape_str)
         siren = str(extraire_siren(siret))
 
@@ -132,6 +119,10 @@ class BudgetsApiService:
 
         if not totems.liste:
             raise AucuneDonneeBudgetError()
+
+        totems.ensure_has_unique_pdc()
+        pdc_p = totems.first_pdc_path
+        pdc_annee, pdc_nomenclature = self._pdc_info_from_path(pdc_p)
 
         nb_documents_budgetaires = len(totems.liste)
         msg = f"On retient {nb_documents_budgetaires} documents budgetaire pour la requête"
@@ -158,9 +149,20 @@ class BudgetsApiService:
         return GetBudgetMarqueBlancheApiResponse(
             etape=etape,
             annee=annee,
+            pdc_info=PdcInfo(pdc_annee, pdc_nomenclature),
             siret=str(siret),
             lignes=lignes,
         )
+
+    def _pdc_info_from_path(self, pdc_p: Path):
+        pdc_p
+
+        annee = pdc_p.parent.parent.parent.name
+        folder1 = pdc_p.parent.parent.name
+        folder2 = pdc_p.parent.name
+        nomenclature = f"{folder1}-{folder2}"
+
+        return annee, nomenclature
 
     def _parse_ligne_scdl(
         self,

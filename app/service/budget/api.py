@@ -3,8 +3,9 @@ import functools
 
 from pathlib import Path
 from typing import Optional
-from yatotem2scdl import EtapeBudgetaire, ConvertisseurTotemBudget, Options
+from yatotem2scdl import EtapeBudgetaire, ConvertisseurTotemBudget
 
+from app.shared.constants import PLANS_DE_COMPTES_PATH
 
 from .functions import (
     TotemMetadataTuple,
@@ -14,6 +15,14 @@ from .functions import (
     _get_or_make_scdl_from_totem,
 )
 
+def pdc_path(annee: int, nomenclature: str):
+    nom_folders = nomenclature.split('-')
+    path =  PLANS_DE_COMPTES_PATH / str(annee)
+    for fd in nom_folders:
+        path = path / fd
+    path = path / "planDeCompte.xml"
+    
+    return path
 
 class TotemsError(Exception):
     @staticmethod
@@ -28,7 +37,6 @@ class TotemsError(Exception):
                 raise TotemsError("Erreur inconnue") from e
 
         return inner
-
 
 class Totems:
     def __init__(self, siren: str) -> None:
@@ -105,7 +113,7 @@ class ListedTotems:
         return self._pdcs
 
     @property
-    def first_pdc(self):
+    def first_pdc_path(self):
         return next(iter(self._pdcs))
 
     @property
