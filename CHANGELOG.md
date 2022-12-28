@@ -19,6 +19,8 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - `watcher/archives/ANNEE/MOIS/JOUR/ID_D-TASK_DI.zip`
   - `watcher/erreurs/ID_D-TASK_DI.zip`
 - [gh-29](https://https://github.com/megalis-bretagne/opendata-extraction/issues/29) Ajout de l'ID_D dans la table de publication
+- Les tests unitaires sont uniquement joués pour la branche `master`
+- On désactive les warning de waitress concernant sa task queue
 
 ## [2.0.11] - 2022-12-07
 
