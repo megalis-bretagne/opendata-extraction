@@ -21,6 +21,10 @@ def pdc_path(annee: int, nomenclature: str):
     for fd in nom_folders:
         path = path / fd
     path = path / "planDeCompte.xml"
+
+    path = path.resolve(strict = True)
+
+    assert PLANS_DE_COMPTES_PATH in path.parents, f"{path} n'est pas fils de {PLANS_DE_COMPTES_PATH}"
     
     return path
 
