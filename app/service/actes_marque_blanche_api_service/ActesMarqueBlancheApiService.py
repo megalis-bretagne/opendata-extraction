@@ -71,14 +71,14 @@ class ActesMarqueBlancheApiService:
                         _date_publication = doc['date_de_publication'][0]
                         _url = doc['filepath'][0]
                         _content_type = doc['content_type'][0]
-                        _type_autre_detail = doc['type_autre_detail'] if 'type_autre_detail' in doc else ""
+                        _nature_autre_detail = doc['nature_autre_detail'] if 'nature_autre_detail' in doc else ""
                         _blockchain_transaction_hash = doc[
                             'blockchain_transaction_hash'] if 'blockchain_transaction_hash' in doc else ""
                         _blockchain_url = doc['blockchain_url'] if 'blockchain_url' in doc else ""
                         _resultat_recherche = True
 
                         _acte = Acte(hash=_hash, siren=_siren, publication_id=_publication_id, id=_id, type=_type,
-                                     type_autre_detail=_type_autre_detail, classification_code=_classification_code,
+                                     nature_autre_detail=_nature_autre_detail, classification_code=_classification_code,
                                      classification_libelle=_classification_libelle, objet=_objet,
                                      id_publication=_id_publication,
                                      date_acte=_date_acte, date_publication=_date_publication, url=_url,
@@ -132,7 +132,7 @@ class ActesMarqueBlancheApiService:
                     'cursorMark': cursorMark,
                     'sort': 'date_de_publication desc,id desc',
                     'fl': 'hash,publication_id,id,documenttype,classification_code,classification_nom,description,'
-                          'publication_id,date,date_de_publication,filepath,typology,content_type,type_autre_detail,'
+                          'publication_id,date,date_de_publication,filepath,typology,content_type,nature_autre_detail,'
                           'blockchain_transaction_hash,blockchain_url,siren,score'
 
                 })
@@ -145,7 +145,7 @@ class ActesMarqueBlancheApiService:
                     'cursorMark': cursorMark,
                     'sort': 'score desc,id desc',
                     'fl': 'hash,publication_id,id,documenttype,classification_code,classification_nom,description,'
-                          'publication_id,date,date_de_publication,filepath,typology,content_type,type_autre_detail,'
+                          'publication_id,date,date_de_publication,filepath,typology,content_type,nature_autre_detail,'
                           'blockchain_transaction_hash,blockchain_url,siren,score'
 
                 })
@@ -241,7 +241,7 @@ class ActesMarqueBlancheApiService:
             'start': 0,
             'fq': 'NOT typology:PJ AND est_publie:true',
             'fl': 'hash,publication_id,id,documenttype,classification_code,classification_nom,description,'
-                  'publication_id,date,date_de_publication,filepath,typology,content_type,type_autre_detail,'
+                  'publication_id,date,date_de_publication,filepath,typology,content_type,nature_autre_detail,'
                   'blockchain_transaction_hash,blockchain_url,siren,score'
         })
         for doc in result_annexes.docs:
@@ -259,14 +259,14 @@ class ActesMarqueBlancheApiService:
             _url = doc['filepath'][0]
             _typologie = doc['typology'][0]
             _content_type = doc['content_type'][0]
-            _type_autre_detail = doc['type_autre_detail'] if 'type_autre_detail' in doc else ""
+            _nature_autre_detail = doc['nature_autre_detail'] if 'nature_autre_detail' in doc else ""
             _blockchain_transaction_hash = doc[
                 'blockchain_transaction_hash'] if 'blockchain_transaction_hash' in doc else ""
             _blockchain_url = doc['blockchain_url'] if 'blockchain_url' in doc else ""
             _resultat_recherche = False
 
             _acte = Acte(hash=_hash, siren=_siren, publication_id=_publication_id, id=_id, type=_type,
-                         type_autre_detail=_type_autre_detail, classification_code=_classification_code,
+                         nature_autre_detail=_nature_autre_detail, classification_code=_classification_code,
                          classification_libelle=_classification_libelle, objet=_objet, id_publication=_id_publication,
                          date_acte=_date_acte, date_publication=_date_publication, url=_url, typologie=_typologie,
                          content_type=_content_type, blockchain_transaction_hash=_blockchain_transaction_hash,
