@@ -17,6 +17,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - API MQ budgets: Au cas ou on a plusieurs documents pour BP ou CA. On prend le plus récent par date de scellement.
 - API MQ budgets: La lecture de données budgetaires génère l'écriture du scdl sur disque dans `private/publications`
 - API MQ Delibs: les annexes renvoient leurs content-type
+- Au sein de solr, documenttype plus précis pour les documents hors prefecture. Documents à réindexer.
 - S'assure que le champ `objet` des metadata pastell est bien encodé en `latin-1`
 - Désormais, les archives/erreurs suivent cette nomenclature:
   - `watcher/archives/ANNEE/MOIS/JOUR/ID_D-TASK_DI.zip`

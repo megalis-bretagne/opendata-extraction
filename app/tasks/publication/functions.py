@@ -170,13 +170,32 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     data["literal.description"] = publication.objet
     data["literal.nature_autre_detail"] = publication.nature_autre_detail
     data["literal.documentidentifier"] = publication.numero_de_lacte
-    data["literal.documenttype"] = publication.acte_nature
+    data["literal.documenttype"] = _documenttype(publication)
     data["literal.classification"] = publication.classification_code + " " + publication.classification_nom,
     data["literal.classification_code"] = publication.classification_code,
     data["literal.classification_nom"] = publication.classification_nom,
     data["literal.typology"] = typology,
     # PARTIE RESULT API SIRENE
     data["literal.siren"] = publication.siren
+
+def _documenttype(publication: Publication):
+    acte_nature = str(publication.acte_nature)
+    nature_autre_detail = str(publication.nature_autre_detail)
+    if acte_nature != "7": # 7 - hors prefecture
+        return acte_nature
+    
+    # Hors prefecture
+    # LD: 71 - Liste des délibérations
+    # AT: 72 - Arrêté Temporaire
+    # PV: 73 - Procès Verbal
+    if nature_autre_detail == "LD":
+        return "71"
+    elif nature_autre_detail == "AT":
+        return "72"
+    elif nature_autre_detail == "PV":
+        return "73"
+    else:
+        return "7"
 
 
 def init_publication(metadataPastell, id_d: str):
