@@ -6,6 +6,8 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.0.12] - 2023-01-10
+
 ### Added
 
 - Ajout de métriques prometheus.
