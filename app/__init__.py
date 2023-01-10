@@ -3,6 +3,7 @@
 import logging
 
 from flask import Flask
+from prometheus_flask_exporter import PrometheusMetrics
 
 from app.models.flask_sqlalchemy import db
 from app.models.flask_migrate import migrate
@@ -10,6 +11,7 @@ from app.models.flask_migrate import migrate
 from flask_cors import CORS
 from flask_oidc import OpenIDConnect
 oidc = OpenIDConnect()
+metrics = PrometheusMetrics.for_app_factory(group_by='endpoint')
 
 from app.commands.watcher import watcher_cmd
 
@@ -80,6 +82,9 @@ def create_app(extra_config_settings={},oidcEnable=True):
             'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
         })
         oidc.init_app(app)
+    
+    #Prometheus metrics
+    metrics.init_app(app)
     
     #
     # CLI

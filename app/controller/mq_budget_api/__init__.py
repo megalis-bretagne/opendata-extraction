@@ -25,7 +25,9 @@ budgets_api_ns = Namespace(
 )
 budgets_api.add_namespace(budgets_api_ns)
 
+from . import error_handling
 from . import ResourcesBudgetairesDisponiblesApi
 from . import DonneesBudgetairesApi
 from . import PlansDeComptesApi
 from . import ParametrageApi
+from . import BudgetAdminApi

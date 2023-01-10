@@ -1,24 +1,20 @@
 import logging
-
-from typing import Callable, Optional
-
-from app.models.publication_model import Acte, Publication
-
-from yatotem2scdl.conversion import EtapeBudgetaire, TotemBudgetMetadata
-
 from pathlib import Path
-from app.shared.constants import PLANS_DE_COMPTES_PATH
-from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
 
+from typing import Optional
+
+from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
+from app.shared.performance import warn_when_time_above
 from app.shared.client_api_sirene import Etablissement
 
+from app.service.budget import EtapeBudgetaire, Totems, pdc_path
+
 from .budgets_data_structures import (
+    PdcInfo,
     GetBudgetMarqueBlancheApiResponse,
-    GetInfoPlanDeComptesBudgetMarqueBlancheApi,
     InfoBudgetDisponiblesApi,
     InfosEtablissement,
     LigneBudgetMarqueBlancheApi,
-    _TotemAndMetadata,
     RessourcesBudgetairesDisponibles,
 )
 from .budgets_exceptions import (
@@ -32,13 +28,10 @@ from .budgets_functions import (
     _api_sirene_etablissement_siege,
     _api_sirene_etablissements,
     _wrap_in_budget_marque_blanche_api_ex,
-    _to_scdl_csv_reader,
-    _extraire_pdc_unique,
     _prune_montant_a_zero,
     extraire_siren,
+    pdc_path_to_api_response,
 )
-
-from ._ExtracteurInfoPdc import _ExtracteurInfoPdc
 
 
 class BudgetsApiService:
@@ -46,6 +39,7 @@ class BudgetsApiService:
         self.__logger = logging.getLogger(self.__class__.__name__)
         self.convertisseur = make_or_get_budget_convertisseur()
 
+    @warn_when_time_above(5)
     @_wrap_in_budget_marque_blanche_api_ex
     def ressources_budgetaires_disponibles(
         self, siren: str
@@ -56,9 +50,9 @@ class BudgetsApiService:
         )
 
         infos_etablissements = self._extraire_infos_etab_siret(siren)
-        _infos_etab_sirets = { siret for siret in infos_etablissements.keys() }
+        _infos_etab_sirets = {siret for siret in infos_etablissements.keys()}
 
-        all_totems_and_metadata = self._liste_totem_with_metadata(siren)
+        all_totems_and_metadata = Totems(siren).request().liste
         ressources: RessourcesBudgetairesDisponibles = {}
 
         _resources_sirets = set()
@@ -70,9 +64,9 @@ class BudgetsApiService:
 
             if not siret in _infos_etab_sirets:
                 self.__logger.debug(
-                        f"Des données budgetaires existent pour le siret {siret} "
-                        f"mais aucune données concernant l'établissement (probablement non diffusible), "
-                        f"nous ne remontons donc pas les données budgetaires."
+                    f"Des données budgetaires existent pour le siret {siret} "
+                    f"mais aucune données concernant l'établissement (probablement non diffusible), "
+                    f"nous ne remontons donc pas les données budgetaires."
                 )
                 continue
 
@@ -95,40 +89,21 @@ class BudgetsApiService:
         )
         return answer
 
+    @warn_when_time_above(5)
     @_wrap_in_budget_marque_blanche_api_ex
-    def retrieve_pdc_info(
-        self,
-        annee: int,
-        siret: str,
-    ):
-
-        siren = str(extraire_siren(siret))
-
+    def retrieve_pdc_info_nomenclature(self, annee: int, nomenclature: str):
         self.__logger.info(
-            f"Récupération du plan de compte pour le siret {siret} et l'année {annee}."
+            f"Récupération du plan de compte pour l'année {annee}"
+            f" et la nomenclature {nomenclature}."
         )
+        pdc_p = pdc_path(annee, nomenclature)
+        answer = pdc_path_to_api_response(pdc_p)
+        return answer
 
-        all_totems_and_metadata = self._liste_totem_with_metadata(siren)
-        pred = self._budget_metadata_predicate(annee, siret)
-        totems_and_metadata = [x for x in all_totems_and_metadata if pred(x.metadata)]
-
-        ls_metadata = [x.metadata for x in totems_and_metadata]
-
-        plan_de_comptes = _extraire_pdc_unique(ls_metadata)
-
-        extracteur = _ExtracteurInfoPdc(plan_de_comptes)
-        references_fonctionnelles = extracteur.extraire_references_fonctionnelles()
-        comptes_nature = extracteur.extraire_comptes_nature()
-        return GetInfoPlanDeComptesBudgetMarqueBlancheApi(
-            references_fonctionnelles, comptes_nature
-        )
-
+    @warn_when_time_above(5)
     @_wrap_in_budget_marque_blanche_api_ex
     @_prune_montant_a_zero
-    def retrieve_budget_info(
-        self, annee: int, siret: str, etape_str: str
-    ) -> GetBudgetMarqueBlancheApiResponse:
-
+    def retrieve_budget_info(self, annee: int, siret: str, etape_str: str):
         etape = _etape_from_str(etape_str)
         siren = str(extraire_siren(siret))
 
@@ -137,36 +112,34 @@ class BudgetsApiService:
             f" l'année {annee} et l'étape {etape}"
         )
 
-        all_totem_with_metadata = self._liste_totem_with_metadata(siren)
-        pred = self._budget_metadata_predicate(annee, siret, etape)
-        totems_and_metadata = [x for x in all_totem_with_metadata if pred(x.metadata)]
+        totems = Totems(siren).annee(annee).siret(siret).etape(etape)
+        if EtapeBudgetaire.PRIMITIF == etape or EtapeBudgetaire.COMPTE_ADMIN == etape:
+            totems = totems.first_by_date_de_scellement_desc()
+        totems = totems.request()
 
-        if not totems_and_metadata:
+        if not totems.liste:
             raise AucuneDonneeBudgetError()
 
-        nb_documents_budgetaires = len(totems_and_metadata)
+        totems.ensure_has_unique_pdc()
+        pdc_p = totems.first_pdc_path
+        pdc_annee, pdc_nomenclature = self._pdc_info_from_path(pdc_p)
+
+        nb_documents_budgetaires = len(totems.liste)
         msg = f"On retient {nb_documents_budgetaires} documents budgetaire pour la requête"
         self.__logger.info(msg)
-
-        if (EtapeBudgetaire.PRIMITIF == etape or EtapeBudgetaire.COMPTE_ADMIN == etape) \
-            and nb_documents_budgetaires > 1:
-            msg = f"On ne devrait avoir qu'un seul document pour l'étape budgetaire primitive."
-            self.__logger.warning(msg)
 
         lignes: list[LigneBudgetMarqueBlancheApi] = []
         nb_ignorees: int = 0
 
-        for (xml, _) in totems_and_metadata:
-            reader = _to_scdl_csv_reader(self.convertisseur, xml)
-            for _, row in enumerate(reader):
-                try:
-                    ligne = self._parse_ligne_scdl(row, etape)
-                    if ligne:
-                        lignes.append(ligne)
-                    else:
-                        nb_ignorees += 1
-                except _ImpossibleParserLigne as err:
-                    raise ImpossibleDexploiterBudgetError(xml, err.message)
+        for row in totems.vers_scdl_rows():
+            try:
+                ligne = self._parse_ligne_scdl(row, etape)
+                if ligne:
+                    lignes.append(ligne)
+                else:
+                    nb_ignorees += 1
+            except _ImpossibleParserLigne as err:
+                raise ImpossibleDexploiterBudgetError(err.message)
 
         if nb_ignorees > 0:
             self.__logger.warning(
@@ -176,9 +149,20 @@ class BudgetsApiService:
         return GetBudgetMarqueBlancheApiResponse(
             etape=etape,
             annee=annee,
+            pdc_info=PdcInfo(pdc_annee, pdc_nomenclature),
             siret=str(siret),
             lignes=lignes,
         )
+
+    def _pdc_info_from_path(self, pdc_p: Path):
+        pdc_p
+
+        annee = pdc_p.parent.parent.parent.name
+        folder1 = pdc_p.parent.parent.name
+        folder2 = pdc_p.parent.name
+        nomenclature = f"{folder1}-{folder2}"
+
+        return annee, nomenclature
 
     def _parse_ligne_scdl(
         self,
@@ -237,7 +221,7 @@ class BudgetsApiService:
                 self.__logger.warn("Colonne MTPREV vide pour budget primitif")
                 return 0
             return float(col_mtprev)
-        
+
         if etape == EtapeBudgetaire.DECISION_MODIF:
             propnouv = float(col_mtpropnouv) if col_mtpropnouv else 0
             mtrarprec = float(col_mtrarprec) if col_mtrarprec else 0
@@ -256,74 +240,6 @@ class BudgetsApiService:
             for e in etablissements
         }
         return infos_etablissements
-
-    def _liste_totem_with_metadata(
-        self,
-        siren: str,
-    ) -> list[_TotemAndMetadata]:
-        """Liste les chemins des fichiers totems ainsi que leurs metadonnées associées"""
-
-        def retrieve_metadata(xml_fp):
-            return self.convertisseur.totem_budget_metadata(
-                xml_fp, PLANS_DE_COMPTES_PATH
-            )
-
-        publication_actes = (
-            Publication.query
-            # nature_acte = 5 => budget, etat=1 => est publié, date_budget lors des traitement des XML budget
-            .filter(
-                Publication.siren == siren,
-                Publication.acte_nature == 5,
-                Publication.etat == 1,
-                Publication.date_budget != None,
-                Publication.est_supprime == False,
-            )
-            .join(Acte, Acte.publication_id == Publication.id)
-            .all()
-        )
-        # fmt: off
-        totem_xml_filepaths = (
-            Path(acte.path) 
-            for p in publication_actes 
-            for acte in p.actes
-        )
-        # fmt: on
-
-        results: list[_TotemAndMetadata] = []
-        for xml_fp in totem_xml_filepaths:
-            metadata = retrieve_metadata(xml_fp)
-            results.append(_TotemAndMetadata(xml_fp, metadata))
-
-        return results
-
-    def _budget_metadata_predicate(
-        self,
-        annee: int,
-        siret: str,
-        etape: EtapeBudgetaire = None,
-    ) -> Callable[[TotemBudgetMetadata], bool]:
-        def predicate(metadata: TotemBudgetMetadata):
-            _siret = int(siret) if siret is not None else siret
-
-            if _siret and _siret != metadata.id_etablissement:
-                self.__logger.debug(
-                    f"On exclut {metadata} car {_siret} != {metadata.id_etablissement}"
-                )
-                return False
-            if annee and annee != metadata.annee_exercice:
-                self.__logger.debug(
-                    f"On exclut {metadata} car {annee} != {metadata.annee_exercice}"
-                )
-                return False
-            if etape and etape != metadata.etape_budgetaire:
-                self.__logger.debug(
-                    f"On exclut {metadata} car {etape} != {metadata.etape_budgetaire}"
-                )
-                return False
-
-            return True
-
-        return predicate
 
     def _api_sirene_etablissement_siege(self, siren: str) -> Etablissement:
         return _api_sirene_etablissement_siege(siren, self.__logger)

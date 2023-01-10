@@ -33,7 +33,7 @@ acte = actes_api.model(
         'publication_id': fields.Integer,
         'id': fields.String,
         'type': fields.String,
-        'type_autre_detail': fields.String,
+        'nature_autre_detail': fields.String,
         'classification_code': fields.String,
         'classification_libelle': fields.String,
         'objet': fields.DateTime,

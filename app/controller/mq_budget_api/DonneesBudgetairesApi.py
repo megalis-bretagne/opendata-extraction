@@ -1,4 +1,4 @@
-from flask_restx import Resource,fields
+from flask_restx import Resource, fields
 
 import app.service.mq_budget_api_service as service
 
@@ -27,11 +27,20 @@ api_ligne_budget = budgets_api_ns.model(
     },
 )
 
+pdc_info = budgets_api_ns.model(
+    "PDCInfo",
+    {
+        "annee": fields.String(description="Année de la nomenclature"),
+        "nomenclature": fields.String(description="Code de la nomenclature du PDC"),
+    },
+)
+
 api_get_donnees_response = budgets_api_ns.model(
     "DonneesBudget",
     {
         "etape": etape_model,
         "annee": fields.Integer(description="Année de l'exerice.", required=True),
+        "pdc_info": fields.Nested(pdc_info),
         "siret": fields.Integer(
             description="Numéro SIRET de l'établissement", required=False
         ),
@@ -42,12 +51,13 @@ api_get_donnees_response = budgets_api_ns.model(
 
 @budgets_api_ns.route("/donnees_budgetaires/<int:annee>/<int:siret>/<string:etape>")
 class DonneesBudgetCtrl(Resource):
-    @budgets_api_ns.marshal_with(api_get_donnees_response, code=200)
+    @budgets_api_ns.response(200, "Success", model=api_get_donnees_response)
     def get(
         self,
         siret: int,
         annee: int,
         etape: str,
     ) -> service.GetBudgetMarqueBlancheApiResponse:
-        response = _API_SERVICE.retrieve_budget_info(annee, siret, etape)
-        return response
+        budget_info = _API_SERVICE.retrieve_budget_info(annee, siret, etape)
+        answer = budget_info.to_api_answer()
+        return answer

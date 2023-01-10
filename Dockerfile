@@ -15,4 +15,4 @@ COPY manage.py ./
 
 EXPOSE 80
 
-CMD ["waitress-serve", "--port=80", "app.api_app.api_serve:app"]
+CMD ["waitress-serve", "--threads=4", "--port=80", "app.api_app.api_serve:app"]

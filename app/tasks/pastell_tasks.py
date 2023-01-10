@@ -4,7 +4,7 @@ import requests
 from flask import current_app
 from requests.auth import HTTPBasicAuth
 from app import celeryapp
-from app.tasks import PastellApiException
+from app.tasks.utils import PastellApiException
 
 celery = celeryapp.celery
 

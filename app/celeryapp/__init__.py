@@ -15,7 +15,7 @@ CELERY_TASK_LIST = [
 ]
 
 db_session = None
-celery = None
+celery: Celery = None
 
 
 def create_celery_app(_app=None):

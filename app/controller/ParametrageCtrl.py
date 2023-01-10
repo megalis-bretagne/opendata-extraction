@@ -68,7 +68,7 @@ class ParametrageCtrl(Resource):
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     def post(self, siren):
         from app.models.parametrage_model import Parametrage
-        from app.tasks.publication_tasks import gestion_activation_open_data
+        from app.tasks.publication import gestion_activation_open_data
         from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
         from app import db
         args = arguments_parametrage_controller.parse_args()

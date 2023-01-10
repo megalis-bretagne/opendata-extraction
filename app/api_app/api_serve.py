@@ -7,5 +7,6 @@ import logging
 from app import create_app
 
 logging.basicConfig(level=logging.WARN)
+logging.getLogger("waitress.queue").setLevel(logging.ERROR)
 
 app = create_app()

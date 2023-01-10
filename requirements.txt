@@ -1,4 +1,4 @@
-yatotem2scdl==0.0.18
+yatotem2scdl==0.0.21
 flask==1.1.4
 flask-cors==3.0.10
 flask-oidc===1.4.0
@@ -7,6 +7,7 @@ celery==5.0.5
 sqlalchemy==1.4.17
 sqlalchemy_utils==0.37.6
 flask-restx==0.4.0
+prometheus-flask-exporter~=0.21
 pymysql==1.0.2
 redis==3.5.3
 Flask-Migrate==3.0.1

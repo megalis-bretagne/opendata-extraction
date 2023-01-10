@@ -17,7 +17,8 @@ class Annexe:
             'id': self.id,
             'url': self.url,
             'hash': self.hash,
-            'resultat_recherche': self.resultat_recherche
+            'content_type': self.content_type,
+            'resultat_recherche': self.resultat_recherche,
         }
 
 
@@ -29,7 +30,7 @@ class Acte:
     publication_id: str
     id: str
     type: str
-    type_autre_detail: str
+    nature_autre_detail: str
     classification_code: str
     classification_libelle: str
     objet: str
@@ -52,7 +53,7 @@ class Acte:
             'publication_id': self.publication_id,
             'id': self.id,
             'type': self.type,
-            'type_autre_detail': self.type_autre_detail,
+            'nature_autre_detail': self.nature_autre_detail,
             'classification_code': self.classification_code,
             'classification_libelle': self.classification_libelle,
             'objet': self.objet,

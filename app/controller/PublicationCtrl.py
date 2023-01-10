@@ -107,7 +107,7 @@ class PublicationPublierCtrl(Resource):
     def put(self, id):
         from app.models.publication_model import Publication
         from app import db
-        from app.tasks.publication_tasks import publier_acte_task
+        from app.tasks.publication import publier_acte_task
         try:
             db_sess = db.session
             publication = Publication.query.filter(Publication.id == id).one()
@@ -132,7 +132,7 @@ class PublicationDepublierCtrl(Resource):
     def put(self, id):
         from app.models.publication_model import Publication
         from app import db
-        from app.tasks.publication_tasks import depublier_acte_task
+        from app.tasks.publication import depublier_acte_task
         try:
             db_sess = db.session
             publication = Publication.query.filter(Publication.id == id).one()
@@ -159,7 +159,7 @@ class PublicationModifierCtrl(Resource):
     def put(self, id):
         from app.models.publication_model import Publication
         from app import db
-        from app.tasks.publication_tasks import modifier_acte_task
+        from app.tasks.publication import modifier_acte_task
         try:
             db_sess = db.session
             publication = Publication.query.filter(Publication.id == id).one()
@@ -248,7 +248,7 @@ class PublicationCtrl(Resource):
     def delete(self, id):
         from app.models.publication_model import Publication
         from app import db
-        from app.tasks.publication_tasks import depublier_acte_task
+        from app.tasks.publication import depublier_acte_task
         try:
             db_sess = db.session
             publication = Publication.query.filter(Publication.id == id).one()

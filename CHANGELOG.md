@@ -6,6 +6,26 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Ajout de métriques prometheus.
+- BDD: Ajout d'un champ `pastell_id_d` dans la table `publication` [sql migration](./app/migrate/00007_add_pastell_id_d_column.sql)
+
+
+### Changed
+
+- API MQ budgets: Au cas ou on a plusieurs documents pour BP ou CA. On prend le plus récent par date de scellement.
+- API MQ budgets: La lecture de données budgetaires génère l'écriture du scdl sur disque dans `private/publications`
+- API MQ Delibs: les annexes renvoient leurs content-type
+- Au sein de solr, documenttype plus précis pour les documents hors prefecture. Documents à réindexer.
+- S'assure que le champ `objet` des metadata pastell est bien encodé en `latin-1`
+- Désormais, les archives/erreurs suivent cette nomenclature:
+  - `watcher/archives/ANNEE/MOIS/JOUR/ID_D-TASK_DI.zip`
+  - `watcher/erreurs/ID_D-TASK_DI.zip`
+- [gh-29](https://https://github.com/megalis-bretagne/opendata-extraction/issues/29) Ajout de l'ID_D dans la table de publication
+- Les tests unitaires sont uniquement joués pour la branche `master`
+- On désactive les warning de waitress concernant sa task queue
+
 ## [2.0.11] - 2022-12-07
 
 ### Added 
