@@ -6,6 +6,12 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- API MQ budgets: Ajout des plans de comptes pour l'année 2023
+- API MQ actes: Ajout de robustesse lors de la recherche, si pas d'actes lié à l'annexe alors on ignore l'annexe 
+- publication task: Correction des recherches solr, utilisation du mode cursor lors des recherches- https://dev.sib.fr/bts/browse/MEGALIS-294
+
 ## [2.0.12] - 2023-01-10
 
 ### Added
