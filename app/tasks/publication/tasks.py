@@ -104,16 +104,13 @@ def modifier_acte_task(idPublication):
     # on récupère la publication à publier en BDD
     publication = Publication.query.filter(Publication.id == idPublication).one()
     solr = solr_connexion()
-
     try:
-        result = solr.search(q='publication_id : ' + str(idPublication))
+        result = solr.search(q='publication_id : ' + str(idPublication), sort='id ASC', cursorMark="*")
+        for doc_res in result:
+            doc_res['description'][0] = publication.objet
+            solr.add(doc_res)
 
-        if (result != 0 and len(result.docs) > 0):
-            # Mise à jour dans Solr
-            for doc_res in result.docs:
-                doc_res['description'][0] = publication.objet
-            solr.add(result.docs)
-            return {'status': 'OK', 'message': 'modification acte réalisée',
+        return {'status': 'OK', 'message': 'modification acte réalisée',
                     'publication id': publication.id}
     except Exception as e:
         raise e
@@ -134,8 +131,8 @@ def publier_acte_task(idPublication, reindexationSolr=False):
     # CAS d'une republication si deja présent dans solr alors on change de flag est_publié et on remets les fichiers dans le dossier marque blanche
     solr = solr_connexion()
     try:
-        result = solr.search(q='publication_id : ' + str(idPublication))
-        for doc_res in result.docs:
+        result = solr.search(q='publication_id : ' + str(idPublication), sort='id ASC', cursorMark="*")
+        for doc_res in result:
             solr.delete(doc_res['id'])
     except Exception as e:
         result = 0
@@ -219,8 +216,8 @@ def publier_blockchain_task(idPublication):
 
         solr = solr_connexion()
         try:
-            result = solr.search(q='publication_id : ' + str(idPublication))
-            for doc_res in result.docs:
+            result = solr.search(q='publication_id : ' + str(idPublication), sort='id ASC', cursorMark="*")
+            for doc_res in result:
                 solr.delete(doc_res['id'])
         except Exception as e:
             result = 0
@@ -239,18 +236,15 @@ def depublier_acte_task(idPublication):
     if publication:
         # suppression dans solr
         solr = solr_connexion()
-        result = solr.search(q='publication_id : ' + str(idPublication))
-
-        # suppression sur le filesystem
-        for doc_res in result.docs:
+        result = solr.search(q='publication_id : ' + str(idPublication), sort='id ASC', cursorMark="*")
+        for doc_res in result:
             parseResult = urllib.parse.urlparse(str(doc_res['filepath'][0]))
             doc_res['est_publie'][0] = False
             try:
                 os.remove(current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path)
             except FileNotFoundError as e:
                 logger.info("fichier deja supprimé:" + current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path)
-
-        solr.add(result.docs)
+            solr.add(doc_res)
 
         # Mise à jour de la publication
         db_sess = db.session
@@ -292,6 +286,18 @@ def republier_all_acte_task(etat):
         # db_sess.commit()
         publier_acte_task.delay(publication.id, True)
     return {'status': 'OK', 'message': 'republier_all_acte_task '}
+
+
+@celery.task(name='depublier_all_acte_nonpublie_task')
+def depublier_all_acte_nonpublie_task():
+    db_sess = db.session
+    # etat =3: en - erreur
+    #on recherche les actes qui sont a l'état non publié en bdd
+    liste_publication = Publication.query.filter(Publication.etat == 0)
+    for publication in liste_publication:
+        depublier_acte_task.delay(publication.id)
+    return {'status': 'OK', 'message': 'depublier_all_acte_nonpublie_task '}
+
 
 @celery.task(name='republier_actes_pour_siren_task')
 def republier_actes_pour_siren_task(siren, etat):

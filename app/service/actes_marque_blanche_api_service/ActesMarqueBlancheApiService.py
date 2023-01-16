@@ -56,6 +56,7 @@ class ActesMarqueBlancheApiService:
                                 break
                 else:
                     self.__logger.info(f"AJOUT  - {str(_publication_id)} - {_typologie}")
+                    ajoutDansDicto = True
                     if _typologie != 'PJ':
 
                         # C'est un acte ACTE
@@ -93,17 +94,23 @@ class ActesMarqueBlancheApiService:
                     else:
                         _publication_id = doc['publication_id'][0]
                         _acte = self.recuperer_acte(str(_publication_id), solr)
-                        _url_annexe = doc['filepath'][0]
-                        _hash_annexe = doc['hash'][0]
-                        _id_annexe = doc['id']
-                        _content_type_annexe = doc['content_type'][0]
-                        _annexe = Annexe(hash=_hash_annexe, url=_url_annexe, id=_id_annexe,
-                                         content_type=_content_type_annexe, resultat_recherche=True)
-                        _acte.annexes.append(_annexe)
-                        liste_acte.append(_acte)
-                        self.completer_annexes(_acte, solr, _id_annexe)
 
-                    dict_Acte[_publication_id] = _acte
+                        if (_acte != None):
+                            _url_annexe = doc['filepath'][0]
+                            _hash_annexe = doc['hash'][0]
+                            _id_annexe = doc['id']
+                            _content_type_annexe = doc['content_type'][0]
+                            _annexe = Annexe(hash=_hash_annexe, url=_url_annexe, id=_id_annexe,
+                                             content_type=_content_type_annexe, resultat_recherche=True)
+                            _acte.annexes.append(_annexe)
+                            liste_acte.append(_acte)
+                            self.completer_annexes(_acte, solr, _id_annexe)
+                        else:
+                            self.__logger.warning(f"Pas d'actes dans solr pour  - {str(_publication_id)} - {_typologie}")
+                            ajoutDansDicto=False
+
+                    if ajoutDansDicto:
+                        dict_Acte[_publication_id] = _acte
 
             if (cursorMark == results.nextCursorMark):
                 termine = True
