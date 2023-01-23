@@ -80,7 +80,7 @@ class Totems:
         totems_and_metadata = {x for x in totem_x_metadata if pred(x.metadata)}
 
         if self._first_by_date_scellement_desc and len(totems_and_metadata) > 0:
-            key_fn = lambda x: x.metadata.scellement.date
+            key_fn = lambda x: x.metadata.scellement.date.astimezone()
             s = sorted(totems_and_metadata, key=key_fn, reverse=True)
             totems_and_metadata = { s[0] }
 
