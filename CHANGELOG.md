@@ -4,7 +4,14 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [2.0.14] - 2023-01-24
+
+### Fixed
+
+- [BUDGETS] bug dans comparaisons de date de scellement
+
+
+## [2.0.13] - 2023-01-18
 
 ### Changed
 
