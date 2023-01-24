@@ -4,7 +4,7 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [2.0.14] - 2023-01-24
 
 ### Fixed
 
@@ -12,6 +12,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 ## [2.0.13] - 2023-01-18
+
 ### Changed
 
 - API MQ budgets: Ajout des plans de comptes pour l'année 2023
