@@ -6,6 +6,10 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Fixed
+
+- Le watcher gère le cas ou le fichier reçu est supprimé par un acteur externe.
+
 ### Changed
 
 - Lors de la lecture des actes (`watcher/in`). Rend plus robueste l'extraction de l'`id_d`.
