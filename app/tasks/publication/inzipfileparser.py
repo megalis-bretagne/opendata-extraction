@@ -12,6 +12,8 @@ class InZipFileParser:
     Ne pas construire via constructeur. Passer par `from_pastell_ged`"""
     path: Path
 
+    separators = ["-", "_"]
+
     def dirname(self):
         return str(self.path.parent)
     
@@ -22,10 +24,14 @@ class InZipFileParser:
         """Renvoit l'id_d. Cela se base sur la convention de nommage. Pas une garantie forte."""
         probable_id_d = self.filename().removesuffix('.zip')
 
+        for sep in self.separators:
+            probable_id_d = probable_id_d.replace(sep, " ")
+        probable_id_d = probable_id_d.split()[0]
+
         if len(probable_id_d) != 7:
             logger.warning(f"Le nom du fichier représente-t-il l'id_d de pastell? ({probable_id_d})")
 
-        return self.filename().removesuffix('.zip')
+        return probable_id_d
 
     @staticmethod
     def from_pastell_ged(s_path: str):
