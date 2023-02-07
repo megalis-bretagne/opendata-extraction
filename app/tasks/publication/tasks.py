@@ -44,15 +44,15 @@ def creation_publication_task(zip_path):
     try:
         parsed = InZipFileParser.from_pastell_ged(zip_path)
         in_zip_p = parsed.path
-        id_id = parsed.id_d()
+        id_d = parsed.id_d()
 
-        archive_fp, erreur_fp = _archive_et_erreurs_fullpath(task_id, id_id)
+        archive_fp, erreur_fp = _archive_et_erreurs_fullpath(task_id, id_d)
         shutil.move(initial_archive_fp, archive_fp)
 
         workdir_str = workdir_utils.clear_persistent_workdir()
 
         workdir_p = Path(workdir_str)
-        workdir_zip_p = workdir_p / f"{id_id}-{task_id}.zip"
+        workdir_zip_p = workdir_p / f"{id_d}-{task_id}.zip"
 
         shutil.move(in_zip_p, workdir_zip_p)
 
@@ -63,7 +63,7 @@ def creation_publication_task(zip_path):
             metadata = json.load(f)
 
         metadataPastell = MetadataPastell.parse(metadata)
-        newPublication = init_publication(metadataPastell.sanitize_for_db(), id_id)
+        newPublication = init_publication(metadataPastell.sanitize_for_db(), id_d)
 
     except Exception as e:
         if in_zip_p.is_file():

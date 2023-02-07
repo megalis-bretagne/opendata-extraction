@@ -61,14 +61,18 @@ class Handler(FileSystemEventHandler):
             f"Surveillons la fin de la copie pour {path}. Cela peut prendre du temps (max {watchdog_ms}ms)..."
         )
 
-        while le_fichier_a_grossit() or not le_fichier_est_un_zip_valide():
-            if le_temps_de_surveillance_est_trop_long():
-                logger.warning(
-                    f"On met trop de temps (> {watchdog_ms}ms) à surveiller si le fichier {path} a fini d'être copié. On le traite quand même."
-                )
-                break
-            time.sleep(1)
+        try:
+            while le_fichier_a_grossit() or not le_fichier_est_un_zip_valide():
+                if le_temps_de_surveillance_est_trop_long():
+                    logger.warning(
+                        f"On met trop de temps (> {watchdog_ms}ms) à surveiller si le fichier {path} a fini d'être copié. On le traite quand même."
+                    )
+                    break
+                time.sleep(1)
 
-        logger.info("Envoie de la tâche de traitement au worker.")
-        creation_publication_task.delay(str(path))
-        logger.info("Tâche envoyée")
+            logger.info("Envoie de la tâche de traitement au worker.")
+            creation_publication_task.delay(str(path))
+            logger.info("Tâche envoyée")
+        except FileNotFoundError:
+            logger.warn(f"Le fichier {path} n'existe plus. On ignore.")
+

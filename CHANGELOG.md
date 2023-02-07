@@ -4,6 +4,16 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.0.15] - 2023-02-07
+
+### Fixed
+
+- Le watcher gère le cas ou le fichier reçu est supprimé par un acteur externe.
+
+### Changed
+
+- Lors de la lecture des actes (`watcher/in`). Rend plus robueste l'extraction de l'`id_d`.
+
 ## [2.0.14] - 2023-01-24
 
 ### Fixed
