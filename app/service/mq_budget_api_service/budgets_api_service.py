@@ -63,7 +63,7 @@ class BudgetsApiService:
             etape = metadata.etape_budgetaire
 
             if not siret in _infos_etab_sirets:
-                self.__logger.debug(
+                self.__logger.warn(
                     f"Des données budgetaires existent pour le siret {siret} "
                     f"mais aucune données concernant l'établissement (probablement non diffusible), "
                     f"nous ne remontons donc pas les données budgetaires."
