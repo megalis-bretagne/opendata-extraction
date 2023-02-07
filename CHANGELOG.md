@@ -4,7 +4,7 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [unreleased]
+## [2.0.15] - 2023-02-07
 
 ### Fixed
 
