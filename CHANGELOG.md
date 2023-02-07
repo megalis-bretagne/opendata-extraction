@@ -4,7 +4,7 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [2.0.15] - 2023-02-07
+## [2.0.16] - 2023-02-07
 
 ### Fixed
 
@@ -13,6 +13,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Lors de la lecture des actes (`watcher/in`). Rend plus robueste l'extraction de l'`id_d`.
+- [BUDGET] Niveau de log warn pour les resources budgetaires exclues car non trouvées dans l'api entreprise
 
 ## [2.0.14] - 2023-01-24
 
