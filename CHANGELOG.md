@@ -4,6 +4,10 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+
+## [unreleased]
+- MEGALIS-304 - R-168370 Erreur de publication opendata malgré script de rejeu
+- déclaration incorrecte d'encodage des fichiers xml  [issue github ](https://github.com/megalis-bretagne/opendata-extraction/issues/16)
 ## [2.0.16] - 2023-02-07
 
 ### Fixed
