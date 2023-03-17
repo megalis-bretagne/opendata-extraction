@@ -160,10 +160,10 @@ def generation_and_publication_decp_pour_annee(annee):
             month = month + 1
 
         # Ecriture du fichier dans dossier workdir
-        f = open(decp_xml_fullpath, 'w', encoding='utf8')
+        f = open(decp_xml_fullpath, 'w', encoding='utf-8')
         if xml_data is not None:
-            xmlstr = ElementTree.tostring(xml_data, encoding='utf8', method='xml')
-            f.write(xmlstr.decode("utf8"))
+            xmlstr = ElementTree.tostring(xml_data, encoding='utf-8', method='xml')
+            f.write(xmlstr.decode("utf-8"))
         f.close()
 
         # On recherche l'id de la ressource pour l'année dans la dataset de megalis 5f4f4f8910f4b55843deae51
