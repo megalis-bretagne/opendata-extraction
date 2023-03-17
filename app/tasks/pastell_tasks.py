@@ -219,7 +219,7 @@ def creation_et_association_connecteur_ged_sftp_task(id_e):
 
         data_detail = {
             "depot_type_depot": '2',
-            "depot_titre_repertoire": '1',
+            "depot_titre_repertoire": '3',
             "depot_titre_expression": '',
             "depot_metadonnees": '3',
             "depot_metadonnes_filename": '',
