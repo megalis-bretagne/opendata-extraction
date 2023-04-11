@@ -1,5 +1,6 @@
 import time
 
+from flask import current_app
 from app import celeryapp
 from app.models.parametrage_model import Parametrage
 from app.service.udata.DatasetService import DatasetService
@@ -25,7 +26,11 @@ def publication_udata_budget(siren, annee):
             dataset_service.delete_resource_from_fp(dataset_budget, file_path=csv_filepath)
             return {'status': 'OK', 'message': 'budget vide', 'siren': str(siren),
                     'annee': str(annee)}
-        resultat = dataset_service.add_resource_budget(dataset_budget, file_path = csv_filepath)
+        
+        titre = f"budget-{siren}-{annee}.csv"
+        api_opendata_resource_url = _api_opendata_resource_url('scdl/budget', siren, annee)
+        resultat = dataset_service.add_resource_budget_url(dataset_budget, titre, api_opendata_resource_url)
+
         if resultat is None:
             return {'status': 'KO', 'message': 'generation et publication budget', 'siren': str(siren),
                     'annee': str(annee)}
@@ -49,7 +54,11 @@ def publication_udata_deliberation(siren, annee):
             dataset_service.delete_resource_from_fp(dataset_deliberation, file_path=scdl_delib_filepath)
             return {'status': 'OK', 'message': 'deliberation vide', 'siren': str(siren),
                     'annee': str(annee)}
-        resultat = dataset_service.add_resource_deliberation(dataset_deliberation, file_path = scdl_delib_filepath)
+
+        titre = f"deliberation-{siren}-{annee}.csv"
+        api_opendata_resource_url = _api_opendata_resource_url('scdl/deliberation', siren, annee)
+        resultat = dataset_service.add_resource_deliberation_url(dataset_deliberation, titre, api_opendata_resource_url)
+
         if resultat is None:
             return {'status': 'KO', 'message': 'generation et publication deliberation', 'siren': str(siren),
                     'annee': str(annee)}
@@ -74,7 +83,11 @@ def publication_udata_decp(siren, annee):
             dataset_service.delete_resource_from_fp(dataset_decp, file_path=decp_filepath)
             return {'status': 'OK', 'message': 'decp vide', 'siren': str(siren),
                     'annee': str(annee)}
-        resultat = dataset_service.add_resource_decp(dataset_decp, file_path = decp_filepath)
+
+        titre = f"decp-{siren}{annee}.xml" # XXX: oui, pas de tiret entre siren et années pour decp
+        api_opendata_resource_url = _api_opendata_resource_url('decp', siren, annee)
+        resultat = dataset_service.add_resource_decp_url(dataset_decp, titre, api_opendata_resource_url)
+
         if resultat is None:
             return {'status': 'KO', 'message': 'generation et publication decp', 'siren': str(siren),
                     'annee': str(annee)}
@@ -130,3 +143,16 @@ def is_decp_empty(filename):
                 return True
             elif count > 1:
                 return False
+
+def _urljoin(*args):
+    return "/".join(map(lambda x: str(x).rstrip('/'), args))
+
+def _api_opendata_baseurl():
+    catalogue_regional = current_app.config['CATALOGUE_REGIONAL']
+    return catalogue_regional['API_OPEN_DATA_BASEURL']
+
+def _api_opendata_resource_url(resource: str, siren: str, annee):
+    base: str = _api_opendata_baseurl()
+    suffix = f"{resource}/{siren}/{annee}"
+    url = _urljoin(base, suffix)
+    return url

@@ -13,13 +13,14 @@ class DatasetService(metaclass=Singleton):
     DATASETS_ENDPOINT = "/datasets/"
 
     def __init__(self):
+        catalogue_regionnal = current_app.config["CATALOGUE_REGIONAL"]
         self.HEADERS = {
-            'X-API-KEY': current_app.config['API_KEY_UDATA']
+            'X-API-KEY': catalogue_regionnal['API_KEY']
         }
-        self.API = current_app.config['API_UDATA']
+        self.API = catalogue_regionnal['API_URL']
 
-    def __do_filename_match_title(self, title: str, filename: str):
-        return title.casefold() == filename.casefold()
+    def __do_title_matches(self, title: str, candidate: str):
+        return title.casefold() == candidate.casefold()
 
     def __create_dataset(self, id_organization: str, description: str, title: str, type_extraction: str,
                          array_tags: array) -> dict or None:
@@ -107,6 +108,43 @@ class DatasetService(metaclass=Singleton):
         ]
         return self.__create_dataset(organization['id'], description, title, 'decp', array_tags)
     
+    def __add_resource_url(self, dataset: dict, titre: str, url: str, schema: dict, format: str):
+        """Ajout d'une ressource sur le dataset en tant qu'url. Maj si les titres sont équivalents."""
+
+        if dataset is None:
+            return None
+        id_dataset = dataset['id']
+        endpoint = self.API + "/1" + self.DATASETS_ENDPOINT + f"{id_dataset}/resources"
+
+        desc = {
+            'title': titre,
+            'format': format,
+            'schema': schema,
+            'url': url,
+            'filetype': 'remote',
+        }
+
+        id_dataset = dataset['id']
+        for resource in dataset['resources']:
+            if self.__do_title_matches(resource['title'], candidate=titre):
+                id = resource['id']
+                desc['id'] = id # XXX: On écrase certaines données qui étaient mise lors de l'upload
+                desc['latest'] = url
+                desc['filesize'] = None
+                endpoint = f"{endpoint}/{id}"
+                response = requests.put(endpoint, json=desc, headers=self.HEADERS)
+                if response.status_code != 200:
+                    return None
+                else:
+                    return json.loads(response.content.decode("utf-8"))
+
+        response = requests.post(endpoint, json=desc, headers=self.HEADERS)
+        if response.status_code != 201:
+            return None
+        
+        resource = json.loads(response.content.decode('utf-8'))
+        return resource
+
     def __add_resource_fp(self, dataset: dict, filepath: Path, schema: dict):
         """ Ajout une resource sur le dataset. Maj si fichier déja présent sur la resource """
 
@@ -116,7 +154,7 @@ class DatasetService(metaclass=Singleton):
             return None
         id_dataset = dataset['id']
         for resource in dataset['resources']:
-            if self.__do_filename_match_title(resource['title'], filename=file_name):
+            if self.__do_title_matches(resource['title'], candidate=file_name):
                 # Maj resource
                 id_resource = resource['id']
                 url = self.API + "/1" + self.DATASETS_ENDPOINT + '{}/resources/{}/upload/'.format(id_dataset, id_resource)
@@ -151,6 +189,33 @@ class DatasetService(metaclass=Singleton):
         else:
             return resource
 
+    def add_resource_budget_url(self, dataset: dict, titre: str, url: str):
+        return self.__add_resource_url(
+            dataset = dataset, 
+            titre=titre,
+            url=url, 
+            schema={'name': 'scdl/budget', 'version': '0.8.1'}, 
+            format='csv'
+        )
+    
+    def add_resource_deliberation_url(self, dataset: dict, titre: str, url: str):
+        return self.__add_resource_url(
+            dataset=dataset,
+            titre=titre,
+            url=url,
+            schema={'name': 'scdl/deliberations'},
+            format='csv',
+        )
+
+    def add_resource_decp_url(self, dataset: dict, titre: str, url: str):
+        return self.__add_resource_url(
+            dataset=dataset,
+            titre=titre,
+            url=url,
+            schema={'name': '139bercy/format-commande-publique'},
+            format='xml',
+        )
+
     def add_resource_budget(self, dataset: dict, file_path: Path):
         return self.__add_resource_fp(dataset, file_path, {'name': 'scdl/budget', 'version': '0.8.1'})
 
@@ -168,7 +233,7 @@ class DatasetService(metaclass=Singleton):
         if dataset is None:
             return
         for resource in dataset['resources']:
-            if self.__do_filename_match_title(resource['title'], filename=filename):
+            if self.__do_title_matches(resource['title'], candidate=filename):
                 requests.delete(
                     self.API + "/1" + self.DATASETS_ENDPOINT + dataset['id'] + "/resources/" + resource['id'] + "/",
                     headers=self.HEADERS)
