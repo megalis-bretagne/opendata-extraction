@@ -10,6 +10,8 @@ from app.tasks.datagouv_tasks import generated_scdl_budget
 
 celery = celeryapp.celery
 
+class PublicationUdataError(Exception):
+    pass
 
 @celery.task(name='publication_udata_budget')
 def publication_udata_budget(siren, annee):
@@ -32,8 +34,7 @@ def publication_udata_budget(siren, annee):
         resultat = dataset_service.add_resource_budget_url(dataset_budget, titre, api_opendata_resource_url)
 
         if resultat is None:
-            return {'status': 'KO', 'message': 'generation et publication budget', 'siren': str(siren),
-                    'annee': str(annee)}
+            raise PublicationUdataError(f"siren: {siren}. année: {annee}")
         return {'status': 'OK', 'message': 'generation et publication budget', 'siren': str(siren),
                 'annee': str(annee)}
 
@@ -60,8 +61,7 @@ def publication_udata_deliberation(siren, annee):
         resultat = dataset_service.add_resource_deliberation_url(dataset_deliberation, titre, api_opendata_resource_url)
 
         if resultat is None:
-            return {'status': 'KO', 'message': 'generation et publication deliberation', 'siren': str(siren),
-                    'annee': str(annee)}
+            raise PublicationUdataError(f"siren: {siren}. année: {annee}")
         return {'status': 'OK', 'message': 'generation et publication deliberation', 'siren': str(siren),
                 'annee': str(annee)}
 
@@ -89,8 +89,7 @@ def publication_udata_decp(siren, annee):
         resultat = dataset_service.add_resource_decp_url(dataset_decp, titre, api_opendata_resource_url)
 
         if resultat is None:
-            return {'status': 'KO', 'message': 'generation et publication decp', 'siren': str(siren),
-                    'annee': str(annee)}
+            raise PublicationUdataError(f"siren: {siren}. année: {annee}")
         return {'status': 'OK', 'message': 'generation et publication decp', 'siren': str(siren),
                 'annee': str(annee)}
 
