@@ -227,13 +227,16 @@ class DatasetService(metaclass=Singleton):
 
     def delete_resource_from_fp(self, dataset: dict, file_path: Path):
         file_name = file_path.name
-        self.__delete_resource(dataset=dataset, filename=file_name)
+        self.__delete_resource(dataset=dataset, titre=file_name)
+    
+    def delete_resource_with_title(self, dataset: dict, title: str):
+        return self.__delete_resource(dataset=dataset, titre=title)
 
-    def __delete_resource(self, dataset: dict, filename: str):
+    def __delete_resource(self, dataset: dict, titre: str):
         if dataset is None:
             return
         for resource in dataset['resources']:
-            if self.__do_title_matches(resource['title'], candidate=filename):
+            if self.__do_title_matches(resource['title'], candidate=titre):
                 requests.delete(
                     self.API + "/1" + self.DATASETS_ENDPOINT + dataset['id'] + "/resources/" + resource['id'] + "/",
                     headers=self.HEADERS)

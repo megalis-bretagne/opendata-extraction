@@ -5,8 +5,11 @@ from app import celeryapp
 from app.models.parametrage_model import Parametrage
 from app.service.udata.DatasetService import DatasetService
 from app.service.udata.OrganizationService import OrganizationService
-from app.tasks import generated_scdl_deliberation, generated_decp, SDMException
-from app.tasks.datagouv_tasks import generated_scdl_budget
+from app.tasks import generated_decp, SDMException 
+from app.tasks.datagouv_tasks import ( 
+    solr_has_any_budget,
+    generated_scdl_deliberation, 
+)
 
 celery = celeryapp.celery
 
@@ -20,23 +23,22 @@ def publication_udata_budget(siren, annee):
     organization_service = OrganizationService()
     organization = organization_service.get(siren)
     dataset_budget = organization_service.get_dataset_budget(organization['id'])
+    titre = f"budget-{siren}-{annee}.csv"
 
-    with generated_scdl_budget(siren=siren, annee=annee, flag_active='opendata_active') as csv_filepath:
-        if dataset_budget is None:
-            dataset_budget = dataset_service.create_dataset_budget(organization)
-        if is_scdl_empty(csv_filepath):
-            dataset_service.delete_resource_from_fp(dataset_budget, file_path=csv_filepath)
-            return {'status': 'OK', 'message': 'budget vide', 'siren': str(siren),
-                    'annee': str(annee)}
-        
-        titre = f"budget-{siren}-{annee}.csv"
-        api_opendata_resource_url = _api_opendata_resource_url('scdl/budget', siren, annee)
-        resultat = dataset_service.add_resource_budget_url(dataset_budget, titre, api_opendata_resource_url)
-
-        if resultat is None:
-            raise PublicationUdataError(f"siren: {siren}. année: {annee}")
-        return {'status': 'OK', 'message': 'generation et publication budget', 'siren': str(siren),
+    if not solr_has_any_budget(siren=siren, annee=annee, flag_active='opendata_active') and dataset_budget is not None:
+        dataset_service.delete_resource_with_title(dataset_budget, title=titre)
+        return {'status': 'OK', 'message': 'budget vide', 'siren': str(siren),
                 'annee': str(annee)}
+    
+    if dataset_budget is None:
+        dataset_budget = dataset_service.create_dataset_budget(organization)
+    api_opendata_resource_url = _api_opendata_resource_url('scdl/budget', siren, annee)
+    resultat = dataset_service.add_resource_budget_url(dataset_budget, titre, api_opendata_resource_url)
+
+    if resultat is None:
+        raise PublicationUdataError(f"siren: {siren}. année: {annee}")
+    return {'status': 'OK', 'message': 'generation et publication budget', 'siren': str(siren),
+            'annee': str(annee)}
 
 
 @celery.task(name='publication_udata_deliberation')

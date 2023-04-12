@@ -68,10 +68,9 @@ def generation_scdl_budget(root_path: Path, siren, annee, flag_active=None) -> P
     """
     annee = str(annee)
     siren = str(siren)
-    type = '5'
 
     solr = solr_connexion()
-    query = _solr_request_pour_budget(type, annee, siren, flag_active)
+    query = solr_request_pour_budget(annee, siren, flag_active)
     query_params = {
         "fl": "siren,documentidentifier,classification_code,classification_nom,description,"
               "filepath,documenttype,date,est_publie,date_budget,publication_id",
@@ -99,8 +98,21 @@ def generation_scdl_budget(root_path: Path, siren, annee, flag_active=None) -> P
                 logging.exception(f"Fichier ignoré: {url}")
     return csv_filepath
 
+def solr_has_any_budget(annee: str, siren: str, flag_active=None) -> bool:
+    solr = solr_connexion()
+    query = solr_request_pour_budget(annee, siren, flag_active=flag_active)
 
-def _solr_request_pour_budget(type: str, annee: str, siren: str, flag_active: Optional[str]) -> str:
+    for _ in solr.search(q=query, sort="publication_id DESC, id ASC", cursorMark="*"):
+        return True
+    return False
+
+def solr_request_pour_budget(annee: str, siren: str, flag_active: Optional[str]) -> str:
+    """Génère une requête solr pour lister les budgets
+
+    Returns:
+        str: Requête solr
+    """
+    type = '5'
     query = f"typology: 99_BU AND est_publie: True AND documenttype: {type} AND date_budget: {annee}"
     if siren != "*":
         query = f"{query} AND siren: {siren}"
