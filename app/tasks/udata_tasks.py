@@ -8,7 +8,7 @@ from app.service.udata.OrganizationService import OrganizationService
 from app.tasks import generated_decp, SDMException 
 from app.tasks.datagouv_tasks import ( 
     solr_has_any_budget,
-    generated_scdl_deliberation, 
+    solr_has_any_deliberation, 
 )
 
 celery = celeryapp.celery
@@ -49,23 +49,23 @@ def publication_udata_deliberation(siren, annee):
 
     organization = organization_service.get(siren)
     dataset_deliberation = organization_service.get_dataset_deliberation(organization['id'])
+    titre = f"deliberation-{siren}-{annee}.csv"
 
-    with generated_scdl_deliberation(siren = siren, annee = annee, flag_active='opendata_active') as scdl_delib_filepath:
-        if dataset_deliberation is None:
-            dataset_deliberation = dataset_service.create_dataset_deliberation(organization)
-        if is_scdl_empty(scdl_delib_filepath):
-            dataset_service.delete_resource_from_fp(dataset_deliberation, file_path=scdl_delib_filepath)
-            return {'status': 'OK', 'message': 'deliberation vide', 'siren': str(siren),
-                    'annee': str(annee)}
-
-        titre = f"deliberation-{siren}-{annee}.csv"
-        api_opendata_resource_url = _api_opendata_resource_url('scdl/deliberation', siren, annee)
-        resultat = dataset_service.add_resource_deliberation_url(dataset_deliberation, titre, api_opendata_resource_url)
-
-        if resultat is None:
-            raise PublicationUdataError(f"siren: {siren}. année: {annee}")
-        return {'status': 'OK', 'message': 'generation et publication deliberation', 'siren': str(siren),
+    if not solr_has_any_deliberation(annee=annee, siren=siren, flag_active='opendata_active') and dataset_deliberation is not None:
+        dataset_service.delete_resource_with_title(dataset_deliberation, title=titre)
+        return {'status': 'OK', 'message': 'deliberation vide', 'siren': str(siren),
                 'annee': str(annee)}
+
+    if dataset_deliberation is None:
+        dataset_deliberation = dataset_service.create_dataset_deliberation(organization)
+
+    api_opendata_resource_url = _api_opendata_resource_url('scdl/deliberation', siren, annee)
+    resultat = dataset_service.add_resource_deliberation_url(dataset_deliberation, titre, api_opendata_resource_url)
+
+    if resultat is None:
+        raise PublicationUdataError(f"siren: {siren}. année: {annee}")
+    return {'status': 'OK', 'message': 'generation et publication deliberation', 'siren': str(siren),
+            'annee': str(annee)}
 
 
 @celery.task(name='publication_udata_decp')
