@@ -6,6 +6,10 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+### Changed
+
+- Refactoring search publication
+- Ajout du filtre `pastell_id_d` sur le search light
 
 ## [2.0.17] - 2023-04-11
 

@@ -4,6 +4,7 @@ from sqlalchemy import or_
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from app import oidc
 from app.controller.Decorator import isAdmin
+from app.models.publication_model import Publication
 
 api = Namespace(name='publication', description='API de gestion des publications <b>(API sécurisée)</b>')
 
@@ -75,6 +76,7 @@ publicationParams_search_controller.add_argument('etat',
                                                  help='etat de la publication (1: publie, 0:non, 2:en-cours,'
                                                       '3:en-erreur)')
 publicationParams_search_controller.add_argument('est_masque',
+                                                 type=bool,
                                                  help='est à publier (0:non, 1:oui)')
 
 publicationLightParams_search_controller = reqparse.RequestParser()
@@ -282,9 +284,8 @@ class PublicationSearchCtrl(Resource):
         args = publicationParams_search_controller.parse_args()
         return _search(
             args, 
-            serializeFn=lambda x: x.serialize, 
-            est_supprime=0, est_masque=0,
-        )
+            makeFilterFn=_make_search_query_filter_for_ui,
+            serializeFn=lambda x: x.serialize)
 
 # Consommée par API
 @api.route('/search/light')
@@ -295,21 +296,54 @@ class PublicationLightSearchCtrl(Resource):
         args = publicationLightParams_search_controller.parse_args()
         return _search(
             args,
-            serializeFn=lambda x: x.serializeLight,
-        )
-
+            makeFilterFn=_make_search_query_filter,
+            serializeFn=lambda x: x.serializeLight)
 
 def _is_blank(s: str):
     return not (s and s.strip())
 
+def _make_search_query_filter(args):
+    filters = []
 
-def _search(args, serializeFn, est_supprime=None, est_masque=None):
-    from app.models.publication_model import Publication
+    if not _is_blank(args.get('etat')):
+        etat = str(args.get('etat'))
+        op = Publication.etat == etat
+        filters.append(op)
 
-    siren = args.get('siren')
-    if args.get('est_masque') == 'True':
-        est_masque = 1
+    if not _is_blank(args.get('filter')):
+        filter = str(args.get('filter'))
+        searchFilter = f"%{filter}%"
+        op = or_(Publication.numero_de_lacte.like(searchFilter), Publication.objet.like(searchFilter))
+        filters.append(op)
 
+    if not _is_blank(args.get('siren')):
+        siren = str(args.get('siren'))
+        op = Publication.siren == siren
+        filters.append(op)
+
+    if not _is_blank(args.get('pastell_id_d')):
+        pastell_id_d = str(args.get('pastell_id_d'))
+        op = Publication.pastell_id_d == pastell_id_d
+        filters.append(op)
+    
+    return filters
+
+def _make_search_query_filter_for_ui(args):
+    filters = _make_search_query_filter(args)
+
+    est_masque = bool(args.get('est_masque', False))
+
+    has_filter_etat = not _is_blank(args.get('etat'))
+    if has_filter_etat:
+        op = Publication.est_masque == est_masque
+        filters.append(op)
+    
+    op = Publication.est_supprime == False
+    filters.append(op)
+    
+    return filters
+
+def _search(args, makeFilterFn, serializeFn):
     sortField = args.get('sortField')
     if (sortField) == 'numero_de_lacte':
         sortField = Publication.numero_de_lacte
@@ -329,29 +363,7 @@ def _search(args, serializeFn, est_supprime=None, est_masque=None):
     else:
         sortField = sortField.desc()
     
-    filters = []
-    if not _is_blank(args.get('etat')):
-        etat = str(args.get('etat'))
-        op = Publication.etat == etat
-        filters.append(op)
-    if not _is_blank(args.get('filter')):
-        filter = str(args.get('filter'))
-        searchFilter = "%{}%".format(filter)
-        op = or_(Publication.numero_de_lacte.like(searchFilter), Publication.objet.like(searchFilter))
-        filters.append(op)
-    if not _is_blank(args.get('siren')):
-        siren = str(args.get('siren'))
-        op = Publication.siren == siren
-        filters.append(op)
-    if not _is_blank(args.get('pastell_id_d')):
-        pastell_id_d = str(args.get('pastell_id_d'))
-        op = Publication.pastell_id_d == pastell_id_d
-        filters.append(op)
-    
-    if est_supprime:
-        filters.append(Publication.est_supprime == est_supprime)
-    if est_masque:
-        filters.append(Publication.est_masque == est_masque)
+    filters = makeFilterFn(args)
 
     page = int(args.get('pageIndex')) + 1
     per_page = int(args.get('pageSize'))
