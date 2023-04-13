@@ -14,6 +14,8 @@ class Parametrage(db.Model):
     created_at: str = db.Column(db.DateTime(), nullable=False)
     modified_at: str = db.Column(db.DateTime(), nullable=False)
 
+    publication_annexes: bool = db.Column(db.Boolean(), nullable=False)
+
     @property
     def serialize(self):
        """Return object data in easily serializable format"""

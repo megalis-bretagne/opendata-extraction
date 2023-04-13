@@ -82,7 +82,7 @@ class Acte(db.Model):
     # ajout du path pour la task publier_acte_task (utiliser en backend)
     path: str = db.Column(db.String(500), nullable=False)
     hash: str  = db.Column(db.String(65), nullable=False)
-    publication_id = Column(Integer, ForeignKey('publication.id'))
+    publication_id: int = Column(Integer, ForeignKey('publication.id'))
 
     @property
     def serialize(self):
@@ -104,7 +104,9 @@ class PieceJointe(db.Model):
     # ajout du path pour la task publier_acte_task (utiliser en backend)
     path: str = db.Column(db.String(500), nullable=False)
     hash: str  = db.Column(db.String(65), nullable=False)
-    publication_id = Column(Integer, ForeignKey('publication.id'))
+    publication_id: int = Column(Integer, ForeignKey('publication.id'))
+
+    publie: bool = db.Column(db.Boolean(), nullable=False, server_default='0')
 
     @property
     def serialize(self):
@@ -114,5 +116,6 @@ class PieceJointe(db.Model):
             'url': self.url,
             'path': self.path,
             'hash': self.hash,
-            'publication_id': self.publication_id
+            'publication_id': self.publication_id,
+            'publie': self.publie,
         }

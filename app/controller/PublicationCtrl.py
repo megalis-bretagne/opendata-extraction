@@ -1,10 +1,22 @@
 from flask import jsonify
+from flask import request
 from flask_restx import Namespace, reqparse, fields, Resource
 from sqlalchemy import or_
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from app import oidc
+from app import db
 from app.controller.Decorator import isAdmin
-from app.models.publication_model import Publication
+from app.models.publication_model import Publication, PieceJointe
+
+from app.service.publication.api.PublicationPiecesJointesApiService import PublicationPiecesJointesApiService
+
+import logging
+
+from app.service.publication.api.exceptions import BadRequestforPublicationPiecesJointesApi, PublicationPiecesJointesApiError
+
+logger = logging.getLogger(__name__)
+
+publication_pieces_jointes_api_service = PublicationPiecesJointesApiService()
 
 api = Namespace(name='publication', description='API de gestion des publications <b>(API sécurisée)</b>')
 
@@ -91,7 +103,6 @@ publicationLightParams_search_controller.add_argument('pageIndex', help='index d
                                                       required=True)
 publicationLightParams_search_controller.add_argument('pageSize', help='taille de la page', required=True)
 
-
 @api.route('')
 class PublicationAllCtrl(Resource):
     @api.response(200, 'Success', model_publication)
@@ -153,6 +164,27 @@ class PublicationDepublierCtrl(Resource):
             print(e)
             api.abort(404, 'Not found')
 
+@api.errorhandler(BadRequestforPublicationPiecesJointesApi)
+def handle_publication_pj_bad_req(error):
+    return { 'message': str(error) }, 400
+@api.errorhandler(PublicationPiecesJointesApiError)
+def handle_publication_pj_api_error(error):
+    return { 'message': str(error) }, 500
+
+@api.route('/pieces_jointes/')
+class PublicationPublierPJCtrl(Resource):
+
+    @api.response(200, 'Success', model_publication)
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    def post(self):
+
+        payload = request.json
+        if len(payload) == 0:
+            return 'No Content', 204
+
+        answer = publication_pieces_jointes_api_service.publie_depublie_piecesjointes(payload)
+        return answer, 200
+
 
 @api.route('/modifier/<int:id>')
 class PublicationModifierCtrl(Resource):
@@ -194,7 +226,6 @@ class PublicationMasquerCtrl(Resource):
         try:
             db_sess = db.session
             publication = Publication.query.filter(Publication.id == id).one()
-            # 1 => publie, 0:non, 2:en-cours,3:en-erreur
             publication.est_masque = True
             db_sess.commit()
 

@@ -26,7 +26,8 @@ model_parametrage_list = api.model('ParametrageList', {
 arguments_parametrage_controller = reqparse.RequestParser()
 
 arguments_parametrage_controller.add_argument('id', help='id parametrage')
-arguments_parametrage_controller.add_argument('open_data_active', help='service open data actif', type=bool)
+arguments_parametrage_controller.add_argument('open_data_active', help='service open data actif.', type=bool)
+arguments_parametrage_controller.add_argument('publication_des_annexes', help='Publication des annexes pour l\'organisation.', type=bool)
 arguments_parametrage_controller.add_argument('publication_data_gouv_active',
                                               help='service publication data gouv actif', type=bool)
 arguments_parametrage_controller.add_argument('publication_udata_active',
