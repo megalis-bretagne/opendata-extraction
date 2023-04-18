@@ -14,13 +14,13 @@ from app import db
 from app.models.publication_model import Publication,Acte,PieceJointe
 from app.models.parametrage_model import Parametrage
 
-from app.tasks.utils import get_hash,index_file_in_solr,symlink_file,move_file
+from app.tasks.utils import get_hash,index_file_in_solr,symlink_file,unsymlink_file,move_file
 from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
 import app.shared.workdir_utils as workdir_utils
 
 from . import logger
 
-def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_tx=''):
+def insert_solr(publication: Publication, est_publie, est_dans_blockchain=False, blockchain_tx=''):
     # Pour tous les actes ( documents lié à la publication)
     for acte in publication.actes:
 
@@ -56,7 +56,7 @@ def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_t
             try:
                 params = traiter_actes(publication, pj, isPj=True)
                 # insert dans apache solr
-                params["literal.est_publie"] = est_publie
+                params["literal.est_publie"] = est_publie and pj.publie
                 index_file_in_solr(pj.path, params)
 
             except pysolr.SolrError as e:
@@ -66,6 +66,7 @@ def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_t
         logger.exception("probleme traitement PJ : on ignore")
 
 
+# TODO: plus utilisé ?! à verifier avec Yann
 def lien_symbolique(publication):
     if publication.acte_nature == "1":
         dossier = publication.siren + os.path.sep + "Deliberation"
@@ -88,21 +89,22 @@ def lien_symbolique(publication):
     else:
         annee = str(publication.date_de_lacte.year)
 
+    def _symlink(acte: Acte | PieceJointe, filename):
+        extension = str('.' + acte.name.split(".")[-1])
+        src = acte.path
+        dest_dir = current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep
+        name = filename + extension
+        symlink_file(src, dest_dir, name)
+
     # copy de l'acte dans le dossier marque blanche
     for acte in publication.actes:
-        extension = str('.' + acte.name.split(".")[-1])
-        symlink_file(acte.path,
-                     current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                     acte.hash + extension)
-
+        _symlink(acte, acte.hash)
     # copy des pj dans le dossier marque blanche
     for pj in publication.pieces_jointe:
-        extension = str('.' + pj.name.split(".")[-1])
-        symlink_file(pj.path,
-                     current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                     pj.name + extension)
+        _symlink(pj, pj.name)
 
-def traiter_actes(publication, acte, isPj):
+def traiter_actes(publication: Publication, acte: Acte | PieceJointe, isPj: bool):
+
     if publication.date_budget:
         annee = publication.date_budget
     else:
@@ -143,8 +145,13 @@ def traiter_actes(publication, acte, isPj):
     init_document(data, acte, parametrage, publication, urlPDF, typology)
 
     # dépot dans le serveur
-    symlink_file(acte.path, current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                 acte.hash + extension)
+    pj: PieceJointe = acte if (isPj) else None # type: ignore
+    dest_dir = current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep
+    dest_filename = acte.hash + extension
+    if pj is None or pj.publie:
+        symlink_file(acte.path, dest_dir, dest_filename)
+    else:
+        unsymlink_file(dest_dir, dest_filename)
     return data
 
 def init_document(data, acte, parametrage, publication, urlPDF, typology):

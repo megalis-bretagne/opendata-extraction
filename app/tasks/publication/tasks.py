@@ -131,11 +131,11 @@ def publier_acte_task(idPublication, reindexationSolr=False):
     # CAS d'une republication si deja présent dans solr alors on change de flag est_publié et on remets les fichiers dans le dossier marque blanche
     solr = solr_connexion()
     try:
-        result = solr.search(q='publication_id : ' + str(idPublication), sort='id ASC', cursorMark="*")
-        for doc_res in result:
-            solr.delete(doc_res['id'])
+        results = solr.search(q='publication_id : ' + str(idPublication), sort='id ASC', cursorMark="*")
+        for doc in results:
+            solr.delete(doc['id'])
     except Exception as e:
-        result = 0
+        results = 0
 
     if not reindexationSolr:
         publication.date_publication = datetime.now()
@@ -241,7 +241,8 @@ def depublier_acte_task(idPublication):
             parseResult = urllib.parse.urlparse(str(doc_res['filepath'][0]))
             doc_res['est_publie'][0] = False
             try:
-                os.remove(current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path)
+                file = current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path
+                os.remove(file)
             except FileNotFoundError as e:
                 logger.info("fichier deja supprimé:" + current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path)
             solr.add(doc_res)

@@ -2,6 +2,7 @@ import csv
 from datetime import datetime
 import hashlib
 import logging
+from pathlib import Path
 from urllib.parse import quote
 
 import pysolr, re, os, errno, shutil
@@ -141,6 +142,18 @@ def symlink_file(path, new_path, filename):
     except FileExistsError:
         logging.exception("le lien existe deja")
 
+def unsymlink_file(dir, filename):
+    try:
+        p = Path(dir) / filename
+        if not os.path.exists(p):
+            logging.debug(f"Tentative de suppression d'un lien inexistant. On ignore.")
+            return
+        if not os.path.islink(p):
+            logging.warning(f"Tentative de suppression d'un lien sur un objet qui n'est pas un lien: {p}")
+            return
+        os.unlink(p)
+    except Exception as e:
+        logging.exception(e)
 
 nature_actes_dict = dict()
 nature_actes_dict[1] = "Délibérations"
