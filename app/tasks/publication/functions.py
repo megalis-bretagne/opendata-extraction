@@ -20,7 +20,12 @@ import app.shared.workdir_utils as workdir_utils
 
 from . import logger
 
-def insert_solr(publication: Publication, est_publie, est_dans_blockchain=False, blockchain_tx=''):
+def insert_solr(publication: Publication, 
+                est_publie, 
+                est_dans_blockchain=False, 
+                blockchain_tx='',
+                publication_des_annexes: bool = True,
+                ):
     # Pour tous les actes ( documents lié à la publication)
     for acte in publication.actes:
 
@@ -56,7 +61,7 @@ def insert_solr(publication: Publication, est_publie, est_dans_blockchain=False,
             try:
                 params = traiter_actes(publication, pj, isPj=True)
                 # insert dans apache solr
-                params["literal.est_publie"] = est_publie and pj.publie
+                params["literal.est_publie"] = est_publie and pj.publie and publication_des_annexes
                 index_file_in_solr(pj.path, params)
 
             except pysolr.SolrError as e:

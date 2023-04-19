@@ -6,25 +6,25 @@ class Parametrage(db.Model):
     siren: str = db.Column(db.String(9), nullable=False, unique=True)
     nic: str = db.Column(db.String(5), nullable=False)
     denomination: str = db.Column(db.String(256), nullable=False)
-    open_data_active = db.Column('open_data_active', db.Boolean(), nullable=False, server_default='0')
-    publication_data_gouv_active = db.Column('publication_data_gouv_active', db.Boolean(), nullable=False, server_default='0')
-    publication_udata_active = db.Column('publication_udata_active', db.Boolean(), nullable=False, server_default='0')
+    open_data_active: bool = db.Column('open_data_active', db.Boolean(), nullable=False, server_default='0')
+    publication_annexes: bool = db.Column(db.Boolean(), nullable=False, server_default='1')
+    publication_data_gouv_active: bool = db.Column('publication_data_gouv_active', db.Boolean(), nullable=False, server_default='0')
+    publication_udata_active: bool = db.Column('publication_udata_active', db.Boolean(), nullable=False, server_default='0')
     uid_data_gouv: str = db.Column(db.String(256), nullable=True)
     api_key_data_gouv: str = db.Column(db.String(256), nullable=True)
     created_at: str = db.Column(db.DateTime(), nullable=False)
     modified_at: str = db.Column(db.DateTime(), nullable=False)
 
-    publication_annexes: bool = db.Column(db.Boolean(), nullable=False)
-
     @property
     def serialize(self):
        """Return object data in easily serializable format"""
        return {
-           'id'         : self.id,
+           'id': self.id,
            'siren': self.siren,
            'nic': self.nic,
            'denomination': self.denomination,
            'open_data_active': self.open_data_active,
+           'publication_des_annexes': self.publication_annexes,
            'publication_data_gouv_active': self.publication_data_gouv_active,
            'publication_udata_active': self.publication_udata_active,
            'uid_data_gouv': self.uid_data_gouv,

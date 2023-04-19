@@ -13,6 +13,7 @@ from app import celeryapp
 from app import db
 
 from app.models.publication_model import Publication
+from app.models.parametrage_model import Parametrage
 
 from app.shared.datastructures import MetadataPastell
 import app.shared.workdir_utils as workdir_utils
@@ -114,14 +115,11 @@ def modifier_acte_task(idPublication):
     except Exception as e:
         raise e
 
-    return {'status': 'OK', 'message': 'Aucun document solr à modifier',
-            'publication id': publication.id}
-
-
 @celery.task(name='publier_acte_task')
 def publier_acte_task(idPublication, reindexationSolr=False):
     # on récupère la publication à publier en BDD
-    publication = Publication.query.filter(Publication.id == idPublication).one()
+    publication: Publication = Publication.query.filter(Publication.id == idPublication).one()
+    parametrage: Parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
 
     if publication.est_supprime:
         return {'status': 'OK', 'message': 'publication non autorisé car supprimé colonne est_supprimé',
@@ -140,7 +138,11 @@ def publier_acte_task(idPublication, reindexationSolr=False):
         publication.date_publication = datetime.now()
 
     try:
-        insert_solr(publication, est_publie=True)
+        insert_solr(
+            publication, 
+            est_publie=True, 
+            publication_des_annexes=parametrage.publication_annexes
+        )
 
     except Exception as e:
         logger.exception(e)
@@ -195,7 +197,8 @@ def publier_blockchain_task(idPublication):
     publisher = w3.eth.contract(address=contract_address, abi=abi)
 
     # on récupère la publication à publier en BDD
-    publication = Publication.query.filter(Publication.id == idPublication).one()
+    publication: Publication = Publication.query.filter(Publication.id == idPublication).one()
+    parametrage: Parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
 
     # copy de l'acte dans le dossier marque blanche
     for acte in publication.actes:
@@ -220,7 +223,11 @@ def publier_blockchain_task(idPublication):
         except Exception as e:
             result = 0
 
-        insert_solr(publication, est_publie=True, est_dans_blockchain=True, blockchain_tx=tx_receipt.transactionHash.hex())
+        insert_solr(
+            publication, 
+            est_publie=True, publication_des_annexes=parametrage.publication_annexes,
+            est_dans_blockchain=True, blockchain_tx=tx_receipt.transactionHash.hex(),
+        )
 
         return {'status': 'OK', 'message': 'publié sur ' + current_app.config['NETWORK_NAME'] + ' ;)',
                 'tx_receipt': tx_receipt.transactionHash.hex()}
@@ -272,7 +279,6 @@ def gestion_activation_open_data(siren, opendata_active):
 
     return {'status': 'OK', 'message': 'mise à jour du flag opendata_active dans solr',
             'siren': siren, 'opendata_active': opendata_active}
-
 
 @celery.task(name='republier_all_acte_task')
 def republier_all_acte_task(etat):
