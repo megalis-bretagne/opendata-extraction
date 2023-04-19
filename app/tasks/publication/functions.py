@@ -65,44 +65,6 @@ def insert_solr(publication: Publication, est_publie, est_dans_blockchain=False,
     except Exception as e:
         logger.exception("probleme traitement PJ : on ignore")
 
-
-# TODO: plus utilisé ?! à verifier avec Yann
-def lien_symbolique(publication):
-    if publication.acte_nature == "1":
-        dossier = publication.siren + os.path.sep + "Deliberation"
-    elif publication.acte_nature == "2":
-        dossier = publication.siren + os.path.sep + "Actes_reglementaires"
-    elif publication.acte_nature == "3":
-        dossier = publication.siren + os.path.sep + "Actes_individuels"
-    elif publication.acte_nature == "4":
-        dossier = publication.siren + os.path.sep + "Contrats_conventions_avenants"
-    elif publication.acte_nature == "5":
-        dossier = publication.siren + os.path.sep + "Budget"
-    elif publication.acte_nature == "7":
-        dossier = publication.siren + os.path.sep + "Hors_prefecture"
-    else:
-        #cas par defaut et acte_nature=6
-        dossier = publication.siren + os.path.sep + "Autres"
-
-    if publication.date_budget:
-        annee = publication.date_budget
-    else:
-        annee = str(publication.date_de_lacte.year)
-
-    def _symlink(acte: Acte | PieceJointe, filename):
-        extension = str('.' + acte.name.split(".")[-1])
-        src = acte.path
-        dest_dir = current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep
-        name = filename + extension
-        symlink_file(src, dest_dir, name)
-
-    # copy de l'acte dans le dossier marque blanche
-    for acte in publication.actes:
-        _symlink(acte, acte.hash)
-    # copy des pj dans le dossier marque blanche
-    for pj in publication.pieces_jointe:
-        _symlink(pj, pj.name)
-
 def traiter_actes(publication: Publication, acte: Acte | PieceJointe, isPj: bool):
 
     if publication.date_budget:

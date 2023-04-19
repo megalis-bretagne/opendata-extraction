@@ -21,7 +21,6 @@ from app.tasks.utils import solr_connexion
 
 from .functions import ( 
     init_publication,insert_solr,
-    lien_symbolique,
     insere_nouveau_parametrage,
     _archives_current,
     _erreurs_root, 
@@ -142,7 +141,6 @@ def publier_acte_task(idPublication, reindexationSolr=False):
 
     try:
         insert_solr(publication, est_publie=True)
-        lien_symbolique(publication)
 
     except Exception as e:
         logger.exception(e)
