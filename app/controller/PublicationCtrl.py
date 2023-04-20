@@ -164,17 +164,13 @@ class PublicationDepublierCtrl(Resource):
             print(e)
             api.abort(404, 'Not found')
 
-@api.errorhandler(BadRequestforPublicationPiecesJointesApi)
-def handle_publication_pj_bad_req(error):
-    return { 'message': str(error) }, 400
-@api.errorhandler(PublicationPiecesJointesApiError)
-def handle_publication_pj_api_error(error):
-    return { 'message': str(error) }, 500
-
+payload_pjs_one_publication_id_model = api.model('PiecesJointesPublications', { 'id_pj': fields.Boolean })
+payload_pjs_model = api.model('PublicationsPiecesJointesPublications', { 'id_publication': fields.Nested(payload_pjs_one_publication_id_model) })
 @api.route('/pieces_jointes/')
 class PublicationPublierPJCtrl(Resource):
 
     @api.response(200, 'Success', model_publication)
+    @api.doc(body=payload_pjs_model)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     def post(self):
 
@@ -182,8 +178,27 @@ class PublicationPublierPJCtrl(Resource):
         if len(payload) == 0:
             return 'No Content', 204
 
-        answer = publication_pieces_jointes_api_service.publie_depublie_piecesjointes(payload)
-        return answer, 200
+        answer = {}
+        has_error = False
+        for publication_id, pjs_publication in payload.items():
+            try:
+                publication_answer = publication_pieces_jointes_api_service.publie_depublie_piecesjointes(pjs_publication)
+                answer[publication_id] = publication_answer
+            except BadRequestforPublicationPiecesJointesApi as e:
+                logging.exception(e)
+                answer[publication_id] = str(e)
+            except PublicationPiecesJointesApiError as e:
+                logging.exception(e)
+                answer[publication_id] = str(e)
+            except Exception as e:
+                has_error = True
+                logging.exception(e)
+                answer[publication_id] = 'Une erreur est survenue'
+
+        if has_error:
+            return answer, 500
+        else:
+            return answer, 200
 
 
 @api.route('/modifier/<int:id>')

@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 class PublicationPiecesJointesApiService:
     def publie_depublie_piecesjointes(self, payload: Mapping[str, bool]):
 
-        logger.info(f"Requête de publicaiton des annexes.")
+        logger.info(f"Requête de publication des annexes.")
         logger.debug(f"Avec les instructions suivantes: {payload}")
         publication_id = self._check_payload_is_about_only_one_publication(payload)
 
         if publication_id is None:
             logger.warning(f"Requête de publication de pièce jointes vide.")
-            return
+            return {}
 
         publication = Publication.query.get(publication_id)
         if publication.etat == "0":  # Si la publication est en état 'non publiée'
