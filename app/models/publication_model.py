@@ -35,7 +35,7 @@ class PieceJointe(db.Model):
     hash: str  = db.Column(db.String(65), nullable=False)
     publication_id: int = Column(Integer, ForeignKey('publication.id'))
 
-    publie: bool = db.Column(db.Boolean(), nullable=False, server_default='0')
+    publie: Optional[bool] = db.Column(db.Boolean(), nullable=True)
 
     @property
     def serialize(self):

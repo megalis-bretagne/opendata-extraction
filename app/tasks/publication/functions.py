@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 import pytz
 from pathlib import Path
 import pysolr
@@ -34,9 +35,10 @@ def insert_solr(publication: Publication,
             db.session.add(acte)
 
         try:
-            params = traiter_actes(publication, acte, isPj=False)
+            a_publier = est_publie
+            params = traiter_actes(publication, acte, isPj=False, a_publier=a_publier)
             # insert dans apache solr
-            params["literal.est_publie"] = est_publie
+            params["literal.est_publie"] = a_publier
             if est_dans_blockchain:
                 params["literal.blockchain_enable"] = True
                 params["literal.blockchain_transaction"] = str(blockchain_tx)
@@ -54,14 +56,14 @@ def insert_solr(publication: Publication,
     # Pour tous les fichiers pj présents dans le zip
     try:
         for pj in publication.pieces_jointe:
-
             if pj.hash is None:
                 pj.hash = get_hash(pj.path)
                 db.session.add(pj)
             try:
-                params = traiter_actes(publication, pj, isPj=True)
+                a_publier = _piece_jointe_est_publiee(est_publie, publication_des_annexes, pj.publie)
+                params = traiter_actes(publication, pj, isPj=True, a_publier=a_publier)
                 # insert dans apache solr
-                params["literal.est_publie"] = est_publie and pj.publie and publication_des_annexes
+                params["literal.est_publie"] = a_publier
                 index_file_in_solr(pj.path, params)
 
             except pysolr.SolrError as e:
@@ -70,7 +72,7 @@ def insert_solr(publication: Publication,
     except Exception as e:
         logger.exception("probleme traitement PJ : on ignore")
 
-def traiter_actes(publication: Publication, acte: Acte | PieceJointe, isPj: bool):
+def traiter_actes(publication: Publication, acte: Acte | PieceJointe, isPj: bool, a_publier: bool):
 
     if publication.date_budget:
         annee = publication.date_budget
@@ -112,14 +114,30 @@ def traiter_actes(publication: Publication, acte: Acte | PieceJointe, isPj: bool
     init_document(data, acte, parametrage, publication, urlPDF, typology)
 
     # dépot dans le serveur
-    pj: PieceJointe = acte if (isPj) else None # type: ignore
     dest_dir = current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep
     dest_filename = acte.hash + extension
-    if pj is None or pj.publie:
+    if a_publier:
         symlink_file(acte.path, dest_dir, dest_filename)
     else:
         unsymlink_file(dest_dir, dest_filename)
     return data
+
+def _piece_jointe_est_publiee(publication_publiee: bool, flag_publication_annexes: bool, pj_publiee: Optional[bool]):
+    """Calcule si la pièce jointe peut être publiée selon
+    - si la publication est publiée
+    - si la publication d'annexe est activée
+    - si le status de publication de la pj a été explicitement indiqué
+    """
+    a_publier = False
+    if not publication_publiee:
+        a_publier = False
+    elif not flag_publication_annexes:
+        a_publier = False
+    elif pj_publiee is not None and not pj_publiee:
+        a_publier = False
+    else:
+        a_publier = True
+    return a_publier
 
 def init_document(data, acte, parametrage, publication, urlPDF, typology):
     data["commit"] = 'true'
