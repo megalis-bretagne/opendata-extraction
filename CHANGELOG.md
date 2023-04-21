@@ -6,8 +6,21 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
-### Changed
+### Important
 
+- Migration bdd: [00008_mep_avril_2023.sql](./app/migrate/00008_mep_avril_2023.sql)
+
+### Ajouts
+
+- Upgrade python to 3.10.8
+- Feature publication des annexes ([issue](https://https://github.com/megalis-bretagne/opendata-marqueblanche/issues/3))
+  - Ajout d'une API pour prendre en compte les commandes de publications de pièces jointes dans `/private_api/private_api/v1/publication/pieces_jointes/`
+  - Ajout d'un flag `publication_des_annexes` au sein du parametrage
+  - Ajout d'un champ `publie` au modèle des `pieces_jointes`
+
+### Changements
+
+- Divers refactoring
 - Refactoring search publication
 - Ajout du filtre `pastell_id_d` sur le search light
 
