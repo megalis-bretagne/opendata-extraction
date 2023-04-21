@@ -2,7 +2,6 @@ import logging
 
 from flask import jsonify, current_app
 from flask_restx import Namespace, Resource, reqparse
-from sqlalchemy.exc import NoResultFound
 
 from app import oidc
 from app.controller.Decorator import isAdmin

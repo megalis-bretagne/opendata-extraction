@@ -3,7 +3,51 @@ from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from app import db
 
+class Acte(db.Model):
+    __tablename__ = 'acte'
+    id: int = db.Column(db.Integer, primary_key=True)
+    name: str = db.Column(db.String(300), nullable=False)
+    url: str = db.Column(db.String(500), nullable=False)
+    # ajout du path pour la task publier_acte_task (utiliser en backend)
+    path: str = db.Column(db.String(500), nullable=False)
+    hash: str  = db.Column(db.String(65), nullable=False)
+    publication_id: int = Column(Integer, ForeignKey('publication.id'))
 
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'url': self.url,
+            'path': self.path,
+            'hash': self.hash,
+            'publication_id': self.publication_id
+        }
+
+
+class PieceJointe(db.Model):
+    __tablename__ = 'pj_acte'
+    id: int = db.Column(db.Integer, primary_key=True)
+    name: str = db.Column(db.String(200), nullable=False)
+    url: str = db.Column(db.String(500), nullable=False)
+    # ajout du path pour la task publier_acte_task (utiliser en backend)
+    path: str = db.Column(db.String(500), nullable=False)
+    hash: str  = db.Column(db.String(65), nullable=False)
+    publication_id: int = Column(Integer, ForeignKey('publication.id'))
+
+    publie: Optional[bool] = db.Column(db.Boolean(), nullable=True)
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'url': self.url,
+            'path': self.path,
+            'hash': self.hash,
+            'publication_id': self.publication_id,
+            'publie': self.publie,
+        }
 
 
 class Publication(db.Model):
@@ -30,8 +74,8 @@ class Publication(db.Model):
     modified_at: str = db.Column(db.DateTime(), nullable=False)
     date_publication: str = db.Column(db.DateTime(), nullable=True)
     nature_autre_detail: str = db.Column(db.String(255), nullable=True)
-    actes = relationship("Acte", lazy="joined")
-    pieces_jointe = relationship("PieceJointe", lazy="joined")
+    actes: list[Acte] = relationship("Acte", lazy="joined")
+    pieces_jointe: list[PieceJointe] = relationship("PieceJointe", lazy="joined")
 
     @property
     def serialize(self):
@@ -72,47 +116,3 @@ class Publication(db.Model):
     @property
     def serialize_many2many(self):
         return [item.serialize for item in self.many2many]
-
-
-class Acte(db.Model):
-    __tablename__ = 'acte'
-    id: int = db.Column(db.Integer, primary_key=True)
-    name: str = db.Column(db.String(300), nullable=False)
-    url: str = db.Column(db.String(500), nullable=False)
-    # ajout du path pour la task publier_acte_task (utiliser en backend)
-    path: str = db.Column(db.String(500), nullable=False)
-    hash: str  = db.Column(db.String(65), nullable=False)
-    publication_id = Column(Integer, ForeignKey('publication.id'))
-
-    @property
-    def serialize(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'url': self.url,
-            'path': self.path,
-            'hash': self.hash,
-            'publication_id': self.publication_id
-        }
-
-
-class PieceJointe(db.Model):
-    __tablename__ = 'pj_acte'
-    id: int = db.Column(db.Integer, primary_key=True)
-    name: str = db.Column(db.String(200), nullable=False)
-    url: str = db.Column(db.String(500), nullable=False)
-    # ajout du path pour la task publier_acte_task (utiliser en backend)
-    path: str = db.Column(db.String(500), nullable=False)
-    hash: str  = db.Column(db.String(65), nullable=False)
-    publication_id = Column(Integer, ForeignKey('publication.id'))
-
-    @property
-    def serialize(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'url': self.url,
-            'path': self.path,
-            'hash': self.hash,
-            'publication_id': self.publication_id
-        }
