@@ -23,6 +23,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Divers refactoring
 - Refactoring search publication
 - Ajout du filtre `pastell_id_d` sur le search light
+- Force la declaration xml lors de l'export des decp
 
 ## [2.0.17] - 2023-04-11
 
