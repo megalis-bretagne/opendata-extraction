@@ -140,7 +140,7 @@ def _piece_jointe_est_publiee(publication_publiee: bool, flag_publication_annexe
         a_publier = True
     return a_publier
 
-def init_document(data, acte, parametrage, publication, urlPDF, typology):
+def init_document(data, acte, parametrage, publication: Publication, urlPDF, typology):
     data["commit"] = 'true'
     data["literal.hash"] = acte.hash
     data["literal.publication_id"] = publication.id
@@ -151,6 +151,8 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     data["literal.date_budget"] = publication.date_budget
     # partie métadata (issu du fichier metadata.json de pastell)
     data["literal.date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
+    if publication.date_ar:
+        data["literal.date_ar"] = publication.date_ar.strftime("%Y-%m-%dT%H:%M:%SZ")
 
     date_publication = publication.date_publication
     if publication.date_publication is not None:
