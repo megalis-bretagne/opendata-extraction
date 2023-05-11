@@ -7,6 +7,8 @@ from pathlib import Path
 from app.shared.datastructures import MetadataPastell
 from app.shared.datastructures.classification_actes import _classification_actes_dict
 
+from datetime import datetime
+
 
 @pytest.fixture
 def _data() -> dict:
@@ -30,6 +32,31 @@ def test_sanitize_for_db(_data):
 
     assert serialized_metadata == serialized_sanitized
 
+def test_parse_date_de_lacte_invalid(_data):
+    _data['date_de_lacte'] = '09112022'
+
+    with pytest.raises(Exception) as e:
+        metadata = MetadataPastell.parse(_data)
+
+@pytest.mark.parametrize(
+    "testDesc",
+    [
+        {},
+        { 'date_ar': '2022-01-01' },
+    ]
+)
+def test_parse_date_ar(_data, testDesc):
+    _data["date_ar"] = testDesc.get('date_ar')
+
+    metadata = MetadataPastell.parse(_data)
+    assert metadata.date_ar is None \
+        or metadata.date_ar == datetime.fromisoformat(_data.get('date_ar'))
+
+def test_parse_date_ar_invalid(_data):
+    _data['date_ar'] = 'invalid date'
+
+    with pytest.raises(Exception) as e:
+        metadata = MetadataPastell.parse(_data)
     
 
 @pytest.mark.parametrize(
@@ -40,7 +67,7 @@ def test_sanitize_for_db(_data):
         { "classification": "10 toto tata", "classification_code": "10", "raises": True },
     ]
 )
-def test_parse_classficiation(_data, testDesc):
+def test_parse_classification(_data, testDesc):
     _data["classification"] = testDesc["classification"]
 
     try:
@@ -48,7 +75,7 @@ def test_parse_classficiation(_data, testDesc):
 
         if testDesc["raises"]:
             assert False, "Le parsing de la classification aurait du planter"
-    except Exception:
+    except Exception as e:
         if testDesc["raises"]:
             return
 

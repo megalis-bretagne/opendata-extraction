@@ -14,6 +14,7 @@ from app import db
 
 from app.models.publication_model import Publication,Acte,PieceJointe
 from app.models.parametrage_model import Parametrage
+from app.shared.datastructures import MetadataPastell
 
 from app.tasks.utils import get_hash,index_file_in_solr,symlink_file,unsymlink_file,move_file
 from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
@@ -190,7 +191,7 @@ def _documenttype(publication: Publication):
         return "7"
 
 
-def init_publication(metadataPastell, id_d: str):
+def init_publication(metadataPastell: MetadataPastell, id_d: str):
     WORKDIR = workdir_utils.get_or_create_persistent_workdir()
     # publication open data oui par défaut 0:oui / 1:non / 2:Ne sais pas
     pub_open_data = '0'
@@ -212,6 +213,7 @@ def init_publication(metadataPastell, id_d: str):
         siren=metadataPastell.siren,
         publication_open_data=metadataPastell.publication_open_data,
         date_de_lacte=metadataPastell.date_de_lacte,
+        date_ar=metadataPastell.date_ar,
         created_at=datetime.now(),
         modified_at=datetime.now(),
         date_budget=date_budget,
@@ -225,9 +227,7 @@ def init_publication(metadataPastell, id_d: str):
     db_sess.add(newPublication)
     db_sess.commit()
 
-    # XXX: retour de db, le type dt est ici une datetime
-    date_de_lacte_dt: datetime = newPublication.date_de_lacte # type: ignore 
-    annee = str(date_de_lacte_dt.year)
+    annee = str(metadataPastell.date_de_lacte)
 
     if newPublication.acte_nature == "1":
         dossier = newPublication.siren + os.path.sep + "Deliberation"
