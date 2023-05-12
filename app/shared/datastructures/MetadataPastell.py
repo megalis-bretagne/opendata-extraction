@@ -1,4 +1,5 @@
 import dataclasses
+from datetime import datetime
 
 from .classification_actes import _classification_actes_dict
 
@@ -15,7 +16,6 @@ def _compute_publication_opendata(acte_nature: str):
 
     return publication_open_data
 
-
 def _force_latin1(s: str):
     return s.encode("latin-1", "ignore").decode("latin-1")
 
@@ -23,7 +23,8 @@ def _force_latin1(s: str):
 @dataclasses.dataclass
 class MetadataPastell:
     numero_de_lacte: str
-    date_de_lacte: str
+    date_de_lacte: datetime
+    date_ar: datetime | None
     objet: str
     siren: str
     acte_nature: str
@@ -44,6 +45,7 @@ class MetadataPastell:
 
     publication_open_data: str
 
+
     @staticmethod
     def parse(json):
 
@@ -62,6 +64,12 @@ class MetadataPastell:
             else json[key]
         )
 
+        date_de_lacte = json["date_de_lacte"]
+        date_de_lacte = datetime.fromisoformat(date_de_lacte)
+
+        date_ar = json.get('date_ar')
+        if date_ar is not None:
+            date_ar = datetime.fromisoformat(date_ar)
 
         classification_code = classification.split(" ", 1)[0]
 
@@ -72,7 +80,8 @@ class MetadataPastell:
 
         return MetadataPastell(
             numero_de_lacte=json["numero_de_lacte"],
-            date_de_lacte=json["date_de_lacte"],
+            date_de_lacte=date_de_lacte,
+            date_ar=date_ar,
             objet=json["objet"],
             siren=json["siren"],
             acte_nature=acte_nature,

@@ -2,6 +2,7 @@ from typing import Optional
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from app import db
+from datetime import datetime
 
 class Acte(db.Model):
     __tablename__ = 'acte'
@@ -59,7 +60,8 @@ class Publication(db.Model):
     pastell_id_d: Optional[str] = db.Column(db.String(20), nullable= True)
     # 3:oui (0:oui historiquement), 1:non, 2:ne sais pas
     publication_open_data: str = db.Column(db.String(1), nullable=False, server_default='2')
-    date_de_lacte: str = db.Column(db.DateTime(), nullable=False)
+    date_de_lacte: datetime = db.Column(db.DateTime(), nullable=False)
+    date_ar: datetime | None = db.Column(db.DateTime(), nullable=True)
     classification_code = db.Column(db.String(10), nullable=False)
     classification_nom = db.Column(db.String(150), nullable=False)
     acte_nature: str = db.Column(db.String(50), nullable=False)
@@ -76,6 +78,7 @@ class Publication(db.Model):
     nature_autre_detail: str = db.Column(db.String(255), nullable=True)
     actes: list[Acte] = relationship("Acte", lazy="joined")
     pieces_jointe: list[PieceJointe] = relationship("PieceJointe", lazy="joined")
+
 
     @property
     def serialize(self):

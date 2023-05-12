@@ -8,10 +8,12 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Important
 
-- Migration bdd: [00008_mep_avril_2023.sql](./app/migrate/00008_mep_avril_2023.sql)
+- Migration bdd: [00008_mep_mai_2023.sql](./app/migrate/00008_mep_mai_2023.sql)
 
 ### Ajouts
 
+- Utilisation de l'information de `date_ar`.
+- Alimentation de `DATE_PREF` pour les SCDL deliberation à partir de `date_ar`
 - Upgrade python to 3.10.8
 - Feature publication des annexes ([issue](https://https://github.com/megalis-bretagne/opendata-marqueblanche/issues/3))
   - Ajout d'une API pour prendre en compte les commandes de publications de pièces jointes dans `/private_api/private_api/v1/publication/pieces_jointes/`
