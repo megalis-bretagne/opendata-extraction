@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 import pytz
 from pathlib import Path
 import pysolr
@@ -13,14 +14,20 @@ from app import db
 
 from app.models.publication_model import Publication,Acte,PieceJointe
 from app.models.parametrage_model import Parametrage
+from app.shared.datastructures import MetadataPastell
 
-from app.tasks.utils import get_hash,index_file_in_solr,symlink_file,move_file
+from app.tasks.utils import get_hash,index_file_in_solr,symlink_file,unsymlink_file,move_file
 from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
 import app.shared.workdir_utils as workdir_utils
 
 from . import logger
 
-def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_tx=''):
+def insert_solr(publication: Publication, 
+                est_publie, 
+                est_dans_blockchain=False, 
+                blockchain_tx='',
+                publication_des_annexes: bool = True,
+                ):
     # Pour tous les actes ( documents lié à la publication)
     for acte in publication.actes:
 
@@ -29,9 +36,10 @@ def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_t
             db.session.add(acte)
 
         try:
-            params = traiter_actes(publication, acte, isPj=False)
+            a_publier = est_publie
+            params = traiter_actes(publication, acte, isPj=False, a_publier=a_publier)
             # insert dans apache solr
-            params["literal.est_publie"] = est_publie
+            params["literal.est_publie"] = a_publier
             if est_dans_blockchain:
                 params["literal.blockchain_enable"] = True
                 params["literal.blockchain_transaction"] = str(blockchain_tx)
@@ -49,14 +57,14 @@ def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_t
     # Pour tous les fichiers pj présents dans le zip
     try:
         for pj in publication.pieces_jointe:
-
             if pj.hash is None:
                 pj.hash = get_hash(pj.path)
                 db.session.add(pj)
             try:
-                params = traiter_actes(publication, pj, isPj=True)
+                a_publier = _piece_jointe_est_publiee(est_publie, publication_des_annexes, pj.publie)
+                params = traiter_actes(publication, pj, isPj=True, a_publier=a_publier)
                 # insert dans apache solr
-                params["literal.est_publie"] = est_publie
+                params["literal.est_publie"] = a_publier
                 index_file_in_solr(pj.path, params)
 
             except pysolr.SolrError as e:
@@ -65,44 +73,8 @@ def insert_solr(publication, est_publie, est_dans_blockchain=False, blockchain_t
     except Exception as e:
         logger.exception("probleme traitement PJ : on ignore")
 
+def traiter_actes(publication: Publication, acte: Acte | PieceJointe, isPj: bool, a_publier: bool):
 
-def lien_symbolique(publication):
-    if publication.acte_nature == "1":
-        dossier = publication.siren + os.path.sep + "Deliberation"
-    elif publication.acte_nature == "2":
-        dossier = publication.siren + os.path.sep + "Actes_reglementaires"
-    elif publication.acte_nature == "3":
-        dossier = publication.siren + os.path.sep + "Actes_individuels"
-    elif publication.acte_nature == "4":
-        dossier = publication.siren + os.path.sep + "Contrats_conventions_avenants"
-    elif publication.acte_nature == "5":
-        dossier = publication.siren + os.path.sep + "Budget"
-    elif publication.acte_nature == "7":
-        dossier = publication.siren + os.path.sep + "Hors_prefecture"
-    else:
-        #cas par defaut et acte_nature=6
-        dossier = publication.siren + os.path.sep + "Autres"
-
-    if publication.date_budget:
-        annee = publication.date_budget
-    else:
-        annee = str(publication.date_de_lacte.year)
-
-    # copy de l'acte dans le dossier marque blanche
-    for acte in publication.actes:
-        extension = str('.' + acte.name.split(".")[-1])
-        symlink_file(acte.path,
-                     current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                     acte.hash + extension)
-
-    # copy des pj dans le dossier marque blanche
-    for pj in publication.pieces_jointe:
-        extension = str('.' + pj.name.split(".")[-1])
-        symlink_file(pj.path,
-                     current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                     pj.name + extension)
-
-def traiter_actes(publication, acte, isPj):
     if publication.date_budget:
         annee = publication.date_budget
     else:
@@ -143,11 +115,32 @@ def traiter_actes(publication, acte, isPj):
     init_document(data, acte, parametrage, publication, urlPDF, typology)
 
     # dépot dans le serveur
-    symlink_file(acte.path, current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep,
-                 acte.hash + extension)
+    dest_dir = current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep
+    dest_filename = acte.hash + extension
+    if a_publier:
+        symlink_file(acte.path, dest_dir, dest_filename)
+    else:
+        unsymlink_file(dest_dir, dest_filename)
     return data
 
-def init_document(data, acte, parametrage, publication, urlPDF, typology):
+def _piece_jointe_est_publiee(publication_publiee: bool, flag_publication_annexes: bool, pj_publiee: Optional[bool]):
+    """Calcule si la pièce jointe peut être publiée selon
+    - si la publication est publiée
+    - si la publication d'annexe est activée
+    - si le status de publication de la pj a été explicitement indiqué
+    """
+    a_publier = False
+    if not publication_publiee:
+        a_publier = False
+    elif not flag_publication_annexes:
+        a_publier = False
+    elif pj_publiee is not None and not pj_publiee:
+        a_publier = False
+    else:
+        a_publier = True
+    return a_publier
+
+def init_document(data, acte, parametrage, publication: Publication, urlPDF, typology):
     data["commit"] = 'true'
     data["literal.hash"] = acte.hash
     data["literal.publication_id"] = publication.id
@@ -158,6 +151,8 @@ def init_document(data, acte, parametrage, publication, urlPDF, typology):
     data["literal.date_budget"] = publication.date_budget
     # partie métadata (issu du fichier metadata.json de pastell)
     data["literal.date"] = publication.date_de_lacte.strftime("%Y-%m-%dT%H:%M:%SZ")
+    if publication.date_ar:
+        data["literal.date_ar"] = publication.date_ar.strftime("%Y-%m-%dT%H:%M:%SZ")
 
     date_publication = publication.date_publication
     if publication.date_publication is not None:
@@ -198,7 +193,7 @@ def _documenttype(publication: Publication):
         return "7"
 
 
-def init_publication(metadataPastell, id_d: str):
+def init_publication(metadataPastell: MetadataPastell, id_d: str):
     WORKDIR = workdir_utils.get_or_create_persistent_workdir()
     # publication open data oui par défaut 0:oui / 1:non / 2:Ne sais pas
     pub_open_data = '0'
@@ -220,6 +215,7 @@ def init_publication(metadataPastell, id_d: str):
         siren=metadataPastell.siren,
         publication_open_data=metadataPastell.publication_open_data,
         date_de_lacte=metadataPastell.date_de_lacte,
+        date_ar=metadataPastell.date_ar,
         created_at=datetime.now(),
         modified_at=datetime.now(),
         date_budget=date_budget,
@@ -233,9 +229,7 @@ def init_publication(metadataPastell, id_d: str):
     db_sess.add(newPublication)
     db_sess.commit()
 
-    # XXX: retour de db, le type dt est ici une datetime
-    date_de_lacte_dt: datetime = newPublication.date_de_lacte # type: ignore 
-    annee = str(date_de_lacte_dt.year)
+    annee = str(metadataPastell.date_de_lacte)
 
     if newPublication.acte_nature == "1":
         dossier = newPublication.siren + os.path.sep + "Deliberation"

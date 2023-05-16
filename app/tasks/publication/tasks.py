@@ -13,6 +13,7 @@ from app import celeryapp
 from app import db
 
 from app.models.publication_model import Publication
+from app.models.parametrage_model import Parametrage
 
 from app.shared.datastructures import MetadataPastell
 import app.shared.workdir_utils as workdir_utils
@@ -21,7 +22,6 @@ from app.tasks.utils import solr_connexion
 
 from .functions import ( 
     init_publication,insert_solr,
-    lien_symbolique,
     insere_nouveau_parametrage,
     _archives_current,
     _erreurs_root, 
@@ -115,14 +115,11 @@ def modifier_acte_task(idPublication):
     except Exception as e:
         raise e
 
-    return {'status': 'OK', 'message': 'Aucun document solr à modifier',
-            'publication id': publication.id}
-
-
 @celery.task(name='publier_acte_task')
 def publier_acte_task(idPublication, reindexationSolr=False):
     # on récupère la publication à publier en BDD
-    publication = Publication.query.filter(Publication.id == idPublication).one()
+    publication: Publication = Publication.query.filter(Publication.id == idPublication).one()
+    parametrage: Parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
 
     if publication.est_supprime:
         return {'status': 'OK', 'message': 'publication non autorisé car supprimé colonne est_supprimé',
@@ -131,18 +128,21 @@ def publier_acte_task(idPublication, reindexationSolr=False):
     # CAS d'une republication si deja présent dans solr alors on change de flag est_publié et on remets les fichiers dans le dossier marque blanche
     solr = solr_connexion()
     try:
-        result = solr.search(q='publication_id : ' + str(idPublication), sort='id ASC', cursorMark="*")
-        for doc_res in result:
-            solr.delete(doc_res['id'])
+        results = solr.search(q='publication_id : ' + str(idPublication), sort='id ASC', cursorMark="*")
+        for doc in results:
+            solr.delete(doc['id'])
     except Exception as e:
-        result = 0
+        results = 0
 
     if not reindexationSolr:
         publication.date_publication = datetime.now()
 
     try:
-        insert_solr(publication, est_publie=True)
-        lien_symbolique(publication)
+        insert_solr(
+            publication, 
+            est_publie=True, 
+            publication_des_annexes=parametrage.publication_annexes
+        )
 
     except Exception as e:
         logger.exception(e)
@@ -197,7 +197,8 @@ def publier_blockchain_task(idPublication):
     publisher = w3.eth.contract(address=contract_address, abi=abi)
 
     # on récupère la publication à publier en BDD
-    publication = Publication.query.filter(Publication.id == idPublication).one()
+    publication: Publication = Publication.query.filter(Publication.id == idPublication).one()
+    parametrage: Parametrage = Parametrage.query.filter(Parametrage.siren == publication.siren).one()
 
     # copy de l'acte dans le dossier marque blanche
     for acte in publication.actes:
@@ -222,7 +223,11 @@ def publier_blockchain_task(idPublication):
         except Exception as e:
             result = 0
 
-        insert_solr(publication, est_publie=True, est_dans_blockchain=True, blockchain_tx=tx_receipt.transactionHash.hex())
+        insert_solr(
+            publication, 
+            est_publie=True, publication_des_annexes=parametrage.publication_annexes,
+            est_dans_blockchain=True, blockchain_tx=tx_receipt.transactionHash.hex(),
+        )
 
         return {'status': 'OK', 'message': 'publié sur ' + current_app.config['NETWORK_NAME'] + ' ;)',
                 'tx_receipt': tx_receipt.transactionHash.hex()}
@@ -241,7 +246,8 @@ def depublier_acte_task(idPublication):
             parseResult = urllib.parse.urlparse(str(doc_res['filepath'][0]))
             doc_res['est_publie'][0] = False
             try:
-                os.remove(current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path)
+                file = current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path
+                os.remove(file)
             except FileNotFoundError as e:
                 logger.info("fichier deja supprimé:" + current_app.config['DIR_ROOT_PUBLICATION'] + parseResult.path)
             solr.add(doc_res)
@@ -273,7 +279,6 @@ def gestion_activation_open_data(siren, opendata_active):
 
     return {'status': 'OK', 'message': 'mise à jour du flag opendata_active dans solr',
             'siren': siren, 'opendata_active': opendata_active}
-
 
 @celery.task(name='republier_all_acte_task')
 def republier_all_acte_task(etat):

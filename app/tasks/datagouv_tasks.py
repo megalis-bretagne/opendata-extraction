@@ -265,7 +265,7 @@ def generation_scdl_deliberation(root_path: Path, siren, annee, flag_active=None
         solr.search(q=query,
                     **{
                         'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
-                              'filepath,documenttype,date,est_publie',
+                              'filepath,documenttype,date,date_ar,est_publie',
                         'start': start,
                         'rows': rows,
                         'fq': 'date:[' + ANNEE + '-01-01T00:00:00Z TO ' + ANNEE + '-12-31T23:59:59Z]'
@@ -275,6 +275,9 @@ def generation_scdl_deliberation(root_path: Path, siren, annee, flag_active=None
     while len(result.docs) > 0:
         for doc_res in result.docs:
             parametrage = Parametrage.query.filter(Parametrage.siren == doc_res['siren']).first()
+
+            date_ar = doc_res['date_ar'][0].split("T", 1)[0] if 'date_ar' in doc_res else ''
+
             COLL_NOM = parametrage.denomination
             DELIB_DATE = str(doc_res['date'][0].split("T", 1)[0])
             DELIB_ID = str(doc_res['documentidentifier'][0])
@@ -286,7 +289,7 @@ def generation_scdl_deliberation(root_path: Path, siren, annee, flag_active=None
             BUDGET_ANNEE = ''
             BUDGET_NOM = ''
             PREF_ID = ''
-            PREF_DATE = ''
+            PREF_DATE = date_ar
             VOTE_EFFECTIF = ''
             VOTE_REEL = ''
             VOTE_POUR = ''
