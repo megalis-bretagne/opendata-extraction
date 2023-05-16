@@ -6,6 +6,8 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+## [2.0.18] - 2023-05-16
+
 ### Important
 
 - Migration bdd: [00008_mep_mai_2023.sql](./app/migrate/00008_mep_mai_2023.sql)
