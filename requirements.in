@@ -1,0 +1,31 @@
+yatotem2scdl==0.0.21
+
+flask ~= 1.1
+markupsafe ~= 2.0.1   # Pour rester compatible avec flask 1 
+flask-cors ~= 3.0
+flask-oidc ~= 1.4
+flask-restx ~= 1.1
+flask-migrate ~= 3.0
+flask-script ~= 2.0
+flask-sqlalchemy ~= 2.5
+waitress ~= 2.1
+
+prometheus-flask-exporter ~= 0.21
+
+celery[redis] ~= 5.1.0       # A mettre à jour en celery 5.2 une fois que l'on aura maj flask 
+
+sqlalchemy[pymysql] ~= 1.0
+sqlalchemy-utils ~= 0.37
+
+pysolr ~= 3.9
+
+watchdog ~= 3.0
+
+more-itertools ~= 9.0
+requests ~= 2.28
+api-insee ~= 1.5
+beautifulsoup4==4.9
+scp ~= 0.13
+lxml ~= 4.9
+web3 ~= 5.30
+pygelf ~= 0.4

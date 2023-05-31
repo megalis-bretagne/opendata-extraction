@@ -10,6 +10,11 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Upgrade python to 3.11.3
 
+### Changements
+
+- Changement de la manière de déclarer les dépendances. voir [README](./README.md)
+- Nettoyage dans les dépendances actuelles.
+
 ### Corrections
 
 - Support du format ISO 8601 abregé pour `date_de_lacte` (grâce à l'upgrade vers python 3.11)
