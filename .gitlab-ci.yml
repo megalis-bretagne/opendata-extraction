@@ -18,7 +18,7 @@ build:
   extends: .build
 
 pytest-unit:
-  image: python:3.10.8-alpine
+  image: python:3.11.3-alpine
   stage: test
   only:
     - master

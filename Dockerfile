@@ -1,5 +1,5 @@
 # set base image (host OS)
-FROM python:3.10.8-alpine
+FROM python:3.11.3-alpine
 
 WORKDIR /appli
 
