@@ -27,5 +27,5 @@ api-insee ~= 1.5
 beautifulsoup4==4.9
 scp ~= 0.13
 lxml ~= 4.9
-web3 ~= 5.30
+web3 ~= 6.4
 pygelf ~= 0.4
