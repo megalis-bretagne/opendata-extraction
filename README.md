@@ -32,3 +32,30 @@ Plusieurs APIs sont disponibles (mode runserver)
 | GELF_HOST          | logstash.domain |             |
 | GELF_PORT          | 12201           |             |
 | GELF_PROTO         | UDP             |             |
+
+## Pour les développeurs
+
+### Les dépendances
+
+Les dépendances sont gérées par [pip-tools](https://github.com/jazzband/pip-tools).
+
+```bash
+# Dans votre environnement virtuel
+pip install pip-tools
+```
+
+#### Pin les dépendances
+
+Supprimer les fichiers [requirements.txt](./requirements.txt) et [dev-requirements.txt](./dev-requirements.txt) pour pin de nouvelles versions.
+
+```bash
+pip-compile
+pip-compile dev-requirements.in
+```
+
+#### Installer les dépendances locallement
+
+```bash
+pip-sync # Pour installer iso runtime
+pip-sync requirements.txt dev-requiements.txt # Pour également tirer les dépendances de dev
+```

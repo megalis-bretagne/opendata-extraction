@@ -31,7 +31,6 @@ def ccbr_siren():
     "client_api_sirene",
     [
         (_ClientApiInseeStrategy("clef valide", "secret valide"),),
-        (_ClientApiEntrepriseStrategy("https://entreprise.data.gouv.fr/api/sirene/v3"),),
     ],
     indirect=True,
 )
@@ -52,7 +51,6 @@ def test_client_api_sirene_etablissements_strategies(client_api_sirene: ClientAp
     "client_api_sirene",
     [
         (_ClientApiInseeStrategy("clef valide", "secret valide"),),
-        (_ClientApiEntrepriseStrategy("https://entreprise.data.gouv.fr/api/sirene/v3"),),
     ],
     indirect=True,
 )
@@ -111,11 +109,6 @@ def test_client_api_sirene_all_fail(client_api_sirene, siren):
     "client_api_sirene",
     [
         (_ClientApiInseeStrategy("clef valide", "clef valide"),),
-        (
-            _ClientApiEntrepriseStrategy(
-                "https://entreprise.data.gouv.fr/api/sirene/v3"
-            ),
-        ),
     ],
     indirect=True,
 )
