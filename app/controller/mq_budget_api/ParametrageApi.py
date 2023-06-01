@@ -15,10 +15,7 @@ from . import budgets_api
 parametrage_ns = Namespace(
     name="parametrage",
     path="/parametrage",
-    description=(
-        "API de parametrage des données de budgets pour la marque blanche. "
-        "<b>C'est une API privée pour le frontend et elle peut changer à tout moment</b>"
-    ),
+    description="API de parametrage des données de budgets pour la marque blanche.",
 )
 
 search_parametrages_req_parser = reqparse.RequestParser()
@@ -67,6 +64,7 @@ class ParametrageVisualisationParDefaut(Resource):
 
     @parametrage_ns.expect(put_parametrages_req_parser)
     @oidc.accept_token(require_token=True, scopes_required=["openid"])
+    @parametrage_ns.doc(security=['bearer'])
     def put(self, annee: Annee, siret: Siret, etape_str: str, graphe_id: str):
 
         args = put_parametrages_req_parser.parse_args()

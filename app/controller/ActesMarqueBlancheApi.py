@@ -7,15 +7,16 @@ _API_SERVICE = api_service.ActesMarqueBlancheApiService()
 
 actes_api_bp = Blueprint("mq_actes", __name__)
 actes_api = Api(
-    actes_api_bp, doc="/doc", title="API marque blanche actes", prefix="/v1"
+    actes_api_bp, 
+    doc="/doc", 
+    title="API marque blanche actes", 
+    prefix="/v1",
+    description="<b>Ce sont des APIs privées pour le frontend et elle peuvent changer à tout moment</b>"
 )
 actes_api_ns = Namespace(
     name="actes",
     path="/",
-    description=(
-        "API de recherche des actes "
-        "<b>C'est une API privée pour le frontend et elle peut changer à tout moment</b>"
-    ),
+    description= "API de recherche des actes.",
 )
 actes_api.add_namespace(actes_api_ns)
 

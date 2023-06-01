@@ -14,6 +14,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Changement de la manière de déclarer les dépendances. voir [README](./README.md)
 - Nettoyage dans les dépendances actuelles.
+- Ajout d'une authentification de type 'apiKey' dans les interface swagger pour les endpoints concernés.
 
 ### Corrections
 

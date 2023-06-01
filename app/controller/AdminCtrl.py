@@ -6,7 +6,7 @@ from flask_restx import Namespace, Resource, reqparse
 from app import oidc
 from app.controller.Decorator import isAdmin
 
-api = Namespace(name='admin', description="API de gestion des services d'administration <b>(API sécurisée)</b>")
+api = Namespace(name='admin', description="API de gestion des services d'administration")
 
 arguments_pastell_controller = reqparse.RequestParser()
 arguments_pastell_controller.add_argument('id_e',
@@ -21,6 +21,7 @@ arguments_annee_controller.add_argument('annee', help="Année de generation")
 
 
 @api.route('/solr/clear')
+@api.doc(security=['bearer'])
 class AdminCtrl(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -32,6 +33,7 @@ class AdminCtrl(Resource):
 
 
 @api.route('/solr/delete/<int:idPublication>')
+@api.doc(security=['bearer'])
 class AdminSolrDeleteCtrl(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -49,6 +51,7 @@ class AdminSolrDeleteCtrl(Resource):
 
 
 @api.route('/publier/rejeu')
+@api.doc(security=['bearer'])
 class AdminPulicationRejeu(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -64,6 +67,7 @@ class AdminPulicationRejeu(Resource):
             "statut": 'demande de relance des fichiers zip présent dans le dossier de relance  (taches asynchrone)'})
 
 @api.route('/publier/datagouv/deliberation')
+@api.doc(security=['bearer'])
 class AdminPulicationDelibSCDL(Resource):
     @api.expect(arguments_annee_controller)
     @api.response(200, 'Success')
@@ -79,6 +83,7 @@ class AdminPulicationDelibSCDL(Resource):
 
 
 @api.route('/publier/datagouv/budget')
+@api.doc(security=['bearer'])
 class AdminPulicationBudgetSCDL(Resource):
     @api.expect(arguments_annee_controller)
     @api.response(200, 'Success')
@@ -94,6 +99,7 @@ class AdminPulicationBudgetSCDL(Resource):
 
 
 @api.route('/publier/datagouv/decpHisto')
+@api.doc(security=['bearer'])
 class AdminPulicationDecpHisto(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -106,6 +112,7 @@ class AdminPulicationDecpHisto(Resource):
 
 
 @api.route('/publier/datagouv/decpHisto/annee')
+@api.doc(security=['bearer'])
 class AdminPulicationDecpHistoAnnee(Resource):
     @api.expect(arguments_annee_controller)
     @api.response(200, 'Success')
@@ -121,6 +128,7 @@ class AdminPulicationDecpHistoAnnee(Resource):
 
 
 @api.route('/publier/datagouv/decp')
+@api.doc(security=['bearer'])
 class AdminPublicationDecp(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -134,6 +142,7 @@ class AdminPublicationDecp(Resource):
 
 
 @api.route('/publier/udata/decp')
+@api.doc(security=['bearer'])
 class AdminUdataDecpCtrl(Resource):
     @api.expect(arguments_udata_controller)
     @api.response(200, 'Success')
@@ -150,6 +159,7 @@ class AdminUdataDecpCtrl(Resource):
 
 
 @api.route('/publier/udata/budget')
+@api.doc(security=['bearer'])
 class AdminUdataBudgetCtrl(Resource):
     @api.expect(arguments_udata_controller)
     @api.response(200, 'Success')
@@ -166,6 +176,7 @@ class AdminUdataBudgetCtrl(Resource):
 
 
 @api.route('/publier/udata/deliberation')
+@api.doc(security=['bearer'])
 class AdminUdataDeliberationCtrl(Resource):
     @api.expect(arguments_udata_controller)
     @api.response(200, 'Success')
@@ -182,6 +193,7 @@ class AdminUdataDeliberationCtrl(Resource):
 
 
 @api.route('/publier/udata/all')
+@api.doc(security=['bearer'])
 class AdminUdataAllCtrl(Resource):
     @api.expect(arguments_annee_controller)
     @api.response(200, 'Success')
@@ -197,6 +209,7 @@ class AdminUdataAllCtrl(Resource):
 
 
 @api.route('/publier/udata/decpHisto')
+@api.doc(security=['bearer'])
 class AdminUdataPublicationDecpHisto(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -210,6 +223,7 @@ class AdminUdataPublicationDecpHisto(Resource):
 
 @api.route('/publication/republier/all/<int:etat>')
 @api.doc(params={'etat': '1 =publie, 0=non, 2=en-cours, 3=en-erreur'})
+@api.doc(security=['bearer'])
 class PublicationRepublierCtrl(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -222,6 +236,7 @@ class PublicationRepublierCtrl(Resource):
 
 @api.route('/publication/republier/<int:siren>/<int:etat>')
 @api.doc(params={'etat': '1 =publie, 0=non, 2=en-cours, 3=en-erreur'})
+@api.doc(security=['bearer'])
 class PublicationRepublierSirenCtrl(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -233,6 +248,7 @@ class PublicationRepublierSirenCtrl(Resource):
             {"statut": "ETAT:" +str(etat)+ ' SIREN: '+str(siren)+'- demande de republication prise en compte (taches asynchrone)'})
 
 
+@api.doc(security=['bearer'])
 @api.route('/parametrage/valorisation')
 class AdminValorisation(Resource):
     @api.response(200, 'Success')
@@ -245,6 +261,7 @@ class AdminValorisation(Resource):
             {"statut": 'Valorisation des nic et denomination'})
 
 
+@api.doc(security=['bearer'])
 @api.route('/test/isAdmin')
 class AdminIsAdmin(Resource):
     @api.response(200, 'Success')
