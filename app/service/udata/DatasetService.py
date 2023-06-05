@@ -1,5 +1,6 @@
 import array
 import json
+import logging
 from pathlib import Path
 
 import requests
@@ -7,12 +8,19 @@ from flask import current_app
 
 from app.service.Singleton import Singleton
 
+class DatasetServiceException(Exception):
+    pass
+class AddResourceUrlException(DatasetServiceException):
+    """Lors de l'echec de l'ajout/update d'une resource url"""
+    pass
+
 class DatasetService(metaclass=Singleton):
     """ Service dataset pour udata """
 
     DATASETS_ENDPOINT = "/datasets/"
 
     def __init__(self):
+        self.__logger = logging.getLogger(__name__)
         catalogue_regionnal = current_app.config["CATALOGUE_REGIONAL"]
         self.HEADERS = {
             'X-API-KEY': catalogue_regionnal['API_KEY']
@@ -107,43 +115,65 @@ class DatasetService(metaclass=Singleton):
             "marches-publics"
         ]
         return self.__create_dataset(organization['id'], description, title, 'decp', array_tags)
-    
-    def __add_resource_url(self, dataset: dict, titre: str, url: str, schema: dict, format: str):
-        """Ajout d'une ressource sur le dataset en tant qu'url. Maj si les titres sont équivalents."""
+
+    def __add_resource_url(self, *args, **kwargs):
+        """Ajout d'une ressource sur le dataset en tant qu'url. Maj ou supprime/creation si les titres sont équivalents.
+        raises:
+            AddResourceUrlException
+        """
+        try:
+            self.__add_resource_url_raw(*args, **kwargs)
+        except AddResourceUrlException as e:
+            raise
+        except Exception as e:
+            raise AddResourceUrlException(str(e)) from e
+
+    def __add_resource_url_raw(self, dataset: dict, titre: str, url: str, schema: dict, format: str, mime: str):
 
         if dataset is None:
-            return None
+            raise AddResourceUrlException("Aucun dataset de fourni")
         id_dataset = dataset['id']
-        endpoint = self.API + "/1" + self.DATASETS_ENDPOINT + f"{id_dataset}/resources"
+        resource_endpoint = self.API + "/1" + self.DATASETS_ENDPOINT + f"{id_dataset}/resources"
 
         desc = {
             'title': titre,
             'format': format,
+            'mime': mime,
             'schema': schema,
             'url': url,
             'filetype': 'remote',
         }
 
         id_dataset = dataset['id']
-        for resource in dataset['resources']:
-            if self.__do_title_matches(resource['title'], candidate=titre):
-                id = resource['id']
-                desc['id'] = id # XXX: On écrase certaines données qui étaient mise lors de l'upload
-                desc['latest'] = url
-                desc['filesize'] = None
-                endpoint = f"{endpoint}/{id}"
-                response = requests.put(endpoint, json=desc, headers=self.HEADERS)
-                if response.status_code != 200:
-                    return None
-                else:
-                    return json.loads(response.content.decode("utf-8"))
 
-        response = requests.post(endpoint, json=desc, headers=self.HEADERS)
-        if response.status_code != 201:
-            return None
+        resources_similaires = [resource for resource in dataset['resources'] if self.__do_title_matches(resource['title'], candidate=titre)]
+        if len(resources_similaires) > 1:
+            self.__logger.warning(f"Plusieurs ressources avec le même titre ({titre}) pour le dataset {id_dataset}")
         
-        resource = json.loads(response.content.decode('utf-8'))
-        return resource
+        # Cas d'un update de ressource
+        for resource in resources_similaires:
+            id = resource['id']
+            desc['id'] = id
+            endpoint = f"{resource_endpoint}/{id}"
+
+            if resource['filetype'] == 'remote':
+                response = requests.put(endpoint, json=desc, headers=self.HEADERS)
+                response.raise_for_status()
+                return json.loads(response.content.decode("utf-8"))
+            else:
+                self.__logger.warning(
+                    f"La ressource {endpoint} n'est pas une ressource distance. "
+                    "On supprime et recrée la ressource."
+                )
+                response = requests.delete(endpoint, headers=self.HEADERS) 
+                response.raise_for_status()
+                break # XXX: seulement le premier
+
+        # Creation
+        response_creation = requests.post(resource_endpoint, json=desc, headers=self.HEADERS)
+        response_creation.raise_for_status()
+
+        return json.loads(response_creation.content.decode("utf-8"))
 
     def __add_resource_fp(self, dataset: dict, filepath: Path, schema: dict):
         """ Ajout une resource sur le dataset. Maj si fichier déja présent sur la resource """
@@ -190,30 +220,42 @@ class DatasetService(metaclass=Singleton):
             return resource
 
     def add_resource_budget_url(self, dataset: dict, titre: str, url: str):
+        """
+        Raises:
+            AddResourceUrlException
+        """
         return self.__add_resource_url(
             dataset = dataset, 
             titre=titre,
             url=url, 
             schema={'name': 'scdl/budget', 'version': '0.8.1'}, 
-            format='csv'
+            format='csv', mime = 'text/csv',
         )
     
     def add_resource_deliberation_url(self, dataset: dict, titre: str, url: str):
+        """
+        Raises:
+            AddResourceUrlException
+        """
         return self.__add_resource_url(
             dataset=dataset,
             titre=titre,
             url=url,
             schema={'name': 'scdl/deliberations'},
-            format='csv',
+            format='csv', mime = 'text/csv',
         )
 
     def add_resource_decp_url(self, dataset: dict, titre: str, url: str):
+        """
+        Raises:
+            AddResourceUrlException
+        """
         return self.__add_resource_url(
             dataset=dataset,
             titre=titre,
             url=url,
             schema={'name': '139bercy/format-commande-publique'},
-            format='xml',
+            format='xml', mime = 'text/xml',
         )
 
     def add_resource_budget(self, dataset: dict, file_path: Path):

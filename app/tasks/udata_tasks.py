@@ -13,9 +13,6 @@ from app.tasks.datagouv_tasks import (
 
 celery = celeryapp.celery
 
-class PublicationUdataError(Exception):
-    pass
-
 @celery.task(name='publication_udata_budget')
 def publication_udata_budget(siren, annee):
 
@@ -33,10 +30,9 @@ def publication_udata_budget(siren, annee):
     if dataset_budget is None:
         dataset_budget = dataset_service.create_dataset_budget(organization)
     api_opendata_resource_url = _api_opendata_resource_url('scdl/budget', siren, annee)
-    resultat = dataset_service.add_resource_budget_url(dataset_budget, titre, api_opendata_resource_url)
 
-    if resultat is None:
-        raise PublicationUdataError(f"siren: {siren}. année: {annee}")
+    dataset_service.add_resource_budget_url(dataset_budget, titre, api_opendata_resource_url)
+
     return {'status': 'OK', 'message': 'generation et publication budget', 'siren': str(siren),
             'annee': str(annee)}
 
@@ -60,10 +56,9 @@ def publication_udata_deliberation(siren, annee):
         dataset_deliberation = dataset_service.create_dataset_deliberation(organization)
 
     api_opendata_resource_url = _api_opendata_resource_url('scdl/deliberation', siren, annee)
-    resultat = dataset_service.add_resource_deliberation_url(dataset_deliberation, titre, api_opendata_resource_url)
 
-    if resultat is None:
-        raise PublicationUdataError(f"siren: {siren}. année: {annee}")
+    dataset_service.add_resource_deliberation_url(dataset_deliberation, titre, api_opendata_resource_url)
+
     return {'status': 'OK', 'message': 'generation et publication deliberation', 'siren': str(siren),
             'annee': str(annee)}
 
@@ -88,10 +83,9 @@ def publication_udata_decp(siren, annee):
 
         titre = f"decp-{siren}{annee}.xml" # XXX: oui, pas de tiret entre siren et années pour decp
         api_opendata_resource_url = _api_opendata_resource_url('decp', siren, annee)
-        resultat = dataset_service.add_resource_decp_url(dataset_decp, titre, api_opendata_resource_url)
 
-        if resultat is None:
-            raise PublicationUdataError(f"siren: {siren}. année: {annee}")
+        dataset_service.add_resource_decp_url(dataset_decp, titre, api_opendata_resource_url)
+
         return {'status': 'OK', 'message': 'generation et publication decp', 'siren': str(siren),
                 'annee': str(annee)}
 

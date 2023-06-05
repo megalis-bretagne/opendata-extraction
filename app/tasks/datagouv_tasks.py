@@ -283,52 +283,50 @@ def generation_scdl_deliberation(root_path: Path, siren, annee, flag_active=None
     }
 
     ##
-    lignes = []
-    results = solr.search(q=query, sort="publication_id DESC,id ASC", cursorMark="*", **query_params)
-    for doc_res in results:
+    with open(csv_filepath, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile, delimiter=";")
+        header = [ "COLL_NOM", "COLL_SIRET", "DELIB_ID", "DELIB_DATE", "DELIB_MATIERE_CODE", "DELIB_MATIERE_NOM", "DELIB_OBJET", "BUDGET_ANNEE", "BUDGET_NOM", "PREF_ID", "PREF_DATE", "VOTE_EFFECTIF", "VOTE_REEL", "VOTE_POUR", "VOTE_CONTRE", "VOTE_ABSTENTION", "DELIB_URL" ]
+        writer.writerow(header)
 
-        parametrage = Parametrage.query.filter(Parametrage.siren == doc_res['siren']).first()
-        date_ar = doc_res['date_ar'][0].split("T", 1)[0] if 'date_ar' in doc_res else ''
+        results = solr.search(q=query, sort="publication_id DESC,id ASC", cursorMark="*", **query_params)
+        for doc_res in results:
 
-        COLL_NOM = parametrage.denomination
-        DELIB_DATE = str(doc_res['date'][0].split("T", 1)[0])
-        DELIB_ID = str(doc_res['documentidentifier'][0])
-        DELIB_OBJET = str(doc_res['description'][0])
-        COLL_SIRET = str(doc_res['siren'].zfill(9) + parametrage.nic)
-        DELIB_MATIERE_CODE = str(doc_res['classification_code'])
-        DELIB_MATIERE_NOM = str(doc_res['classification_nom'])
+            parametrage = Parametrage.query.filter(Parametrage.siren == doc_res['siren']).first()
+            date_ar = doc_res['date_ar'][0].split("T", 1)[0] if 'date_ar' in doc_res else ''
 
-        BUDGET_ANNEE = ''
-        BUDGET_NOM = ''
-        PREF_ID = ''
-        PREF_DATE = date_ar
-        VOTE_EFFECTIF = ''
-        VOTE_REEL = ''
-        VOTE_POUR = ''
-        VOTE_CONTRE = ''
-        VOTE_ABSTENTION = ''
-        if doc_res['est_publie'][0]:
-            DELIB_URL = urllib.parse.quote(str(doc_res['filepath'][0]), safe="https://")
-        else:
-            DELIB_URL = ''
+            COLL_NOM = parametrage.denomination
+            DELIB_DATE = str(doc_res['date'][0].split("T", 1)[0])
+            DELIB_ID = str(doc_res['documentidentifier'][0])
+            DELIB_OBJET = str(doc_res['description'][0])
+            COLL_SIRET = str(doc_res['siren'].zfill(9) + parametrage.nic)
+            DELIB_MATIERE_CODE = str(doc_res['classification_code'])
+            DELIB_MATIERE_NOM = str(doc_res['classification_nom'])
 
-        line = '"' + COLL_NOM + '"' + ';' + '"' + COLL_SIRET + '"' + ';' + '"' + DELIB_ID + '"' + ';' + '"' + DELIB_DATE + '"' + ';' + '"' + DELIB_MATIERE_CODE + '"' + ';' \
-                + '"' + DELIB_MATIERE_NOM + '"' + ';' + '"' + DELIB_OBJET + '"' + ';' + '"' + BUDGET_ANNEE + '"' + ';' + '"' + BUDGET_NOM + '"' + ';' + '"' + PREF_ID + '"' + \
-                ';' + '"' + PREF_DATE + '"' + ';' + '"' + VOTE_EFFECTIF + '"' + ';' + '"' + VOTE_REEL + '"' + ';' + '"' + VOTE_POUR + '"' + ';' + '"' + VOTE_CONTRE + '"' + ';' \
-                + '"' + VOTE_ABSTENTION + '"' + ';' + '"' + DELIB_URL + '"' + '\n'
-        lignes.append(line)
+            BUDGET_ANNEE = ''
+            BUDGET_NOM = ''
+            PREF_ID = ''
+            PREF_DATE = date_ar
+            VOTE_EFFECTIF = ''
+            VOTE_REEL = ''
+            VOTE_POUR = ''
+            VOTE_CONTRE = ''
+            VOTE_ABSTENTION = ''
+            if doc_res['est_publie'][0]:
+                DELIB_URL = urllib.parse.quote(str(doc_res['filepath'][0]), safe="https://")
+            else:
+                DELIB_URL = ''
 
-    # Ecriture du fichier scdl
-    header = "COLL_NOM;COLL_SIRET;DELIB_ID;DELIB_DATE;DELIB_MATIERE_CODE;DELIB_MATIERE_NOM;DELIB_OBJET;BUDGET_ANNEE;BUDGET_NOM;PREF_ID;PREF_DATE;VOTE_EFFECTIF;VOTE_REEL;VOTE_POUR;VOTE_CONTRE;VOTE_ABSTENTION;DELIB_URL"
-    f = open(csv_filepath, 'w')
-    f.write(header + '\n')
-    for ligne in lignes:
-        try:
-            f.write(ligne)
-        except Exception:
-            logging.exception("on ignore la ligne" + ligne)
-    f.close()
-    return csv_filepath
+            line = [
+                COLL_NOM, COLL_SIRET, DELIB_ID, DELIB_DATE, DELIB_MATIERE_CODE, DELIB_MATIERE_NOM, DELIB_OBJET
+                , BUDGET_ANNEE, BUDGET_NOM, PREF_ID, PREF_DATE, VOTE_EFFECTIF, VOTE_REEL
+                , VOTE_POUR, VOTE_CONTRE, VOTE_ABSTENTION, DELIB_URL
+                ]
+            try:
+                writer.writerow(line)
+            except Exception:
+                logging.exception(f"on ignore la ligne {line}")
+
+        return csv_filepath
 
 def solr_has_any_deliberation(annee: str, siren: str, flag_active: Optional[str]) -> bool:
     solr = solr_connexion()
