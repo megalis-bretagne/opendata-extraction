@@ -20,6 +20,10 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Support du format ISO 8601 abregé pour `date_de_lacte` (grâce à l'upgrade vers python 3.11)
 
+### Changement techniques
+
+- Ajout de l'option [`result_extended`](https://docs.celeryq.dev/en/latest/userguide/configuration.html#result-extended) pour celery.
+
 ## [2.0.18] - 2023-05-16
 
 ### Important

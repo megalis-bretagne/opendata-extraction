@@ -35,7 +35,8 @@ def create_celery_app(_app=None):
 
     celery = Celery(_app.import_name,
                     broker=_app.config['CELERY_BROKER_URL'],
-                    include=CELERY_TASK_LIST)
+                    include=CELERY_TASK_LIST,
+                    result_extended=True)
     celery.conf.update(_app.config)
     always_eager = _app.config['TESTING'] or False
     celery.conf.update({'task_always_eager': always_eager,
