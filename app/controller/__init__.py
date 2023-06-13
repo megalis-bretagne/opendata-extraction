@@ -35,13 +35,22 @@ api = Api(
 )
 
 private_api_v1_bp = Blueprint("API privées OpenData", __name__)
+private_api_authorizations = {
+    'bearer': {
+        'type': 'apiKey',
+        'in': 'header',
+        'name': 'Authorization',
+        'description': "Ajout d'un header 'Authorization'. Saisissez 'Bearer JWT'",
+    },
+}
 private_api = Api(
     private_api_v1_bp,
     version="1.0",
     title="API privées Open DATA",
-    description="API privées pour le projet OpenData",
+    description="API privées pour le projet OpenData <b>Ce sont des APIs privées et peuvent changer à tout moment.</b>",
     prefix="/v1",
     doc="/doc/",
+    authorizations=private_api_authorizations,
 )
 
 

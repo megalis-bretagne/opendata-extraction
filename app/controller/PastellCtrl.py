@@ -10,7 +10,7 @@ from sqlalchemy import create_engine, text
 from app import oidc
 from app.controller.Decorator import isAdmin, token_required
 
-api = Namespace(name='pastell', description="API de création du paramétrage pastell <b>(API sécurisée)</b>")
+api = Namespace(name='pastell', description="API de création du paramétrage pastell")
 
 arguments_pastell_controller = reqparse.RequestParser()
 arguments_pastell_controller.add_argument('id_e',
@@ -21,6 +21,7 @@ arguments_pastell_rejeu_controller.add_argument('id_d',help="identifiant du docu
 
 
 @api.route('/creation/all')
+@api.doc(security=['bearer'])
 class AdminPastellAllCtrl(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -34,6 +35,7 @@ class AdminPastellAllCtrl(Resource):
 
 
 @api.route('/creation/parametrage')
+@api.doc(security=['bearer'])
 class AdminPastellGedPastellCtrl(Resource):
     @api.expect(arguments_pastell_controller)
     @api.response(200, 'Success')
@@ -50,6 +52,7 @@ class AdminPastellGedPastellCtrl(Resource):
 
 
 @api.route('/routine/parametrage')
+@api.doc(security=['bearer'])
 class AdminPastellRoutineCtrl(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -62,6 +65,7 @@ class AdminPastellRoutineCtrl(Resource):
 
 
 @api.route('/deblocage')
+@api.doc(security=['bearer'])
 class AdminPastellDeblocageCtrl(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -77,6 +81,7 @@ class AdminPastellDeblocageCtrl(Resource):
 
 
 @api.route('/rejeu_doc')
+@api.doc(security=['bearer'])
 class AdminPastellRejeuDocCtrl(Resource):
     @api.response(200, 'Success')
     @api.expect(arguments_pastell_rejeu_controller)

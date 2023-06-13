@@ -8,7 +8,7 @@ from app import oidc
 from app.models.parametrage_model import Parametrage
 from app.shared.client_api_sirene.data_structures import Etablissement
 
-api = Namespace(name='parametrage', description='API de gestion du paramétrage <b>(API sécurisée)</b>')
+api = Namespace(name='parametrage', description='API de gestion du paramétrage')
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +44,7 @@ arguments_parametrage_controller.add_argument('api_key_data_gouv', help='api key
 
 @api.route('/<siren>')
 @api.param('siren', 'siren')
+@api.doc(security=['bearer'])
 class ParametrageCtrl(Resource):
     @api.response(200, 'Success', model_parametrage)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])

@@ -1,0 +1,8 @@
+-c requirements.txt
+mypy
+pylint
+pytest
+pytest-cov
+testcontainers
+vcrpy
+pytest-recording

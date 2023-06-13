@@ -203,7 +203,7 @@ def publier_blockchain_task(idPublication):
     # copy de l'acte dans le dossier marque blanche
     for acte in publication.actes:
         # 5. Build increment tx
-        publisher_tx = publisher.functions.publish(publication.siren, acte.url).buildTransaction(
+        publisher_tx = publisher.functions.publish(publication.siren, acte.url).build_transaction(
             {
                 'from': account_from['address'],
                 'nonce': w3.eth.get_transaction_count(account_from['address']),

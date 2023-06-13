@@ -6,6 +6,26 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+## [2.0.19]
+
+### Ajouts
+
+- Upgrade python to 3.11.3
+
+### Changements
+
+- Changement de la manière de déclarer les dépendances. voir [README](./README.md)
+- Nettoyage dans les dépendances actuelles.
+- Ajout d'une authentification de type 'apiKey' dans les interface swagger pour les endpoints concernés.
+
+### Corrections
+
+- Support du format ISO 8601 abregé pour `date_de_lacte` (grâce à l'upgrade vers python 3.11)
+
+### Changement techniques
+
+- Ajout de l'option [`result_extended`](https://docs.celeryq.dev/en/latest/userguide/configuration.html#result-extended) pour celery.
+
 ## [2.0.18] - 2023-05-16
 
 ### Important

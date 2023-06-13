@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 publication_pieces_jointes_api_service = PublicationPiecesJointesApiService()
 
-api = Namespace(name='publication', description='API de gestion des publications <b>(API sécurisée)</b>')
+api = Namespace(name='publication', description='API de gestion des publications')
 
 model_acte = api.model('acte', {
     'id': fields.Integer,
@@ -104,6 +104,7 @@ publicationLightParams_search_controller.add_argument('pageIndex', help='index d
 publicationLightParams_search_controller.add_argument('pageSize', help='taille de la page', required=True)
 
 @api.route('')
+@api.doc(security=['bearer'])
 class PublicationAllCtrl(Resource):
     @api.response(200, 'Success', model_publication)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -115,6 +116,7 @@ class PublicationAllCtrl(Resource):
 
 
 @api.route('/publier/<int:id>')
+@api.doc(security=['bearer'])
 class PublicationPublierCtrl(Resource):
     @api.response(200, 'Success', model_publication)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -140,6 +142,7 @@ class PublicationPublierCtrl(Resource):
 
 
 @api.route('/depublier/<int:id>')
+@api.doc(security=['bearer'])
 class PublicationDepublierCtrl(Resource):
     @api.response(200, 'Success', model_publication)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -167,6 +170,7 @@ class PublicationDepublierCtrl(Resource):
 payload_pjs_one_publication_id_model = api.model('PiecesJointesPublications', { 'id_pj': fields.Boolean })
 payload_pjs_model = api.model('PublicationsPiecesJointesPublications', { 'id_publication': fields.Nested(payload_pjs_one_publication_id_model) })
 @api.route('/pieces_jointes/')
+@api.doc(security=['bearer'])
 class PublicationPublierPJCtrl(Resource):
 
     @api.response(200, 'Success', model_publication)
@@ -202,6 +206,7 @@ class PublicationPublierPJCtrl(Resource):
 
 
 @api.route('/modifier/<int:id>')
+@api.doc(security=['bearer'])
 class PublicationModifierCtrl(Resource):
     @api.expect(arguments_publication_modifier_controller)
     @api.response(200, 'Success', model_publication)
@@ -232,7 +237,9 @@ class PublicationModifierCtrl(Resource):
 
 
 @api.route('/masquer/<int:id>')
+@api.doc(security=['bearer'])
 class PublicationMasquerCtrl(Resource):
+
     @api.response(200, 'Success', model_publication)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     def put(self, id):
@@ -255,7 +262,9 @@ class PublicationMasquerCtrl(Resource):
 
 
 @api.route('/demasquer/<int:id>')
+@api.doc(security=['bearer'])
 class PublicationDemasquerCtrl(Resource):
+
     @api.response(200, 'Success', model_publication)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     def put(self, id):
@@ -277,6 +286,7 @@ class PublicationDemasquerCtrl(Resource):
 
 
 @api.route('/<int:id>')
+@api.doc(security=['bearer'])
 class PublicationCtrl(Resource):
     @api.response(200, 'Success', model_publication)
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
@@ -322,6 +332,7 @@ class PublicationCtrl(Resource):
 
 # Consommée par le front data publication
 @api.route('/search')
+@api.doc(security=['bearer'])
 class PublicationSearchCtrl(Resource):
     @api.expect(publicationParams_search_controller)
     @api.response(200, 'Success', model_publication_list)
