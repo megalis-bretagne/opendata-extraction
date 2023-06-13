@@ -6,6 +6,8 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+## [2.0.19]
+
 ### Ajouts
 
 - Upgrade python to 3.11.3
