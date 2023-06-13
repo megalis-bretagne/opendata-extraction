@@ -6,6 +6,12 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [unreleased]
 
+## [2.0.20]
+
+### Corrections
+
+- fix execution des tests unitaires.
+
 ## [2.0.19]
 
 ### Ajouts
