@@ -6,6 +6,7 @@ from celery.schedules import crontab
 from celery.signals import after_setup_logger
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+from datetime import timedelta
 #from flask_debugtoolbar import DebugToolbarExtension
 
 from app.shared.logger_utils.gelf_logger_utils import create_or_get_gelf_loghandler
@@ -36,7 +37,9 @@ def create_celery_app(_app=None):
     celery = Celery(_app.import_name,
                     broker=_app.config['CELERY_BROKER_URL'],
                     include=CELERY_TASK_LIST,
-                    result_extended=True)
+                    result_extended=True,
+                    result_expires=timedelta(days=7),
+                    )
     celery.conf.update(_app.config)
     always_eager = _app.config['TESTING'] or False
     celery.conf.update({'task_always_eager': always_eager,
