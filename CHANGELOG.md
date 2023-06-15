@@ -4,7 +4,11 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [unreleased]
+## [2.0.21]
+
+### Hotfix
+
+- Technique: nettoyage des tâches persistées au bout de 7 jours.
 
 ## [2.0.20]
 
