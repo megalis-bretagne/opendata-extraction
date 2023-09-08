@@ -4,6 +4,12 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.0.22]
+
+### Hotfix
+
+- Chemin des zip archivés corrigé, les jours et les mois sont sur deux digits
+
 ## [2.0.21]
 
 ### Hotfix

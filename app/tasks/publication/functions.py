@@ -377,7 +377,7 @@ def _archives_current() -> Path:
     m = datetime.now().month
     d = datetime.now().day
 
-    p = _archives_root() / str(y) / str(m) / str(d)
+    p = _archives_root() / str(y) / f"{m:02}" / f"{d:02}"
 
     os.makedirs(str(p), exist_ok=True)
 
