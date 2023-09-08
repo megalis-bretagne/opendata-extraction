@@ -229,7 +229,7 @@ def init_publication(metadataPastell: MetadataPastell, id_d: str):
     db_sess.add(newPublication)
     db_sess.commit()
 
-    annee = str(metadataPastell.date_de_lacte)
+    annee = str(metadataPastell.date_de_lacte.year)
 
     if newPublication.acte_nature == "1":
         dossier = newPublication.siren + os.path.sep + "Deliberation"
