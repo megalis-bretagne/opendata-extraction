@@ -10,6 +10,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Chemin des zip archivés corrigé, les jours et les mois sont sur deux digits
 - Correction du chemin des publications dans `/private/publications`
+- Fix bug de collision de nom dans les URL publics de fichier lors d'une publication / depublication de plusieurs actes ayant des documents identiques
 
 ## [2.0.21]
 

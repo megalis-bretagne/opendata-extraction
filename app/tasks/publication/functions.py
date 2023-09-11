@@ -108,14 +108,14 @@ def traiter_actes(publication: Publication, acte: Acte | PieceJointe, isPj: bool
         typology = "PJ"
 
     extension = str('.' + acte.name.split(".")[-1])
-    urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.hash + extension
+    urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + str(publication.id) + "/" + acte.hash + extension
 
     data = {}
     # initialisation du document apache solr
     init_document(data, acte, parametrage, publication, urlPDF, typology)
 
     # dépot dans le serveur
-    dest_dir = current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep
+    dest_dir = current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep + str(publication.id) + os.path.sep
     dest_filename = acte.hash + extension
     if a_publier:
         symlink_file(acte.path, dest_dir, dest_filename)
