@@ -108,14 +108,14 @@ def traiter_actes(publication: Publication, acte: Acte | PieceJointe, isPj: bool
         typology = "PJ"
 
     extension = str('.' + acte.name.split(".")[-1])
-    urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + acte.hash + extension
+    urlPDF = current_app.config['URL_MARQUE_BLANCHE'] + dossier + "/" + annee + "/" + str(publication.id) + "/" + acte.hash + extension
 
     data = {}
     # initialisation du document apache solr
     init_document(data, acte, parametrage, publication, urlPDF, typology)
 
     # dépot dans le serveur
-    dest_dir = current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep
+    dest_dir = current_app.config['DIR_MARQUE_BLANCHE'] + dossier + os.path.sep + annee + os.path.sep + str(publication.id) + os.path.sep
     dest_filename = acte.hash + extension
     if a_publier:
         symlink_file(acte.path, dest_dir, dest_filename)
@@ -229,7 +229,7 @@ def init_publication(metadataPastell: MetadataPastell, id_d: str):
     db_sess.add(newPublication)
     db_sess.commit()
 
-    annee = str(metadataPastell.date_de_lacte)
+    annee = str(metadataPastell.date_de_lacte.year)
 
     if newPublication.acte_nature == "1":
         dossier = newPublication.siren + os.path.sep + "Deliberation"
@@ -377,7 +377,7 @@ def _archives_current() -> Path:
     m = datetime.now().month
     d = datetime.now().day
 
-    p = _archives_root() / str(y) / str(m) / str(d)
+    p = _archives_root() / str(y) / f"{m:02}" / f"{d:02}"
 
     os.makedirs(str(p), exist_ok=True)
 
