@@ -4,9 +4,9 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [2.0.22]
+## [Unreleased]
 
-### Hotfix
+### bugfix
 
 - Chemin des zip archivés corrigé, les jours et les mois sont sur deux digits
 - Correction du chemin des publications dans `/private/publications`
