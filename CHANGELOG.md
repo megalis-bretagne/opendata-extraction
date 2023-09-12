@@ -6,11 +6,18 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-### bugfix
+### Corrections
 
 - Chemin des zip archivés corrigé, les jours et les mois sont sur deux digits
 - Correction du chemin des publications dans `/private/publications`
 - Fix bug de collision de nom dans les URL publics de fichier lors d'une publication / depublication de plusieurs actes ayant des documents identiques
+
+## [2.0.22]
+
+### Hotfix
+
+- Mise à jour de python vers 3.11.5
+- Hotfix de l'export csv des déliberations et des actes.
 
 ## [2.0.21]
 
