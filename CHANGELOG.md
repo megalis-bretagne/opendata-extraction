@@ -4,7 +4,7 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [2.0.22]
 
 ### Corrections
 
@@ -12,7 +12,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Correction du chemin des publications dans `/private/publications`
 - Fix bug de collision de nom dans les URL publics de fichier lors d'une publication / depublication de plusieurs actes ayant des documents identiques
 - Mise à jour de python vers 3.11.5
-- fix de l'export csv des déliberations et des actes.
+- Fix de l'export csv des déliberations et des actes.
 
 ## [2.0.21]
 
