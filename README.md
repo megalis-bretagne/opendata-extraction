@@ -57,5 +57,5 @@ pip-compile dev-requirements.in
 
 ```bash
 pip-sync # Pour installer iso runtime
-pip-sync requirements.txt dev-requiements.txt # Pour également tirer les dépendances de dev
+pip-sync requirements.txt dev-requirements.txt # Pour également tirer les dépendances de dev
 ```

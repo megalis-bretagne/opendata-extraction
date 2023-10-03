@@ -38,13 +38,13 @@ class AdminSolrDeleteCtrl(Resource):
     @api.response(200, 'Success')
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     @isAdmin
-    def delete(self, id_publication):
+    def delete(self, idPublication: int):
         from app.tasks.utils import solr_connexion
         try:
             solr = solr_connexion()
-            solr.delete(q="publication_id:" + str(id_publication))
+            solr.delete(q="publication_id:" + str(idPublication))
         except Exception as e:
-            logging.exception("Erreur lors suppression dans solr de l'id_publication: %s" % id_publication)
+            logging.exception("Erreur lors suppression dans solr de l'idPublication: %s" % idPublication)
             raise e
         return jsonify({"statut": 'ok'})
 
