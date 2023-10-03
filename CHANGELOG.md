@@ -4,6 +4,13 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.0.23]
+
+### Corrections
+
+- typo dans le readme
+- erreur dans l'api admin solr
+
 ## [2.0.22]
 
 ### Corrections
