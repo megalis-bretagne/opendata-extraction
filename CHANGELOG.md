@@ -4,6 +4,12 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Changements
+
+- issue 35: on pousse les url vers l'api opendata dans le catalogue regional.
+
 ## [2.0.24]
 
 ### Corrections
@@ -50,7 +56,6 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Changement de la manière de déclarer les dépendances. voir [README](./README.md)
 - Nettoyage dans les dépendances actuelles.
 - Ajout d'une authentification de type 'apiKey' dans les interface swagger pour les endpoints concernés.
-- issue 35: on pousse les url vers l'api opendata dans le catalogue regional.
 
 ### Corrections
 
