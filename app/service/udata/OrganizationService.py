@@ -20,10 +20,11 @@ class OrganizationService(metaclass=Singleton):
     ORGANIZATION_ENDPOINT = "/organizations/"
 
     def __init__(self):
+        catalogue_regionnal = current_app.config["CATALOGUE_REGIONAL"]
         self.HEADERS = {
-            'X-API-KEY': current_app.config['API_KEY_UDATA']
+            'X-API-KEY': catalogue_regionnal['API_KEY']
         }
-        self.API = current_app.config['API_UDATA']
+        self.API = catalogue_regionnal['API_URL']
 
     @_wrap_get_organisation_errors
     def get(self, siren) -> dict:
