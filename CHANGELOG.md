@@ -4,6 +4,12 @@ Tous changements importants seront journalisés dans ce fichier.
 
 Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.0.24]
+
+### Corrections
+
+- Inclusion de la `date_ar` dans toutes les délibérations.
+
 ## [2.0.23]
 
 ### Corrections
