@@ -301,7 +301,7 @@ def generation_scdl_deliberation(root_path: Path, siren, annee, flag_active=None
                 solr.search(q=query,
                             **{
                                 'fl': 'siren,documentidentifier,classification_code,classification_nom,description,'
-                                    'filepath,documenttype,date,est_publie',
+                                    'filepath,documenttype,date,date_ar,est_publie',
                                 'start': start,
                                 'rows': rows,
                                 'fq': 'date:[' + ANNEE + '-01-01T00:00:00Z TO ' + ANNEE + '-12-31T23:59:59Z]'
