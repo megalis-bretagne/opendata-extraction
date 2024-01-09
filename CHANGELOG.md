@@ -10,6 +10,10 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - issue 35: on pousse les url vers l'api opendata dans le catalogue regional.
 
+### Ajouts
+
+- Ajout des plan de comptes 2024.
+
 ## [2.0.24]
 
 ### Corrections
