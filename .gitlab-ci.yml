@@ -1,5 +1,7 @@
 include:
-  - 'https://gitlab.sib.fr/megalis/extraction-data-stack/raw/master/.docker-template.yml'
+  - project: 'megalis/extraction-data-stack'
+    ref: master
+    file: .docker-template.yml
 
 before_script:
   - wget https://gitlab.sib.fr/megalis/extraction-data-stack/raw/master/init.sh
