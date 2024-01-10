@@ -4,7 +4,11 @@ include:
     file: .docker-template.yml
 
 before_script:
-  - wget https://gitlab.sib.fr/megalis/extraction-data-stack/raw/master/init.sh
+  - |
+    wget --header="PRIVATE-TOKEN: $TOKEN_FOR_EXTRACTION_STACK" \
+    https://gitlab.sib.fr/api/v4/projects/301/repository/files/init.sh/raw\?ref=master \
+    -O init.sh \
+    || (echo >&2 "Impossible de récupérer init.sh. Vérifiez que le token d'authentification auprès de gitlab est toujours valide" && exit 1)
   - source ./init.sh
   - export http_proxy=http://pro01.sib.fr:3128
   - export https_proxy=http://pro01.sib.fr:3128
