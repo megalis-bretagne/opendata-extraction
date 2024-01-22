@@ -1,14 +1,17 @@
 import time
 
+from flask import current_app
 from app import celeryapp
 from app.models.parametrage_model import Parametrage
 from app.service.udata.DatasetService import DatasetService
 from app.service.udata.OrganizationService import OrganizationService
-from app.tasks import generated_scdl_deliberation, generated_decp, SDMException
-from app.tasks.datagouv_tasks import generated_scdl_budget
+from app.tasks import generated_decp, SDMException 
+from app.tasks.datagouv_tasks import ( 
+    solr_has_any_budget,
+    solr_has_any_deliberation, 
+)
 
 celery = celeryapp.celery
-
 
 @celery.task(name='publication_udata_budget')
 def publication_udata_budget(siren, annee):
@@ -17,20 +20,21 @@ def publication_udata_budget(siren, annee):
     organization_service = OrganizationService()
     organization = organization_service.get(siren)
     dataset_budget = organization_service.get_dataset_budget(organization['id'])
+    titre = f"budget-{siren}-{annee}.csv"
 
-    with generated_scdl_budget(siren=siren, annee=annee, flag_active='opendata_active') as csv_filepath:
-        if dataset_budget is None:
-            dataset_budget = dataset_service.create_dataset_budget(organization)
-        if is_scdl_empty(csv_filepath):
-            dataset_service.delete_resource_from_fp(dataset_budget, file_path=csv_filepath)
-            return {'status': 'OK', 'message': 'budget vide', 'siren': str(siren),
-                    'annee': str(annee)}
-        resultat = dataset_service.add_resource_budget(dataset_budget, file_path = csv_filepath)
-        if resultat is None:
-            return {'status': 'KO', 'message': 'generation et publication budget', 'siren': str(siren),
-                    'annee': str(annee)}
-        return {'status': 'OK', 'message': 'generation et publication budget', 'siren': str(siren),
+    if not solr_has_any_budget(siren=siren, annee=annee, flag_active='opendata_active') and dataset_budget is not None:
+        dataset_service.delete_resource_with_title(dataset_budget, title=titre)
+        return {'status': 'OK', 'message': 'budget vide', 'siren': str(siren),
                 'annee': str(annee)}
+    
+    if dataset_budget is None:
+        dataset_budget = dataset_service.create_dataset_budget(organization)
+    api_opendata_resource_url = _api_opendata_resource_url('scdl/budget', siren, annee)
+
+    dataset_service.add_resource_budget_url(dataset_budget, titre, api_opendata_resource_url)
+
+    return {'status': 'OK', 'message': 'generation et publication budget', 'siren': str(siren),
+            'annee': str(annee)}
 
 
 @celery.task(name='publication_udata_deliberation')
@@ -41,20 +45,22 @@ def publication_udata_deliberation(siren, annee):
 
     organization = organization_service.get(siren)
     dataset_deliberation = organization_service.get_dataset_deliberation(organization['id'])
+    titre = f"deliberation-{siren}-{annee}.csv"
 
-    with generated_scdl_deliberation(siren = siren, annee = annee, flag_active='opendata_active') as scdl_delib_filepath:
-        if dataset_deliberation is None:
-            dataset_deliberation = dataset_service.create_dataset_deliberation(organization)
-        if is_scdl_empty(scdl_delib_filepath):
-            dataset_service.delete_resource_from_fp(dataset_deliberation, file_path=scdl_delib_filepath)
-            return {'status': 'OK', 'message': 'deliberation vide', 'siren': str(siren),
-                    'annee': str(annee)}
-        resultat = dataset_service.add_resource_deliberation(dataset_deliberation, file_path = scdl_delib_filepath)
-        if resultat is None:
-            return {'status': 'KO', 'message': 'generation et publication deliberation', 'siren': str(siren),
-                    'annee': str(annee)}
-        return {'status': 'OK', 'message': 'generation et publication deliberation', 'siren': str(siren),
+    if not solr_has_any_deliberation(annee=annee, siren=siren, flag_active='opendata_active') and dataset_deliberation is not None:
+        dataset_service.delete_resource_with_title(dataset_deliberation, title=titre)
+        return {'status': 'OK', 'message': 'deliberation vide', 'siren': str(siren),
                 'annee': str(annee)}
+
+    if dataset_deliberation is None:
+        dataset_deliberation = dataset_service.create_dataset_deliberation(organization)
+
+    api_opendata_resource_url = _api_opendata_resource_url('scdl/deliberation', siren, annee)
+
+    dataset_service.add_resource_deliberation_url(dataset_deliberation, titre, api_opendata_resource_url)
+
+    return {'status': 'OK', 'message': 'generation et publication deliberation', 'siren': str(siren),
+            'annee': str(annee)}
 
 
 @celery.task(name='publication_udata_decp')
@@ -74,10 +80,12 @@ def publication_udata_decp(siren, annee):
             dataset_service.delete_resource_from_fp(dataset_decp, file_path=decp_filepath)
             return {'status': 'OK', 'message': 'decp vide', 'siren': str(siren),
                     'annee': str(annee)}
-        resultat = dataset_service.add_resource_decp(dataset_decp, file_path = decp_filepath)
-        if resultat is None:
-            return {'status': 'KO', 'message': 'generation et publication decp', 'siren': str(siren),
-                    'annee': str(annee)}
+
+        titre = f"decp-{siren}{annee}.xml" # XXX: oui, pas de tiret entre siren et années pour decp
+        api_opendata_resource_url = _api_opendata_resource_url('decp', siren, annee)
+
+        dataset_service.add_resource_decp_url(dataset_decp, titre, api_opendata_resource_url)
+
         return {'status': 'OK', 'message': 'generation et publication decp', 'siren': str(siren),
                 'annee': str(annee)}
 
@@ -130,3 +138,16 @@ def is_decp_empty(filename):
                 return True
             elif count > 1:
                 return False
+
+def _urljoin(*args):
+    return "/".join(map(lambda x: str(x).rstrip('/'), args))
+
+def _api_opendata_baseurl():
+    catalogue_regional = current_app.config['CATALOGUE_REGIONAL']
+    return catalogue_regional['API_OPEN_DATA_BASEURL']
+
+def _api_opendata_resource_url(resource: str, siren: str, annee):
+    base: str = _api_opendata_baseurl()
+    suffix = f"{resource}/{siren}/{annee}"
+    url = _urljoin(base, suffix)
+    return url
