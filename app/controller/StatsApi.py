@@ -84,12 +84,64 @@ class StatsNonPublie(Resource):
             else:
                 return to_csv(result,"stats_taux.csv")
 
-    def _to_json(self,result):
-        rows = result.fetchall()
-        object_list = []
-        for row in rows:
-            object_list.append({"siren": row[0], "nbPublié": int(row[1]), "nbNonPublié": int(row[2]), "tauxDeNonPublié": float(row[3])})
-        return jsonify(object_list)
+    @api.route('/documentScanne', doc={
+        "description": "Statistiques sur les documents scannés et non scannés. "
+                       "Retourne un json avec les statistiques suivantes: "
+                       "<ul>"
+                       "<li>pourcentageDocumentScanne : pourcentage des documents de type image sur la plateforme</li>"
+                       "<li>nombreTotalDeDocument: nombre total de documents</li>"
+                       "<li>nombreDocumentScanne: nombre de documents <strong>scanné</strong></li>"
+                       "<li>nombreDocumentNotScanne: nombre de documents <strong>non scanné</strong></li></li>"
+                       "<li>tailleMoyenneDocumentScanne: taille moyenne des documents <strong>scanné</strong> en octet</li>"
+                       "<li>tailleMinDocumentScanne: taille min des documents <strong>scanné</strong> en octet</li>"
+                       "<li>tailleMaxDocumentScanne: taille max des documents <strong>scanné</strong> en octet</li>"
+                       "<li>tailleMoyenneDocumentNotScanne: taille moyenne des documents <strong>non scanné</strong> en octet</li>"
+                       "<li>tailleMinDocumentNotScanne: taille min des documents <strong>non scanné</strong> en octet</li>"
+                       "<li>tailleMaxDocumentNotScanne: taille max des documents <strong>non scanné</strong> en octet</li></ul>"})
+    class StatsScan(Resource):
+        @api.response(200, 'Success')
+        def get(self):
+            from app.tasks import solr_connexion
+            solr = solr_connexion()
+
+            resultImage = \
+                solr.search(q='*:*',
+                            **{
+                                'start': '0',
+                                'rows': '0',
+                                'fq': 'pdf_charsperpage:0 AND -pdf_charsperpage:[1 TO *]',
+                                'stats': 'true',
+                                'stats.field': 'stream_size'
+                            })
+
+            resultNotImage = \
+                solr.search(q='*:*',
+                            **{
+                                'start': '0',
+                                'rows': '0',
+                                'fq': '-pdf_charsperpage:0 AND pdf_charsperpage:[* TO *]',
+                                'stats': 'true',
+                                'stats.field': 'stream_size'
+                            })
+
+
+            resutatotal = \
+                {
+                    'pourcentageDocumentScanne': (resultImage.stats['stats_fields']['stream_size']['count'] / (resultImage.stats['stats_fields']['stream_size']['count'] + resultNotImage.stats['stats_fields']['stream_size']['count'])) * 100,
+                    'nombreTotalDeDocument': resultImage.stats['stats_fields']['stream_size']['count'] + resultNotImage.stats['stats_fields']['stream_size']['count'],
+                    'nombreDocumentScanne': resultImage.stats['stats_fields']['stream_size']['count'],
+                    'nombreDocumentNotScanne': resultNotImage.stats['stats_fields']['stream_size']['count'],
+                    'tailleMoyenneDocumentScanne': resultImage.stats['stats_fields']['stream_size']['mean'],
+                    'tailleMinDocumentScanne': resultImage.stats['stats_fields']['stream_size']['min'],
+                    'tailleMaxDocumentScanne': resultImage.stats['stats_fields']['stream_size']['max'],
+                    'tailleMoyenneDocumentNotScanne': resultNotImage.stats['stats_fields']['stream_size']['mean'],
+                    'tailleMinDocumentNotScanne': resultNotImage.stats['stats_fields']['stream_size']['min'],
+                    'tailleMaxDocumentNotScanne': resultNotImage.stats['stats_fields']['stream_size']['max']
+
+                }
+
+            return jsonify(resutatotal)
+
 
 @api.route('/serviceDesactive',
            doc={"description": "Retourne la liste des siren qui ont désactivé le service opendata"})
