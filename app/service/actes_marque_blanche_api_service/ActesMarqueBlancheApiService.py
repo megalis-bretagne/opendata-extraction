@@ -199,30 +199,17 @@ class ActesMarqueBlancheApiService:
                     classification_filter = classification_filter + ' OR classification_code:' + classification + '*'
             filterQuery = filterQuery + ' AND ' + classification_filter + ')'
 
-        if args['date_debut'] == None:
-            date_debut = '*'
-        else:
-            # add to fq
-            date_debut = args['date_debut']
+        date_debut = args['date_debut'] if args['date_debut'] is not None else '*'
+        date_fin = args['date_fin'] if args['date_fin'] is not None else 'NOW'
+        filterQuery = filterQuery + ' AND date:[' + date_debut + ' TO ' + date_fin + ']'
 
-        if args['date_fin'] == None:
-            date_fin = 'NOW'
-        else:
-            # add to fq
-            date_fin = args['date_fin']
-        filterQuery = filterQuery + ' AND date_de_publication:[' + date_debut + ' TO ' + date_fin + ']'
+        date_de_publication_debut = args['date_de_publication_debut'] if args['date_de_publication_debut'] is not None else '*'
+        date_de_publication_fin = args['date_de_publication_fin'] if args['date_de_publication_fin'] is not None else 'NOW'
+        filterQuery = filterQuery + ' AND date_de_publication:[' + date_de_publication_debut + ' TO ' + date_de_publication_fin + ']'
 
-        if args['lignes'] == None:
-            # valeur par defaut
-            lignes = 10
-        else:
-            lignes = args['lignes']
+        lignes = args['lignes'] if args['lignes'] is not None else 10
 
-        if args['page_suivante'] == None:
-            # valeur par defaut
-            cursorMark = '*'
-        else:
-            cursorMark = args['page_suivante']
+        cursorMark = args['page_suivante'] if args['page_suivante'] is not None else '*'
 
         return filterQuery, query, lignes, cursorMark
 

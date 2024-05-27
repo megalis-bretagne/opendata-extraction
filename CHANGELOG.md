@@ -15,10 +15,12 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changements
 
 - issue 35: on pousse les url vers l'api opendata dans le catalogue regional.
+- Les critères date_debut et date_fin recherche maintenant selon la date de décision (et non la date de publication) 
 
 ### Ajouts
 
 - Ajout des plan de comptes 2024.
+- Ajout de critères date_de_publication_debut et date_de_publication_fin pour rechercher par date de publication.
 
 ## [2.0.24]
 
