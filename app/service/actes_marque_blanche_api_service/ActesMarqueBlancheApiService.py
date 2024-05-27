@@ -201,7 +201,11 @@ class ActesMarqueBlancheApiService:
 
         date_debut = args['date_debut'] if args['date_debut'] is not None else '*'
         date_fin = args['date_fin'] if args['date_fin'] is not None else 'NOW'
-        filterQuery = filterQuery + ' AND date_de_publication:[' + date_debut + ' TO ' + date_fin + ']'
+        filterQuery = filterQuery + ' AND date:[' + date_debut + ' TO ' + date_fin + ']'
+
+        date_de_publication_debut = args['date_de_publication_debut'] if args['date_de_publication_debut'] is not None else '*'
+        date_de_publication_fin = args['date_de_publication_fin'] if args['date_de_publication_fin'] is not None else 'NOW'
+        filterQuery = filterQuery + ' AND date_de_publication:[' + date_de_publication_debut + ' TO ' + date_de_publication_fin + ']'
 
         lignes = args['lignes'] if args['lignes'] is not None else 10
 
