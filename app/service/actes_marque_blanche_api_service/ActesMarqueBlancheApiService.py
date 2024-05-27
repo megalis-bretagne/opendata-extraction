@@ -123,7 +123,7 @@ class ActesMarqueBlancheApiService:
         if results.nextCursorMark == '*' or cursorMark == results.nextCursorMark:
             _page_suivante = ''
         else:
-            _page_suivante = results.nextCursorMark
+            _page_suivante = cursorMark
 
         return Page(nb_resultats=results.hits, resultats=liste_acte, page_suivante=_page_suivante)
 
