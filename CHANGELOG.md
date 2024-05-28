@@ -21,6 +21,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Ajout des plan de comptes 2024.
 - Ajout de critères date_de_publication_debut et date_de_publication_fin pour rechercher par date de publication.
+- Ajout de la nature_autre_detail AP pour arrêté permanent 74
 
 ## [2.0.24]
 

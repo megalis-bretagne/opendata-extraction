@@ -183,12 +183,15 @@ def _documenttype(publication: Publication):
     # LD: 71 - Liste des délibérations
     # AT: 72 - Arrêté Temporaire
     # PV: 73 - Procès Verbal
+    # AP: 74 - Arrêté Permanent
     if nature_autre_detail == "LD":
         return "71"
     elif nature_autre_detail == "AT":
         return "72"
     elif nature_autre_detail == "PV":
         return "73"
+    elif nature_autre_detail == "AP":
+        return "74"
     else:
         return "7"
 
