@@ -24,7 +24,7 @@ attrs==23.1.0
     #   jsonschema
 bcrypt==4.0.1
     # via paramiko
-beautifulsoup4==4.9
+beautifulsoup4==4.9.0
     # via -r requirements.in
 billiard==3.6.4.0
     # via celery
@@ -267,7 +267,7 @@ werkzeug==1.0.1
     #   flask-restx
 yarl==1.9.2
     # via aiohttp
-yatotem2scdl==0.0.21
+yatotem2scdl==0.1.2
     # via -r requirements.in
 
 # The following packages are considered to be unsafe in a requirements file:
