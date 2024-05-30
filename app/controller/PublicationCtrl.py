@@ -1,5 +1,4 @@
-from flask import jsonify
-from flask import request
+from flask import g, jsonify, request
 from flask_restx import Namespace, reqparse, fields, Resource
 from sqlalchemy import or_
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
@@ -13,6 +12,7 @@ from app.service.publication.api.PublicationPiecesJointesApiService import Publi
 import logging
 
 from app.service.publication.api.exceptions import BadRequestforPublicationPiecesJointesApi, PublicationPiecesJointesApiError
+from app.shared.constants import CLAIM_ROLE_OPENDATA, ROLE_USER_RH
 
 logger = logging.getLogger(__name__)
 
@@ -339,9 +339,10 @@ class PublicationSearchCtrl(Resource):
     @oidc.accept_token(require_token=True, scopes_required=['openid'])
     def post(self):
         args = publicationParams_search_controller.parse_args()
+        role = g.oidc_token_info.get(CLAIM_ROLE_OPENDATA)
         return _search(
             args, 
-            makeFilterFn=_make_search_query_filter_for_ui,
+            filters=_make_search_query_filter_for_ui(args, role),
             serializeFn=lambda x: x.serialize)
 
 # Consommée par API
@@ -351,15 +352,16 @@ class PublicationLightSearchCtrl(Resource):
     @api.response(200, 'Success', model_publication_light_list)
     def post(self):
         args = publicationLightParams_search_controller.parse_args()
+        role = g.oidc_token_info.get(CLAIM_ROLE_OPENDATA)
         return _search(
             args,
-            makeFilterFn=_make_search_query_filter,
+            filters=_make_search_query_filter(args, role),
             serializeFn=lambda x: x.serializeLight)
 
 def _is_blank(s: str):
     return not (s and s.strip())
 
-def _make_search_query_filter(args):
+def _make_search_query_filter(args, role):
     filters = []
 
     if not _is_blank(args.get('etat')):
@@ -382,11 +384,16 @@ def _make_search_query_filter(args):
         pastell_id_d = str(args.get('pastell_id_d'))
         op = Publication.pastell_id_d == pastell_id_d
         filters.append(op)
+
+    # On filtre les actes individuels sauf pour les utilisateurs RH.
+    if role != ROLE_USER_RH:
+        op = Publication.acte_nature != '3' # Actes individuels
+        filters.append(op)
     
     return filters
 
-def _make_search_query_filter_for_ui(args):
-    filters = _make_search_query_filter(args)
+def _make_search_query_filter_for_ui(args, role):
+    filters = _make_search_query_filter(args, role)
 
     est_masque = bool(args.get('est_masque', False))
 
@@ -400,7 +407,7 @@ def _make_search_query_filter_for_ui(args):
     
     return filters
 
-def _search(args, makeFilterFn, serializeFn):
+def _search(args, filters, serializeFn):
     sortField = args.get('sortField')
     if (sortField) == 'numero_de_lacte':
         sortField = Publication.numero_de_lacte
@@ -419,8 +426,6 @@ def _search(args, makeFilterFn, serializeFn):
         sortField = sortField.asc()
     else:
         sortField = sortField.desc()
-    
-    filters = makeFilterFn(args)
 
     page = int(args.get('pageIndex')) + 1
     per_page = int(args.get('pageSize'))
