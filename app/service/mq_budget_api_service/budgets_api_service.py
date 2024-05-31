@@ -143,7 +143,8 @@ class BudgetsApiService:
 
         if nb_ignorees > 0:
             self.__logger.warning(
-                f"{nb_ignorees} lignes ont été ignorées car elles ne respectent pas les attendus"
+                    f"{nb_ignorees} lignes ont été ignorées car elles ne respectent pas "
+                    "les attendus (exemple: pas de CODRD)"
             )
 
         return GetBudgetMarqueBlancheApiResponse(
@@ -179,8 +180,9 @@ class BudgetsApiService:
             montant = self._retrieve_montant_de_ligne_scdl(ligne, etape)
 
             # XXX: On a des CFU qui ont des lignes budgetaires sans CODRD
-            # if not col_codrd:
-            #     raise _ImpossibleParserLigne("Le SCDL contient un CODRD non renseigné")
+            # Il faut ignorer ces lignes
+            if not col_codrd:
+                return None
             if not col_nature:
                 self.__logger.warning(
                     "La nature de la ligne budgétaire n'est pas renseignée."
