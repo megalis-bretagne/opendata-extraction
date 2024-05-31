@@ -178,11 +178,12 @@ class BudgetsApiService:
 
             montant = self._retrieve_montant_de_ligne_scdl(ligne, etape)
 
-            if not col_codrd:
-                raise _ImpossibleParserLigne("Le SCDL contient un CODRD non renseigné")
+            # XXX: On a des CFU qui ont des lignes budgetaires sans CODRD
+            # if not col_codrd:
+            #     raise _ImpossibleParserLigne("Le SCDL contient un CODRD non renseigné")
             if not col_nature:
                 self.__logger.warning(
-                    f"La nature de la ligne budgétaire n'est pas renseignée."
+                    "La nature de la ligne budgétaire n'est pas renseignée."
                 )
 
             recette = col_codrd == "recette"
