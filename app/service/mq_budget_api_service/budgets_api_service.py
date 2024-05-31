@@ -214,7 +214,7 @@ class BudgetsApiService:
         col_mtpropnouv = ligne["BGT_MTPROPNOUV"]
         col_mtrarprec = ligne["BGT_MTRARPREC"]
 
-        if etape == EtapeBudgetaire.COMPTE_ADMIN:
+        if etape == EtapeBudgetaire.COMPTE_ADMIN or EtapeBudgetaire.CFU:
             return float(col_mtreal) if col_mtreal else 0
 
         if etape == EtapeBudgetaire.PRIMITIF:
