@@ -28,6 +28,7 @@ pierre.dittgen@jailbreak.paris
                 <xsl:when test="$code = '02'">décision modificative</xsl:when>
                 <xsl:when test="$code = '03'">budget supplémentaire</xsl:when>
                 <xsl:when test="$code = '09'">compte administratif</xsl:when>
+                <xsl:when test="$code = '10'">Compte administratif</xsl:when>
                 <xsl:otherwise>NatDec inconnu: <xsl:value-of select="$code"/></xsl:otherwise>
             </xsl:choose>
         </xsl:variable>

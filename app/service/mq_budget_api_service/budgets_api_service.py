@@ -143,7 +143,8 @@ class BudgetsApiService:
 
         if nb_ignorees > 0:
             self.__logger.warning(
-                f"{nb_ignorees} lignes ont été ignorées car elles ne respectent pas les attendus"
+                    f"{nb_ignorees} lignes ont été ignorées car elles ne respectent pas "
+                    "les attendus (exemple: pas de CODRD)"
             )
 
         return GetBudgetMarqueBlancheApiResponse(
@@ -178,11 +179,13 @@ class BudgetsApiService:
 
             montant = self._retrieve_montant_de_ligne_scdl(ligne, etape)
 
+            # XXX: On a des CFU qui ont des lignes budgetaires sans CODRD
+            # Il faut ignorer ces lignes
             if not col_codrd:
-                raise _ImpossibleParserLigne("Le SCDL contient un CODRD non renseigné")
+                return None
             if not col_nature:
                 self.__logger.warning(
-                    f"La nature de la ligne budgétaire n'est pas renseignée."
+                    "La nature de la ligne budgétaire n'est pas renseignée."
                 )
 
             recette = col_codrd == "recette"
@@ -213,7 +216,7 @@ class BudgetsApiService:
         col_mtpropnouv = ligne["BGT_MTPROPNOUV"]
         col_mtrarprec = ligne["BGT_MTRARPREC"]
 
-        if etape == EtapeBudgetaire.COMPTE_ADMIN:
+        if etape == EtapeBudgetaire.COMPTE_ADMIN or EtapeBudgetaire.CFU:
             return float(col_mtreal) if col_mtreal else 0
 
         if etape == EtapeBudgetaire.PRIMITIF:

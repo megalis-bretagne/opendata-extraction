@@ -20,6 +20,9 @@ from app.tasks.utils import get_hash,index_file_in_solr,symlink_file,unsymlink_f
 from app.shared.client_api_sirene.flask_functions import etablissement_siege_pour_siren
 import app.shared.workdir_utils as workdir_utils
 
+from app.shared.totem_conversion_utils import make_or_get_budget_convertisseur
+from app.shared.constants import PLANS_DE_COMPTES_PATH
+
 from . import logger
 
 def insert_solr(publication: Publication, 
@@ -205,7 +208,7 @@ def init_publication(metadataPastell: MetadataPastell, id_d: str):
     if metadataPastell.acte_nature == "5":
         try:
             xml_buget = WORKDIR + metadataPastell.liste_arrete[0]
-            date_budget = __get_date_buget(xml_buget)
+            date_budget = __get_date_budget(xml_buget)
         except Exception as e:
             # probleme de lecture du fichier XML
             # probablement pas un fichier XML
@@ -357,12 +360,14 @@ def insere_nouveau_parametrage(siren: str):
             # Un autre worker a déjà inséré le paramétrage.
             db_sess.rollback()
 
-def __get_date_buget(xml_file: str):
-    namespaces = {'nms': 'http://www.minefi.gouv.fr/cp/demat/docbudgetaire'}
+def __get_date_budget(xml_file: str):
 
-    tree = etree.parse(xml_file)
-    annee = tree.findall('/nms:Budget/nms:BlocBudget/nms:Exer', namespaces)[0].attrib.get('V')
+    convertisseur = make_or_get_budget_convertisseur()
+    metadata = convertisseur.totem_budget_metadata(xml_file, PLANS_DE_COMPTES_PATH)
+    annee = metadata.annee_exercice
+
     return annee
+
 
 
 def _archives_root() -> Path:

@@ -10,6 +10,7 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Correction incohérence entre nombre de résultats annoncés et comptés
 - [opendata-marqueblanche#32](https://github.com/megalis-bretagne/opendata-marqueblanche/issues/32) On permet l'accès aux actes individuels uniquement aux utilisateurs RH
+- Budget: ajout du support des <abbr title="Compte Financier Unique">CFU</abbr>
 
 ## [2.1.0]
 

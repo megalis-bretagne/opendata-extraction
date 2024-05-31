@@ -1,4 +1,4 @@
-yatotem2scdl==0.0.21
+yatotem2scdl==0.1.2
 
 flask ~= 1.1
 markupsafe ~= 2.0.1   # Pour rester compatible avec flask 1 
