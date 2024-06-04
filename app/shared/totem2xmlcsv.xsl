@@ -62,7 +62,7 @@ pierre.dittgen@jailbreak.paris
                 <column name="BGT_ARTSPE"/>
             </header>
             <data>
-                <xsl:for-each select=".//totem:LigneBudget">
+                <xsl:for-each select=".//totem:LigneBudget[@calculated='false' or not (@calculated)]">
                     <row lineno="{position()}">
 
                         <xsl:variable name="contNat" select="totem:ContNat/@V" />
