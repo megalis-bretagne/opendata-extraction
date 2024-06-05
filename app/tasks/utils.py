@@ -1,14 +1,11 @@
-import csv
-from datetime import datetime
 import hashlib
 import logging
 from pathlib import Path
 from urllib.parse import quote
 
-import pysolr, re, os, errno, shutil
+import pysolr, re, os, shutil
 import requests
 from bs4 import BeautifulSoup
-import paramiko
 from flask import current_app
 
 
@@ -73,42 +70,6 @@ def extract_content(solr_data, format):
     out = [str_rep(x) for x in soup.stripped_strings]
     return " ".join(out)
 
-
-def remove_file_sur_serveur(pathFile):
-    ssh = paramiko.SSHClient()
-    ssh.load_system_host_keys()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(hostname=current_app.config['DEPOT_HOSTNAME'], username=current_app.config['DEPOT_USERNAME'],
-                password=current_app.config['DEPOT_PASSWORD'])
-    # creation du repertoire si il n'existe pas
-    ssh.exec_command("rm -f " + pathFile)
-    ssh.close()
-
-
-# def scp_sur_serveur(path,remote_path):
-#    ssh = paramiko.SSHClient()
-#    ssh.load_system_host_keys()
-#    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-#    ssh.connect(hostname=current_app.config['DEPOT_HOSTNAME'],username=current_app.config['DEPOT_USERNAME'],password=current_app.config['DEPOT_PASSWORD'])
-#    # creation du repertoire si il n'existe pas
-#    ssh.exec_command("mkdir -p "+remote_path)
-#    # SCPCLient takes a paramiko transport as an argument
-#    scp = SCPClient(ssh.get_transport())
-#    scp.put(path,remote_path=remote_path)
-#    scp.close()
-#
-# def scp_sur_serveur_change_name(path, remote_path,nouveau_nom):
-#    ssh = paramiko.SSHClient()
-#    ssh.load_system_host_keys()
-#    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-#    ssh.connect(hostname=current_app.config['DEPOT_HOSTNAME'], username=current_app.config['DEPOT_USERNAME'],
-#                password=current_app.config['DEPOT_PASSWORD'])
-#    # creation du repertoire si il n'existe pas
-#    ssh.exec_command("mkdir -p " + remote_path)
-#    # SCPCLient takes a paramiko transport as an argument
-#    scp = SCPClient(ssh.get_transport())
-#    scp.put(path, remote_path=remote_path+'/'+nouveau_nom)
-#    scp.close()
 
 def move_file(path, new_path, filename):
     # Create the directory

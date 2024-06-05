@@ -40,19 +40,6 @@ DIR_ROOT_PUBLICATION='/public'
 URL_MARQUE_BLANCHE='https://data.megalis.bretagne.bzh/OpenData/'
 DIR_MARQUE_BLANCHE='/public/OpenData/'
 
-#info de connexion au serveur BDD ( pour creation des flux ged SFTP dans pastell)
-DEPOT_HOSTNAME='x.x.x.x'
-DEPOT_USERNAME="user"
-DEPOT_PASSWORD="password"
-#récupérer la valeur depuis l'ihm pastell dans un connecteur crée unitairement
-DEPOT_FINGERPRINT='XXXXXXXXXXXXXXXXXXXXXXX'
-
-#Pastell
-API_PASTELL_URL='https://pastell.megalis.bretagne.bzh'
-API_PASTELL_VERSION='/api/v2'
-API_PASTELL_USER='user-pastell'
-API_PASTELL_PASSWORD='password-pastell'
-
 #apche solr
 USER_SOLR='solr'
 PASSWORD_SOLR='password'

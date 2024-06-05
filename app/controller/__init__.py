@@ -9,7 +9,6 @@ from app.controller.AdminCtrl import api as adminApi
 from app.controller.DecpApi import api as decpApi
 from app.controller.ScdlApi import api as scdlApi
 from app.controller.StatsApi import api as statsApi
-from app.controller.PastellCtrl import api as pastellCtrl
 
 # Fix of returning swagger.json on HTTP
 @property
@@ -62,4 +61,3 @@ api.add_namespace(healthApi)
 private_api.add_namespace(publicationApi)
 private_api.add_namespace(parametrageApi)
 private_api.add_namespace(adminApi)
-private_api.add_namespace(pastellCtrl)

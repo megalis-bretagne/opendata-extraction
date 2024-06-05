@@ -12,6 +12,11 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - [opendata-marqueblanche#32](https://github.com/megalis-bretagne/opendata-marqueblanche/issues/32) On permet l'accès aux actes individuels uniquement aux utilisateurs RH
 - Budget: ajout du support des <abbr title="Compte Financier Unique">CFU</abbr>
 
+### Changements
+
+- [opendata-frontapp#13](https://github.com/megalis-bretagne/opendata-frontapp/issues/13) Suppression de l'API privée pour paramétrage Pastell
+  - Suppression des settings `API_PASTELL_*` et `DEPOT_*`
+
 ## [2.1.0]
 
 ### Changements
