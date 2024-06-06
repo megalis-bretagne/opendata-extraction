@@ -2,8 +2,6 @@ interactions:
 - request:
     body: grant_type=client_credentials
     headers:
-      Authorization:
-      - Basic Y2xlZiBpbnZhbGlkZTpzZWNyZXQgaW52YWxpZGU=
       Connection:
       - close
       Content-Length:
@@ -13,7 +11,7 @@ interactions:
       Host:
       - api.insee.fr
       User-Agent:
-      - Python-urllib/3.9
+      - Python-urllib/3.11
     method: POST
     uri: https://api.insee.fr/token
   response:
@@ -26,12 +24,12 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 07 Oct 2022 12:43:12 GMT
+      - Thu, 06 Jun 2024 14:09:10 GMT
       Set-Cookie:
-      - INSEE=rd4o00000000000000000000ffff0ac348b0o9443; expires=Fri, 07-Oct-2022
-        13:03:12 GMT; path=/; Httponly; Secure
-      - pdapimgateway=rd4o00000000000000000000ffff0ac348aco8280; expires=Fri, 07-Oct-2022
-        13:03:12 GMT; path=/; Httponly; Secure
+      - HOMERE=!VQuVkG3Q8wdp2xCGh5C+t/ifsRhNNxX8Eo2XTkc4odGkDasvryElYwXrDAvX6vnOxu5xbybDTACQTmjvtlLKBeR6l6EG9Nu6G+UcvX/gpw==;
+        expires=Thu, 06-Jun-2024 14:29:11 GMT; path=/; Httponly; Secure
+      - pdapimgateway=rd4o00000000000000000000ffff0ac348aco8280; expires=Thu, 06-Jun-2024
+        14:29:11 GMT; path=/; Httponly; Secure
       Strict-Transport-Security:
       - max-age=100000; includeSubDomains
       Transfer-Encoding:

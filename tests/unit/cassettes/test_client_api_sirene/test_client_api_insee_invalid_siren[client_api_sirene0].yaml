@@ -2,8 +2,6 @@ interactions:
 - request:
     body: grant_type=client_credentials
     headers:
-      Authorization:
-      - Basic xxx
       Connection:
       - close
       Content-Length:
@@ -13,13 +11,13 @@ interactions:
       Host:
       - api.insee.fr
       User-Agent:
-      - Python-urllib/3.9
+      - Python-urllib/3.11
     method: POST
     uri: https://api.insee.fr/token
   response:
     body:
-      string: '{"access_token":"86150027-cb2e-3936-aaca-7b61b7211163","scope":"am_application_scope
-        default","token_type":"Bearer","expires_in":430346}'
+      string: '{"access_token":"5b665624-487d-33cc-b014-6e4e0e3f665c","scope":"am_application_scope
+        default","token_type":"Bearer","expires_in":523895}'
     headers:
       Cache-Control:
       - no-store
@@ -28,14 +26,14 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 07 Oct 2022 12:43:12 GMT
+      - Thu, 06 Jun 2024 14:09:22 GMT
       Pragma:
       - no-cache
       Set-Cookie:
-      - INSEE=rd4o00000000000000000000ffff0ac348b0o9443; expires=Fri, 07-Oct-2022
-        13:03:12 GMT; path=/; Httponly; Secure
-      - pdapimgateway=rd4o00000000000000000000ffff0ac348ado8280; expires=Fri, 07-Oct-2022
-        13:03:12 GMT; path=/; Httponly; Secure
+      - HOMERE=!56hCSwcThtBKPCyGh5C+t/ifsRhNN7dhG5IJzihFVgz6DHB32sIDS14MQ05k/bHMyK79XmeVUGxACUbi5JS5S/az+QhWif50V4nCZzXtxg==;
+        expires=Thu, 06-Jun-2024 14:29:22 GMT; path=/; Httponly; Secure
+      - pdapimgateway=rd4o00000000000000000000ffff0ac348ado8280; expires=Thu, 06-Jun-2024
+        14:29:22 GMT; path=/; Httponly; Secure
       Strict-Transport-Security:
       - max-age=100000; includeSubDomains
       Transfer-Encoding:
@@ -54,8 +52,6 @@ interactions:
     headers:
       Accept:
       - application/json
-      Authorization:
-      - Bearer 86150027-cb2e-3936-aaca-7b61b7211163
       Connection:
       - close
       Content-Length:
@@ -65,9 +61,9 @@ interactions:
       Host:
       - api.insee.fr
       User-Agent:
-      - Python-urllib/3.9
+      - Python-urllib/3.11
     method: POST
-    uri: https://api.insee.fr/entreprises/sirene/V3/siret
+    uri: https://api.insee.fr/entreprises/sirene/V3.11/siret
   response:
     body:
       string: "{\"header\":{\"statut\":404,\"message\":\"Aucun \xE9l\xE9ment trouv\xE9
@@ -84,20 +80,16 @@ interactions:
       Content-Type:
       - application/json;charset=utf-8
       Date:
-      - Fri, 07 Oct 2022 12:43:12 GMT
+      - Thu, 06 Jun 2024 14:09:22 GMT
       Set-Cookie:
-      - INSEE=rd4o00000000000000000000ffff0ac34808o80; expires=Fri, 07-Oct-2022 13:03:12
-        GMT; path=/; Httponly; Secure
-      - pdapimgateway=rd4o00000000000000000000ffff0ac348ado8280; expires=Fri, 07-Oct-2022
-        13:03:12 GMT; path=/; Httponly; Secure
+      - pdapimgateway=rd4o00000000000000000000ffff0ac348ado8280; expires=Thu, 06-Jun-2024
+        14:29:22 GMT; path=/; Httponly; Secure
       Strict-Transport-Security:
       - max-age=100000; includeSubDomains
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
-      X-Frame-Options:
-      - SAMEORIGIN
     status:
       code: 404
       message: ''
