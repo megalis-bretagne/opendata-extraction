@@ -4,9 +4,9 @@ FROM python:3.11.5-alpine
 WORKDIR /appli
 
 COPY requirements.txt .
-RUN apk add --no-cache build-base \
+RUN apk add --no-cache build-base git \
   && pip install -r requirements.txt \
-  && apk del --no-cache build-base
+  && apk del --no-cache build-base git
 
 #COPY uwsgi/ ./uwsgi/
 COPY plans-de-comptes/ ./plans-de-comptes/

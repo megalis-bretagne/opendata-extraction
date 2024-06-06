@@ -8,6 +8,18 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Correctifs
 
+## [2.1.2]
+
+### Correctifs
+
+- API INSEE: montée de version du wrapper API INSEE suite à la dépréciation de la 3.09
+
+## [2.1.1]
+
+### Ajouts
+
+- Ajout d'une API Stats sur le nombre de documents scannés ou non.
+
 ## [2.1.0]
 
 ### Changements

@@ -23,7 +23,9 @@ watchdog ~= 3.0
 
 more-itertools ~= 9.0
 requests ~= 2.28
-api-insee ~= 1.5
+# XXX: Récupère une version plus récente de l'api-insee
+# suite à la depreciation de la 3.09 en attente d'une release upstream
+git+https://github.com/ln-nicolas/api_insee.git@5324afa8972e8f18235ae8466a64c3c9ed6b9401#egg=api-insee
 beautifulsoup4==4.9
 scp ~= 0.13
 lxml ~= 4.9
