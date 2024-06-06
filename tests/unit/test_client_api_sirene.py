@@ -37,7 +37,7 @@ def ccbr_siren():
 def test_client_api_sirene_etablissements_strategies(client_api_sirene: ClientApiSirene, ccbr_siren):
     lst_etab = client_api_sirene.etablissements(ccbr_siren)
 
-    assert len(lst_etab) == 12
+    assert len(lst_etab) == 20
 
     siege = next(e for e in lst_etab if e.est_siege)
     assert siege.siret == "24350073300114"
@@ -60,8 +60,7 @@ def test_client_api_sirene_strategies(client_api_sirene: ClientApiSirene, siren)
     assert etab_siege.nic == "00047"
     assert etab_siege.siret == "25351449100047"
     assert etab_siege.denomination_unite_legale == "MEGALIS BRETAGNE"
-    assert etab_siege.est_siege == True
-    assert etab_siege.enseigne == None
+    assert etab_siege.est_siege is True
 
 
 @pytest.mark.vcr

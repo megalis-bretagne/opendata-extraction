@@ -14,7 +14,7 @@ amqp==5.1.1
     # via kombu
 aniso8601==9.0.1
     # via flask-restx
-api-insee==1.5
+api-insee @ git+https://github.com/ln-nicolas/api_insee.git@5324afa8972e8f18235ae8466a64c3c9ed6b9401
     # via -r requirements.in
 async-timeout==4.0.2
     # via aiohttp

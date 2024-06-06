@@ -17,6 +17,18 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - [opendata-frontapp#13](https://github.com/megalis-bretagne/opendata-frontapp/issues/13) Suppression de l'API privée pour paramétrage Pastell
   - Suppression des settings `API_PASTELL_*` et `DEPOT_*`
 
+## [2.1.2]
+
+### Correctifs
+
+- API INSEE: montée de version du wrapper API INSEE suite à la dépréciation de la 3.09
+
+## [2.1.1]
+
+### Ajouts
+
+- Ajout d'une API Stats sur le nombre de documents scannés ou non.
+
 ## [2.1.0]
 
 ### Changements

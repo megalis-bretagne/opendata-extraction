@@ -11,13 +11,13 @@ interactions:
       Host:
       - api.insee.fr
       User-Agent:
-      - Python-urllib/3.9
+      - Python-urllib/3.11
     method: POST
     uri: https://api.insee.fr/token
   response:
     body:
-      string: '{"access_token":"1172ac15-ed5d-38a7-bf49-9d69529fe3cd","scope":"am_application_scope
-        default","token_type":"Bearer","expires_in":600176}'
+      string: '{"access_token":"5b665624-487d-33cc-b014-6e4e0e3f665c","scope":"am_application_scope
+        default","token_type":"Bearer","expires_in":523906}'
     headers:
       Cache-Control:
       - no-store
@@ -26,14 +26,14 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sat, 15 Oct 2022 15:43:57 GMT
+      - Thu, 06 Jun 2024 14:09:09 GMT
       Pragma:
       - no-cache
       Set-Cookie:
-      - INSEE=rd4o00000000000000000000ffff0ac348b0o9443; expires=Sat, 15-Oct-2022
-        16:03:57 GMT; path=/; Httponly; Secure
-      - pdapimgateway=rd4o00000000000000000000ffff0ac348aco8280; expires=Sat, 15-Oct-2022
-        16:03:57 GMT; path=/; Httponly; Secure
+      - HOMERE=!Xm7cRJ1iws0ZPHuGh5C+t/ifsRhNN7oC5tCeQ9Rupmvoa3zd/De6Jkn13VdtMBytXZLTLATM7PNLu2VdymGfofM7YIm2OBkZYC5fU4nm+w==;
+        expires=Thu, 06-Jun-2024 14:29:10 GMT; path=/; Httponly; Secure
+      - pdapimgateway=rd4o00000000000000000000ffff0ac348ado8280; expires=Thu, 06-Jun-2024
+        14:29:10 GMT; path=/; Httponly; Secure
       Strict-Transport-Security:
       - max-age=100000; includeSubDomains
       Transfer-Encoding:
@@ -61,15 +61,15 @@ interactions:
       Host:
       - api.insee.fr
       User-Agent:
-      - Python-urllib/3.9
+      - Python-urllib/3.11
     method: POST
-    uri: https://api.insee.fr/entreprises/sirene/V3/siret
+    uri: https://api.insee.fr/entreprises/sirene/V3.11/siret
   response:
     body:
-      string: '{"header":{"statut":200,"message":"OK","total":1,"debut":0,"nombre":1},"etablissements":[{"siren":"253514491","nic":"00047","siret":"25351449100047","statutDiffusionEtablissement":"O","dateCreationEtablissement":"2013-12-11","trancheEffectifsEtablissement":"12","anneeEffectifsEtablissement":"2020","activitePrincipaleRegistreMetiersEtablissement":null,"dateDernierTraitementEtablissement":"2022-08-29T09:09:59","etablissementSiege":true,"nombrePeriodesEtablissement":2,"uniteLegale":{"etatAdministratifUniteLegale":"A","statutDiffusionUniteLegale":"O","dateCreationUniteLegale":"1999-10-20","categorieJuridiqueUniteLegale":"7355","denominationUniteLegale":"MEGALIS
-        BRETAGNE","sigleUniteLegale":null,"denominationUsuelle1UniteLegale":null,"denominationUsuelle2UniteLegale":null,"denominationUsuelle3UniteLegale":null,"sexeUniteLegale":null,"nomUniteLegale":null,"nomUsageUniteLegale":null,"prenom1UniteLegale":null,"prenom2UniteLegale":null,"prenom3UniteLegale":null,"prenom4UniteLegale":null,"prenomUsuelUniteLegale":null,"pseudonymeUniteLegale":null,"activitePrincipaleUniteLegale":"84.13Z","nomenclatureActivitePrincipaleUniteLegale":"NAFRev2","identifiantAssociationUniteLegale":null,"economieSocialeSolidaireUniteLegale":"N","societeMissionUniteLegale":null,"caractereEmployeurUniteLegale":"O","trancheEffectifsUniteLegale":"12","anneeEffectifsUniteLegale":"2020","nicSiegeUniteLegale":"00047","dateDernierTraitementUniteLegale":"2022-08-29T09:09:59","categorieEntreprise":"PME","anneeCategorieEntreprise":"2020"},"adresseEtablissement":{"complementAdresseEtablissement":"ZAC
-        DES CHAMPS BLANCS - BATIMENT B","numeroVoieEtablissement":"15","indiceRepetitionEtablissement":null,"typeVoieEtablissement":"RUE","libelleVoieEtablissement":"CLAUDE
-        CHAPPE","codePostalEtablissement":"35510","libelleCommuneEtablissement":"CESSON-SEVIGNE","libelleCommuneEtrangerEtablissement":null,"distributionSpecialeEtablissement":null,"codeCommuneEtablissement":"35051","codeCedexEtablissement":null,"libelleCedexEtablissement":null,"codePaysEtrangerEtablissement":null,"libellePaysEtrangerEtablissement":null},"adresse2Etablissement":{"complementAdresse2Etablissement":null,"numeroVoie2Etablissement":null,"indiceRepetition2Etablissement":null,"typeVoie2Etablissement":null,"libelleVoie2Etablissement":null,"codePostal2Etablissement":null,"libelleCommune2Etablissement":null,"libelleCommuneEtranger2Etablissement":null,"distributionSpeciale2Etablissement":null,"codeCommune2Etablissement":null,"codeCedex2Etablissement":null,"libelleCedex2Etablissement":null,"codePaysEtranger2Etablissement":null,"libellePaysEtranger2Etablissement":null},"periodesEtablissement":[{"dateFin":null,"dateDebut":"2015-03-19","etatAdministratifEtablissement":"A","changementEtatAdministratifEtablissement":false,"enseigne1Etablissement":null,"enseigne2Etablissement":null,"enseigne3Etablissement":null,"changementEnseigneEtablissement":true,"denominationUsuelleEtablissement":null,"changementDenominationUsuelleEtablissement":false,"activitePrincipaleEtablissement":"84.13Z","nomenclatureActivitePrincipaleEtablissement":"NAFRev2","changementActivitePrincipaleEtablissement":false,"caractereEmployeurEtablissement":"O","changementCaractereEmployeurEtablissement":false},{"dateFin":"2015-03-18","dateDebut":"2013-12-11","etatAdministratifEtablissement":"A","changementEtatAdministratifEtablissement":false,"enseigne1Etablissement":"BUREAUX
+      string: '{"header":{"statut":200,"message":"OK","total":1,"debut":0,"nombre":1},"etablissements":[{"siren":"253514491","nic":"00047","siret":"25351449100047","statutDiffusionEtablissement":"O","dateCreationEtablissement":"2013-12-11","trancheEffectifsEtablissement":"12","anneeEffectifsEtablissement":"2021","activitePrincipaleRegistreMetiersEtablissement":null,"dateDernierTraitementEtablissement":"2024-03-30T08:21:24.638","etablissementSiege":true,"nombrePeriodesEtablissement":1,"uniteLegale":{"etatAdministratifUniteLegale":"A","statutDiffusionUniteLegale":"O","dateCreationUniteLegale":"1999-10-20","categorieJuridiqueUniteLegale":"7355","denominationUniteLegale":"MEGALIS
+        BRETAGNE","sigleUniteLegale":null,"denominationUsuelle1UniteLegale":null,"denominationUsuelle2UniteLegale":null,"denominationUsuelle3UniteLegale":null,"sexeUniteLegale":null,"nomUniteLegale":null,"nomUsageUniteLegale":null,"prenom1UniteLegale":null,"prenom2UniteLegale":null,"prenom3UniteLegale":null,"prenom4UniteLegale":null,"prenomUsuelUniteLegale":null,"pseudonymeUniteLegale":null,"activitePrincipaleUniteLegale":"84.13Z","nomenclatureActivitePrincipaleUniteLegale":"NAFRev2","identifiantAssociationUniteLegale":null,"economieSocialeSolidaireUniteLegale":"N","societeMissionUniteLegale":null,"caractereEmployeurUniteLegale":null,"trancheEffectifsUniteLegale":"12","anneeEffectifsUniteLegale":"2021","nicSiegeUniteLegale":"00047","dateDernierTraitementUniteLegale":"2024-03-22T09:28:19.000","categorieEntreprise":"PME","anneeCategorieEntreprise":"2021"},"adresseEtablissement":{"complementAdresseEtablissement":"ZAC
+        DES CHAMPS BLANCS - BATIMENT B","numeroVoieEtablissement":"15","indiceRepetitionEtablissement":null,"dernierNumeroVoieEtablissement":null,"indiceRepetitionDernierNumeroVoieEtablissement":null,"typeVoieEtablissement":"RUE","libelleVoieEtablissement":"CLAUDE
+        CHAPPE","codePostalEtablissement":"35510","libelleCommuneEtablissement":"CESSON-SEVIGNE","libelleCommuneEtrangerEtablissement":null,"distributionSpecialeEtablissement":null,"codeCommuneEtablissement":"35051","codeCedexEtablissement":null,"libelleCedexEtablissement":null,"codePaysEtrangerEtablissement":null,"libellePaysEtrangerEtablissement":null,"identifiantAdresseEtablissement":"350510659_B","coordonneeLambertAbscisseEtablissement":"356415.46032408084","coordonneeLambertOrdonneeEtablissement":"6791957.311039559"},"adresse2Etablissement":{"complementAdresse2Etablissement":null,"numeroVoie2Etablissement":null,"indiceRepetition2Etablissement":null,"typeVoie2Etablissement":null,"libelleVoie2Etablissement":null,"codePostal2Etablissement":null,"libelleCommune2Etablissement":null,"libelleCommuneEtranger2Etablissement":null,"distributionSpeciale2Etablissement":null,"codeCommune2Etablissement":null,"codeCedex2Etablissement":null,"libelleCedex2Etablissement":null,"codePaysEtranger2Etablissement":null,"libellePaysEtranger2Etablissement":null},"periodesEtablissement":[{"dateFin":null,"dateDebut":"2013-12-11","etatAdministratifEtablissement":"A","changementEtatAdministratifEtablissement":false,"enseigne1Etablissement":"BUREAUX
         ADMINISTRATIFS","enseigne2Etablissement":null,"enseigne3Etablissement":null,"changementEnseigneEtablissement":false,"denominationUsuelleEtablissement":null,"changementDenominationUsuelleEtablissement":false,"activitePrincipaleEtablissement":"84.13Z","nomenclatureActivitePrincipaleEtablissement":"NAFRev2","changementActivitePrincipaleEtablissement":false,"caractereEmployeurEtablissement":"O","changementCaractereEmployeurEtablissement":false}]}]}'
     headers:
       Access-Control-Allow-Headers:
@@ -85,25 +85,21 @@ interactions:
       Content-Type:
       - application/json;charset=utf-8
       Date:
-      - Sat, 15 Oct 2022 15:43:57 GMT
+      - Thu, 06 Jun 2024 14:09:10 GMT
       Expires:
       - Thu, 01 Jan 1970 00:00:00 GMT
       Link:
-      - <https://api.insee.fr/entreprises/sirene/siret?debut=0&nombre=1>; rel="first"
-      - <https://api.insee.fr/entreprises/sirene/siret?debut=0&nombre=1>; rel="last"
+      - <https://api.insee.fr/entreprises/sirene/V3.11/siret?debut=0&nombre=1>; rel="first"
+      - <https://api.insee.fr/entreprises/sirene/V3.11/siret?debut=0&nombre=1>; rel="last"
       Set-Cookie:
-      - INSEE=rd4o00000000000000000000ffff0ac34809o80; expires=Sat, 15-Oct-2022 16:03:57
-        GMT; path=/; Httponly; Secure
-      - pdapimgateway=rd4o00000000000000000000ffff0ac348ado8280; expires=Sat, 15-Oct-2022
-        16:03:57 GMT; path=/; Httponly; Secure
+      - pdapimgateway=rd4o00000000000000000000ffff0ac348aco8280; expires=Thu, 06-Jun-2024
+        14:29:11 GMT; path=/; Httponly; Secure
       Strict-Transport-Security:
       - max-age=100000; includeSubDomains
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
-      X-Frame-Options:
-      - SAMEORIGIN
       X-Total-Count:
       - '1'
     status:

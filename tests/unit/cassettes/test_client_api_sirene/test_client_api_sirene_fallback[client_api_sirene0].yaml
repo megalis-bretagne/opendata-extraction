@@ -2,8 +2,6 @@ interactions:
 - request:
     body: grant_type=client_credentials
     headers:
-      Authorization:
-      - Basic xxx
       Connection:
       - close
       Content-Length:
@@ -13,29 +11,24 @@ interactions:
       Host:
       - api.insee.fr
       User-Agent:
-      - Python-urllib/3.9
+      - Python-urllib/3.11
     method: POST
     uri: https://api.insee.fr/token
   response:
     body:
-      string: '{"access_token":"86150027-cb2e-3936-aaca-7b61b7211163","scope":"am_application_scope
-        default","token_type":"Bearer","expires_in":430346}'
+      string: '{"error_description":"A valid OAuth client could not be found for client_id:la2Zhof1pn9LgrbhD5OXYHlc63ga","error":"invalid_client"}'
     headers:
-      Cache-Control:
-      - no-store
       Connection:
       - close
       Content-Type:
       - application/json
       Date:
-      - Fri, 07 Oct 2022 12:43:11 GMT
-      Pragma:
-      - no-cache
+      - Thu, 06 Jun 2024 14:09:10 GMT
       Set-Cookie:
-      - INSEE=rd4o00000000000000000000ffff0ac348b0o9443; expires=Fri, 07-Oct-2022
-        13:03:12 GMT; path=/; Httponly; Secure
-      - pdapimgateway=rd4o00000000000000000000ffff0ac348ado8280; expires=Fri, 07-Oct-2022
-        13:03:12 GMT; path=/; Httponly; Secure
+      - HOMERE=!KWwqAMmYefQ8wdmGh5C+t/ifsRhNN/ske1I7k5EvlgqSdVk4RFp90Ci+4qTdSnEd9T1s7hbAqjiUaMcSblQKtXUNSQ6q+MLYHd1N+Wx4yg==;
+        expires=Thu, 06-Jun-2024 14:29:11 GMT; path=/; Httponly; Secure
+      - pdapimgateway=rd4o00000000000000000000ffff0ac348ado8280; expires=Thu, 06-Jun-2024
+        14:29:11 GMT; path=/; Httponly; Secure
       Strict-Transport-Security:
       - max-age=100000; includeSubDomains
       Transfer-Encoding:
@@ -47,70 +40,67 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
     status:
-      code: 200
-      message: OK
+      code: 401
+      message: Unauthorized
 - request:
-    body: q=siren%3A253514491+AND+etablissementSiege%3ATrue
+    body: null
     headers:
       Accept:
-      - application/json
-      Authorization:
-      - Bearer 86150027-cb2e-3936-aaca-7b61b7211163
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
       Connection:
-      - close
-      Content-Length:
-      - '49'
-      Content-Type:
-      - application/x-www-form-urlencoded
-      Host:
-      - api.insee.fr
+      - keep-alive
       User-Agent:
-      - Python-urllib/3.9
-    method: POST
-    uri: https://api.insee.fr/entreprises/sirene/V3/siret
+      - python-requests/2.31.0
+    method: GET
+    uri: https://entreprise.data.gouv.fr/api/sirene/v3/unites_legales/253514491
   response:
     body:
-      string: '{"header":{"statut":200,"message":"OK","total":1,"debut":0,"nombre":1},"etablissements":[{"siren":"253514491","nic":"00047","siret":"25351449100047","statutDiffusionEtablissement":"O","dateCreationEtablissement":"2013-12-11","trancheEffectifsEtablissement":"12","anneeEffectifsEtablissement":"2020","activitePrincipaleRegistreMetiersEtablissement":null,"dateDernierTraitementEtablissement":"2022-08-29T09:09:59","etablissementSiege":true,"nombrePeriodesEtablissement":2,"uniteLegale":{"etatAdministratifUniteLegale":"A","statutDiffusionUniteLegale":"O","dateCreationUniteLegale":"1999-10-20","categorieJuridiqueUniteLegale":"7355","denominationUniteLegale":"MEGALIS
-        BRETAGNE","sigleUniteLegale":null,"denominationUsuelle1UniteLegale":null,"denominationUsuelle2UniteLegale":null,"denominationUsuelle3UniteLegale":null,"sexeUniteLegale":null,"nomUniteLegale":null,"nomUsageUniteLegale":null,"prenom1UniteLegale":null,"prenom2UniteLegale":null,"prenom3UniteLegale":null,"prenom4UniteLegale":null,"prenomUsuelUniteLegale":null,"pseudonymeUniteLegale":null,"activitePrincipaleUniteLegale":"84.13Z","nomenclatureActivitePrincipaleUniteLegale":"NAFRev2","identifiantAssociationUniteLegale":null,"economieSocialeSolidaireUniteLegale":"N","societeMissionUniteLegale":null,"caractereEmployeurUniteLegale":"O","trancheEffectifsUniteLegale":"12","anneeEffectifsUniteLegale":"2020","nicSiegeUniteLegale":"00047","dateDernierTraitementUniteLegale":"2022-08-29T09:09:59","categorieEntreprise":"PME","anneeCategorieEntreprise":"2020"},"adresseEtablissement":{"complementAdresseEtablissement":"ZAC
-        DES CHAMPS BLANCS - BATIMENT B","numeroVoieEtablissement":"15","indiceRepetitionEtablissement":null,"typeVoieEtablissement":"RUE","libelleVoieEtablissement":"CLAUDE
-        CHAPPE","codePostalEtablissement":"35510","libelleCommuneEtablissement":"CESSON-SEVIGNE","libelleCommuneEtrangerEtablissement":null,"distributionSpecialeEtablissement":null,"codeCommuneEtablissement":"35051","codeCedexEtablissement":null,"libelleCedexEtablissement":null,"codePaysEtrangerEtablissement":null,"libellePaysEtrangerEtablissement":null},"adresse2Etablissement":{"complementAdresse2Etablissement":null,"numeroVoie2Etablissement":null,"indiceRepetition2Etablissement":null,"typeVoie2Etablissement":null,"libelleVoie2Etablissement":null,"codePostal2Etablissement":null,"libelleCommune2Etablissement":null,"libelleCommuneEtranger2Etablissement":null,"distributionSpeciale2Etablissement":null,"codeCommune2Etablissement":null,"codeCedex2Etablissement":null,"libelleCedex2Etablissement":null,"codePaysEtranger2Etablissement":null,"libellePaysEtranger2Etablissement":null},"periodesEtablissement":[{"dateFin":null,"dateDebut":"2015-03-19","etatAdministratifEtablissement":"A","changementEtatAdministratifEtablissement":false,"enseigne1Etablissement":null,"enseigne2Etablissement":null,"enseigne3Etablissement":null,"changementEnseigneEtablissement":true,"denominationUsuelleEtablissement":null,"changementDenominationUsuelleEtablissement":false,"activitePrincipaleEtablissement":"84.13Z","nomenclatureActivitePrincipaleEtablissement":"NAFRev2","changementActivitePrincipaleEtablissement":false,"caractereEmployeurEtablissement":"O","changementCaractereEmployeurEtablissement":false},{"dateFin":"2015-03-18","dateDebut":"2013-12-11","etatAdministratifEtablissement":"A","changementEtatAdministratifEtablissement":false,"enseigne1Etablissement":"BUREAUX
-        ADMINISTRATIFS","enseigne2Etablissement":null,"enseigne3Etablissement":null,"changementEnseigneEtablissement":false,"denominationUsuelleEtablissement":null,"changementDenominationUsuelleEtablissement":false,"activitePrincipaleEtablissement":"84.13Z","nomenclatureActivitePrincipaleEtablissement":"NAFRev2","changementActivitePrincipaleEtablissement":false,"caractereEmployeurEtablissement":"O","changementCaractereEmployeurEtablissement":false}]}]}'
+      string: "{\"unite_legale\":{\"id\":255154,\"siren\":\"253514491\",\"statut_diffusion\":\"O\",\"unite_purgee\":null,\"date_creation\":\"1999-10-20\",\"sigle\":null,\"sexe\":null,\"prenom_1\":null,\"prenom_2\":null,\"prenom_3\":null,\"prenom_4\":null,\"prenom_usuel\":null,\"pseudonyme\":null,\"identifiant_association\":null,\"tranche_effectifs\":\"12\",\"annee_effectifs\":\"2019\",\"date_dernier_traitement\":\"2021-10-27T08:12:08\",\"nombre_periodes\":\"10\",\"categorie_entreprise\":\"PME\",\"annee_categorie_entreprise\":\"2019\",\"date_fin\":null,\"date_debut\":\"2020-09-15\",\"etat_administratif\":\"A\",\"nom\":null,\"nom_usage\":null,\"denomination\":\"MEGALIS
+        BRETAGNE\",\"denomination_usuelle_1\":null,\"denomination_usuelle_2\":null,\"denomination_usuelle_3\":null,\"categorie_juridique\":\"7355\",\"activite_principale\":\"84.13Z\",\"nomenclature_activite_principale\":\"NAFRev2\",\"nic_siege\":\"00047\",\"economie_sociale_solidaire\":\"N\",\"caractere_employeur\":\"O\",\"created_at\":\"2022-03-07T17:36:38.965+01:00\",\"updated_at\":\"2022-03-07T17:36:38.965+01:00\",\"etablissement_siege\":{\"id\":107196183,\"siren\":\"253514491\",\"nic\":\"00047\",\"siret\":\"25351449100047\",\"statut_diffusion\":\"O\",\"date_creation\":\"2013-12-11\",\"tranche_effectifs\":\"12\",\"annee_effectifs\":\"2019\",\"activite_principale_registre_metiers\":null,\"date_dernier_traitement\":\"2021-10-27T08:12:08\",\"etablissement_siege\":\"true\",\"nombre_periodes\":\"2\",\"complement_adresse\":\"ZAC
+        DES CHAMPS BLANCS - BATIMENT B\",\"numero_voie\":\"15\",\"indice_repetition\":null,\"type_voie\":\"RUE\",\"libelle_voie\":\"CLAUDE
+        CHAPPE\",\"code_postal\":\"35510\",\"libelle_commune\":\"CESSON-SEVIGNE\",\"libelle_commune_etranger\":null,\"distribution_speciale\":null,\"code_commune\":\"35051\",\"code_cedex\":null,\"libelle_cedex\":null,\"code_pays_etranger\":null,\"libelle_pays_etranger\":null,\"complement_adresse_2\":null,\"numero_voie_2\":null,\"indice_repetition_2\":null,\"type_voie_2\":null,\"libelle_voie_2\":null,\"code_postal_2\":null,\"libelle_commune_2\":null,\"libelle_commune_etranger_2\":null,\"distribution_speciale_2\":null,\"code_commune_2\":null,\"code_cedex_2\":null,\"libelle_cedex_2\":null,\"code_pays_etranger_2\":null,\"libelle_pays_etranger_2\":null,\"date_debut\":\"2015-03-19\",\"etat_administratif\":\"A\",\"enseigne_1\":null,\"enseigne_2\":null,\"enseigne_3\":null,\"denomination_usuelle\":null,\"activite_principale\":\"84.13Z\",\"nomenclature_activite_principale\":\"NAFRev2\",\"caractere_employeur\":\"O\",\"longitude\":\"-1.621571\",\"latitude\":\"48.137464\",\"geo_score\":\"0.96\",\"geo_type\":\"housenumber\",\"geo_adresse\":\"15
+        Rue Claude Chappe 35510 Cesson-S\xE9vign\xE9\",\"geo_id\":\"35051_0659_00015\",\"geo_ligne\":\"G\",\"geo_l4\":\"15
+        RUE CLAUDE CHAPPE\",\"geo_l5\":null,\"unite_legale_id\":255154,\"created_at\":\"2022-03-08T14:49:07.022+01:00\",\"updated_at\":\"2022-03-08T14:49:07.022+01:00\"},\"numero_tva_intra\":\"FR47253514491\",\"etablissements\":[{\"id\":107196184,\"siren\":\"253514491\",\"nic\":\"00054\",\"siret\":\"25351449100054\",\"statut_diffusion\":\"O\",\"date_creation\":\"2014-02-28\",\"tranche_effectifs\":\"11\",\"annee_effectifs\":\"2019\",\"activite_principale_registre_metiers\":null,\"date_dernier_traitement\":\"2021-10-27T08:12:08\",\"etablissement_siege\":\"false\",\"nombre_periodes\":\"2\",\"complement_adresse\":null,\"numero_voie\":\"15\",\"indice_repetition\":null,\"type_voie\":\"RUE\",\"libelle_voie\":\"CLAUDE
+        CHAPPE\",\"code_postal\":\"35510\",\"libelle_commune\":\"CESSON-SEVIGNE\",\"libelle_commune_etranger\":null,\"distribution_speciale\":null,\"code_commune\":\"35051\",\"code_cedex\":null,\"libelle_cedex\":null,\"code_pays_etranger\":null,\"libelle_pays_etranger\":null,\"complement_adresse_2\":null,\"numero_voie_2\":null,\"indice_repetition_2\":null,\"type_voie_2\":null,\"libelle_voie_2\":null,\"code_postal_2\":null,\"libelle_commune_2\":null,\"libelle_commune_etranger_2\":null,\"distribution_speciale_2\":null,\"code_commune_2\":null,\"code_cedex_2\":null,\"libelle_cedex_2\":null,\"code_pays_etranger_2\":null,\"libelle_pays_etranger_2\":null,\"date_debut\":\"2015-01-01\",\"etat_administratif\":\"A\",\"enseigne_1\":\"BTHD\",\"enseigne_2\":null,\"enseigne_3\":null,\"denomination_usuelle\":null,\"activite_principale\":\"61.10Z\",\"nomenclature_activite_principale\":\"NAFRev2\",\"caractere_employeur\":\"O\",\"longitude\":\"-1.621571\",\"latitude\":\"48.137464\",\"geo_score\":\"0.96\",\"geo_type\":\"housenumber\",\"geo_adresse\":\"15
+        Rue Claude Chappe 35510 Cesson-S\xE9vign\xE9\",\"geo_id\":\"35051_0659_00015\",\"geo_ligne\":\"G\",\"geo_l4\":\"15
+        RUE CLAUDE CHAPPE\",\"geo_l5\":null,\"unite_legale_id\":255154,\"created_at\":\"2022-03-08T14:49:07.022+01:00\",\"updated_at\":\"2022-03-08T14:49:07.022+01:00\"},{\"id\":107196183,\"siren\":\"253514491\",\"nic\":\"00047\",\"siret\":\"25351449100047\",\"statut_diffusion\":\"O\",\"date_creation\":\"2013-12-11\",\"tranche_effectifs\":\"12\",\"annee_effectifs\":\"2019\",\"activite_principale_registre_metiers\":null,\"date_dernier_traitement\":\"2021-10-27T08:12:08\",\"etablissement_siege\":\"true\",\"nombre_periodes\":\"2\",\"complement_adresse\":\"ZAC
+        DES CHAMPS BLANCS - BATIMENT B\",\"numero_voie\":\"15\",\"indice_repetition\":null,\"type_voie\":\"RUE\",\"libelle_voie\":\"CLAUDE
+        CHAPPE\",\"code_postal\":\"35510\",\"libelle_commune\":\"CESSON-SEVIGNE\",\"libelle_commune_etranger\":null,\"distribution_speciale\":null,\"code_commune\":\"35051\",\"code_cedex\":null,\"libelle_cedex\":null,\"code_pays_etranger\":null,\"libelle_pays_etranger\":null,\"complement_adresse_2\":null,\"numero_voie_2\":null,\"indice_repetition_2\":null,\"type_voie_2\":null,\"libelle_voie_2\":null,\"code_postal_2\":null,\"libelle_commune_2\":null,\"libelle_commune_etranger_2\":null,\"distribution_speciale_2\":null,\"code_commune_2\":null,\"code_cedex_2\":null,\"libelle_cedex_2\":null,\"code_pays_etranger_2\":null,\"libelle_pays_etranger_2\":null,\"date_debut\":\"2015-03-19\",\"etat_administratif\":\"A\",\"enseigne_1\":null,\"enseigne_2\":null,\"enseigne_3\":null,\"denomination_usuelle\":null,\"activite_principale\":\"84.13Z\",\"nomenclature_activite_principale\":\"NAFRev2\",\"caractere_employeur\":\"O\",\"longitude\":\"-1.621571\",\"latitude\":\"48.137464\",\"geo_score\":\"0.96\",\"geo_type\":\"housenumber\",\"geo_adresse\":\"15
+        Rue Claude Chappe 35510 Cesson-S\xE9vign\xE9\",\"geo_id\":\"35051_0659_00015\",\"geo_ligne\":\"G\",\"geo_l4\":\"15
+        RUE CLAUDE CHAPPE\",\"geo_l5\":null,\"unite_legale_id\":255154,\"created_at\":\"2022-03-08T14:49:07.022+01:00\",\"updated_at\":\"2022-03-08T14:49:07.022+01:00\"},{\"id\":107196182,\"siren\":\"253514491\",\"nic\":\"00039\",\"siret\":\"25351449100039\",\"statut_diffusion\":\"O\",\"date_creation\":\"2006-10-20\",\"tranche_effectifs\":\"NN\",\"annee_effectifs\":null,\"activite_principale_registre_metiers\":null,\"date_dernier_traitement\":\"2016-04-26T01:30:57\",\"etablissement_siege\":\"false\",\"nombre_periodes\":\"3\",\"complement_adresse\":null,\"numero_voie\":\"8\",\"indice_repetition\":\"B\",\"type_voie\":\"RUE\",\"libelle_voie\":\"PATIS
+        TATELIN\",\"code_postal\":\"35700\",\"libelle_commune\":\"RENNES\",\"libelle_commune_etranger\":null,\"distribution_speciale\":null,\"code_commune\":\"35238\",\"code_cedex\":null,\"libelle_cedex\":null,\"code_pays_etranger\":null,\"libelle_pays_etranger\":null,\"complement_adresse_2\":null,\"numero_voie_2\":null,\"indice_repetition_2\":null,\"type_voie_2\":null,\"libelle_voie_2\":null,\"code_postal_2\":null,\"libelle_commune_2\":null,\"libelle_commune_etranger_2\":null,\"distribution_speciale_2\":null,\"code_commune_2\":null,\"code_cedex_2\":null,\"libelle_cedex_2\":null,\"code_pays_etranger_2\":null,\"libelle_pays_etranger_2\":null,\"date_debut\":\"2015-03-19\",\"etat_administratif\":\"F\",\"enseigne_1\":null,\"enseigne_2\":null,\"enseigne_3\":null,\"denomination_usuelle\":null,\"activite_principale\":\"84.13Z\",\"nomenclature_activite_principale\":\"NAFRev2\",\"caractere_employeur\":\"O\",\"longitude\":\"-1.640909\",\"latitude\":\"48.13092\",\"geo_score\":\"0.93\",\"geo_type\":\"housenumber\",\"geo_adresse\":\"8b
+        Rue du P\xE2tis Tatelin 35700 Rennes\",\"geo_id\":\"35238_7141_00008_b\",\"geo_ligne\":\"G\",\"geo_l4\":\"8B
+        RUE DU PATIS TATELIN\",\"geo_l5\":null,\"unite_legale_id\":255154,\"created_at\":\"2022-03-08T14:49:07.022+01:00\",\"updated_at\":\"2022-03-08T14:49:07.022+01:00\"},{\"id\":107196181,\"siren\":\"253514491\",\"nic\":\"00021\",\"siret\":\"25351449100021\",\"statut_diffusion\":\"O\",\"date_creation\":\"2002-09-25\",\"tranche_effectifs\":\"NN\",\"annee_effectifs\":null,\"activite_principale_registre_metiers\":null,\"date_dernier_traitement\":\"2008-04-26T08:27:56\",\"etablissement_siege\":\"false\",\"nombre_periodes\":\"3\",\"complement_adresse\":null,\"numero_voie\":\"11\",\"indice_repetition\":null,\"type_voie\":\"RUE\",\"libelle_voie\":\"DU
+        CLOS COURTEL\",\"code_postal\":\"35700\",\"libelle_commune\":\"RENNES\",\"libelle_commune_etranger\":null,\"distribution_speciale\":null,\"code_commune\":\"35238\",\"code_cedex\":null,\"libelle_cedex\":null,\"code_pays_etranger\":null,\"libelle_pays_etranger\":null,\"complement_adresse_2\":null,\"numero_voie_2\":null,\"indice_repetition_2\":null,\"type_voie_2\":null,\"libelle_voie_2\":null,\"code_postal_2\":null,\"libelle_commune_2\":null,\"libelle_commune_etranger_2\":null,\"distribution_speciale_2\":null,\"code_commune_2\":null,\"code_cedex_2\":null,\"libelle_cedex_2\":null,\"code_pays_etranger_2\":null,\"libelle_pays_etranger_2\":null,\"date_debut\":\"2006-10-20\",\"etat_administratif\":\"F\",\"enseigne_1\":\"MEGALIS
+        BRETAGNE\",\"enseigne_2\":null,\"enseigne_3\":null,\"denomination_usuelle\":null,\"activite_principale\":\"75.1E\",\"nomenclature_activite_principale\":\"NAFRev1\",\"caractere_employeur\":\"O\",\"longitude\":\"-1.628748\",\"latitude\":\"48.126465\",\"geo_score\":\"0.97\",\"geo_type\":\"housenumber\",\"geo_adresse\":\"11
+        Rue du Clos Courtel 35700 Rennes\",\"geo_id\":\"35238_1985_00011\",\"geo_ligne\":\"G\",\"geo_l4\":\"11
+        RUE DU CLOS COURTEL\",\"geo_l5\":null,\"unite_legale_id\":255154,\"created_at\":\"2022-03-08T14:49:07.022+01:00\",\"updated_at\":\"2022-03-08T14:49:07.022+01:00\"},{\"id\":107196180,\"siren\":\"253514491\",\"nic\":\"00013\",\"siret\":\"25351449100013\",\"statut_diffusion\":\"O\",\"date_creation\":\"1999-10-20\",\"tranche_effectifs\":\"NN\",\"annee_effectifs\":null,\"activite_principale_registre_metiers\":null,\"date_dernier_traitement\":null,\"etablissement_siege\":\"false\",\"nombre_periodes\":\"4\",\"complement_adresse\":null,\"numero_voie\":\"9\",\"indice_repetition\":null,\"type_voie\":\"RUE\",\"libelle_voie\":\"MARTENOT\",\"code_postal\":\"35000\",\"libelle_commune\":\"RENNES\",\"libelle_commune_etranger\":null,\"distribution_speciale\":null,\"code_commune\":\"35238\",\"code_cedex\":null,\"libelle_cedex\":null,\"code_pays_etranger\":null,\"libelle_pays_etranger\":null,\"complement_adresse_2\":null,\"numero_voie_2\":null,\"indice_repetition_2\":null,\"type_voie_2\":null,\"libelle_voie_2\":null,\"code_postal_2\":null,\"libelle_commune_2\":null,\"libelle_commune_etranger_2\":null,\"distribution_speciale_2\":null,\"code_commune_2\":null,\"code_cedex_2\":null,\"libelle_cedex_2\":null,\"code_pays_etranger_2\":null,\"libelle_pays_etranger_2\":null,\"date_debut\":\"2002-09-25\",\"etat_administratif\":\"F\",\"enseigne_1\":null,\"enseigne_2\":null,\"enseigne_3\":null,\"denomination_usuelle\":null,\"activite_principale\":\"75.1E\",\"nomenclature_activite_principale\":\"NAF1993\",\"caractere_employeur\":\"O\",\"longitude\":\"-1.67332\",\"latitude\":\"48.112721\",\"geo_score\":\"0.97\",\"geo_type\":\"housenumber\",\"geo_adresse\":\"9
+        Rue Martenot 35000 Rennes\",\"geo_id\":\"35238_6380_00009\",\"geo_ligne\":\"G\",\"geo_l4\":\"9
+        RUE MARTENOT\",\"geo_l5\":null,\"unite_legale_id\":255154,\"created_at\":\"2022-03-08T14:49:07.022+01:00\",\"updated_at\":\"2022-03-08T14:49:07.022+01:00\"}]}}"
     headers:
-      Access-Control-Allow-Headers:
-      - authorization,Access-Control-Allow-Origin,Content-Type,SOAPAction
-      Access-Control-Allow-Methods:
-      - POST,GET
-      Access-Control-Allow-Origin:
-      - '*'
       Cache-Control:
-      - no-cache
+      - max-age=0, private, must-revalidate
       Connection:
-      - close
+      - Keep-Alive
+      Content-Length:
+      - '10741'
       Content-Type:
-      - application/json;charset=utf-8
+      - application/json; charset=utf-8
       Date:
-      - Fri, 07 Oct 2022 12:43:12 GMT
-      Expires:
-      - Thu, 01 Jan 1970 00:00:00 GMT
-      Link:
-      - <https://api.insee.fr/entreprises/sirene/siret?debut=0&nombre=1>; rel="first"
-      - <https://api.insee.fr/entreprises/sirene/siret?debut=0&nombre=1>; rel="last"
-      Set-Cookie:
-      - INSEE=rd4o00000000000000000000ffff0ac34808o80; expires=Fri, 07-Oct-2022 13:03:12
-        GMT; path=/; Httponly; Secure
-      - pdapimgateway=rd4o00000000000000000000ffff0ac348aco8280; expires=Fri, 07-Oct-2022
-        13:03:12 GMT; path=/; Httponly; Secure
-      Strict-Transport-Security:
-      - max-age=100000; includeSubDomains
-      Transfer-Encoding:
-      - chunked
+      - Thu, 06 Jun 2024 14:09:11 GMT
+      Etag:
+      - W/"4a5a22858e325239340f0b7493498bdf"
+      Server:
+      - WEBrick/1.4.2 (Ruby/2.6.6/2020-03-31)
       Vary:
-      - Accept-Encoding
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Total-Count:
-      - '1'
+      - Origin
+      X-Request-Id:
+      - 4c5ec36d-e166-4ede-8377-a0475bbd617b
+      X-Runtime:
+      - '0.023100'
     status:
       code: 200
-      message: ''
+      message: OK
 version: 1
