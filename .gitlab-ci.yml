@@ -29,10 +29,10 @@ pytest-unit:
   only:
     - master
   script:
-    - apk add --no-cache build-base
+    - apk add --no-cache build-base git
     - pip install -r requirements.txt
     - pip install -r dev-requirements.txt
-    - apk del --no-cache build-base
+    - apk del --no-cache build-base git
     - unset http_proxy
     - unset https_proxy
     - unset no_proxy
