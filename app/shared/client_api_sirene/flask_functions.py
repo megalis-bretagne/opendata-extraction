@@ -13,7 +13,8 @@ def etablissement_siege_pour_siren(siren: str) -> Etablissement:
 @lru_cache(maxsize=25)
 def etablissements_pour_siren(siren: str) -> list[Etablissement]:
     client_api_sirene = _get_client_api_sirene()
-    return client_api_sirene.etablissements(siren)
+    etablissements = client_api_sirene.etablissements(siren)
+    return etablissements
 
 def _get_client_api_sirene():
     use_api_insee = current_app.config['USE_API_INSEE']
