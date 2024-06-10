@@ -24,7 +24,7 @@ class DefaultVisualisationLocalisation:
     ) -> None:
 
         # Pour la gestion d'erreurs
-        normalized_etape = EtapeBudgetaire.from_str(etape).to_scdl_compatible_str()
+        normalized_etape = str(EtapeBudgetaire.from_str(etape))
 
         self.annee = annee
         self.siret = siret
