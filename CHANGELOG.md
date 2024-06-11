@@ -6,6 +6,8 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.1.3]
+
 ### Correctifs
 
 - Correction incohérence entre nombre de résultats annoncés et comptés
