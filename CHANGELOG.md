@@ -6,6 +6,12 @@ Basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.1.4]
+
+### Correctifs
+
+- Passage en authentifié du endpoint "/publication/search/light" de l'API privée
+
 ## [2.1.3]
 
 ### Correctifs

@@ -350,6 +350,7 @@ class PublicationSearchCtrl(Resource):
 class PublicationLightSearchCtrl(Resource):
     @api.expect(publicationLightParams_search_controller)
     @api.response(200, 'Success', model_publication_light_list)
+    @oidc.accept_token(require_token=True, scopes_required=['openid'])
     def post(self):
         args = publicationLightParams_search_controller.parse_args()
         role = g.oidc_token_info.get(CLAIM_ROLE_OPENDATA)
